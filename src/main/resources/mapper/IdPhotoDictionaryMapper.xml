@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youxu.business.dao.IdPhotoDictionaryMapper">
+  <resultMap id="BaseResultMap" type="com.youxu.business.pojo.IdPhotoDictionary">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="id_photo_dictionary_name" jdbcType="VARCHAR" property="idPhotoDictionaryName" />
+    <result column="id_photo_dictionary_spec_id" jdbcType="INTEGER" property="idPhotoDictionarySpecId" />
+    <result column="id_photo_dictionary_create_time" jdbcType="TIMESTAMP" property="idPhotoDictionaryCreateTime" />
+    <result column="id_photo_dictionary_modify_time" jdbcType="TIMESTAMP" property="idPhotoDictionaryModifyTime" />
+    <result column="id_photo_dictionary_status" jdbcType="BIT" property="idPhotoDictionaryStatus" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, id_photo_dictionary_name, id_photo_dictionary_spec_id, id_photo_dictionary_create_time, 
+    id_photo_dictionary_modify_time, id_photo_dictionary_status
+  </sql>
+  <select id="selectByExample" parameterType="com.youxu.business.pojo.IdPhotoDictionaryExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_id_photo_dictionary
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.youxu.business.pojo.IdPhotoDictionaryExample">
+    delete from tb_id_photo_dictionary
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.youxu.business.pojo.IdPhotoDictionary">
+    insert into tb_id_photo_dictionary (id, id_photo_dictionary_name, id_photo_dictionary_spec_id, 
+      id_photo_dictionary_create_time, id_photo_dictionary_modify_time, 
+      id_photo_dictionary_status)
+    values (#{id,jdbcType=INTEGER}, #{idPhotoDictionaryName,jdbcType=VARCHAR}, #{idPhotoDictionarySpecId,jdbcType=INTEGER}, 
+      #{idPhotoDictionaryCreateTime,jdbcType=TIMESTAMP}, #{idPhotoDictionaryModifyTime,jdbcType=TIMESTAMP}, 
+      #{idPhotoDictionaryStatus,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.youxu.business.pojo.IdPhotoDictionary">
+    insert into tb_id_photo_dictionary
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="idPhotoDictionaryName != null">
+        id_photo_dictionary_name,
+      </if>
+      <if test="idPhotoDictionarySpecId != null">
+        id_photo_dictionary_spec_id,
+      </if>
+      <if test="idPhotoDictionaryCreateTime != null">
+        id_photo_dictionary_create_time,
+      </if>
+      <if test="idPhotoDictionaryModifyTime != null">
+        id_photo_dictionary_modify_time,
+      </if>
+      <if test="idPhotoDictionaryStatus != null">
+        id_photo_dictionary_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="idPhotoDictionaryName != null">
+        #{idPhotoDictionaryName,jdbcType=VARCHAR},
+      </if>
+      <if test="idPhotoDictionarySpecId != null">
+        #{idPhotoDictionarySpecId,jdbcType=INTEGER},
+      </if>
+      <if test="idPhotoDictionaryCreateTime != null">
+        #{idPhotoDictionaryCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="idPhotoDictionaryModifyTime != null">
+        #{idPhotoDictionaryModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="idPhotoDictionaryStatus != null">
+        #{idPhotoDictionaryStatus,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.youxu.business.pojo.IdPhotoDictionaryExample" resultType="java.lang.Long">
+    select count(*) from tb_id_photo_dictionary
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_id_photo_dictionary
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.idPhotoDictionaryName != null">
+        id_photo_dictionary_name = #{record.idPhotoDictionaryName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idPhotoDictionarySpecId != null">
+        id_photo_dictionary_spec_id = #{record.idPhotoDictionarySpecId,jdbcType=INTEGER},
+      </if>
+      <if test="record.idPhotoDictionaryCreateTime != null">
+        id_photo_dictionary_create_time = #{record.idPhotoDictionaryCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.idPhotoDictionaryModifyTime != null">
+        id_photo_dictionary_modify_time = #{record.idPhotoDictionaryModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.idPhotoDictionaryStatus != null">
+        id_photo_dictionary_status = #{record.idPhotoDictionaryStatus,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_id_photo_dictionary
+    set id = #{record.id,jdbcType=INTEGER},
+      id_photo_dictionary_name = #{record.idPhotoDictionaryName,jdbcType=VARCHAR},
+      id_photo_dictionary_spec_id = #{record.idPhotoDictionarySpecId,jdbcType=INTEGER},
+      id_photo_dictionary_create_time = #{record.idPhotoDictionaryCreateTime,jdbcType=TIMESTAMP},
+      id_photo_dictionary_modify_time = #{record.idPhotoDictionaryModifyTime,jdbcType=TIMESTAMP},
+      id_photo_dictionary_status = #{record.idPhotoDictionaryStatus,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <select id="selectIdPhotoDictionaryListByName" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    FROM tb_id_photo_dictionary
+    where tb_id_photo_dictionary.id_photo_dictionary_name like '%${idPhotoDictionaryName}%'
+    and tb_id_photo_dictionary.id_photo_dictionary_status = false
+
+  </select>
+
+
+</mapper>

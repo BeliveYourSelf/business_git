@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youxu.business.dao.OrderDetailsPictureMappingMapper">
+  <resultMap id="BaseResultMap" type="com.youxu.business.pojo.OrderDetailsPictureMapping">
+    <result column="order_details_id" jdbcType="INTEGER" property="orderDetailsId" />
+    <result column="picture_id" jdbcType="INTEGER" property="pictureId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    order_details_id, picture_id
+  </sql>
+  <select id="selectByExample" parameterType="com.youxu.business.pojo.OrderDetailsPictureMappingExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_order_details_picture_mapping
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.youxu.business.pojo.OrderDetailsPictureMappingExample">
+    delete from tb_order_details_picture_mapping
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.youxu.business.pojo.OrderDetailsPictureMapping">
+    insert into tb_order_details_picture_mapping (order_details_id, picture_id)
+    values (#{orderDetailsId,jdbcType=INTEGER}, #{pictureId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.youxu.business.pojo.OrderDetailsPictureMapping">
+    insert into tb_order_details_picture_mapping
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderDetailsId != null">
+        order_details_id,
+      </if>
+      <if test="pictureId != null">
+        picture_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderDetailsId != null">
+        #{orderDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="pictureId != null">
+        #{pictureId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.youxu.business.pojo.OrderDetailsPictureMappingExample" resultType="java.lang.Long">
+    select count(*) from tb_order_details_picture_mapping
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_order_details_picture_mapping
+    <set>
+      <if test="record.orderDetailsId != null">
+        order_details_id = #{record.orderDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.pictureId != null">
+        picture_id = #{record.pictureId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_order_details_picture_mapping
+    set order_details_id = #{record.orderDetailsId,jdbcType=INTEGER},
+      picture_id = #{record.pictureId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

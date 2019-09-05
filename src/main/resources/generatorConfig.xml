@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <!--去掉注释-->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <!--需要配置数据库连接-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://rm-2ze4den4fx955faj5ro.mysql.rds.aliyuncs.com:3306/you_db?characterEncoding=utf-8&amp;useSSL=false"
+                        userId="youxu"
+                        password="YouXu123456">
+        </jdbcConnection>
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!--指定entity生成的位置-->
+        <javaModelGenerator targetPackage="com.youxu.business.pojo" targetProject="./src/main/java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!--sql映射文件生成的位置 mapper.xml-->
+        <sqlMapGenerator targetPackage="mapper"  targetProject="./src/main/resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!--指定DaoMapper生成的位置 mapper.java-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.youxu.business.dao" targetProject="./src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!--table是指定每个表的生成策略-->
+
+        <!--生成对应表及类名-->
+        <table tableName="tb_id_photo_dictionary" domainObjectName="IdPhotoDictionary"/>
+        <table tableName="tb_order" domainObjectName="Order"/>
+        <table tableName="tb_order_details" domainObjectName="OrderDetails"/>
+        <table tableName="tb_order_details_picture_mapping" domainObjectName="OrderDetailsPictureMapping"/>
+        <table tableName="tb_picture" domainObjectName="Picture"/>
+    </context>
+</generatorConfiguration>

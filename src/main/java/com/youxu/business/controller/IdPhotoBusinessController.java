@@ -30,10 +30,8 @@ public class IdPhotoBusinessController {
 
     @ApiOperation(value = "上传证件照-新增订单", notes = "spec_id file")
     @PostMapping("/upLoadIdPhoto")
-    public ResponseMessage<IdPhotoBusiness> upLoadIdPhoto(HttpServletRequest request, @RequestBody IdPhotoBusiness idPhotoBusiness) throws Exception {
-        // 从request中请求file
-        MultipartFile file = InRequestGetMultipartFile.inRequestGetMultipartFile(request);
-        IdPhotoBusiness idPhotoBusinessNew = idPhotoBusinessService.upLoadIdPhoto(file, idPhotoBusiness);
+    public ResponseMessage<IdPhotoBusiness> upLoadIdPhoto(@RequestBody IdPhotoBusiness idPhotoBusiness) throws Exception {
+        IdPhotoBusiness idPhotoBusinessNew = idPhotoBusinessService.upLoadIdPhoto(idPhotoBusiness);
         return Result.success("200","成功",idPhotoBusinessNew);
     }
 

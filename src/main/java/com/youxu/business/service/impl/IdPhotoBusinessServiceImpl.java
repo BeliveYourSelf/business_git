@@ -21,11 +21,9 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
 
 
     @Override
-    public IdPhotoBusiness upLoadIdPhoto(MultipartFile file, IdPhotoBusiness idPhotoBusiness) throws Exception {
-        // 文件转化base64
-        String base64String = FileToBase64.multipartFileTrancateFile(file);
+    public IdPhotoBusiness upLoadIdPhoto(IdPhotoBusiness idPhotoBusiness) throws Exception {
         // 证件照上传：环境监测-制作并检测-取出图片
-        threeIntegrationOfIdPhotoBusiness(base64String,idPhotoBusiness);
+        threeIntegrationOfIdPhotoBusiness(idPhotoBusiness.getBase64(),idPhotoBusiness);
         // 添加订单-接口3的图片存入数据库订单库存表
 
         return null;

@@ -7,6 +7,10 @@ public class Order {
 
     private Integer orderUserId;
 
+    private Integer storeId;
+
+    private Integer storeHelpSelfPrintId;
+
     private String orderAddresseeName;
 
     private String orderAddresseePhone;
@@ -45,6 +49,22 @@ public class Order {
 
     public void setOrderUserId(Integer orderUserId) {
         this.orderUserId = orderUserId;
+    }
+
+    public Integer getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(Integer storeId) {
+        this.storeId = storeId;
+    }
+
+    public Integer getStoreHelpSelfPrintId() {
+        return storeHelpSelfPrintId;
+    }
+
+    public void setStoreHelpSelfPrintId(Integer storeHelpSelfPrintId) {
+        this.storeHelpSelfPrintId = storeHelpSelfPrintId;
     }
 
     public String getOrderAddresseeName() {

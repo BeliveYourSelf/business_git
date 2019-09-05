@@ -9,6 +9,8 @@ import java.util.Map;
 public class IdPhotoBusiness {
     private String specId;
 
+    private String base64;
+
     private File file;
 
     private Integer userId;

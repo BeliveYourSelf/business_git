@@ -4,6 +4,8 @@
   <resultMap id="BaseResultMap" type="com.youxu.business.pojo.Order">
     <result column="id" jdbcType="INTEGER" property="id" />
     <result column="order_user_id" jdbcType="INTEGER" property="orderUserId" />
+    <result column="store_id" jdbcType="INTEGER" property="storeId" />
+    <result column="store_help_self_print_id" jdbcType="INTEGER" property="storeHelpSelfPrintId" />
     <result column="order_addressee_name" jdbcType="VARCHAR" property="orderAddresseeName" />
     <result column="order_addressee_phone" jdbcType="VARCHAR" property="orderAddresseePhone" />
     <result column="order_addressee_address" jdbcType="VARCHAR" property="orderAddresseeAddress" />
@@ -76,8 +78,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, order_user_id, order_addressee_name, order_addressee_phone, order_addressee_address, 
-    order_from_store_get, order_from_store_get_where, order_delivery_prescription_time, 
+    id, order_user_id, store_id, store_help_self_print_id, order_addressee_name, order_addressee_phone, 
+    order_addressee_address, order_from_store_get, order_from_store_get_where, order_delivery_prescription_time, 
     order_print_money, order_delivery_money, order_actual_money, order_create_time, order_modify_time, 
     order_status
   </sql>
@@ -102,13 +104,15 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.youxu.business.pojo.Order">
-    insert into tb_order (id, order_user_id, order_addressee_name, 
+    insert into tb_order (id, order_user_id, store_id, 
+      store_help_self_print_id, order_addressee_name, 
       order_addressee_phone, order_addressee_address, 
       order_from_store_get, order_from_store_get_where, 
       order_delivery_prescription_time, order_print_money, 
       order_delivery_money, order_actual_money, order_create_time, 
       order_modify_time, order_status)
-    values (#{id,jdbcType=INTEGER}, #{orderUserId,jdbcType=INTEGER}, #{orderAddresseeName,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{orderUserId,jdbcType=INTEGER}, #{storeId,jdbcType=INTEGER}, 
+      #{storeHelpSelfPrintId,jdbcType=INTEGER}, #{orderAddresseeName,jdbcType=VARCHAR}, 
       #{orderAddresseePhone,jdbcType=VARCHAR}, #{orderAddresseeAddress,jdbcType=VARCHAR}, 
       #{orderFromStoreGet,jdbcType=VARCHAR}, #{orderFromStoreGetWhere,jdbcType=VARCHAR}, 
       #{orderDeliveryPrescriptionTime,jdbcType=VARCHAR}, #{orderPrintMoney,jdbcType=VARCHAR}, 
@@ -123,6 +127,12 @@
       </if>
       <if test="orderUserId != null">
         order_user_id,
+      </if>
+      <if test="storeId != null">
+        store_id,
+      </if>
+      <if test="storeHelpSelfPrintId != null">
+        store_help_self_print_id,
       </if>
       <if test="orderAddresseeName != null">
         order_addressee_name,
@@ -167,6 +177,12 @@
       </if>
       <if test="orderUserId != null">
         #{orderUserId,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null">
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="storeHelpSelfPrintId != null">
+        #{storeHelpSelfPrintId,jdbcType=INTEGER},
       </if>
       <if test="orderAddresseeName != null">
         #{orderAddresseeName,jdbcType=VARCHAR},
@@ -221,6 +237,12 @@
       <if test="record.orderUserId != null">
         order_user_id = #{record.orderUserId,jdbcType=INTEGER},
       </if>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.storeHelpSelfPrintId != null">
+        store_help_self_print_id = #{record.storeHelpSelfPrintId,jdbcType=INTEGER},
+      </if>
       <if test="record.orderAddresseeName != null">
         order_addressee_name = #{record.orderAddresseeName,jdbcType=VARCHAR},
       </if>
@@ -266,6 +288,8 @@
     update tb_order
     set id = #{record.id,jdbcType=INTEGER},
       order_user_id = #{record.orderUserId,jdbcType=INTEGER},
+      store_id = #{record.storeId,jdbcType=INTEGER},
+      store_help_self_print_id = #{record.storeHelpSelfPrintId,jdbcType=INTEGER},
       order_addressee_name = #{record.orderAddresseeName,jdbcType=VARCHAR},
       order_addressee_phone = #{record.orderAddresseePhone,jdbcType=VARCHAR},
       order_addressee_address = #{record.orderAddresseeAddress,jdbcType=VARCHAR},

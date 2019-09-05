@@ -19,5 +19,6 @@ public class IdPhotoBusiness {
 
     private String message;//
 
-    private Map result;
+    private String pictureList;
+
 }

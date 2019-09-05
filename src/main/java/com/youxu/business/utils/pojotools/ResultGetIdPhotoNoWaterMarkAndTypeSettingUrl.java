@@ -7,6 +7,5 @@ import lombok.Data;
  */
 @Data
 public class ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl {
-    private String code;
-    private String msg;
+    private ResultGetIdPhotoNoWaterMarkAndTypeSettingUrlObject data;
 }

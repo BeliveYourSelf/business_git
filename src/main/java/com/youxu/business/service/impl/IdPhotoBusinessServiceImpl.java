@@ -1,4 +1,6 @@
 package com.youxu.business.service.impl;
+import com.google.gson.GsonBuilder;
+import com.youxu.business.utils.HttpTools.HttpToolOther;
 import com.youxu.business.utils.pojotools.*;
 import net.sf.json.JSONObject;
 import com.youxu.business.pojo.IdPhotoBusiness;
@@ -35,28 +37,44 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
      * 整合证件照三个接口
      */
     private IdPhotoBusiness threeIntegrationOfIdPhotoBusiness(IdPhotoBusiness idPhotoBusiness ) throws Exception {
-        IdPhotoBusiness idPhotoBusinessError = new IdPhotoBusiness();
+        IdPhotoBusiness idPhotoBusinessStatus = new IdPhotoBusiness();
 
         IdPhotoBusinessServiceImpl idPhotoBusinessService = new IdPhotoBusinessServiceImpl();
         // 接口1：证件照环境监测
         ResultIdPhotoBusinessLicenses resultIdPhotoBusinessLicenses = idPhotoBusinessService.idPhotoBusinessLicenses(idPhotoBusiness.getBase64());
         String codeResultIdPhotoBusinessLicenses = resultIdPhotoBusinessLicenses.getCode();
         if(!"200".equals(codeResultIdPhotoBusinessLicenses)){
-            idPhotoBusinessError.setCode(Integer.valueOf(codeResultIdPhotoBusinessLicenses));
-            idPhotoBusinessError.setMessage(resultIdPhotoBusinessLicenses.getMsg());
-            return idPhotoBusinessError;
+            idPhotoBusinessStatus.setCode(Integer.valueOf(codeResultIdPhotoBusinessLicenses));
+            idPhotoBusinessStatus.setMessage(resultIdPhotoBusinessLicenses.getMsg());
+            return idPhotoBusinessStatus;
         }
         // 接口2：制作并检测证件照
         ResultIdPhotoMarkAndTest resultIdPhotoMarkAndTest = idPhotoBusinessService.idPhotoMarkAndTest(idPhotoBusiness.getBase64(), idPhotoBusiness.getSpecId());
         String codeResultIdPhotoMarkAndTest = resultIdPhotoMarkAndTest.getCode();
         if(!"200".equals(codeResultIdPhotoMarkAndTest)){
-            idPhotoBusinessError.setCode(Integer.valueOf(codeResultIdPhotoMarkAndTest));
-            idPhotoBusinessError.setMessage("制作并检测证件照失败");
-            return idPhotoBusinessError;
+            idPhotoBusinessStatus.setCode(Integer.valueOf(codeResultIdPhotoMarkAndTest));
+            idPhotoBusinessStatus.setMessage("制作并检测证件照失败");
+            return idPhotoBusinessStatus;
         }
         // 接口3:同时获取无水印单张和排版图片
-        idPhotoBusinessService.getIdPhotoNoWaterMarkAndTypeSettingUrl("fileName");
-        return idPhotoBusinessError;
+        String name = resultIdPhotoMarkAndTest.getResult().getCheck_result().getName();
+        String[] file_name = resultIdPhotoMarkAndTest.getResult().getFile_name();//无水印图片名字，包括多种可选颜色
+        String[] file_name_print = resultIdPhotoMarkAndTest.getResult().getFile_name_print();//无水印排版图片名字，包括多种可选颜色
+        ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl idPhotoNoWaterMarkAndTypeSettingUrl = idPhotoBusinessService.getIdPhotoNoWaterMarkAndTypeSettingUrl(file_name[0]);
+        String code = idPhotoNoWaterMarkAndTypeSettingUrl.getData().getCode();
+        if(!"200".equals(code)){
+            idPhotoBusinessStatus.setCode(Integer.valueOf(codeResultIdPhotoMarkAndTest));
+            idPhotoBusinessStatus.setMessage("制作并检测证件照失败");
+            return idPhotoBusinessStatus;
+        }
+        ResultGetIdPhotoNoWaterMarkAndTypeSettingUrlObject data = idPhotoNoWaterMarkAndTypeSettingUrl.getData();
+        String file_nameUrl = data.getFile_name();
+        String file_name_list = data.getFile_name_list();
+        idPhotoBusinessStatus.setCode(200);
+        idPhotoBusinessStatus.setMessage("成功");
+        idPhotoBusinessStatus.setSpecId(idPhotoBusiness.getSpecId());
+        idPhotoBusinessStatus.setPictureList(file_nameUrl);
+        return idPhotoBusinessStatus;
     }
 
     /**
@@ -81,24 +99,26 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
         IdPhotoMarkAndTest idPhotoMarkAndTest = new IdPhotoMarkAndTest();
         idPhotoMarkAndTest.setFile(base64Picture);
         idPhotoMarkAndTest.setSpec_id(specId);
-        JSONObject jsonObjectIdPhotoMarkAndTest = JSONObject.fromObject(idPhotoMarkAndTest);
-        JSONObject jsonObject = HttpTool.httpPost(IDPHOTOMAKEANDTESTURL, jsonObjectIdPhotoMarkAndTest, false);
-        //JSONObject转换成对象
-        Map<String, Class<ResultIdPhotoMarkAndTestObject>> map = new HashMap<String, Class<ResultIdPhotoMarkAndTestObject>>();
-        map.put("result", ResultIdPhotoMarkAndTestObject.class); // key为teacher私有变量的属性名
-        // 使用JSONObject.toBean(jsonObject, beanClass, classMap)
-        ResultIdPhotoMarkAndTest resultIdPhotoMarkAndTestNew = (ResultIdPhotoMarkAndTest) JSONObject.toBean(jsonObject, ResultIdPhotoMarkAndTest.class, map);
-        return resultIdPhotoMarkAndTestNew;
+        //Object转JSON字符串:
+        String idPhotoMarkAndTestJsonString = com.alibaba.fastjson.JSONObject.toJSONString(idPhotoMarkAndTest);
+        //JSON字符串转JSONObject:
+        com.alibaba.fastjson.JSONObject idPhotoMarkAndTestJsonObject = com.alibaba.fastjson.JSONObject.parseObject(idPhotoMarkAndTestJsonString);
+        //请求结果
+        String jsonStringResultIdPhotoMarkAndTest = HttpToolOther.httpPostReturnJsonString(IDPHOTOMAKEANDTESTURL, idPhotoMarkAndTestJsonObject, false);
+        ResultIdPhotoMarkAndTest resultIdPhotoMarkAndTest = new GsonBuilder().create().fromJson(jsonStringResultIdPhotoMarkAndTest, ResultIdPhotoMarkAndTest.class);
+        return resultIdPhotoMarkAndTest;
     }
     /**
      * 接口3:同时获取无水印单张和排版图片
      */
-    private JSONObject getIdPhotoNoWaterMarkAndTypeSettingUrl(String fileName){
+    private ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl getIdPhotoNoWaterMarkAndTypeSettingUrl(String fileName){
         GetIdPhotoNoWaterMarkAndTypeSettingUrl getIdPhotoNoWaterMarkAndTypeSettingUrl = new GetIdPhotoNoWaterMarkAndTypeSettingUrl();
         getIdPhotoNoWaterMarkAndTypeSettingUrl.setFile_name(fileName);
         JSONObject jsonObjectIdPhotoMarkAndTest = JSONObject.fromObject(getIdPhotoNoWaterMarkAndTypeSettingUrl);
         JSONObject jsonObject = HttpTool.httpPost(GETIDPHOTONOWATERMARKANDTYPESETTINGURL, jsonObjectIdPhotoMarkAndTest, false);
-        return jsonObject;
+        String jsonString = com.alibaba.fastjson.JSONObject.toJSONString(jsonObject);
+        ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl resultGetIdPhotoNoWaterMarkAndTypeSettingUrl = com.alibaba.fastjson.JSONObject.parseObject(jsonString, ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl.class);
+        return resultGetIdPhotoNoWaterMarkAndTypeSettingUrl;
     }
 
 

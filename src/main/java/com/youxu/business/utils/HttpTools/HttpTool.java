@@ -30,7 +30,7 @@ import java.net.URLDecoder;
 /*1.调用api请求通过code获得openid等信息*/
 @Component
 public class HttpTool {
-    private final static Logger logger = LoggerFactory.getLogger(BaseService.class);
+    private final static Logger logger = LoggerFactory.getLogger(HttpTool.class);
 
     @Autowired
     private RestTemplate restTemplate;

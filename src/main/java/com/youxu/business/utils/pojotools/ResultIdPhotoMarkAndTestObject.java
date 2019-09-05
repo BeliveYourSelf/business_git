@@ -1,9 +1,12 @@
 package com.youxu.business.utils.pojotools;
 
+import lombok.Data;
+
 /**
  * 返回对象：接口2：制作并检测证件照
  * 第二层内部类
  */
+@Data
 public class ResultIdPhotoMarkAndTestObject {
     private CheckResult check_result;
     private String[] file_name;//无水印图片名字，包括多种可选颜色

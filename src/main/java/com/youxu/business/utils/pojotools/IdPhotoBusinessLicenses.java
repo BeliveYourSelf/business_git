@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class IdPhotoBusinessLicenses {
 
-    String base64Picture;
+    String file;
     // 证件照环境监测app_key
     String app_key = "e235edf918da000631b2814cfbaaad036e7f77be";
 

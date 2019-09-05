@@ -103,12 +103,12 @@ public class BaseService {
      * 3个证件照地址
      */
     // 证件照环境监测
-    @Value("http://apicall.id-photo-verify.com/api/env_pic")
-    public String IDPHOTOBUSINESSLICENSEURL;
+//    @Value("http://apicall.id-photo-verify.com/api/env_pic")
+    public String IDPHOTOBUSINESSLICENSEURL = "http://apicall.id-photo-verify.com/api/env_pic";
     //制作并检测证件照
-    @Value("http://apicall.id-photo-verify.com/api/cut_check_pic")
-    public String IDPHOTOMAKEANDTESTURL;
+//    @Value("http://apicall.id-photo-verify.com/api/cut_check_pic")
+    public String IDPHOTOMAKEANDTESTURL = "http://apicall.id-photo-verify.com/api/cut_check_pic";
     //同时获取无水印单张和排版图片
-    @Value("http://apicall.id-photo-verify.com/api/take_cut_pic_v2")
-    public String GETIDPHOTONOWATERMARKANDTYPESETTINGURL;
+//    @Value("http://apicall.id-photo-verify.com/api/take_cut_pic_v2")
+    public String GETIDPHOTONOWATERMARKANDTYPESETTINGURL = "http://apicall.id-photo-verify.com/api/take_cut_pic_v2";
 }

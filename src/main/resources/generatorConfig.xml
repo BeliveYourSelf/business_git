@@ -37,9 +37,10 @@
 
         <!--生成对应表及类名-->
         <!--<table tableName="tb_id_photo_dictionary" domainObjectName="IdPhotoDictionary"/>-->
-        <table tableName="tb_order" domainObjectName="Order"/>
+        <!--<table tableName="tb_order" domainObjectName="Order"/>-->
         <!--<table tableName="tb_order_details" domainObjectName="OrderDetails"/>-->
         <!--<table tableName="tb_order_details_picture_mapping" domainObjectName="OrderDetailsPictureMapping"/>-->
         <!--<table tableName="tb_picture" domainObjectName="Picture"/>-->
+        <table tableName="tb_harvest_address" domainObjectName="Harvest"/>
     </context>
 </generatorConfiguration>

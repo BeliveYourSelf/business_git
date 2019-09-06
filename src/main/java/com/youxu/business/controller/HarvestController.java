@@ -49,5 +49,15 @@ public class HarvestController {
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功");
     }
 
+    @ApiOperation(value = "删除收获地址", notes = "{\"id\":\"1\"\n" +
+            ",\"harvestAddressStatus\":\"true\"}")
+    @PostMapping("/deleteHarvestAddress")
+    public ResponseMessage deleteHarvestAddress(@RequestBody Harvest harvest) {
+        Integer deleteHarvestAddress= harvestService.updateHarvestAddress(harvest);
+        if (deleteHarvestAddress<=0) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "删除失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功");
+    }
 
 }

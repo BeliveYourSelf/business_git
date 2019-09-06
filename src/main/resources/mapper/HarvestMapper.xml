@@ -321,5 +321,10 @@
     </set>
     where id = #{record.id} and harvest_address_status = false
   </update>
-
+  <!--查看一个收获地址-->
+  <select id="selectOneHarvestAddress" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tb_harvest_address
+    where id = #{id} and harvest_address_status = false
+  </select>
 </mapper>

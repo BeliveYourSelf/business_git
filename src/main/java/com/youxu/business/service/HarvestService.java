@@ -7,4 +7,6 @@ public interface HarvestService {
     Integer insertHarvestAddress(Harvest harvest);
 
     Integer updateHarvestAddress(Harvest harvest);
+
+    Harvest selectOneHarvestAddress(String id);
 }

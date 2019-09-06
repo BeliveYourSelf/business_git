@@ -8,6 +8,7 @@ import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -58,6 +59,16 @@ public class HarvestController {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "删除失败");
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功");
+    }
+
+    @ApiOperation(value = "查看一个收获地址", notes = "")
+    @GetMapping("/selectOneHarvestAddress")
+    public ResponseMessage<Harvest> selectOneHarvestAddress(@RequestParam String id) {
+        Harvest selectOneHarvestAddress= harvestService.selectOneHarvestAddress(id);
+        if (StringUtils.isEmpty(selectOneHarvestAddress)) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "暂无收获地址");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectOneHarvestAddress);
     }
 
 }

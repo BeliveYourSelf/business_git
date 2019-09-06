@@ -19,6 +19,6 @@ public class IdPhotoBusiness {
 
     private String message;//
 
-    private String pictureList;
+    private String pictureUrl;
 
 }

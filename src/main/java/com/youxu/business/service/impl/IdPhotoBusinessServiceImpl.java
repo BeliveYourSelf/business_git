@@ -1,6 +1,7 @@
 package com.youxu.business.service.impl;
 import com.google.gson.GsonBuilder;
 import com.youxu.business.utils.HttpTools.HttpToolOther;
+import com.youxu.business.utils.OtherUtil.ImageSizeTool;
 import com.youxu.business.utils.pojotools.*;
 import net.sf.json.JSONObject;
 import com.youxu.business.pojo.IdPhotoBusiness;
@@ -12,8 +13,6 @@ import com.youxu.business.utils.OtherUtil.FileToBase64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,13 +23,11 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
 
 
     @Override
-    public IdPhotoBusiness upLoadIdPhoto(IdPhotoBusiness idPhotoBusiness) throws Exception {
-        // 证件照上传：环境监测-制作并检测-取出图片
-        threeIntegrationOfIdPhotoBusiness(idPhotoBusiness);
-        // 添加订单-接口3的图片存入数据库订单库存表
-
-        return null;
+    public IdPhotoBusiness makeIdPhoto(IdPhotoBusiness idPhotoBusiness) throws Exception {
+        IdPhotoBusiness idPhotoBusinessNew = threeIntegrationOfIdPhotoBusiness(idPhotoBusiness);
+        return idPhotoBusinessNew;
     }
+
 
 
     /**
@@ -73,7 +70,7 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
         idPhotoBusinessStatus.setCode(200);
         idPhotoBusinessStatus.setMessage("成功");
         idPhotoBusinessStatus.setSpecId(idPhotoBusiness.getSpecId());
-        idPhotoBusinessStatus.setPictureList(file_nameUrl);
+        idPhotoBusinessStatus.setPictureUrl(file_nameUrl);
         return idPhotoBusinessStatus;
     }
 

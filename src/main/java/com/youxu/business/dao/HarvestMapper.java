@@ -25,4 +25,6 @@ public interface HarvestMapper {
     Integer updateHarvestAddress(@Param("record")Harvest record);
     // 查看一个收获地址
     Harvest selectOneHarvestAddress(@Param("id")Integer id);
+    // 查看收获地址集合
+    List<Harvest> selectHarvestAddressList(@Param("harvest") Harvest harvest);
 }

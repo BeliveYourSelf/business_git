@@ -71,4 +71,15 @@ public class HarvestController {
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectOneHarvestAddress);
     }
 
+    @ApiOperation(value = "查看收获地址列表", notes = "{\"userId\":\"2\"\n" +
+            ",\"distributionCategory\":\"1\"}   distributionCategory:配送类别：1.及时配送  2.快递配送")
+    @PostMapping("/selectHarvestAddressList")
+    public ResponseMessage<List<Harvest>> selectHarvestAddressList(@RequestBody Harvest harvest) {
+        List<Harvest> selectHarvestAddressList= harvestService.selectHarvestAddressList(harvest);
+        if (StringUtils.isEmpty(selectHarvestAddressList)) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "暂无收获地址");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectHarvestAddressList);
+    }
+
 }

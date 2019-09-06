@@ -6,6 +6,7 @@ import com.youxu.business.service.HarvestService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class HarvestServiceImpl implements HarvestService {
@@ -25,5 +26,10 @@ public class HarvestServiceImpl implements HarvestService {
     @Override
     public Harvest selectOneHarvestAddress(String id) {
         return harvestMapper.selectOneHarvestAddress(Integer.valueOf(id));
+    }
+
+    @Override
+    public List<Harvest> selectHarvestAddressList(Harvest harvest) {
+        return harvestMapper.selectHarvestAddressList(harvest);
     }
 }

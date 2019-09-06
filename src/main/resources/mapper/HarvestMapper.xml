@@ -254,9 +254,7 @@
       <if test="harvestAddressReceivingAddress != null">
         harvest_address_receiving_address,
       </if>
-      <if test="harvestAddressDefaultAddress != null">
         harvest_address_default_address,
-      </if>
       <if test="distributionCategory != null">
         distribution_category,
       </if>
@@ -281,9 +279,7 @@
       <if test="harvestAddressReceivingAddress != null">
         #{harvestAddressReceivingAddress,jdbcType=VARCHAR},
       </if>
-      <if test="harvestAddressDefaultAddress != null">
-        #{harvestAddressDefaultAddress,jdbcType=BIT},
-      </if>
+        "",
       <if test="distributionCategory != null">
         #{distributionCategory,jdbcType=INTEGER},
       </if>
@@ -326,5 +322,11 @@
     select <include refid="Base_Column_List"/>
     from tb_harvest_address
     where id = #{id} and harvest_address_status = false
+  </select>
+  <!--查看收获地址集合-->
+  <select id="selectHarvestAddressList" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tb_harvest_address
+    where user_id = #{harvest.userId} and distribution_category = #{harvest.distributionCategory} and harvest_address_status = false
   </select>
 </mapper>

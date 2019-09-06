@@ -5,4 +5,6 @@ import com.youxu.business.pojo.Harvest;
 public interface HarvestService {
 
     Integer insertHarvestAddress(Harvest harvest);
+
+    Integer updateHarvestAddress(Harvest harvest);
 }

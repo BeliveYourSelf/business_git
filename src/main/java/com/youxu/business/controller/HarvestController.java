@@ -34,4 +34,20 @@ public class HarvestController {
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功");
     }
 
+    @ApiOperation(value = "编辑收获地址", notes = "{\"id\":\"1\",\n" +
+            "\"userId\":\"2\",\n" +
+            "\"harvestAddressName\":\"陈凯\",\n" +
+            "\"harvestAddressMobilePhone\":\"13685214125\"\n" +
+            ",\"harvestAddressReceivingAddress\":\"天津市中北镇\",\n" +
+            "\"distributionCategory\":\"2\"}}   distributionCategory:配送类别：1.及时配送  2.快递配送")
+    @PostMapping("/updateHarvestAddress")
+    public ResponseMessage updateHarvestAddress(@RequestBody Harvest harvest) {
+        Integer updateHarvestAddress= harvestService.updateHarvestAddress(harvest);
+        if (updateHarvestAddress<=0) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "编辑失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功");
+    }
+
+
 }

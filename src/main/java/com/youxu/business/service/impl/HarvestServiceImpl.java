@@ -16,4 +16,9 @@ public class HarvestServiceImpl implements HarvestService {
     public Integer insertHarvestAddress(Harvest harvest) {
         return harvestMapper.insertHarvestAddress(harvest);
     }
+
+    @Override
+    public Integer updateHarvestAddress(Harvest harvest) {
+        return harvestMapper.updateHarvestAddress(harvest);
+    }
 }

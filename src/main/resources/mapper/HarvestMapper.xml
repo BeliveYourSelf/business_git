@@ -292,6 +292,34 @@
         0,
     </trim>
   </insert>
-<!--编辑地址-->
+<!--编辑收获地址-->
+  <update id="updateHarvestAddress">
+    update tb_harvest_address
+    <set>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.harvestAddressName != null">
+        harvest_address_name = #{record.harvestAddressName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.harvestAddressMobilePhone != null">
+        harvest_address_mobile_phone = #{record.harvestAddressMobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.harvestAddressReceivingAddress != null">
+        harvest_address_receiving_address = #{record.harvestAddressReceivingAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.harvestAddressDefaultAddress != null">
+        harvest_address_default_address = #{record.harvestAddressDefaultAddress,jdbcType=BIT},
+      </if>
+      <if test="record.harvestAddressStatus != null">
+        harvest_address_status = #{record.harvestAddressStatus,jdbcType=BIT},
+      </if>
+      <if test="record.distributionCategory != null">
+        distribution_category = #{record.distributionCategory,jdbcType=INTEGER},
+      </if>
+      harvest_address_modify_time = now(),
+    </set>
+    where id = #{record.id} and harvest_address_status = false
+  </update>
 
 </mapper>

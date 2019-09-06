@@ -24,7 +24,6 @@ public class BillingRuleController {
     @ApiOperation(value = "查看计费规则", notes = "")
     @GetMapping("/selectBillingRuleController")
     public ResponseMessage<BillingRule> selectBillingRuleController() {
-
         BillingRule billingRule =billingRuleService.selectBillingRule();
         if (StringUtils.isEmpty(billingRule)) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "暂无计费规则");

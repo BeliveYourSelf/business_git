@@ -41,6 +41,7 @@
         <!--<table tableName="tb_order_details" domainObjectName="OrderDetails"/>-->
         <!--<table tableName="tb_order_details_picture_mapping" domainObjectName="OrderDetailsPictureMapping"/>-->
         <!--<table tableName="tb_picture" domainObjectName="Picture"/>-->
-        <table tableName="tb_harvest_address" domainObjectName="Harvest"/>
+        <!--<table tableName="tb_harvest_address" domainObjectName="Harvest"/>-->
+        <table tableName="tb_billing_rule" domainObjectName="BillingRule"/>
     </context>
 </generatorConfiguration>

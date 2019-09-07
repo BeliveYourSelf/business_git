@@ -468,4 +468,10 @@
   <select id="lastInsertId" resultType="java.lang.Integer">
     SELECT LAST_INSERT_ID();
   </select>
+  <!--催单/确认收件-->
+  <update id="reminderOrder">
+    update tb_order
+    set  order_type = #{orderType}
+    where id = #{id}
+  </update>
 </mapper>

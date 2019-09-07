@@ -23,4 +23,6 @@ public interface OrderMapper {
     Integer insertOrder(Order order);
     // 返回最新插入orderId
     int lastInsertId();
+    // 催单/确认收件
+    Integer reminderOrder(@Param("id") Integer id,@Param("orderType") Integer orderType);
 }

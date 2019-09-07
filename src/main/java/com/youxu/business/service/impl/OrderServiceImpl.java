@@ -31,4 +31,12 @@ public class OrderServiceImpl implements OrderService {
         }
         return insertOrder;
     }
+
+    @Override
+    public Integer reminderOrder(Order order) {
+        Integer id = order.getId();
+        Integer orderType = order.getOrderType();
+        Integer reminderOrder = orderMapper.reminderOrder(id,orderType);
+        return reminderOrder;
+    }
 }

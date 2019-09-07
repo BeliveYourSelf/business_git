@@ -4,7 +4,7 @@ import lombok.Data;
 
 import java.util.Date;
 @Data
-public class Harvest {
+public class Harvest extends PageInfo{
     private Integer id;
 
     private Integer userId;

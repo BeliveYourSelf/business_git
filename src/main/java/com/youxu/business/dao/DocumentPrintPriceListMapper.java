@@ -19,4 +19,6 @@ public interface DocumentPrintPriceListMapper {
     int updateByExampleSelective(@Param("record") DocumentPrintPriceList record, @Param("example") DocumentPrintPriceListExample example);
 
     int updateByExample(@Param("record") DocumentPrintPriceList record, @Param("example") DocumentPrintPriceListExample example);
+    //获得文档打印规格所对应的价格
+    DocumentPrintPriceList selectDocumentPrintPriceList(String documentPrintPriceListCode);
 }

@@ -1,7 +1,9 @@
 package com.youxu.business.pojo;
 
-import java.util.Date;
+import lombok.Data;
 
+import java.util.Date;
+@Data
 public class DocumentPrintPriceList {
     private Integer id;
 
@@ -15,51 +17,9 @@ public class DocumentPrintPriceList {
 
     private Boolean documentPrintPriceListStatus;
 
-    public Integer getId() {
-        return id;
-    }
+    // 新增
+    private Integer count;// 文档打印份数
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    private Integer pageNumber;// 文档页数
 
-    public String getDocumentPrintPriceListCode() {
-        return documentPrintPriceListCode;
-    }
-
-    public void setDocumentPrintPriceListCode(String documentPrintPriceListCode) {
-        this.documentPrintPriceListCode = documentPrintPriceListCode == null ? null : documentPrintPriceListCode.trim();
-    }
-
-    public Double getDocumentPrintPriceListPrice() {
-        return documentPrintPriceListPrice;
-    }
-
-    public void setDocumentPrintPriceListPrice(Double documentPrintPriceListPrice) {
-        this.documentPrintPriceListPrice = documentPrintPriceListPrice;
-    }
-
-    public Date getDocumentPrintPriceListCreateTime() {
-        return documentPrintPriceListCreateTime;
-    }
-
-    public void setDocumentPrintPriceListCreateTime(Date documentPrintPriceListCreateTime) {
-        this.documentPrintPriceListCreateTime = documentPrintPriceListCreateTime;
-    }
-
-    public Date getDocumentPrintPriceListModifyTime() {
-        return documentPrintPriceListModifyTime;
-    }
-
-    public void setDocumentPrintPriceListModifyTime(Date documentPrintPriceListModifyTime) {
-        this.documentPrintPriceListModifyTime = documentPrintPriceListModifyTime;
-    }
-
-    public Boolean getDocumentPrintPriceListStatus() {
-        return documentPrintPriceListStatus;
-    }
-
-    public void setDocumentPrintPriceListStatus(Boolean documentPrintPriceListStatus) {
-        this.documentPrintPriceListStatus = documentPrintPriceListStatus;
-    }
 }

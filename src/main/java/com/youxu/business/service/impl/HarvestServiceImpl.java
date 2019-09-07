@@ -1,5 +1,6 @@
 package com.youxu.business.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.youxu.business.dao.HarvestMapper;
 import com.youxu.business.pojo.Harvest;
 import com.youxu.business.service.HarvestService;
@@ -30,6 +31,8 @@ public class HarvestServiceImpl implements HarvestService {
 
     @Override
     public List<Harvest> selectHarvestAddressList(Harvest harvest) {
+        //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
+        PageHelper.startPage(harvest.getPageNo(), harvest.getPageSize());
         return harvestMapper.selectHarvestAddressList(harvest);
     }
 }

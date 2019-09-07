@@ -21,13 +21,15 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Integer insertOrder(Order order) {
         Integer insertOrder = orderMapper.insertOrder(order);
-        int orderId = orderMapper.lastInsertId();
         if(!StringUtils.isEmpty(order)){
+            int orderId = orderMapper.lastInsertId();
             List<OrderDetails> orderDetailsList = order.getOrderDetailsList();
             for(OrderDetails orderDetails:orderDetailsList){
                 orderDetails.setOrderId(orderId);
             }
+            if(orderDetailsList.size()>0){
             Integer insertOrderDetails = orderDetailsMapper.insertOrderDetails(orderDetailsList);
+            }
         }
         return insertOrder;
     }
@@ -56,5 +58,11 @@ public class OrderServiceImpl implements OrderService {
         List<OrderDetails> orderDetailsList = order.getOrderDetailsList();
         Integer insertOrderDetails = orderDetailsMapper.insertOrderDetails(orderDetailsList);
         return updateOrder;
+    }
+
+    @Override
+    public Order insertOrderAgain(String id) {
+        Order order = orderMapper.selectOrderById(id);
+        return order;
     }
 }

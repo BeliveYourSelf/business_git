@@ -53,13 +53,13 @@ public class OrderController {
         if (insertOrder.equals(0)) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "新增失败");
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功");
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
     }
 
     /**
      * 催单/确认收件
      */
-    @ApiOperation(value = "催单/确认收件",notes = "{\"id\":\"1\"\n" +
+    @ApiOperation(value = "催单/确认收件", notes = "{\"id\":\"1\"\n" +
             ",\"orderType\":\"2\"}")
     @PostMapping("/reminderOrder")
     public ResponseMessage<Integer> reminderOrder(@RequestBody Order order) {
@@ -67,26 +67,26 @@ public class OrderController {
         if (reminderOrder <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功");
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
     }
 
     /**
      * 取消订单
      */
-    @ApiOperation(value = "取消订单",notes = "{\"id\":\"1\"}")
+    @ApiOperation(value = "取消订单", notes = "{\"id\":\"1\"}")
     @GetMapping("/cancleOrder")
     public ResponseMessage<Integer> cancelOrder(@RequestParam String id) {
         Integer cancelOrder = orderService.cancelOrder(id);
         if (cancelOrder <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功");
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
     }
 
     /**
      * 更新订单
      */
-    @ApiOperation(value = "更新订单",notes = "{\"id\":\"1\",\n" +
+    @ApiOperation(value = "更新订单", notes = "{\"id\":\"1\",\n" +
             "  \"orderActualMoney\": \"100\",\n" +
             "  \"orderAddresseeAddress\": \"天津市立晟科技\",\n" +
             "  \"orderAddresseeName\": \"李文轩1\",\n" +
@@ -121,6 +121,18 @@ public class OrderController {
         if (updateOrder <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功");
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
     }
+
+    @ApiOperation(value = "重新下单/再次下单", notes = "id 订单id")
+    @GetMapping("/insertOrderAgain")
+    public ResponseMessage<Integer> insertOrderAgain(@RequestParam String id) {
+        Order insertOrderAgain = orderService.insertOrderAgain(id);
+        Integer insertOrder = orderService.insertOrder(insertOrderAgain);
+        if (insertOrder <= 0) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
+    }
+
 }

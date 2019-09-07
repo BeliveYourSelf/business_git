@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.youxu.business.dao.OrderMapper">
   <resultMap id="BaseResultMap" type="com.youxu.business.pojo.Order">
-    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="tb_orderid" jdbcType="INTEGER" property="id" />
     <result column="store_id" jdbcType="INTEGER" property="storeId" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="order_addressee_name" jdbcType="VARCHAR" property="orderAddresseeName" />
@@ -22,6 +22,18 @@
     <result column="order_modify_time" jdbcType="TIMESTAMP" property="orderModifyTime" />
     <result column="order_status" jdbcType="BIT" property="orderStatus" />
     <result column="order_process" jdbcType="INTEGER" property="orderProcess" />
+    <collection property="orderDetailsList" ofType="com.youxu.business.pojo.OrderDetails">
+      <result column="tb_order_detailsid" jdbcType="INTEGER" property="id" />
+      <result column="order_id" jdbcType="INTEGER" property="orderId" />
+      <result column="order_details_name" jdbcType="VARCHAR" property="orderDetailsName" />
+      <result column="order_details_count" jdbcType="INTEGER" property="orderDetailsCount" />
+      <result column="order_details_one_picture_url" jdbcType="VARCHAR" property="orderDetailsOnePictureUrl" />
+      <result column="order_details_typesetting_picture_url" jdbcType="VARCHAR" property="orderDetailsTypesettingPictureUrl" />
+      <result column="order_details_total_price" jdbcType="DOUBLE" property="orderDetailsTotalPrice" />
+      <result column="order_details_create_time" jdbcType="TIMESTAMP" property="orderDetailsCreateTime" />
+      <result column="order_details_modify_time" jdbcType="TIMESTAMP" property="orderDetailsModifyTime" />
+      <result column="order_details_status" jdbcType="BIT" property="orderDetailsStatus" />
+    </collection>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -82,11 +94,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, store_id, user_id, order_addressee_name, order_addressee_phone, order_addressee_address, 
+    tb_order.id as tb_orderid, store_id, user_id, order_addressee_name, order_addressee_phone, order_addressee_address,
     order_from_store_get, order_from_store_get_where, order_delivery_prescriptio_time, 
     order_print_money, order_delivery_money, order_coupon_money, order_actual_money, 
     order_consume_money, order_extra_money, order_type, order_create_time, order_modify_time, 
     order_status, order_process
+  </sql>
+  <sql id="Base_Column_List_tb_order_details">
+    tb_order_details.id as tb_order_detailsid, order_id, order_details_name, order_details_count, order_details_one_picture_url,
+    order_details_typesetting_picture_url, order_details_total_price, order_details_create_time,
+    order_details_modify_time, order_details_status
   </sql>
   <select id="selectByExample" parameterType="com.youxu.business.pojo.OrderExample" resultMap="BaseResultMap">
     select
@@ -535,5 +552,14 @@
     </set>
       where id = #{record.id}
   </update>
+<!--查看订单-->
+  <select id="selectOrderById" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>,<include refid="Base_Column_List_tb_order_details"/>
+    from tb_order
+    left join tb_order_details
+    on tb_order.id = tb_order_details.order_id
+    where tb_order.id = #{id} and order_status = false
+  </select>
+
 
 </mapper>

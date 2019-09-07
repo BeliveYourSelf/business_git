@@ -250,7 +250,8 @@
         order_details_status,
     </trim>
     VALUES
-    <foreach collection="orderDetailslist" index="index" open="(" close=")" separator="," item="orderDetails">
+    <foreach collection="orderDetailslist" index="index" separator="," item="orderDetails">
+      (
       #{orderDetails.orderId,jdbcType=INTEGER},
       #{orderDetails.orderDetailsName,jdbcType=VARCHAR},
       #{orderDetails.orderDetailsCount,jdbcType=INTEGER},
@@ -260,6 +261,7 @@
       now(),
       now(),
       false
+      )
     </foreach>
   </insert>
   <update id="deleteOrderDetailsList">

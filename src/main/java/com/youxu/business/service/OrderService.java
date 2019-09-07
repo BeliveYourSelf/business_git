@@ -10,4 +10,6 @@ public interface OrderService {
     Integer cancelOrder(String id);
 
     Integer updateOrder(Order order);
+
+    Order insertOrderAgain(String id);
 }

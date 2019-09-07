@@ -29,5 +29,7 @@ public interface OrderMapper {
     Integer cancelOrder(String id);
     // 更新订单
     Integer updateOrder(@Param("record") Order record);
+    // 查看订单
+    Order selectOrderById(String id);
     //
 }

@@ -26,8 +26,6 @@ public class DocumentPrintPriceListController {
     private DocumentPrintPriceListService documentPrintPriceListService;
 
     /**
-     *
-     *
      * @param documentPrintPriceList
      * @return
      */

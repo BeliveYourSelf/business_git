@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youxu.business.dao.OrderEvaluateMapper">
+  <resultMap id="BaseResultMap" type="com.youxu.business.pojo.OrderEvaluate">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_evaluate_star" jdbcType="INTEGER" property="orderEvaluateStar" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="order_comment" jdbcType="VARCHAR" property="orderComment" />
+    <result column="order_evaluate_create_time" jdbcType="TIMESTAMP" property="orderEvaluateCreateTime" />
+    <result column="order_evaluate_modify_time" jdbcType="TIMESTAMP" property="orderEvaluateModifyTime" />
+    <result column="order_evaluate_status" jdbcType="BIT" property="orderEvaluateStatus" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, order_evaluate_star, order_id, order_comment, order_evaluate_create_time, order_evaluate_modify_time, 
+    order_evaluate_status
+  </sql>
+  <select id="selectByExample" parameterType="com.youxu.business.pojo.OrderEvaluateExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_order_evaluate
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.youxu.business.pojo.OrderEvaluateExample">
+    delete from tb_order_evaluate
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.youxu.business.pojo.OrderEvaluate">
+    insert into tb_order_evaluate (id, order_evaluate_star, order_id, 
+      order_comment, order_evaluate_create_time, 
+      order_evaluate_modify_time, order_evaluate_status
+      )
+    values (#{id,jdbcType=INTEGER}, #{orderEvaluateStar,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, 
+      #{orderComment,jdbcType=VARCHAR}, #{orderEvaluateCreateTime,jdbcType=TIMESTAMP}, 
+      #{orderEvaluateModifyTime,jdbcType=TIMESTAMP}, #{orderEvaluateStatus,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.youxu.business.pojo.OrderEvaluate">
+    insert into tb_order_evaluate
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderEvaluateStar != null">
+        order_evaluate_star,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="orderComment != null">
+        order_comment,
+      </if>
+      <if test="orderEvaluateCreateTime != null">
+        order_evaluate_create_time,
+      </if>
+      <if test="orderEvaluateModifyTime != null">
+        order_evaluate_modify_time,
+      </if>
+      <if test="orderEvaluateStatus != null">
+        order_evaluate_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderEvaluateStar != null">
+        #{orderEvaluateStar,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="orderComment != null">
+        #{orderComment,jdbcType=VARCHAR},
+      </if>
+      <if test="orderEvaluateCreateTime != null">
+        #{orderEvaluateCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderEvaluateModifyTime != null">
+        #{orderEvaluateModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderEvaluateStatus != null">
+        #{orderEvaluateStatus,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.youxu.business.pojo.OrderEvaluateExample" resultType="java.lang.Long">
+    select count(*) from tb_order_evaluate
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_order_evaluate
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderEvaluateStar != null">
+        order_evaluate_star = #{record.orderEvaluateStar,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderId != null">
+        order_id = #{record.orderId,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderComment != null">
+        order_comment = #{record.orderComment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderEvaluateCreateTime != null">
+        order_evaluate_create_time = #{record.orderEvaluateCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.orderEvaluateModifyTime != null">
+        order_evaluate_modify_time = #{record.orderEvaluateModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.orderEvaluateStatus != null">
+        order_evaluate_status = #{record.orderEvaluateStatus,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_order_evaluate
+    set id = #{record.id,jdbcType=INTEGER},
+      order_evaluate_star = #{record.orderEvaluateStar,jdbcType=INTEGER},
+      order_id = #{record.orderId,jdbcType=INTEGER},
+      order_comment = #{record.orderComment,jdbcType=VARCHAR},
+      order_evaluate_create_time = #{record.orderEvaluateCreateTime,jdbcType=TIMESTAMP},
+      order_evaluate_modify_time = #{record.orderEvaluateModifyTime,jdbcType=TIMESTAMP},
+      order_evaluate_status = #{record.orderEvaluateStatus,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <!--新增订单评价-->
+  <insert id="insertOrderEvaluate">
+    insert into tb_order_evaluate
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderEvaluateStar != null">
+        order_evaluate_star,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="orderComment != null">
+        order_comment,
+      </if>
+        order_evaluate_create_time,
+        order_evaluate_modify_time,
+        order_evaluate_status,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderEvaluateStar != null">
+        #{orderEvaluateStar,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="orderComment != null">
+        #{orderComment,jdbcType=VARCHAR},
+      </if>
+        now(),
+        now(),
+        false,
+    </trim>
+  </insert>
+
+</mapper>

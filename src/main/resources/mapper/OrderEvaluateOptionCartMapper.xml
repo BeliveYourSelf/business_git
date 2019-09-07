@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youxu.business.dao.OrderEvaluateOptionCartMapper">
+  <resultMap id="BaseResultMap" type="com.youxu.business.pojo.OrderEvaluateOptionCart">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_evaluate_option_cart_name" jdbcType="VARCHAR" property="orderEvaluateOptionCartName" />
+    <result column="order_evaluate_option_cart_create_time" jdbcType="TIMESTAMP" property="orderEvaluateOptionCartCreateTime" />
+    <result column="order_evaluate_option_cart_modify_time" jdbcType="TIMESTAMP" property="orderEvaluateOptionCartModifyTime" />
+    <result column="order_evaluate_option_cart_status" jdbcType="INTEGER" property="orderEvaluateOptionCartStatus" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, order_evaluate_option_cart_name, order_evaluate_option_cart_create_time, order_evaluate_option_cart_modify_time, 
+    order_evaluate_option_cart_status
+  </sql>
+  <select id="selectByExample" parameterType="com.youxu.business.pojo.OrderEvaluateOptionCartExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_order_evaluate_option_cart
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.youxu.business.pojo.OrderEvaluateOptionCartExample">
+    delete from tb_order_evaluate_option_cart
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.youxu.business.pojo.OrderEvaluateOptionCart">
+    insert into tb_order_evaluate_option_cart (id, order_evaluate_option_cart_name, 
+      order_evaluate_option_cart_create_time, order_evaluate_option_cart_modify_time, 
+      order_evaluate_option_cart_status)
+    values (#{id,jdbcType=INTEGER}, #{orderEvaluateOptionCartName,jdbcType=VARCHAR}, 
+      #{orderEvaluateOptionCartCreateTime,jdbcType=TIMESTAMP}, #{orderEvaluateOptionCartModifyTime,jdbcType=TIMESTAMP}, 
+      #{orderEvaluateOptionCartStatus,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.youxu.business.pojo.OrderEvaluateOptionCart">
+    insert into tb_order_evaluate_option_cart
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderEvaluateOptionCartName != null">
+        order_evaluate_option_cart_name,
+      </if>
+      <if test="orderEvaluateOptionCartCreateTime != null">
+        order_evaluate_option_cart_create_time,
+      </if>
+      <if test="orderEvaluateOptionCartModifyTime != null">
+        order_evaluate_option_cart_modify_time,
+      </if>
+      <if test="orderEvaluateOptionCartStatus != null">
+        order_evaluate_option_cart_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderEvaluateOptionCartName != null">
+        #{orderEvaluateOptionCartName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderEvaluateOptionCartCreateTime != null">
+        #{orderEvaluateOptionCartCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderEvaluateOptionCartModifyTime != null">
+        #{orderEvaluateOptionCartModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderEvaluateOptionCartStatus != null">
+        #{orderEvaluateOptionCartStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.youxu.business.pojo.OrderEvaluateOptionCartExample" resultType="java.lang.Long">
+    select count(*) from tb_order_evaluate_option_cart
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_order_evaluate_option_cart
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderEvaluateOptionCartName != null">
+        order_evaluate_option_cart_name = #{record.orderEvaluateOptionCartName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderEvaluateOptionCartCreateTime != null">
+        order_evaluate_option_cart_create_time = #{record.orderEvaluateOptionCartCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.orderEvaluateOptionCartModifyTime != null">
+        order_evaluate_option_cart_modify_time = #{record.orderEvaluateOptionCartModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.orderEvaluateOptionCartStatus != null">
+        order_evaluate_option_cart_status = #{record.orderEvaluateOptionCartStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_order_evaluate_option_cart
+    set id = #{record.id,jdbcType=INTEGER},
+      order_evaluate_option_cart_name = #{record.orderEvaluateOptionCartName,jdbcType=VARCHAR},
+      order_evaluate_option_cart_create_time = #{record.orderEvaluateOptionCartCreateTime,jdbcType=TIMESTAMP},
+      order_evaluate_option_cart_modify_time = #{record.orderEvaluateOptionCartModifyTime,jdbcType=TIMESTAMP},
+      order_evaluate_option_cart_status = #{record.orderEvaluateOptionCartStatus,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

@@ -18,6 +18,8 @@ public class DocumentPrintPriceList {
     private Boolean documentPrintPriceListStatus;
 
     // 新增
-    private Integer count;//文档打印份数
+    private Integer count;// 文档打印份数
+
+    private Integer pageNumber;// 文档页数
 
 }

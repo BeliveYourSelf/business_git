@@ -3,7 +3,9 @@ package com.youxu.business.utils.OtherUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
+import org.bouncycastle.util.encoders.Base64;
 import org.springframework.web.multipart.MultipartFile;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
@@ -81,5 +83,35 @@ public class FileToBase64 {
         BASE64Encoder base64Encoder =new BASE64Encoder();
         String base64EncoderImg = file.getOriginalFilename()+","+ base64Encoder.encode(file.getBytes());
         return base64EncoderImg;
+    }
+
+    /**
+     * base64转file
+     * @param base64
+     * @return
+     */
+    public static File base64ToFile(String base64) {
+        if(base64==null||"".equals(base64)) {
+            return null;
+        }
+        byte[] buff= Base64.decode(base64);
+        File file=null;
+        FileOutputStream fout=null;
+        try {
+            file = File.createTempFile("tmp", null);
+            fout=new FileOutputStream(file);
+            fout.write(buff);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if(fout!=null) {
+                try {
+                    fout.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return file;
     }
 }

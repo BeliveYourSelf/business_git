@@ -3,6 +3,8 @@
 <mapper namespace="com.youxu.business.dao.OrderMapper">
   <resultMap id="BaseResultMap" type="com.youxu.business.pojo.Order">
     <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="store_id" jdbcType="INTEGER" property="storeId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="order_addressee_name" jdbcType="VARCHAR" property="orderAddresseeName" />
     <result column="order_addressee_phone" jdbcType="VARCHAR" property="orderAddresseePhone" />
     <result column="order_addressee_address" jdbcType="VARCHAR" property="orderAddresseeAddress" />
@@ -19,6 +21,7 @@
     <result column="order_create_time" jdbcType="TIMESTAMP" property="orderCreateTime" />
     <result column="order_modify_time" jdbcType="TIMESTAMP" property="orderModifyTime" />
     <result column="order_status" jdbcType="BIT" property="orderStatus" />
+    <result column="order_process" jdbcType="INTEGER" property="orderProcess" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -79,10 +82,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, order_addressee_name, order_addressee_phone, order_addressee_address, order_from_store_get, 
-    order_from_store_get_where, order_delivery_prescriptio_time, order_print_money, order_delivery_money, 
-    order_coupon_money, order_actual_money, order_consume_money, order_extra_money, order_type, 
-    order_create_time, order_modify_time, order_status
+    id, store_id, user_id, order_addressee_name, order_addressee_phone, order_addressee_address, 
+    order_from_store_get, order_from_store_get_where, order_delivery_prescriptio_time, 
+    order_print_money, order_delivery_money, order_coupon_money, order_actual_money, 
+    order_consume_money, order_extra_money, order_type, order_create_time, order_modify_time, 
+    order_status, order_process
   </sql>
   <select id="selectByExample" parameterType="com.youxu.business.pojo.OrderExample" resultMap="BaseResultMap">
     select
@@ -105,26 +109,34 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.youxu.business.pojo.Order">
-    insert into tb_order (id, order_addressee_name, order_addressee_phone, 
+    insert into tb_order (id, store_id, user_id, 
+      order_addressee_name, order_addressee_phone, 
       order_addressee_address, order_from_store_get, 
       order_from_store_get_where, order_delivery_prescriptio_time, 
       order_print_money, order_delivery_money, order_coupon_money, 
       order_actual_money, order_consume_money, order_extra_money, 
       order_type, order_create_time, order_modify_time, 
-      order_status)
-    values (#{id,jdbcType=INTEGER}, #{orderAddresseeName,jdbcType=VARCHAR}, #{orderAddresseePhone,jdbcType=VARCHAR}, 
+      order_status, order_process)
+    values (#{id,jdbcType=INTEGER}, #{storeId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{orderAddresseeName,jdbcType=VARCHAR}, #{orderAddresseePhone,jdbcType=VARCHAR}, 
       #{orderAddresseeAddress,jdbcType=VARCHAR}, #{orderFromStoreGet,jdbcType=VARCHAR}, 
       #{orderFromStoreGetWhere,jdbcType=VARCHAR}, #{orderDeliveryPrescriptioTime,jdbcType=VARCHAR}, 
       #{orderPrintMoney,jdbcType=VARCHAR}, #{orderDeliveryMoney,jdbcType=VARCHAR}, #{orderCouponMoney,jdbcType=DOUBLE}, 
       #{orderActualMoney,jdbcType=VARCHAR}, #{orderConsumeMoney,jdbcType=DOUBLE}, #{orderExtraMoney,jdbcType=DOUBLE}, 
       #{orderType,jdbcType=INTEGER}, #{orderCreateTime,jdbcType=TIMESTAMP}, #{orderModifyTime,jdbcType=TIMESTAMP}, 
-      #{orderStatus,jdbcType=BIT})
+      #{orderStatus,jdbcType=BIT}, #{orderProcess,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.youxu.business.pojo.Order">
     insert into tb_order
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
+      </if>
+      <if test="storeId != null">
+        store_id,
+      </if>
+      <if test="userId != null">
+        user_id,
       </if>
       <if test="orderAddresseeName != null">
         order_addressee_name,
@@ -174,10 +186,19 @@
       <if test="orderStatus != null">
         order_status,
       </if>
+      <if test="orderProcess != null">
+        order_process,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null">
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
       </if>
       <if test="orderAddresseeName != null">
         #{orderAddresseeName,jdbcType=VARCHAR},
@@ -227,9 +248,13 @@
       <if test="orderStatus != null">
         #{orderStatus,jdbcType=BIT},
       </if>
+      <if test="orderProcess != null">
+        #{orderProcess,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.youxu.business.pojo.OrderExample" resultType="java.lang.Long">
+
+    <select id="countByExample" parameterType="com.youxu.business.pojo.OrderExample" resultType="java.lang.Long">
     select count(*) from tb_order
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -240,6 +265,12 @@
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
       </if>
       <if test="record.orderAddresseeName != null">
         order_addressee_name = #{record.orderAddresseeName,jdbcType=VARCHAR},
@@ -289,6 +320,9 @@
       <if test="record.orderStatus != null">
         order_status = #{record.orderStatus,jdbcType=BIT},
       </if>
+      <if test="record.orderProcess != null">
+        order_process = #{record.orderProcess,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -297,6 +331,8 @@
   <update id="updateByExample" parameterType="map">
     update tb_order
     set id = #{record.id,jdbcType=INTEGER},
+      store_id = #{record.storeId,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
       order_addressee_name = #{record.orderAddresseeName,jdbcType=VARCHAR},
       order_addressee_phone = #{record.orderAddresseePhone,jdbcType=VARCHAR},
       order_addressee_address = #{record.orderAddresseeAddress,jdbcType=VARCHAR},
@@ -312,9 +348,124 @@
       order_type = #{record.orderType,jdbcType=INTEGER},
       order_create_time = #{record.orderCreateTime,jdbcType=TIMESTAMP},
       order_modify_time = #{record.orderModifyTime,jdbcType=TIMESTAMP},
-      order_status = #{record.orderStatus,jdbcType=BIT}
+      order_status = #{record.orderStatus,jdbcType=BIT},
+      order_process = #{record.orderProcess,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+  <!--新增订单-->
+  <insert id="insertOrder">
+    insert into tb_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="storeId != null">
+        store_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="orderAddresseeName != null">
+        order_addressee_name,
+      </if>
+      <if test="orderAddresseePhone != null">
+        order_addressee_phone,
+      </if>
+      <if test="orderAddresseeAddress != null">
+        order_addressee_address,
+      </if>
+      <if test="orderFromStoreGet != null">
+        order_from_store_get,
+      </if>
+      <if test="orderFromStoreGetWhere != null">
+        order_from_store_get_where,
+      </if>
+      <if test="orderDeliveryPrescriptioTime != null">
+        order_delivery_prescriptio_time,
+      </if>
+      <if test="orderPrintMoney != null">
+        order_print_money,
+      </if>
+      <if test="orderDeliveryMoney != null">
+        order_delivery_money,
+      </if>
+      <if test="orderCouponMoney != null">
+        order_coupon_money,
+      </if>
+      <if test="orderActualMoney != null">
+        order_actual_money,
+      </if>
+      <if test="orderConsumeMoney != null">
+        order_consume_money,
+      </if>
+      <if test="orderExtraMoney != null">
+        order_extra_money,
+      </if>
+      <if test="orderType != null">
+        order_type,
+      </if>
+        order_create_time,
+        order_modify_time,
+        order_status,
+      <if test="orderProcess != null">
+        order_process,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="storeId != null">
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="orderAddresseeName != null">
+        #{orderAddresseeName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderAddresseePhone != null">
+        #{orderAddresseePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="orderAddresseeAddress != null">
+        #{orderAddresseeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="orderFromStoreGet != null">
+        #{orderFromStoreGet,jdbcType=VARCHAR},
+      </if>
+      <if test="orderFromStoreGetWhere != null">
+        #{orderFromStoreGetWhere,jdbcType=VARCHAR},
+      </if>
+      <if test="orderDeliveryPrescriptioTime != null">
+        #{orderDeliveryPrescriptioTime,jdbcType=VARCHAR},
+      </if>
+      <if test="orderPrintMoney != null">
+        #{orderPrintMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="orderDeliveryMoney != null">
+        #{orderDeliveryMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="orderCouponMoney != null">
+        #{orderCouponMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="orderActualMoney != null">
+        #{orderActualMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="orderConsumeMoney != null">
+        #{orderConsumeMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="orderExtraMoney != null">
+        #{orderExtraMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="orderType != null">
+        #{orderType,jdbcType=INTEGER},
+      </if>
+        now(),
+        now(),
+        false,
+      <if test="orderProcess != null">
+        #{orderProcess,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <!--返回最新插入orderId-->
+  <select id="lastInsertId" resultType="java.lang.Integer">
+    SELECT LAST_INSERT_ID();
+  </select>
 </mapper>

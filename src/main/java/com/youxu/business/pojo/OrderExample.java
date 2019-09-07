@@ -165,6 +165,126 @@ public class OrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andStoreIdIsNull() {
+            addCriterion("store_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreIdIsNotNull() {
+            addCriterion("store_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreIdEqualTo(Integer value) {
+            addCriterion("store_id =", value, "storeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreIdNotEqualTo(Integer value) {
+            addCriterion("store_id <>", value, "storeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreIdGreaterThan(Integer value) {
+            addCriterion("store_id >", value, "storeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("store_id >=", value, "storeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreIdLessThan(Integer value) {
+            addCriterion("store_id <", value, "storeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreIdLessThanOrEqualTo(Integer value) {
+            addCriterion("store_id <=", value, "storeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreIdIn(List<Integer> values) {
+            addCriterion("store_id in", values, "storeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreIdNotIn(List<Integer> values) {
+            addCriterion("store_id not in", values, "storeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreIdBetween(Integer value1, Integer value2) {
+            addCriterion("store_id between", value1, value2, "storeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("store_id not between", value1, value2, "storeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdIsNull() {
+            addCriterion("user_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdIsNotNull() {
+            addCriterion("user_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdEqualTo(Integer value) {
+            addCriterion("user_id =", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdNotEqualTo(Integer value) {
+            addCriterion("user_id <>", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdGreaterThan(Integer value) {
+            addCriterion("user_id >", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("user_id >=", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdLessThan(Integer value) {
+            addCriterion("user_id <", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdLessThanOrEqualTo(Integer value) {
+            addCriterion("user_id <=", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdIn(List<Integer> values) {
+            addCriterion("user_id in", values, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdNotIn(List<Integer> values) {
+            addCriterion("user_id not in", values, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdBetween(Integer value1, Integer value2) {
+            addCriterion("user_id between", value1, value2, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("user_id not between", value1, value2, "userId");
+            return (Criteria) this;
+        }
+
         public Criteria andOrderAddresseeNameIsNull() {
             addCriterion("order_addressee_name is null");
             return (Criteria) this;
@@ -1212,6 +1332,66 @@ public class OrderExample {
 
         public Criteria andOrderStatusNotBetween(Boolean value1, Boolean value2) {
             addCriterion("order_status not between", value1, value2, "orderStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProcessIsNull() {
+            addCriterion("order_process is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProcessIsNotNull() {
+            addCriterion("order_process is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProcessEqualTo(Integer value) {
+            addCriterion("order_process =", value, "orderProcess");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProcessNotEqualTo(Integer value) {
+            addCriterion("order_process <>", value, "orderProcess");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProcessGreaterThan(Integer value) {
+            addCriterion("order_process >", value, "orderProcess");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProcessGreaterThanOrEqualTo(Integer value) {
+            addCriterion("order_process >=", value, "orderProcess");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProcessLessThan(Integer value) {
+            addCriterion("order_process <", value, "orderProcess");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProcessLessThanOrEqualTo(Integer value) {
+            addCriterion("order_process <=", value, "orderProcess");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProcessIn(List<Integer> values) {
+            addCriterion("order_process in", values, "orderProcess");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProcessNotIn(List<Integer> values) {
+            addCriterion("order_process not in", values, "orderProcess");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProcessBetween(Integer value1, Integer value2) {
+            addCriterion("order_process between", value1, value2, "orderProcess");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProcessNotBetween(Integer value1, Integer value2) {
+            addCriterion("order_process not between", value1, value2, "orderProcess");
             return (Criteria) this;
         }
     }

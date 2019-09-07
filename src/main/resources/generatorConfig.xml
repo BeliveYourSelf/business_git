@@ -44,5 +44,6 @@
         <!--<table tableName="tb_harvest_address" domainObjectName="Harvest"/>-->
         <!--<table tableName="tb_billing_rule" domainObjectName="BillingRule"/>-->
         <table tableName="tb_order" domainObjectName="Order"/>
+
     </context>
 </generatorConfiguration>

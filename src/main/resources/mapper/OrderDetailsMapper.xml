@@ -175,7 +175,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.youxu.business.pojo.OrderDetailsExample" resultType="java.lang.Long">
+    <select id="countByExample" parameterType="com.youxu.business.pojo.OrderDetailsExample" resultType="java.lang.Long">
     select count(*) from tb_order_details
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -235,4 +235,31 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+  <!--新增订单明细-->
+  <insert id="insertOrderDetails">
+    insert into tb_order_details
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        order_id,
+        order_details_name,
+        order_details_count,
+        order_details_one_picture_url,
+        order_details_typesetting_picture_url,
+        order_details_total_price,
+        order_details_create_time,
+        order_details_modify_time,
+        order_details_status,
+    </trim>
+    VALUES
+    <foreach collection="orderDetailslist" index="index" open="(" close=")" separator="," item="orderDetails">
+      #{orderDetails.orderId,jdbcType=INTEGER},
+      #{orderDetails.orderDetailsName,jdbcType=VARCHAR},
+      #{orderDetails.orderDetailsCount,jdbcType=INTEGER},
+      #{orderDetails.orderDetailsOnePictureUrl,jdbcType=VARCHAR},
+      #{orderDetails.orderDetailsTypesettingPictureUrl,jdbcType=VARCHAR},
+      #{orderDetails.orderDetailsTotalPrice,jdbcType=DOUBLE},
+      now(),
+      now(),
+      false
+    </foreach>
+  </insert>
 </mapper>

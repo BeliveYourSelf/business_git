@@ -480,5 +480,60 @@
     set order_status = true
     where id = #{id}
   </update>
+  <update id="updateOrder">
+    update tb_order
+    <set>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderAddresseeName != null">
+        order_addressee_name = #{record.orderAddresseeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderAddresseePhone != null">
+        order_addressee_phone = #{record.orderAddresseePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderAddresseeAddress != null">
+        order_addressee_address = #{record.orderAddresseeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderFromStoreGet != null">
+        order_from_store_get = #{record.orderFromStoreGet,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderFromStoreGetWhere != null">
+        order_from_store_get_where = #{record.orderFromStoreGetWhere,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderDeliveryPrescriptioTime != null">
+        order_delivery_prescriptio_time = #{record.orderDeliveryPrescriptioTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderPrintMoney != null">
+        order_print_money = #{record.orderPrintMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderDeliveryMoney != null">
+        order_delivery_money = #{record.orderDeliveryMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderCouponMoney != null">
+        order_coupon_money = #{record.orderCouponMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="record.orderActualMoney != null">
+        order_actual_money = #{record.orderActualMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderConsumeMoney != null">
+        order_consume_money = #{record.orderConsumeMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="record.orderExtraMoney != null">
+        order_extra_money = #{record.orderExtraMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="record.orderType != null">
+        order_type = #{record.orderType,jdbcType=INTEGER},
+      </if>
+        order_modify_time = now(),
+      <if test="record.orderProcess != null">
+        order_process = #{record.orderProcess,jdbcType=INTEGER},
+      </if>
+    </set>
+      where id = #{record.id}
+  </update>
 
 </mapper>

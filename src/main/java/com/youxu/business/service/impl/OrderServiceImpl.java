@@ -44,4 +44,17 @@ public class OrderServiceImpl implements OrderService {
     public Integer cancelOrder(String id) {
         return orderMapper.cancelOrder(id);
     }
+
+    @Override
+    public Integer updateOrder(Order order) {
+        // 更新订单表
+        Integer updateOrder = orderMapper.updateOrder(order);
+        Integer id = order.getId();
+        // 删除订单明细表
+        Integer deleteOrderDetailsList = orderDetailsMapper.deleteOrderDetailsList(id);
+        // 新增订单明细表
+        List<OrderDetails> orderDetailsList = order.getOrderDetailsList();
+        Integer insertOrderDetails = orderDetailsMapper.insertOrderDetails(orderDetailsList);
+        return updateOrder;
+    }
 }

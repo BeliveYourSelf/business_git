@@ -19,6 +19,8 @@ public interface OrderDetailsMapper {
     int updateByExampleSelective(@Param("record") OrderDetails record, @Param("example") OrderDetailsExample example);
 
     int updateByExample(@Param("record") OrderDetails record, @Param("example") OrderDetailsExample example);
-    //新增订单明细
+    // 新增订单明细
     Integer insertOrderDetails(@Param("orderDetailslist") List<OrderDetails> orderDetailslist);
+    // 删除订单明细
+    Integer deleteOrderDetailsList(@Param("orderId")Integer orderId);
 }

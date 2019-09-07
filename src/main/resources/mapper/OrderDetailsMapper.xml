@@ -262,4 +262,10 @@
       false
     </foreach>
   </insert>
+  <update id="deleteOrderDetailsList">
+    update tb_order_details
+    set order_details_status = TRUE
+    where order_id = #{orderId}
+  </update>
+
 </mapper>

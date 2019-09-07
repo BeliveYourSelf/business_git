@@ -19,7 +19,6 @@ public class OrderController {
     private OrderService orderService;
 
     @ApiOperation(value = "新增订单", notes = "{\n" +
-            "  \"id\": 0,\n" +
             "  \"orderActualMoney\": \"100\",\n" +
             "  \"orderAddresseeAddress\": \"天津市立晟科技\",\n" +
             "  \"orderAddresseeName\": \"李文轩\",\n" +
@@ -79,6 +78,47 @@ public class OrderController {
     public ResponseMessage<Integer> cancelOrder(@RequestParam String id) {
         Integer cancelOrder = orderService.cancelOrder(id);
         if (cancelOrder <= 0) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功");
+    }
+
+    /**
+     * 更新订单
+     */
+    @ApiOperation(value = "更新订单",notes = "{\"id\":\"1\",\n" +
+            "  \"orderActualMoney\": \"100\",\n" +
+            "  \"orderAddresseeAddress\": \"天津市立晟科技\",\n" +
+            "  \"orderAddresseeName\": \"李文轩1\",\n" +
+            "  \"orderAddresseePhone\": \"13652157270\",\n" +
+            "  \"orderConsumeMoney\": 10,\n" +
+            "  \"orderCouponMoney\": 10,\n" +
+            "  \"orderDeliveryMoney\": \"10\",\n" +
+            "  \"orderDeliveryPrescriptioTime\": \"60\",\n" +
+            "  \"orderDetailsList\": [\n" +
+            "    {\n" +
+            "      \"orderDetailsCount\": 10,\n" +
+            "\n" +
+            "      \"orderDetailsName\": \"一寸白底\",\n" +
+            "      \"orderDetailsOnePictureUrl\": \"/dishesPicture/20190611/app小程序制作.png\",\n" +
+            "      \"orderDetailsTotalPrice\": 10,\n" +
+            "      \"orderDetailsTypesettingPictureUrl\": \"/dishesPicture/20190611/app小程序制作.png\",\n" +
+            "      \"orderId\": 1\n" +
+            "    }\n" +
+            "  ],\n" +
+            "  \"orderExtraMoney\": 10,\n" +
+            "  \"orderFromStoreGet\": \"3\",\n" +
+            "  \"orderFromStoreGetWhere\": \"天津工业大学1号宿舍楼\",\n" +
+            "  \"orderPrintMoney\": \"10\",\n" +
+            "  \"orderProcess\": 1,\n" +
+            "  \"orderType\": 1,\n" +
+            "  \"storeId\": 1,\n" +
+            "  \"userId\": 1\n" +
+            "}")
+    @PostMapping("/updateOrder")
+    public ResponseMessage<Integer> updateOrder(@RequestBody Order order) {
+        Integer updateOrder = orderService.updateOrder(order);
+        if (updateOrder <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功");

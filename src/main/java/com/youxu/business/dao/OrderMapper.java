@@ -27,5 +27,7 @@ public interface OrderMapper {
     Integer reminderOrder(@Param("id") Integer id,@Param("orderType") Integer orderType);
     // 取消订单
     Integer cancelOrder(String id);
+    // 更新订单
+    Integer updateOrder(@Param("record") Order record);
     //
 }

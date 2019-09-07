@@ -39,4 +39,9 @@ public class OrderServiceImpl implements OrderService {
         Integer reminderOrder = orderMapper.reminderOrder(id,orderType);
         return reminderOrder;
     }
+
+    @Override
+    public Integer cancelOrder(String id) {
+        return orderMapper.cancelOrder(id);
+    }
 }

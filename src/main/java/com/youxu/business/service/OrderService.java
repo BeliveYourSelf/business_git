@@ -6,4 +6,6 @@ public interface OrderService {
     Integer insertOrder(Order order);
 
     Integer reminderOrder(Order order);
+
+    Integer cancelOrder(String id);
 }

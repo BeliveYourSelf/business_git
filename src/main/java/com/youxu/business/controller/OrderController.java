@@ -7,10 +7,7 @@ import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -69,6 +66,19 @@ public class OrderController {
     public ResponseMessage<Integer> reminderOrder(@RequestBody Order order) {
         Integer reminderOrder = orderService.reminderOrder(order);
         if (reminderOrder <= 0) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功");
+    }
+
+    /**
+     * 取消订单
+     */
+    @ApiOperation(value = "取消订单",notes = "{\"id\":\"1\"}")
+    @GetMapping("/cancleOrder")
+    public ResponseMessage<Integer> cancelOrder(@RequestParam String id) {
+        Integer cancelOrder = orderService.cancelOrder(id);
+        if (cancelOrder <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功");

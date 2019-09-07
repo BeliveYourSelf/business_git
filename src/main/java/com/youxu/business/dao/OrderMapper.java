@@ -25,4 +25,7 @@ public interface OrderMapper {
     int lastInsertId();
     // 催单/确认收件
     Integer reminderOrder(@Param("id") Integer id,@Param("orderType") Integer orderType);
+    // 取消订单
+    Integer cancelOrder(String id);
+    //
 }

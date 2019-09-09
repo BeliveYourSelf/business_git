@@ -19,4 +19,6 @@ public interface OrderEvaluateOptionCartMapper {
     int updateByExampleSelective(@Param("record") OrderEvaluateOptionCart record, @Param("example") OrderEvaluateOptionCartExample example);
 
     int updateByExample(@Param("record") OrderEvaluateOptionCart record, @Param("example") OrderEvaluateOptionCartExample example);
+    // 查看订单评价选项卡
+    List<OrderEvaluateOptionCart> selectOrderEvaluateOptionCart();
 }

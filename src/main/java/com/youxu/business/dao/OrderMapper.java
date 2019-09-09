@@ -31,5 +31,7 @@ public interface OrderMapper {
     Integer updateOrder(@Param("record") Order record);
     // 查看订单
     Order selectOrderById(String id);
-    //
+    // 查看订单集合
+    List<Order> selectOrderList(@Param("order") Order order);
+
 }

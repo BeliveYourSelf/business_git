@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Api(description = "订单表")
 @RequestMapping("/api")
@@ -133,6 +134,18 @@ public class OrderController {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
+    }
+
+    @ApiOperation(value = "查看订单打印列表", notes = "{\"pageNo\":\"1\"\n" +
+            ",\"pageSize\":\"1\"\n" +
+            ",\"orderProcess\":\"1\"}        orderProcess：订单进行状态:1.待付款2.进行中3.已完成4.已取消")
+    @PostMapping("/selectOrderList")
+    public ResponseMessage<List<Order>> selectOrderList(@RequestBody Order order) {
+        List<Order> selectOrderList = orderService.selectOrderList(order);
+        if (selectOrderList.size() <= 0) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",selectOrderList);
     }
 
 }

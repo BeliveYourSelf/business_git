@@ -1,5 +1,6 @@
 package com.youxu.business.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.youxu.business.dao.OrderDetailsMapper;
 import com.youxu.business.dao.OrderMapper;
 import com.youxu.business.pojo.Order;
@@ -64,5 +65,12 @@ public class OrderServiceImpl implements OrderService {
     public Order insertOrderAgain(String id) {
         Order order = orderMapper.selectOrderById(id);
         return order;
+    }
+
+    @Override
+    public List<Order> selectOrderList(Order order) {
+        //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
+        PageHelper.startPage(order.getPageNo(), order.getPageSize());
+        return orderMapper.selectOrderList(order);
     }
 }

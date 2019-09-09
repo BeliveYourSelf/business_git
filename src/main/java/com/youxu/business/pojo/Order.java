@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class Order {
+public class Order extends PageInfo{
     @ApiModelProperty(name = "id",value = "订单id")
     private Integer id;
 

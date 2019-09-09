@@ -1,7 +1,7 @@
 package com.youxu.business.utils.Enum;
 
 public enum PayStatusEnum {
-    UN_PAY("UN_PAY",0),SUCCESS_PAY("SUCCESS_PAY",1);
+    WAIT_PAY("WAIT_PAY",1),PAYING("PAYING",2),COMPLETE("COMPLETE",3),CANCEL("CANCEL",4);
     private String code;
     private Integer valueCode;
      PayStatusEnum(String code, Integer valueCode) {

@@ -12,12 +12,13 @@
     <result column="order_from_store_get_where" jdbcType="VARCHAR" property="orderFromStoreGetWhere" />
     <result column="order_delivery_prescriptio_time" jdbcType="VARCHAR" property="orderDeliveryPrescriptioTime" />
     <result column="order_print_money" jdbcType="VARCHAR" property="orderPrintMoney" />
-    <result column="order_delivery_money" jdbcType="VARCHAR" property="orderDeliveryMoney" />
+    <result column="order_delivery_money"  property="orderDeliveryMoney" />
     <result column="order_coupon_money" jdbcType="DOUBLE" property="orderCouponMoney" />
-    <result column="order_actual_money" jdbcType="VARCHAR" property="orderActualMoney" />
+    <result column="order_actual_money"  property="orderActualMoney" />
     <result column="order_consume_money" jdbcType="DOUBLE" property="orderConsumeMoney" />
     <result column="order_extra_money" jdbcType="DOUBLE" property="orderExtraMoney" />
     <result column="order_type" jdbcType="INTEGER" property="orderType" />
+    <result column="order_pay_date"  property="orderPayDate" />
     <result column="order_create_time" jdbcType="TIMESTAMP" property="orderCreateTime" />
     <result column="order_modify_time" jdbcType="TIMESTAMP" property="orderModifyTime" />
     <result column="order_status" jdbcType="BIT" property="orderStatus" />
@@ -97,7 +98,7 @@
     tb_order.id as tb_orderid, store_id, user_id, order_addressee_name, order_addressee_phone, order_addressee_address,
     order_from_store_get, order_from_store_get_where, order_delivery_prescriptio_time, 
     order_print_money, order_delivery_money, order_coupon_money, order_actual_money, 
-    order_consume_money, order_extra_money, order_type, order_create_time, order_modify_time, 
+    order_consume_money, order_extra_money, order_type, order_pay_date, order_create_time, order_modify_time,
     order_status, order_process
   </sql>
   <sql id="Base_Column_List_tb_order_details">
@@ -139,7 +140,7 @@
       #{orderAddresseeAddress,jdbcType=VARCHAR}, #{orderFromStoreGet,jdbcType=VARCHAR}, 
       #{orderFromStoreGetWhere,jdbcType=VARCHAR}, #{orderDeliveryPrescriptioTime,jdbcType=VARCHAR}, 
       #{orderPrintMoney,jdbcType=VARCHAR}, #{orderDeliveryMoney,jdbcType=VARCHAR}, #{orderCouponMoney,jdbcType=DOUBLE}, 
-      #{orderActualMoney,jdbcType=VARCHAR}, #{orderConsumeMoney,jdbcType=DOUBLE}, #{orderExtraMoney,jdbcType=DOUBLE}, 
+      #{orderActualMoney}, #{orderConsumeMoney,jdbcType=DOUBLE}, #{orderExtraMoney,jdbcType=DOUBLE},
       #{orderType,jdbcType=INTEGER}, #{orderCreateTime,jdbcType=TIMESTAMP}, #{orderModifyTime,jdbcType=TIMESTAMP}, 
       #{orderStatus,jdbcType=BIT}, #{orderProcess,jdbcType=INTEGER})
   </insert>
@@ -245,7 +246,7 @@
         #{orderCouponMoney,jdbcType=DOUBLE},
       </if>
       <if test="orderActualMoney != null">
-        #{orderActualMoney,jdbcType=VARCHAR},
+        #{orderActualMoney},
       </if>
       <if test="orderConsumeMoney != null">
         #{orderConsumeMoney,jdbcType=DOUBLE},
@@ -317,7 +318,7 @@
         order_coupon_money = #{record.orderCouponMoney,jdbcType=DOUBLE},
       </if>
       <if test="record.orderActualMoney != null">
-        order_actual_money = #{record.orderActualMoney,jdbcType=VARCHAR},
+        order_actual_money = #{record.orderActualMoney},
       </if>
       <if test="record.orderConsumeMoney != null">
         order_consume_money = #{record.orderConsumeMoney,jdbcType=DOUBLE},
@@ -359,7 +360,7 @@
       order_print_money = #{record.orderPrintMoney,jdbcType=VARCHAR},
       order_delivery_money = #{record.orderDeliveryMoney,jdbcType=VARCHAR},
       order_coupon_money = #{record.orderCouponMoney,jdbcType=DOUBLE},
-      order_actual_money = #{record.orderActualMoney,jdbcType=VARCHAR},
+      order_actual_money = #{record.orderActualMoney},
       order_consume_money = #{record.orderConsumeMoney,jdbcType=DOUBLE},
       order_extra_money = #{record.orderExtraMoney,jdbcType=DOUBLE},
       order_type = #{record.orderType,jdbcType=INTEGER},
@@ -462,7 +463,7 @@
         #{orderCouponMoney,jdbcType=DOUBLE},
       </if>
       <if test="orderActualMoney != null">
-        #{orderActualMoney,jdbcType=VARCHAR},
+        #{orderActualMoney},
       </if>
       <if test="orderConsumeMoney != null">
         #{orderConsumeMoney,jdbcType=DOUBLE},
@@ -534,7 +535,7 @@
         order_coupon_money = #{record.orderCouponMoney,jdbcType=DOUBLE},
       </if>
       <if test="record.orderActualMoney != null">
-        order_actual_money = #{record.orderActualMoney,jdbcType=VARCHAR},
+        order_actual_money = #{record.orderActualMoney},
       </if>
       <if test="record.orderConsumeMoney != null">
         order_consume_money = #{record.orderConsumeMoney,jdbcType=DOUBLE},
@@ -544,6 +545,9 @@
       </if>
       <if test="record.orderType != null">
         order_type = #{record.orderType,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderPayDate != null">
+        order_pay_date = #{record.orderPayDate},
       </if>
         order_modify_time = now(),
       <if test="record.orderProcess != null">
@@ -566,8 +570,20 @@
     left join tb_order_details
     on tb_order.id = tb_order_details.order_id
     where order_process = #{order.orderProcess} and order_status = false
-
   </select>
-
+<!--更新支付状态和时间-->
+  <update id="updateOrderPayDateAndProcess">
+    update tb_order
+    <set>
+      <if test="orderPayDate != null">
+        order_pay_date = now(),
+      </if>
+      order_modify_time = now(),
+      <if test="orderProcess != null">
+      order_process = #{orderProcess},
+      </if>
+    </set>
+    where id = #{orderId}
+  </update>
 
 </mapper>

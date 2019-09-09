@@ -17,30 +17,23 @@ public class BaseService {
     /**
      * 微信支付 APPID
      */
-    public String WXPAYAPPID = "wx384e2f0feb85e291";
+    public String WXPAYAPPID = "wx74808915eae21ef7";
     /**
      * 微信支付 密约
      */
-    public String WXPAYSECRET = "f90beb3dd4a360724bd9178feb2ec6f7";
+    public String WXPAYSECRET = "493874f18e91e273fbf643cd9bea4de0";
     /**
-     * 微信支付 商户号
+     * TODO 微信支付 商户号
      */
     public static String WXPAYMCHID = "1551028611";//番茄
-    /**
-     * 微信支付 APPID
-     */
-    public String WXPAYTRADETYPE;
     /**
      * 微信支付 回掉地址
      */
     public String WXPAYNOTIFYURL = "https://fqapi.lishengjt.com/api/wepay_codeUrl";
-    public String WXPAYNOTIFYURLMEMBER = "https://fqapi.lishengjt.com/api/wepay_codeUrlMember";
-    public String WXPAYNOTIFYURLSHOPPINGMALL = "https://fqapi.lishengjt.com/api/wepay_codeUrl_shopping_mall";
-    public String WXPAYNOTIFYURLADMISSIONTICKET = "https://fqapi.lishengjt.com/api/payCallback_admission_ticket";
 
 
     /**
-     * 微信支付 商户Key
+     * TODO 微信支付 商户Key
      */
     public static String WXPAYKEY = "8374uieryeujkhk5y478hdnbasdjpqoi";
     /**

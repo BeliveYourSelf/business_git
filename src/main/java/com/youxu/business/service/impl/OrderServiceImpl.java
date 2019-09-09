@@ -73,4 +73,9 @@ public class OrderServiceImpl implements OrderService {
         PageHelper.startPage(order.getPageNo(), order.getPageSize());
         return orderMapper.selectOrderList(order);
     }
+
+    @Override
+    public Integer updateOrderPayDateAndProcess(Integer valueCode, Integer orderId, String orderPayDate) {
+        return orderMapper.updateOrderPayDateAndProcess(valueCode,orderId,orderPayDate);
+    }
 }

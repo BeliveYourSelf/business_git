@@ -2,6 +2,7 @@ package com.youxu.business.service;
 
 import com.youxu.business.pojo.Order;
 
+import java.util.Date;
 import java.util.List;
 
 public interface OrderService {
@@ -16,4 +17,6 @@ public interface OrderService {
     Order insertOrderAgain(String id);
 
     List<Order> selectOrderList(Order order);
+
+    Integer updateOrderPayDateAndProcess(Integer valueCode, Integer orderId, String orderPayDate);
 }

@@ -45,7 +45,7 @@ public class Order extends PageInfo{
     private Double orderCouponMoney;
 
     @ApiModelProperty(name = "orderActualMoney",value = "实际支付")
-    private String orderActualMoney;
+    private Double orderActualMoney;
 
     @ApiModelProperty(name = "orderConsumeMoney",value = "消费金")
     private Double orderConsumeMoney;
@@ -55,6 +55,9 @@ public class Order extends PageInfo{
 
     @ApiModelProperty(name = "orderType",value = "订单类别：1.证件照2.照片冲洗3.文档打印4.会员充值5.会员支付")
     private Integer orderType;
+
+    @ApiModelProperty(name = "orderPayDate",value = "订单支付时间")
+    private Integer orderPayDate;
 
     @ApiModelProperty(name = "orderCreateTime",value = "创建时间")
     private Date orderCreateTime;
@@ -74,5 +77,7 @@ public class Order extends PageInfo{
     // 新增对象集合
     @ApiModelProperty(name = "orderDetailsList",value = "订单对象集合")
     private List<OrderDetails> orderDetailsList;
+
+    private String openId;
 
 }

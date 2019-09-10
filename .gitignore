@@ -16,7 +16,7 @@ target/
 ### IntelliJ IDEA ###
 .idea
 .mvn
-.logs
+catalina.base_IS_UNDEFINED
 *.iws
 *.iml
 *.ipr

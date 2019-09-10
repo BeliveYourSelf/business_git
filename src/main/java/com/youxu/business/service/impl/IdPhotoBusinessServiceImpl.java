@@ -77,7 +77,7 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
     /**
      *接口1：证件照环境监测
      */
-    private ResultIdPhotoBusinessLicenses  idPhotoBusinessLicenses(String base64Picture){
+    private ResultIdPhotoBusinessLicenses  idPhotoBusinessLicenses(String base64Picture) throws Exception{
         IdPhotoBusinessLicenses idPhotoBusinessLicenses = new IdPhotoBusinessLicenses();
         idPhotoBusinessLicenses.setFile(base64Picture);
         JSONObject jsonObjectIdPhotoBusinessLicenses = JSONObject.fromObject(idPhotoBusinessLicenses);
@@ -92,7 +92,7 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
     /**
      * 接口2：制作并检测证件照
      */
-    private ResultIdPhotoMarkAndTest idPhotoMarkAndTest(String base64Picture,String specId){
+    private ResultIdPhotoMarkAndTest idPhotoMarkAndTest(String base64Picture,String specId)throws Exception{
         IdPhotoMarkAndTest idPhotoMarkAndTest = new IdPhotoMarkAndTest();
         idPhotoMarkAndTest.setFile(base64Picture);
         idPhotoMarkAndTest.setSpec_id(specId);
@@ -108,7 +108,7 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
     /**
      * 接口3:同时获取无水印单张和排版图片
      */
-    private ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl getIdPhotoNoWaterMarkAndTypeSettingUrl(String fileName){
+    private ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl getIdPhotoNoWaterMarkAndTypeSettingUrl(String fileName)throws Exception{
         GetIdPhotoNoWaterMarkAndTypeSettingUrl getIdPhotoNoWaterMarkAndTypeSettingUrl = new GetIdPhotoNoWaterMarkAndTypeSettingUrl();
         getIdPhotoNoWaterMarkAndTypeSettingUrl.setFile_name(fileName);
         JSONObject jsonObjectIdPhotoMarkAndTest = JSONObject.fromObject(getIdPhotoNoWaterMarkAndTypeSettingUrl);

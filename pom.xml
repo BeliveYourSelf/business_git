@@ -173,7 +173,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>app</finalName>
+		<finalName>business</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

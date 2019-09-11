@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.youxu</groupId>
-	<artifactId>businessgit</artifactId>
+	<artifactId>business</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>businessgit</name>
 	<description>Demo project for Spring Boot</description>
@@ -25,10 +25,7 @@
 
 	<dependencies>
 		<!--eureka-client-->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>

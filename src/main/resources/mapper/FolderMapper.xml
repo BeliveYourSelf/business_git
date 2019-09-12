@@ -228,4 +228,20 @@
         false,
     </trim>
   </insert>
+  <!--更新文件夹-->
+  <update id="updateFolder">
+    update tb_folder
+    <set>
+      <if test="record.folderParentId != null">
+        folder_parent_id = #{record.folderParentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.folderName != null">
+        folder_name = #{record.folderName,jdbcType=VARCHAR},
+      </if>
+        modify_time = now(),
+    </set>
+    where
+    id = #{record.id}
+  </update>
+
 </mapper>

@@ -23,9 +23,20 @@ public class FolderController {
             ",\"folderParentId\":\"\"\n" +
             ",\"folderName\":\"照片\"}      folderParentId:父级文件夹id，一级文件夹什么都不传")
     @PostMapping("/insertFolder")
-    public ResponseMessage<Integer> insertFolder(@RequestBody Folder folder) {
+    public ResponseMessage insertFolder(@RequestBody Folder folder) {
         Integer insertFolder = folderService.insertFolder(folder);
         if (insertFolder <= 0) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
+    }
+
+    @ApiOperation(value = "更新文件夹名称", notes = "{\"id\":\"1\"\n" +
+            ",\"folderName\":\"视频\"} ")
+    @PostMapping("/updateFolder")
+    public ResponseMessage updateFolder(@RequestBody Folder folder) {
+        Integer updateFolder = folderService.updateFolder(folder);
+        if (updateFolder <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");

@@ -15,4 +15,9 @@ public class FolderServiceImpl implements FolderService {
     public Integer insertFolder(Folder folder) {
         return folderMapper.insertFolder(folder);
     }
+
+    @Override
+    public Integer updateFolder(Folder folder) {
+        return folderMapper.updateFolder(folder);
+    }
 }

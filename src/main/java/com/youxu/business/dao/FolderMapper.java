@@ -21,4 +21,6 @@ public interface FolderMapper {
     int updateByExample(@Param("record") Folder record, @Param("example") FolderExample example);
     // 新建文件夹
     Integer insertFolder(@Param("record") Folder record);
+    // 更新文件夹
+    Integer updateFolder(@Param("record") Folder record);
 }

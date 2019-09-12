@@ -19,4 +19,6 @@ public interface FolderMapper {
     int updateByExampleSelective(@Param("record") Folder record, @Param("example") FolderExample example);
 
     int updateByExample(@Param("record") Folder record, @Param("example") FolderExample example);
+    // 新建文件夹
+    Integer insertFolder(@Param("record") Folder record);
 }

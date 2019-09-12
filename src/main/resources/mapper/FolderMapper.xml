@@ -148,7 +148,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.youxu.business.pojo.FolderExample" resultType="java.lang.Long">
+    <select id="countByExample" parameterType="com.youxu.business.pojo.FolderExample" resultType="java.lang.Long">
     select count(*) from tb_folder
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -196,4 +196,36 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+  <!--新建文件夹-->
+  <insert id="insertFolder">
+    insert into tb_folder
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="record.userId != null">
+        user_id,
+      </if>
+      <if test="record.folderParentId != null">
+        folder_parent_id,
+      </if>
+      <if test="record.folderName != null">
+        folder_name,
+      </if>
+        create_time,
+        modify_time,
+        status,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="record.userId != null">
+        #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.folderParentId != null">
+        #{record.folderParentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.folderName != null">
+        #{record.folderName,jdbcType=VARCHAR},
+      </if>
+        now(),
+        now(),
+        false,
+    </trim>
+  </insert>
 </mapper>

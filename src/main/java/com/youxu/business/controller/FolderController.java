@@ -8,9 +8,11 @@ import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.*;
 
 @Api(description = "文件夹表")
 @RestController
@@ -40,5 +42,16 @@ public class FolderController {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
+    }
+
+    @ApiOperation(value = "查看文件夹目录", notes = "{\"id\":\"1\"\n" +
+            ",\"userId\":\"1\"}    id：文件夹id")
+    @PostMapping("/selectFolderCatalog")
+    public ResponseMessage<Folder> selectFolderCatalog(@RequestBody Folder folder) {
+        Folder selectFolderCatalog = folderService.selectFolderCatalog(folder);
+        if (StringUtils.isEmpty(selectFolderCatalog)) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",selectFolderCatalog);
     }
 }

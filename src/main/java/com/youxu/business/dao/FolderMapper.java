@@ -23,4 +23,8 @@ public interface FolderMapper {
     Integer insertFolder(@Param("record") Folder record);
     // 更新文件夹
     Integer updateFolder(@Param("record") Folder record);
+    // 查看文件夹目录
+    List<Folder> selectFolderCatalog(@Param("record")Folder record);
+    // 通过id查看文件夹
+    Folder selectFolderById(Integer id);
 }

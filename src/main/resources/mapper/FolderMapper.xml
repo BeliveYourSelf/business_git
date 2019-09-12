@@ -243,5 +243,17 @@
     where
     id = #{record.id}
   </update>
+  <!--查看文件夹目录-->
+  <select id="selectFolderCatalog" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tb_folder
+    where user_id = #{record.userId} and folder_parent_id = #{record.id,jdbcType=INTEGER} and status = false
+  </select>
+  <!--通过id查看文件夹-->
+  <select id="selectFolderById" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tb_folder
+    where id = #{id} and status = false
+  </select>
 
 </mapper>

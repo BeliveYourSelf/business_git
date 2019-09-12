@@ -1,7 +1,11 @@
 package com.youxu.business.pojo;
 
-import java.util.Date;
+import lombok.Data;
 
+import java.util.Date;
+import java.util.List;
+
+@Data
 public class Folder {
     private Integer id;
 
@@ -17,59 +21,10 @@ public class Folder {
 
     private Boolean status;
 
-    public Integer getId() {
-        return id;
-    }
+    // 新增
+    private List<Folder> folderList;
+    private List<Document> documentList;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
-    public Integer getUserId() {
-        return userId;
-    }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Integer getFolderParentId() {
-        return folderParentId;
-    }
-
-    public void setFolderParentId(Integer folderParentId) {
-        this.folderParentId = folderParentId;
-    }
-
-    public String getFolderName() {
-        return folderName;
-    }
-
-    public void setFolderName(String folderName) {
-        this.folderName = folderName == null ? null : folderName.trim();
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
 }

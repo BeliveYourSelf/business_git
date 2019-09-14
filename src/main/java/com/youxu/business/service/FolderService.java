@@ -10,4 +10,6 @@ public interface FolderService {
     Integer updateFolder(Folder folder);
 
     Folder selectFolderCatalog(Folder folder);
+
+    List<Folder> selectFolderAndDocument(Folder folder);
 }

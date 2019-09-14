@@ -45,7 +45,7 @@ public class FolderController {
     }
 
     @ApiOperation(value = "查看文件夹目录", notes = "{\"id\":\"1\"\n" +
-            ",\"userId\":\"1\"}    id：文件夹id")
+            ",\"userId\":\"1\"}    id：文件夹id  注：仅查看此文件目录下一级  ")
     @PostMapping("/selectFolderCatalog")
     public ResponseMessage<Folder> selectFolderCatalog(@RequestBody Folder folder) {
         Folder selectFolderCatalog = folderService.selectFolderCatalog(folder);
@@ -53,5 +53,15 @@ public class FolderController {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",selectFolderCatalog);
+    }
+
+    @ApiOperation(value = "查看树形文件夹和文件", notes = "{\"userId\":\"1\"}")
+    @PostMapping("/selectFolderAndDocument")
+    public ResponseMessage<List<Folder>> selectFolderAndDocument(@RequestBody Folder folder) {
+        List<Folder> selectFolderAndDocument = folderService.selectFolderAndDocument(folder);
+        if (StringUtils.isEmpty(selectFolderAndDocument)) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",selectFolderAndDocument);
     }
 }

@@ -27,4 +27,6 @@ public interface FolderMapper {
     List<Folder> selectFolderCatalog(@Param("record")Folder record);
     // 通过id查看文件夹
     Folder selectFolderById(Integer id);
+    // 查看树形文件夹和文件
+    List<Folder> selectFolderAndDocument(@Param("folder") Folder folder);
 }

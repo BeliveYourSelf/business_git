@@ -2,13 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.youxu.business.dao.FolderMapper">
   <resultMap id="BaseResultMap" type="com.youxu.business.pojo.Folder">
-    <result column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="folder_parent_id" jdbcType="INTEGER" property="folderParentId" />
-    <result column="folder_name" jdbcType="VARCHAR" property="folderName" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
-    <result column="status" jdbcType="BIT" property="status" />
+    <result column="tb_folderid" jdbcType="INTEGER" property="id" />
+    <result column="tb_folderuser_id" jdbcType="INTEGER" property="userId" />
+    <result column="tb_folderfolder_parent_id" jdbcType="INTEGER" property="folderParentId" />
+    <result column="tb_folderfolder_name" jdbcType="VARCHAR" property="folderName" />
+    <result column="tb_foldercreate_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="tb_foldermodify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="tb_folderstatus" jdbcType="BIT" property="status" />
+    <collection property="documentList" ofType="com.youxu.business.pojo.Document">
+      <result column="tb_documentid" jdbcType="INTEGER" property="id" />
+      <result column="tb_documentuser_id" jdbcType="INTEGER" property="userId" />
+      <result column="tb_documentfolder_id" jdbcType="INTEGER" property="folderId" />
+      <result column="tb_documentdocument_url" jdbcType="VARCHAR" property="documentUrl" />
+      <result column="tb_documentcreate_time" jdbcType="TIMESTAMP" property="createTime" />
+      <result column="tb_documentmodify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+      <result column="tb_documentstatus" jdbcType="BIT" property="status" />
+    </collection>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -69,7 +78,22 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, user_id, folder_parent_id, folder_name, create_time, modify_time, status
+    tb_folder.id as tb_folderid
+    , tb_folder.user_id as tb_folderuser_id
+    , tb_folder.folder_parent_id as tb_folderfolder_parent_id
+    , tb_folder.folder_name as tb_folderfolder_name
+    , tb_folder.create_time as tb_foldercreate_time
+    , tb_folder.modify_time as tb_foldermodify_time
+    , tb_folder.status as tb_folderstatus
+  </sql>
+  <sql id="Base_Column_List_tb_document">
+    tb_document.id as tb_documentid
+    , tb_document.user_id as tb_documentuser_id
+    , tb_document.folder_id as tb_documentfolder_id
+    , tb_document.document_url as tb_documentdocument_url
+    , tb_document.create_time as tb_documentcreate_time
+    , tb_document.modify_time as tb_documentmodify_time
+    , tb_document.status as tb_documentstatus
   </sql>
   <select id="selectByExample" parameterType="com.youxu.business.pojo.FolderExample" resultMap="BaseResultMap">
     select
@@ -254,6 +278,13 @@
     select <include refid="Base_Column_List"/>
     from tb_folder
     where id = #{id} and status = false
+  </select>
+  <!--查看树形文件夹和文件-->
+  <select id="selectFolderAndDocument" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>,<include refid="Base_Column_List_tb_document"/>
+    from tb_folder
+    left join tb_document on tb_folder.id = tb_document.folder_id
+    where tb_folder.status = false  and tb_folder.user_id = #{folder.userId}
   </select>
 
 </mapper>

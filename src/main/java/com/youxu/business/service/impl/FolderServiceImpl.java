@@ -78,6 +78,13 @@ public class FolderServiceImpl implements FolderService {
         return 1;
     }
 
+    @Override
+    public Integer updateMoveFolderAndDocument(Folder folder) {
+        Integer updateMoveFolder = folderMapper.updateMoveFolder(folder);
+        Integer updateMoveDocument = documentMapper.updateMoveDocument(folder);
+        return updateMoveFolder+updateMoveDocument;
+    }
+
     /**
      * 递归：获取文件和文件夹通过文件夹id和用户id
      * @param foldersNew

@@ -24,4 +24,8 @@ public interface DocumentMapper {
     List<Document> selectDocument(@Param("record") Folder record);
     // 删除文件
     Integer deleteDocumentList(@Param("documentListId")List<Integer> documentListId);
+
+    // 移动文件到某个文件夹
+    Integer updateMoveDocument(@Param("folder") Folder folder);
+
 }

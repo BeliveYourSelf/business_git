@@ -76,7 +76,7 @@ public class FolderController {
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",selectFolderAndDocumentByUserIdAndFolderId);
     }
 
-    @ApiOperation(value = "删除文件和者文件夹", notes = "{\"documentListId\": [\n" +
+    @ApiOperation(value = "删除文件或文件夹", notes = "{\"documentListId\": [\n" +
             "    1,2\n" +
             "  ],\n" +
             "  \"folderListId\": [\n" +
@@ -92,5 +92,16 @@ public class FolderController {
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
     }
 
+    @ApiOperation(value = "移动文件夹和文件", notes = "{{\"id\":\"1\"\n" +
+            ",\"folderListId\": [4,5,6]\n" +
+            ",\"documentListId\":[5]}              folderListId: 文件夹集合  documentListId: 文件集合  ")
+    @PostMapping("/updateMoveFolderAndDocument")
+    public ResponseMessage updateMoveFolderAndDocument(@RequestBody Folder folder) {
+        Integer updateMoveFolderAndDocument = folderService.updateMoveFolderAndDocument(folder);
+        if (updateMoveFolderAndDocument <= 0) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
+    }
 
 }

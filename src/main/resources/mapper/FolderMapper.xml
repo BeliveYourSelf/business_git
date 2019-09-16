@@ -296,4 +296,14 @@
       #{folderId}
     </foreach>
   </update>
+  <!--移动文件夹到某个文件夹-->
+  <update id="updateMoveFolder">
+    update tb_folder
+    set tb_folder.folder_parent_id = #{folder.id}
+    where
+    tb_folder.id in
+    <foreach collection="folder.folderListId" item="folderId" separator="," open="(" close=")" index="index">
+      #{folderId}
+    </foreach>
+  </update>
 </mapper>

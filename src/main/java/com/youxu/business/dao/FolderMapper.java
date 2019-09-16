@@ -31,4 +31,6 @@ public interface FolderMapper {
     List<Folder> selectFolderAndDocument(@Param("folder") Folder folder);
     // 删除文件夹集合
     Integer deleteFolderList(@Param("folderListId") List<Integer> folderListId);
+    // 移动文件夹到某个文件
+    Integer updateMoveFolder(@Param("folder") Folder folder);
 }

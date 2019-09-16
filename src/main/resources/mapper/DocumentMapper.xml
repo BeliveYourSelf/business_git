@@ -211,5 +211,14 @@
       #{documentId}
     </foreach>
   </update>
+  <!--移动文件到某个文件夹-->
+  <update id="updateMoveDocument">
+    update tb_document
+    set tb_document.folder_id = #{folder.id}
+    where tb_document.id in
+    <foreach collection="folder.documentListId" index="index" open="(" close=")" separator="," item="documentId">
+      #{documentId}
+    </foreach>
+  </update>
 
 </mapper>

@@ -16,4 +16,6 @@ public interface FolderService {
     Folder selectFolderAndDocumentByUserIdAndFolderId(Folder folder);
 
     Integer deleteFolderAndDocumentByUserIdAndFolderIdListAndDocumentListId(Folder folder);
+
+    Integer updateMoveFolderAndDocument(Folder folder);
 }

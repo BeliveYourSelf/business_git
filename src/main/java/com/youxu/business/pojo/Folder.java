@@ -21,15 +21,13 @@ public class Folder {
 
     private Boolean status;
 
-    // 新增
+    // 新增属性用户vo
     private List<Folder> folderList;
 
     private List<Document> documentList;
 
-    private List<Integer> folderListId;
-
     private List<Integer> documentListId;
 
-
+    private List<Integer> folderListId;
 
 }

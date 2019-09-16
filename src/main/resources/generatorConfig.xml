@@ -46,10 +46,11 @@
         <!--<table tableName="tb_order_evaluate" domainObjectName="OrderEvaluate"/>-->
         <!--<table tableName="tb_order_evaluate_option_cart_mapper" domainObjectName="OrderEvaluateOptionCartMapper"/>-->
         <!--<table tableName="tb_order_evaluate_option_cart" domainObjectName="OrderEvaluateOptionCart"/>-->
-        <table tableName="tb_folder" domainObjectName="Folder"/>
-        <table tableName="tb_document" domainObjectName="Document"/>
-        <table tableName="tb_share" domainObjectName="Share"/>
-        <table tableName="tb_collection" domainObjectName="Collection"/>
+        <!--<table tableName="tb_folder" domainObjectName="Folder"/>-->
+        <!--<table tableName="tb_document" domainObjectName="Document"/>-->
+        <!--<table tableName="tb_share" domainObjectName="Share"/>-->
+        <!--<table tableName="tb_collection" domainObjectName="Collection"/>-->
+        <table tableName="tb_access_token" domainObjectName="AccessToken"/>
 
     </context>
 </generatorConfiguration>

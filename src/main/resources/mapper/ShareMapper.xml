@@ -257,4 +257,67 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+<!--新增分享表-->
+  <insert id="insertShare">
+    insert into tb_share
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="shareUserId != null">
+        share_user_id,
+      </if>
+      <if test="periodOfValidity != null">
+        period_of_validity,
+      </if>
+      <if test="extactionCodeStatus != null">
+        extaction_code_status,
+      </if>
+      <if test="extactionCode != null">
+        extaction_code,
+      </if>
+      <if test="downloadDuplicatedPrintStatus != null">
+        download_duplicated_print_status,
+      </if>
+      <if test="downloadDuplicatedPrintMoney != null">
+        download_duplicated_print_money,
+      </if>
+      <if test="qrCode != null">
+        qr_code,
+      </if>
+      <if test="usreHeadImage != null">
+        usre_head_image,
+      </if>
+        create_time,
+        modify_time,
+        status,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="shareUserId != null">
+        #{shareUserId,jdbcType=INTEGER},
+      </if>
+      <if test="periodOfValidity != null">
+        #{periodOfValidity,jdbcType=TIMESTAMP},
+      </if>
+      <if test="extactionCodeStatus != null">
+        #{extactionCodeStatus,jdbcType=BIT},
+      </if>
+      <if test="extactionCode != null">
+        #{extactionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadDuplicatedPrintStatus != null">
+        #{downloadDuplicatedPrintStatus,jdbcType=BIT},
+      </if>
+      <if test="downloadDuplicatedPrintMoney != null">
+        #{downloadDuplicatedPrintMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="qrCode != null">
+        #{qrCode,jdbcType=VARCHAR},
+      </if>
+      <if test="usreHeadImage != null">
+        #{usreHeadImage,jdbcType=VARCHAR},
+      </if>
+        now(),
+        now(),
+        false,
+    </trim>
+  </insert>
+
 </mapper>

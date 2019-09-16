@@ -19,4 +19,6 @@ public interface ShareMapper {
     int updateByExampleSelective(@Param("record") Share record, @Param("example") ShareExample example);
 
     int updateByExample(@Param("record") Share record, @Param("example") ShareExample example);
+    // 新增分享表
+    Integer insertShare(@Param("record") Share record);
 }

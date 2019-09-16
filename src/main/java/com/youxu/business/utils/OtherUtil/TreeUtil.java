@@ -13,7 +13,7 @@ import java.util.List;
 public class TreeUtil {
     //将list集合转成树形结构的list集合
     public static List<Folder> listToTree(List<Folder> list) {
-        //用递归找子。
+        // 用递归找子。
         List<Folder> treeList = new ArrayList<Folder>();
         for (Folder tree : list) {
             if (StringUtils.isEmpty(tree.getFolderParentId())) {
@@ -23,7 +23,7 @@ public class TreeUtil {
         return treeList;
     }
 
-    //寻找子节点
+    // 寻找子节点
     private static Folder findChildren(Folder tree, List<Folder> list) {
         for (Folder node : list) {
             if (!StringUtils.isEmpty(node.getFolderParentId()) && node.getFolderParentId().equals(tree.getId())) {
@@ -35,5 +35,6 @@ public class TreeUtil {
         }
         return tree;
     }
+
 
 }

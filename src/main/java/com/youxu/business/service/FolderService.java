@@ -12,4 +12,6 @@ public interface FolderService {
     Folder selectFolderCatalog(Folder folder);
 
     List<Folder> selectFolderAndDocument(Folder folder);
+
+    Folder selectFolderAndDocumentByUserIdAndFolderId(Folder folder);
 }

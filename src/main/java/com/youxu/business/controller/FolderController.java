@@ -64,4 +64,16 @@ public class FolderController {
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",selectFolderAndDocument);
     }
+
+    @ApiOperation(value = "查看树形某文件下的文件夹和文件", notes = "id , {\"userId\":\"1\"}")
+    @PostMapping("/selectFolderAndDocumentByUserIdAndFolderId")
+    public ResponseMessage<Folder> selectFolderAndDocumentByUserIdAndFolderId(@RequestBody Folder folder) {
+        Folder selectFolderAndDocumentByUserIdAndFolderId = folderService.selectFolderAndDocumentByUserIdAndFolderId(folder);
+        if (StringUtils.isEmpty(selectFolderAndDocumentByUserIdAndFolderId)) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",selectFolderAndDocumentByUserIdAndFolderId);
+    }
+
+
 }

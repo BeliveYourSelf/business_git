@@ -6,9 +6,11 @@ import com.youxu.business.pojo.Document;
 import com.youxu.business.pojo.Folder;
 import com.youxu.business.service.FolderService;
 import com.youxu.business.utils.OtherUtil.TreeUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,6 +19,7 @@ public class FolderServiceImpl implements FolderService {
     private FolderMapper folderMapper;
     @Resource
     private DocumentMapper documentMapper;
+
     @Override
     public Integer insertFolder(Folder folder) {
         return folderMapper.insertFolder(folder);
@@ -30,9 +33,9 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public Folder selectFolderCatalog(Folder folder) {
         Integer id = folder.getId();
-        Folder folderContainer  = folderMapper.selectFolderById(id);
+        Folder folderContainer = folderMapper.selectFolderById(id);
         List<Folder> folders = folderMapper.selectFolderCatalog(folder);
-        List<Document> documents= documentMapper.selectDocument(folder);
+        List<Document> documents = documentMapper.selectDocument(folder);
         folderContainer.setFolderList(folders);
         folderContainer.setDocumentList(documents);
         return folderContainer;
@@ -41,7 +44,41 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public List<Folder> selectFolderAndDocument(Folder folder) {
         List<Folder> folders = folderMapper.selectFolderAndDocument(folder);
-        List<Folder> folders1 = TreeUtil.listToTree(folders);
-        return folders1;
+        List<Folder> foldersNew = TreeUtil.listToTree(folders);
+        return foldersNew;
+    }
+
+    @Override
+    public Folder selectFolderAndDocumentByUserIdAndFolderId(Folder folder) {
+        List<Folder> folders = folderMapper.selectFolderAndDocument(folder);
+        List<Folder> foldersListNew = TreeUtil.listToTree(folders);
+        Folder getFolderAndDocumentByIdAndUserId = null;
+        // 从总文件目录中获取某一文件目录文件及文件夹
+        for (Folder folderNew : foldersListNew) {
+            if (folderNew.getId() == folder.getId()) {
+                return folderNew;
+            }
+            getFolderAndDocumentByIdAndUserId = getFolderAndDocumentByIdAndUserId(folderNew.getFolderList(), folder.getId());
+        }
+        return getFolderAndDocumentByIdAndUserId;
+    }
+
+    /**
+     * 递归：获取文件和文件夹通过文件夹id和用户id
+     * @param foldersNew
+     * @param folderId
+     * @return
+     */
+    private Folder getFolderAndDocumentByIdAndUserId(List<Folder> foldersNew, Integer folderId) {
+        for (Folder folder : foldersNew) {
+            if (folder.getId() == folderId) {
+                return folder;
+            }
+            List<Folder> folderList = folder.getFolderList();
+            if (folderList != null && folderList.size() >= 1 && folderList.get(0) != null) {
+                return getFolderAndDocumentByIdAndUserId(folderList, folderId);
+            }
+        }
+        return null;
     }
 }

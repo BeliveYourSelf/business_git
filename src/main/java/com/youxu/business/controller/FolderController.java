@@ -65,7 +65,8 @@ public class FolderController {
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",selectFolderAndDocument);
     }
 
-    @ApiOperation(value = "查看树形某文件下的文件夹和文件", notes = "id , {\"userId\":\"1\"}")
+    @ApiOperation(value = "查看树形某文件下的文件夹和文件", notes = "{\"id\":\"5\"\n" +
+            ",\"userId\":\"1\"}")
     @PostMapping("/selectFolderAndDocumentByUserIdAndFolderId")
     public ResponseMessage<Folder> selectFolderAndDocumentByUserIdAndFolderId(@RequestBody Folder folder) {
         Folder selectFolderAndDocumentByUserIdAndFolderId = folderService.selectFolderAndDocumentByUserIdAndFolderId(folder);
@@ -73,6 +74,22 @@ public class FolderController {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",selectFolderAndDocumentByUserIdAndFolderId);
+    }
+
+    @ApiOperation(value = "删除文件和者文件夹", notes = "{\"documentListId\": [\n" +
+            "    1,2\n" +
+            "  ],\n" +
+            "  \"folderListId\": [\n" +
+            "    1\n" +
+            "  ]\n" +
+            "}     folderListId:文件夹Id集合 documentListId：文件Id集合")
+    @PostMapping("/deleteFolderAndDocumentByUserIdAndFolderIdListAndDocumentListId")
+    public ResponseMessage<Folder> deleteFolderAndDocumentByUserIdAndFolderIdListAndDocumentListId(@RequestBody Folder folder) {
+        Integer deleteFolderAndDocumentByUserIdAndFolderIdListAndDocumentListId = folderService.deleteFolderAndDocumentByUserIdAndFolderIdListAndDocumentListId(folder);
+        if (deleteFolderAndDocumentByUserIdAndFolderIdListAndDocumentListId <= 0) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
     }
 
 

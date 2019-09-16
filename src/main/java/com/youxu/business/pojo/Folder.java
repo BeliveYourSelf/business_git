@@ -23,7 +23,12 @@ public class Folder {
 
     // 新增
     private List<Folder> folderList;
+
     private List<Document> documentList;
+
+    private List<Integer> folderListId;
+
+    private List<Integer> documentListId;
 
 
 

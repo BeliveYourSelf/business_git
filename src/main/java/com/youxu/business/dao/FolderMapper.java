@@ -29,4 +29,6 @@ public interface FolderMapper {
     Folder selectFolderById(Integer id);
     // 查看树形文件夹和文件
     List<Folder> selectFolderAndDocument(@Param("folder") Folder folder);
+    // 删除文件夹集合
+    Integer deleteFolderList(@Param("folderListId") List<Integer> folderListId);
 }

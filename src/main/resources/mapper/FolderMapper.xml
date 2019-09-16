@@ -285,6 +285,15 @@
     from tb_folder
     left join tb_document on tb_folder.id = tb_document.folder_id
     where tb_folder.status = false  and tb_folder.user_id = #{folder.userId}
+    and (tb_document.status = false or tb_document.status is null)
   </select>
-
+  <!--删除文件夹-->
+  <update id="deleteFolderList">
+    update tb_folder
+    set tb_folder.status = true
+    where tb_folder.id in
+    <foreach collection="folderListId" index="index" open="(" close=")" separator="," item="folderId">
+      #{folderId}
+    </foreach>
+  </update>
 </mapper>

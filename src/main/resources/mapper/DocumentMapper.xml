@@ -91,7 +91,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.youxu.business.pojo.Document">
+    <insert id="insert" parameterType="com.youxu.business.pojo.Document">
     insert into tb_document (id, user_id, folder_id, 
       document_url, create_time, modify_time, 
       status)
@@ -202,5 +202,14 @@
     from tb_document
     where folder_id = #{record.id} and user_id = #{record.userId} and status = false
   </select>
+  <!--删除文件-->
+  <update id="deleteDocumentList">
+    update tb_document
+    set tb_document.status = true
+    where tb_document.folder_id in
+    <foreach collection="documentListId" index="index" open="(" close=")" separator="," item="documentId">
+      #{documentId}
+    </foreach>
+  </update>
 
 </mapper>

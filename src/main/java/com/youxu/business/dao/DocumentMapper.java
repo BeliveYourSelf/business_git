@@ -22,4 +22,6 @@ public interface DocumentMapper {
     int updateByExample(@Param("record") Document record, @Param("example") DocumentExample example);
     // 查看文件夹下一级文件列表
     List<Document> selectDocument(@Param("record") Folder record);
+    // 删除文件
+    Integer deleteDocumentList(@Param("documentListId")List<Integer> documentListId);
 }

@@ -165,73 +165,73 @@ public class AccessTokenExample {
             return (Criteria) this;
         }
 
-        public Criteria andTbAccessTokenIsNull() {
-            addCriterion("tb_access_token is null");
+        public Criteria andAccessTokenIsNull() {
+            addCriterion("access_token is null");
             return (Criteria) this;
         }
 
-        public Criteria andTbAccessTokenIsNotNull() {
-            addCriterion("tb_access_token is not null");
+        public Criteria andAccessTokenIsNotNull() {
+            addCriterion("access_token is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTbAccessTokenEqualTo(String value) {
-            addCriterion("tb_access_token =", value, "tbAccessToken");
+        public Criteria andAccessTokenEqualTo(String value) {
+            addCriterion("access_token =", value, "accessToken");
             return (Criteria) this;
         }
 
-        public Criteria andTbAccessTokenNotEqualTo(String value) {
-            addCriterion("tb_access_token <>", value, "tbAccessToken");
+        public Criteria andAccessTokenNotEqualTo(String value) {
+            addCriterion("access_token <>", value, "accessToken");
             return (Criteria) this;
         }
 
-        public Criteria andTbAccessTokenGreaterThan(String value) {
-            addCriterion("tb_access_token >", value, "tbAccessToken");
+        public Criteria andAccessTokenGreaterThan(String value) {
+            addCriterion("access_token >", value, "accessToken");
             return (Criteria) this;
         }
 
-        public Criteria andTbAccessTokenGreaterThanOrEqualTo(String value) {
-            addCriterion("tb_access_token >=", value, "tbAccessToken");
+        public Criteria andAccessTokenGreaterThanOrEqualTo(String value) {
+            addCriterion("access_token >=", value, "accessToken");
             return (Criteria) this;
         }
 
-        public Criteria andTbAccessTokenLessThan(String value) {
-            addCriterion("tb_access_token <", value, "tbAccessToken");
+        public Criteria andAccessTokenLessThan(String value) {
+            addCriterion("access_token <", value, "accessToken");
             return (Criteria) this;
         }
 
-        public Criteria andTbAccessTokenLessThanOrEqualTo(String value) {
-            addCriterion("tb_access_token <=", value, "tbAccessToken");
+        public Criteria andAccessTokenLessThanOrEqualTo(String value) {
+            addCriterion("access_token <=", value, "accessToken");
             return (Criteria) this;
         }
 
-        public Criteria andTbAccessTokenLike(String value) {
-            addCriterion("tb_access_token like", value, "tbAccessToken");
+        public Criteria andAccessTokenLike(String value) {
+            addCriterion("access_token like", value, "accessToken");
             return (Criteria) this;
         }
 
-        public Criteria andTbAccessTokenNotLike(String value) {
-            addCriterion("tb_access_token not like", value, "tbAccessToken");
+        public Criteria andAccessTokenNotLike(String value) {
+            addCriterion("access_token not like", value, "accessToken");
             return (Criteria) this;
         }
 
-        public Criteria andTbAccessTokenIn(List<String> values) {
-            addCriterion("tb_access_token in", values, "tbAccessToken");
+        public Criteria andAccessTokenIn(List<String> values) {
+            addCriterion("access_token in", values, "accessToken");
             return (Criteria) this;
         }
 
-        public Criteria andTbAccessTokenNotIn(List<String> values) {
-            addCriterion("tb_access_token not in", values, "tbAccessToken");
+        public Criteria andAccessTokenNotIn(List<String> values) {
+            addCriterion("access_token not in", values, "accessToken");
             return (Criteria) this;
         }
 
-        public Criteria andTbAccessTokenBetween(String value1, String value2) {
-            addCriterion("tb_access_token between", value1, value2, "tbAccessToken");
+        public Criteria andAccessTokenBetween(String value1, String value2) {
+            addCriterion("access_token between", value1, value2, "accessToken");
             return (Criteria) this;
         }
 
-        public Criteria andTbAccessTokenNotBetween(String value1, String value2) {
-            addCriterion("tb_access_token not between", value1, value2, "tbAccessToken");
+        public Criteria andAccessTokenNotBetween(String value1, String value2) {
+            addCriterion("access_token not between", value1, value2, "accessToken");
             return (Criteria) this;
         }
 

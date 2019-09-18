@@ -38,16 +38,28 @@ public class ShareServiceImpl implements ShareService {
     public Share insertShare(Share share) throws ParseException {
         //更新accessToken
         String userIdAndInvitationCode = share.getShareUserId().toString();
-        if(share.getExtactionCodeStatus()){
             String shareCode = UUIDUtils.generateShortUuid();
-             userIdAndInvitationCode = userIdAndInvitationCode + "," + shareCode;
+             userIdAndInvitationCode = userIdAndInvitationCode + "#" + shareCode;
             share.setExtactionCode(shareCode);
-        }
         String qrCodePath = updateAccessTokenAndCreateQRcode(userIdAndInvitationCode);
         share.setQrCode(qrCodePath);
         shareMapper.insertShare(share);
         int shareId = orderMapper.lastInsertId();
         Share shareNew = shareMapper.selectShareById(shareId);
+        return shareNew;
+    }
+
+    @Override
+    public Share selectShareByUserIdAndExtactionCode(Share share) {
+        Share shareNew = shareMapper.selectShareByUserIdAndExtactionCode(share);
+        // 判断文件过期
+        Date periodOfValidity = shareNew.getPeriodOfValidity();
+        Date date = new Date();
+        long nowTime = date.getTime();
+        long periodOfValidityTime = periodOfValidity.getTime();
+        if(nowTime-periodOfValidityTime>0){
+            return null;
+        }
         return shareNew;
     }
 

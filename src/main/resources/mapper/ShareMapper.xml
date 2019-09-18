@@ -325,5 +325,11 @@
     from tb_share
     where tb_share.id = #{id} and tb_share.status = false
   </select>
+  <!--查看分享通过用户id和分享码-->
+  <select id="selectShareByUserIdAndExtactionCode" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tb_share
+    where tb_share.share_user_id = #{share.shareUserId} and tb_share.extaction_code = #{share.extactionCode}
+  </select>
 
 </mapper>

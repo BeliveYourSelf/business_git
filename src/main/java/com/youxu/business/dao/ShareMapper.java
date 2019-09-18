@@ -23,4 +23,6 @@ public interface ShareMapper {
     Integer insertShare(Share share);
     // 查看分享表通过id
     Share selectShareById(int shareId);
+    // 查看分享通过用户id和分享码
+    Share selectShareByUserIdAndExtactionCode(@Param("share")Share share);
 }

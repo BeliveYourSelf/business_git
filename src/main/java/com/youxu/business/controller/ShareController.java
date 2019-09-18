@@ -1,5 +1,6 @@
 package com.youxu.business.controller;
 
+import com.youxu.business.pojo.Harvest;
 import com.youxu.business.pojo.Share;
 import com.youxu.business.service.ShareService;
 import com.youxu.business.utils.Enum.ResultCodeEnum;
@@ -36,5 +37,16 @@ public class ShareController {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",insertShare);
+    }
+
+    @ApiOperation(value = "查看分享通过用户id和分享码", notes = "{\"shareUserId\":\"588\"\n" +
+            ",\"extactionCode\":\"VQB9\"} shareUserId:分享人用户id   extactionCode：提取码")
+    @PostMapping("/selectShareByUserIdAndExtactionCode")
+    public ResponseMessage<Share> selectShareByUserIdAndExtactionCode(@RequestBody Share share) {
+        Share selectShareByUserIdAndExtactionCode= shareService.selectShareByUserIdAndExtactionCode(share);
+        if (StringUtils.isEmpty(selectShareByUserIdAndExtactionCode)) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "暂无收获地址");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectShareByUserIdAndExtactionCode);
     }
 }

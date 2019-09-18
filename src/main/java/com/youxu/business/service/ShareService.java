@@ -6,4 +6,6 @@ import java.text.ParseException;
 
 public interface ShareService {
     Share insertShare(Share share) throws ParseException;
+
+    Share selectShareByUserIdAndExtactionCode(Share share);
 }

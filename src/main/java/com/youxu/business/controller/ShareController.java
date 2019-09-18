@@ -49,4 +49,5 @@ public class ShareController {
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectShareByUserIdAndExtactionCode);
     }
+
 }

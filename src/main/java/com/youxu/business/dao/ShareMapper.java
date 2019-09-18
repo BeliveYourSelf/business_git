@@ -20,5 +20,7 @@ public interface ShareMapper {
 
     int updateByExample(@Param("record") Share record, @Param("example") ShareExample example);
     // 新增分享表
-    Integer insertShare(@Param("record") Share record);
+    Integer insertShare(Share share);
+    // 查看分享表通过id
+    Share selectShareById(int shareId);
 }

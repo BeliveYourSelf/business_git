@@ -7,25 +7,20 @@ import com.youxu.business.service.BaseService;
 import com.youxu.business.utils.HttpTools.HttpResult;
 import com.youxu.business.utils.HttpTools.HttpTool;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import javax.annotation.Resource;
 import java.util.Map;
 
 /*通过code获取openid*/
-@Configuration
 @Component
 public class RequestApiTool extends BaseService {
 
     @Autowired
     public HttpTool httpTool;
 
-    @Resource
-    private RequestApiTool requestApiTool;
   /*  @Bean
     public RestTemplate httpTool() {
         return new RestTemplate();
@@ -53,7 +48,7 @@ public class RequestApiTool extends BaseService {
     //微信平台获得accesstoken和更新状况
     public AccessToken getAccessTokenMethod() {
         String accessToken = null;
-        JSONObject accessToken1 = requestApiTool.getAccessToken();//获取accessToken
+        JSONObject accessToken1 = getAccessToken();//获取accessToken
         Map<String, Object> map = accessToken1;//获取JSONObject对象里面的accessToken
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             if (entry.getKey().equals("access_token")) {

@@ -258,7 +258,7 @@
     </if>
   </update>
 <!--新增分享表-->
-  <insert id="insertShare">
+  <insert id="insertShare" parameterType="com.youxu.business.pojo.Share">
     insert into tb_share
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="shareUserId != null">
@@ -319,5 +319,11 @@
         false,
     </trim>
   </insert>
+<!--查看分享表通过id-->
+  <select id="selectShareById" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tb_share
+    where tb_share.id = #{id} and tb_share.status = false
+  </select>
 
 </mapper>

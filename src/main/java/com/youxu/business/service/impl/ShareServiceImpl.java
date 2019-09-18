@@ -1,5 +1,7 @@
 package com.youxu.business.service.impl;
 
+import com.youxu.business.dao.AccessTokenMapper;
+import com.youxu.business.dao.OrderMapper;
 import com.youxu.business.dao.ShareMapper;
 import com.youxu.business.pojo.AccessToken;
 import com.youxu.business.pojo.Share;
@@ -25,20 +27,28 @@ public class ShareServiceImpl implements ShareService {
     @Resource
     private ShareMapper shareMapper;
     @Resource
+    private AccessTokenMapper accessTokenMapper;
+    @Resource
     private AccessTokenService accessTokenService;
+    @Resource
+    private RequestApiTool requestApiTool;
+    @Resource
+    private OrderMapper orderMapper;
     @Override
-    public Integer insertShare(Share share) throws ParseException {
+    public Share insertShare(Share share) throws ParseException {
         //更新accessToken
-        String shareUserId = share.getShareUserId().toString();
-
-        StringBuffer userId = new StringBuffer(shareUserId);
-        String shareCode = UUIDUtils.generateShortUuid();
-        String userIdAndInvitationCode = userId + "," + shareCode;
-
-        ShareServiceImpl shareService = new ShareServiceImpl();
-        String qrCodePath = shareService.updateAccessTokenAndCreateQRcode(userIdAndInvitationCode);
+        String userIdAndInvitationCode = share.getShareUserId().toString();
+        if(share.getExtactionCodeStatus()){
+            String shareCode = UUIDUtils.generateShortUuid();
+             userIdAndInvitationCode = userIdAndInvitationCode + "," + shareCode;
+            share.setExtactionCode(shareCode);
+        }
+        String qrCodePath = updateAccessTokenAndCreateQRcode(userIdAndInvitationCode);
         share.setQrCode(qrCodePath);
-        return shareMapper.insertShare(share);
+        shareMapper.insertShare(share);
+        int shareId = orderMapper.lastInsertId();
+        Share shareNew = shareMapper.selectShareById(shareId);
+        return shareNew;
     }
 
     /**
@@ -48,7 +58,7 @@ public class ShareServiceImpl implements ShareService {
      * @throws ParseException
      */
     public String updateAccessTokenAndCreateQRcode(String userIdAndInvitationCode) throws ParseException {
-        AccessToken accessToken = accessTokenService.selectAccessToken();
+        AccessToken accessToken = accessTokenMapper.selectAccessToken();
         String modifyTimeString = accessToken.getModifyTimeString();
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date dataBaseTime = sdf1.parse(modifyTimeString);
@@ -62,7 +72,6 @@ public class ShareServiceImpl implements ShareService {
         long min = diff /1000/60;
         logger.info("时间差大于是否60分钟---------------------"+min+"现在时间："+date.getTime()+"数据库accessToken更新时间:"+dataBaseTime.getTime());
         if (min >=60) {
-            RequestApiTool requestApiTool = new RequestApiTool();
             AccessToken accessTokenMethod = requestApiTool.getAccessTokenMethod();//微信平台获得accesstoken和更新状况
             int i = accessTokenService.updateToken(accessTokenMethod.getAccessToken());//超过两小时更新accessToken
             String accessTokenNew = accessTokenMethod.getAccessToken();

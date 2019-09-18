@@ -19,6 +19,8 @@ public interface CollectionMapper {
     int updateByExampleSelective(@Param("record") Collection record, @Param("example") CollectionExample example);
 
     int updateByExample(@Param("record") Collection record, @Param("example") CollectionExample example);
-//  新增收藏
+    // 新增收藏
     Integer insertCollection(Collection collection);
+    // 查看收藏列表
+    List<Collection> selectCollection(@Param("collection") Collection collection);
 }

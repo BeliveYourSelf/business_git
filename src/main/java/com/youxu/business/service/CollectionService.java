@@ -10,4 +10,6 @@ public interface CollectionService {
     Integer insertCollection(Collection collection);
 
     PageInfo<Collection> selectCollection(Collection collection);
+
+    Integer deleteCollection(String[] arrayCollectionId);
 }

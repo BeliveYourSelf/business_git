@@ -256,5 +256,15 @@
         left join tb_share on tb_collection.share_id = tb_share.id
         where tb_collection.collection_user_id = #{collection.collectionUserId} and tb_collection.status = false
     </select>
+    <!--删除收藏列表-->
+    <update id="deleteCollection">
+        update tb_collection
+        set tb_collection.status = TRUE
+        where
+        tb_collection.id IN
+        <foreach collection="ids" item="id" separator="," open="(" close=")" index="index">
+            #{id}
+        </foreach>
+    </update>
 
 </mapper>

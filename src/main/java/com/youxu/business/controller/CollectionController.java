@@ -9,10 +9,7 @@ import com.youxu.business.utils.ResponseUtil.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -45,5 +42,15 @@ public class CollectionController {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",selectCollection);
+    }
+
+    @ApiOperation(value = "删除收藏列表", notes = "1,2")
+    @GetMapping("/deleteCollection")
+    public ResponseMessage<Integer> deleteCollection(String[] arrayCollectionId) {
+        Integer deleteCollection = collectionService.deleteCollection(arrayCollectionId);
+        if (deleteCollection <= 0) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",deleteCollection);
     }
 }

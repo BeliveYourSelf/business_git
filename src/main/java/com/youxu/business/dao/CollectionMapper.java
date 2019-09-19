@@ -23,4 +23,6 @@ public interface CollectionMapper {
     Integer insertCollection(Collection collection);
     // 查看收藏列表
     List<Collection> selectCollection(@Param("collection") Collection collection);
+    // 删除收藏列表
+    Integer deleteCollection(@Param("ids") List<String> ids);
 }

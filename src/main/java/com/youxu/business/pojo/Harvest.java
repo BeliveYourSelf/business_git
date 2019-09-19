@@ -25,5 +25,13 @@ public class Harvest extends PageInfo{
 
     private Integer distributionCategory;
 
+    private String addtionalName;
 
+    private String additionalMobilePhone;
+
+    private String cityRegion;
+
+    private String serviceScope;
+
+    private String addtionalInfo;
 }

@@ -12,6 +12,11 @@
     <result column="harvest_address_modify_time" jdbcType="TIMESTAMP" property="harvestAddressModifyTime" />
     <result column="harvest_address_status" jdbcType="BIT" property="harvestAddressStatus" />
     <result column="distribution_category" jdbcType="INTEGER" property="distributionCategory" />
+    <result column="addtional_name"  property="addtionalName" />
+    <result column="additional_mobile_phone"  property="additionalMobilePhone" />
+    <result column="city_region"  property="cityRegion" />
+    <result column="service_scope"  property="serviceScope" />
+    <result column="addtional_info"  property="addtionalInfo" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -74,7 +79,7 @@
   <sql id="Base_Column_List">
     id, user_id, harvest_address_name, harvest_address_mobile_phone, harvest_address_receiving_address, 
     harvest_address_default_address, harvest_address_create_time, harvest_address_modify_time, 
-    harvest_address_status, distribution_category
+    harvest_address_status, distribution_category, addtional_name, additional_mobile_phone,city_region, service_scope, addtional_info
   </sql>
   <select id="selectByExample" parameterType="com.youxu.business.pojo.HarvestExample" resultMap="BaseResultMap">
     select
@@ -258,10 +263,24 @@
       <if test="distributionCategory != null">
         distribution_category,
       </if>
+      <if test="addtionalName != null">
+        addtional_name,
+      </if>
+      <if test="additionalMobilePhone != null">
+        additional_mobile_phone,
+      </if>
+      <if test="cityRegion != null">
+        city_region,
+      </if>
+      <if test="serviceScope != null">
+        service_scope,
+      </if>
+      <if test="addtionalInfo != null">
+        addtional_info,
+      </if>
         harvest_address_create_time,
         harvest_address_modify_time,
         harvest_address_status,
-
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -279,9 +298,24 @@
       <if test="harvestAddressReceivingAddress != null">
         #{harvestAddressReceivingAddress,jdbcType=VARCHAR},
       </if>
-        "",
+      0,
       <if test="distributionCategory != null">
         #{distributionCategory,jdbcType=INTEGER},
+      </if>
+      <if test="addtionalName != null">
+        #{addtionalName},
+      </if>
+      <if test="additionalMobilePhone != null">
+        #{additionalMobilePhone},
+      </if>
+      <if test="cityRegion != null">
+        #{cityRegion},
+      </if>
+      <if test="serviceScope != null">
+        #{serviceScope},
+      </if>
+      <if test="addtionalInfo != null">
+        #{addtionalInfo},
       </if>
         now(),
         now(),
@@ -312,6 +346,21 @@
       </if>
       <if test="record.distributionCategory != null">
         distribution_category = #{record.distributionCategory,jdbcType=INTEGER},
+      </if>
+      <if test="record.addtionalName != null">
+        addtional_name = #{record.addtionalName},
+      </if>
+      <if test="record.additionalMobilePhone != null">
+        additional_mobile_phone = #{record.additionalMobilePhone},
+      </if>
+      <if test="record.cityRegion != null">
+        city_region = #{record.cityRegion},
+      </if>
+      <if test="record.serviceScope != null">
+        service_scope = #{record.serviceScope},
+      </if>
+      <if test="record.addtionalInfo != null">
+        addtional_info = #{record.addtionalInfo},
       </if>
       harvest_address_modify_time = now(),
     </set>

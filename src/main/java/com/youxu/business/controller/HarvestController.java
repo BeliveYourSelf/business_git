@@ -21,11 +21,16 @@ public class HarvestController {
     @Resource
     private HarvestService harvestService;
 
-    @ApiOperation(value = "新增收获地址", notes = "{\"userId\":\"1\",\n" +
-            "\"harvestAddressName\":\"李文轩\",\n" +
-            "\"harvestAddressMobilePhone\":\"13652157270\"\n" +
-            ",\"harvestAddressReceivingAddress\":\"天津市宁河区宁河镇\",\n" +
-            "\"distributionCategory\":\"1\"}   distributionCategory:配送类别：1.及时配送  2.快递配送")
+    @ApiOperation(value = "新增收获地址", notes = "{\"userId\":\"1\"\n" +
+            ", \"harvestAddressName\":\"李文轩\"\n" +
+            ", \"harvestAddressMobilePhone\":\"13652157270\"\n" +
+            " ,\"harvestAddressReceivingAddress\":\"天津市宁河区宁河镇\"\n" +
+            ",\"addtionalName\":\"陈凯\"\n" +
+            ",\"additionalMobilePhone\":\"13802132525\"\n" +
+            ",\"cityRegion\":\"天津市西青区\"\n" +
+            ",\"serviceScope\":\"天津工业大学\"\n" +
+            ",\"addtionalInfo\":\"教学楼A楼\"\n" +
+            ", \"distributionCategory\":\"1\"}  addtionalName:备用人姓名  additionalMobilePhone：备用人联系电话  cityRegion：城市/区域  serviceScope：服务范围 addtionalInfo：备注信息 distributionCategory:配送类别：1.及时配送  2.快递配送")
     @PostMapping("/insertHarvestAddress")
     public ResponseMessage insertHarvestAddress(@RequestBody Harvest harvest) {
         Integer insertHarvestAddress= harvestService.insertHarvestAddress(harvest);

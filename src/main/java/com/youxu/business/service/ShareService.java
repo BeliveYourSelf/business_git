@@ -8,4 +8,6 @@ public interface ShareService {
     Share insertShare(Share share) throws ParseException;
 
     Share selectShareByUserIdAndExtactionCode(Share share);
+
+    Share selectShareById(String id);
 }

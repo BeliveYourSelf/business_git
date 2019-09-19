@@ -63,6 +63,12 @@ public class ShareServiceImpl implements ShareService {
         return shareNew;
     }
 
+    @Override
+    public Share selectShareById(String id) {
+        Share share = shareMapper.selectShareById(Integer.valueOf(id));
+        return share;
+    }
+
     /**
      * 生成二维码
      * @param userIdAndInvitationCode

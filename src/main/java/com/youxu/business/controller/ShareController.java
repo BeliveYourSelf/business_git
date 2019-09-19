@@ -49,4 +49,14 @@ public class ShareController {
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectShareByUserIdAndExtactionCode);
     }
 
+    @ApiOperation(value = "再次分享", notes = "id   分享表的id")
+    @GetMapping("/selectShareById")
+    public ResponseMessage<Share> selectShareById(@RequestParam String id) {
+        Share selectShareById= shareService.selectShareById(id);
+        if (StringUtils.isEmpty(selectShareById)) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectShareById);
+    }
+
 }

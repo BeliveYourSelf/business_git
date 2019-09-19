@@ -22,14 +22,8 @@ public class ShareController {
     private ShareService shareService;
 
 
-    @ApiOperation(value = "新增分享", notes = "{\n" +
-            "  \"downloadDuplicatedPrintMoney\": 10,\n" +
-            "  \"downloadDuplicatedPrintStatus\": 1,\n" +
-            "  \"extactionCodeStatus\": true,\n" +
-            "  \"periodOfValidity\": \"2019-09-17T10:44:11.950Z\",\n" +
-            "  \"shareUserId\": 1,\n" +
-            "  \"usreHeadImage\": \"/image/4654653498/10231.jpeg\"\n" +
-            "}      downloadDuplicatedPrintStatus: 1.资源打印售价  2.资源转存下载售价 3.不可下载或转存    downloadDuplicatedPrintMoney: 资源打印售价/资源转存下载售价(double)  extactionCodeStatus: 是否有提取码(true/false)  ")
+    @ApiOperation(value = "新增分享", notes = "{ \"downloadDuplicatedPrintMoney\": 10, \"downloadDuplicatedPrintStatus\": 1, \"extactionCodeStatus\": true, \"periodOfValidity\": \"2019-09-17T10:44:11.950Z\", \"shareUserId\": 1, \"usreHeadImage\": \"/image/4654653498/10231.jpeg\"\n" +
+            ",\"shareContentUrl\":\"xxxxxxxxxxxxxxxx\" }   shareContentUrl:文件内容路径   downloadDuplicatedPrintStatus: 1.资源打印售价  2.资源转存下载售价 3.不可下载或转存    downloadDuplicatedPrintMoney: 资源打印售价/资源转存下载售价(double)  extactionCodeStatus: 是否有提取码(true/false)  ")
     @PostMapping("/insertShare")
     public ResponseMessage<Share> insertShare(@RequestBody Share share) throws ParseException {
         Share insertShare = shareService.insertShare(share);

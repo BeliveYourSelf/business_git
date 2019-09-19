@@ -11,6 +11,7 @@
     <result column="download_duplicated_print_money" jdbcType="DOUBLE" property="downloadDuplicatedPrintMoney" />
     <result column="qr_code" jdbcType="VARCHAR" property="qrCode" />
     <result column="usre_head_image" jdbcType="VARCHAR" property="usreHeadImage" />
+    <result column="share_content_url" jdbcType="VARCHAR" property="shareContentUrl" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
     <result column="status" jdbcType="BIT" property="status" />
@@ -75,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, share_user_id, period_of_validity, extaction_code_status, extaction_code, download_duplicated_print_status, 
-    download_duplicated_print_money, qr_code, usre_head_image, create_time, modify_time, 
+    download_duplicated_print_money, qr_code, usre_head_image, share_content_url, create_time, modify_time,
     status
   </sql>
   <select id="selectByExample" parameterType="com.youxu.business.pojo.ShareExample" resultMap="BaseResultMap">
@@ -285,6 +286,9 @@
       <if test="usreHeadImage != null">
         usre_head_image,
       </if>
+      <if test="shareContentUrl != null">
+        share_content_url,
+      </if>
         create_time,
         modify_time,
         status,
@@ -313,6 +317,9 @@
       </if>
       <if test="usreHeadImage != null">
         #{usreHeadImage,jdbcType=VARCHAR},
+      </if>
+      <if test="shareContentUrl != null">
+        #{shareContentUrl,jdbcType=VARCHAR},
       </if>
         now(),
         now(),

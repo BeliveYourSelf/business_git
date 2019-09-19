@@ -23,6 +23,8 @@ public class Share {
 
     private String usreHeadImage;
 
+    private String shareContentUrl;
+
     private Date createTime;
 
     private Date modifyTime;

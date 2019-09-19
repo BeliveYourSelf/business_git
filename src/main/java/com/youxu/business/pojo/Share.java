@@ -2,6 +2,7 @@ package com.youxu.business.pojo;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 @Data
 public class Share {
@@ -17,7 +18,9 @@ public class Share {
 
     private Boolean downloadDuplicatedPrintStatus;
 
-    private Double downloadDuplicatedPrintMoney;
+    private BigDecimal resourcePrintMoney;
+
+    private BigDecimal resourceSaveDownloadMoney;
 
     private String qrCode;
 

@@ -7,6 +7,7 @@ import com.youxu.business.pojo.AccessToken;
 import com.youxu.business.pojo.Share;
 import com.youxu.business.service.AccessTokenService;
 import com.youxu.business.service.ShareService;
+import com.youxu.business.utils.transicatetool.DateTransform;
 import com.youxu.business.utils.uuid.TimeProblem;
 import com.youxu.business.utils.uuid.UUIDUtils;
 import com.youxu.business.utils.wechat.qrcode.MiniAppCode;
@@ -14,9 +15,11 @@ import com.youxu.business.utils.wechat.requestapitool.RequestApiTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -53,10 +56,11 @@ public class ShareServiceImpl implements ShareService {
     public Share selectShareByUserIdAndExtactionCode(Share share) {
         Share shareNew = shareMapper.selectShareByUserIdAndExtactionCode(share);
         // 判断文件过期
-        Date periodOfValidity = shareNew.getPeriodOfValidity();
+        String periodOfValidity = shareNew.getPeriodOfValidity();
+        Date periodOfValidityNew = DateTransform.stringFormatTransToDate(periodOfValidity);
         Date date = new Date();
         long nowTime = date.getTime();
-        long periodOfValidityTime = periodOfValidity.getTime();
+        long periodOfValidityTime = periodOfValidityNew.getTime();
         if(nowTime-periodOfValidityTime>0){
             return null;
         }
@@ -67,6 +71,12 @@ public class ShareServiceImpl implements ShareService {
     public Share selectShareById(String id) {
         Share share = shareMapper.selectShareById(Integer.valueOf(id));
         return share;
+    }
+
+    @Override
+    public Share downloadShare(Share share) {
+        Share shareNew = shareMapper.downloadShare(share);
+        return shareNew;
     }
 
     /**

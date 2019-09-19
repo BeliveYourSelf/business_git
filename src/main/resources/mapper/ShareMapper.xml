@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.youxu.business.pojo.Share">
     <result column="id" jdbcType="INTEGER" property="id" />
     <result column="share_user_id" jdbcType="INTEGER" property="shareUserId" />
-    <result column="period_of_validity" jdbcType="TIMESTAMP" property="periodOfValidity" />
+    <result column="period_of_validity"  property="periodOfValidity" />
     <result column="extaction_code_status" jdbcType="BIT" property="extactionCodeStatus" />
     <result column="extaction_code" jdbcType="VARCHAR" property="extactionCode" />
     <result column="download_duplicated_print_status" jdbcType="BIT" property="downloadDuplicatedPrintStatus" />
@@ -106,7 +106,7 @@
       qr_code, usre_head_image,
       create_time, modify_time, status
       )
-    values (#{id,jdbcType=INTEGER}, #{shareUserId,jdbcType=INTEGER}, #{periodOfValidity,jdbcType=TIMESTAMP}, 
+    values (#{id,jdbcType=INTEGER}, #{shareUserId,jdbcType=INTEGER}, #{periodOfValidity},
       #{extactionCodeStatus,jdbcType=BIT}, #{extactionCode,jdbcType=VARCHAR}, #{downloadDuplicatedPrintStatus,jdbcType=BIT}, 
       #{qrCode,jdbcType=VARCHAR}, #{usreHeadImage,jdbcType=VARCHAR},
       #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{status,jdbcType=BIT}
@@ -157,7 +157,7 @@
         #{shareUserId,jdbcType=INTEGER},
       </if>
       <if test="periodOfValidity != null">
-        #{periodOfValidity,jdbcType=TIMESTAMP},
+        #{periodOfValidity},
       </if>
       <if test="extactionCodeStatus != null">
         #{extactionCodeStatus,jdbcType=BIT},
@@ -201,7 +201,7 @@
         share_user_id = #{record.shareUserId,jdbcType=INTEGER},
       </if>
       <if test="record.periodOfValidity != null">
-        period_of_validity = #{record.periodOfValidity,jdbcType=TIMESTAMP},
+        period_of_validity = #{record.periodOfValidity},
       </if>
       <if test="record.extactionCodeStatus != null">
         extaction_code_status = #{record.extactionCodeStatus,jdbcType=BIT},
@@ -236,7 +236,7 @@
     update tb_share
     set id = #{record.id,jdbcType=INTEGER},
       share_user_id = #{record.shareUserId,jdbcType=INTEGER},
-      period_of_validity = #{record.periodOfValidity,jdbcType=TIMESTAMP},
+      period_of_validity = #{record.periodOfValidity},
       extaction_code_status = #{record.extactionCodeStatus,jdbcType=BIT},
       extaction_code = #{record.extactionCode,jdbcType=VARCHAR},
       download_duplicated_print_status = #{record.downloadDuplicatedPrintStatus,jdbcType=BIT},
@@ -292,7 +292,7 @@
         #{shareUserId,jdbcType=INTEGER},
       </if>
       <if test="periodOfValidity != null">
-        #{periodOfValidity,jdbcType=TIMESTAMP},
+        #{periodOfValidity},
       </if>
       <if test="extactionCodeStatus != null">
         #{extactionCodeStatus,jdbcType=BIT},
@@ -334,6 +334,12 @@
     select <include refid="Base_Column_List"/>
     from tb_share
     where tb_share.share_user_id = #{share.shareUserId} and tb_share.extaction_code = #{share.extactionCode}
+  </select>
+  <!--查看下载分享-->
+  <select id="downloadShare" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    FROM tb_share
+    where tb_share.id = #{share.id} and tb_share.status = false
   </select>
 
 </mapper>

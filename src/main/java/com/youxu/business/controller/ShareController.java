@@ -6,6 +6,7 @@ import com.youxu.business.service.ShareService;
 import com.youxu.business.utils.Enum.ResultCodeEnum;
 import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
+import com.youxu.business.utils.transicatetool.DateTransform;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.util.StringUtils;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
+import java.util.Date;
 
 @RequestMapping("/api")
 @RestController
@@ -35,28 +37,62 @@ public class ShareController {
         if (StringUtils.isEmpty(insertShare)) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",insertShare);
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", insertShare);
     }
 
     @ApiOperation(value = "查看分享通过用户id和分享码", notes = "{\"shareUserId\":\"588\"\n" +
             ",\"extactionCode\":\"VQB9\"} shareUserId:分享人用户id   extactionCode：提取码")
     @PostMapping("/selectShareByUserIdAndExtactionCode")
     public ResponseMessage<Share> selectShareByUserIdAndExtactionCode(@RequestBody Share share) {
-        Share selectShareByUserIdAndExtactionCode= shareService.selectShareByUserIdAndExtactionCode(share);
+        Share selectShareByUserIdAndExtactionCode = shareService.selectShareByUserIdAndExtactionCode(share);
         if (StringUtils.isEmpty(selectShareByUserIdAndExtactionCode)) {
-            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "暂无收获地址");
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "已过期");
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectShareByUserIdAndExtactionCode);
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", selectShareByUserIdAndExtactionCode);
     }
 
     @ApiOperation(value = "再次分享", notes = "id   分享表的id")
     @GetMapping("/selectShareById")
     public ResponseMessage<Share> selectShareById(@RequestParam String id) {
-        Share selectShareById= shareService.selectShareById(id);
+        Share selectShareById = shareService.selectShareById(id);
         if (StringUtils.isEmpty(selectShareById)) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectShareById);
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", selectShareById);
+    }
+
+    @ApiOperation(value = "下载", notes = "{\"id\":\"2\"\n" +
+            ",\"extactionCode\":\"VVka\"}     id: 分享表id   extactionCode: 提取码")
+    @PostMapping("/downloadShare")
+    public ResponseMessage<Share> downloadShare(@RequestBody Share share) {
+        Share downloadShare = shareService.downloadShare(share);
+        // 分享已过期
+        if (!StringUtils.isEmpty(downloadShare) && StringUtils.isEmpty(expireDate(downloadShare))) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "文件过期");
+        }
+        // 提取码错误
+        if (!StringUtils.isEmpty(downloadShare) && downloadShare.getExtactionCodeStatus() && StringUtils.isEmpty(share.getExtactionCode()) && share.getExtactionCode() != downloadShare.getExtactionCode()) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "提取码错误");
+        }
+        if (StringUtils.isEmpty(downloadShare)) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        // 判断是否为会员
+        // 调起支付
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", downloadShare);
+    }
+
+    public Share expireDate(Share shareNew) {
+// 判断文件过期
+        String periodOfValidity = shareNew.getPeriodOfValidity();
+        Date periodOfValidityNew = DateTransform.stringFormatTransToDate(periodOfValidity);
+        Date date = new Date();
+        long nowTime = date.getTime();
+        long periodOfValidityTime = periodOfValidityNew.getTime();
+        if (nowTime - periodOfValidityTime > 0) {
+            return null;  //过期
+        }
+        return shareNew;
     }
 
 }

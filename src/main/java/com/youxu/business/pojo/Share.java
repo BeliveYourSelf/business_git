@@ -10,7 +10,7 @@ public class Share {
 
     private Integer shareUserId;
 
-    private Date periodOfValidity;
+    private String periodOfValidity;
 
     private Boolean extactionCodeStatus;
 

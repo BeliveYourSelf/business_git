@@ -10,4 +10,6 @@ public interface ShareService {
     Share selectShareByUserIdAndExtactionCode(Share share);
 
     Share selectShareById(String id);
+
+    Share downloadShare(Share share);
 }

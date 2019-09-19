@@ -25,4 +25,6 @@ public interface ShareMapper {
     Share selectShareById(int shareId);
     // 查看分享通过用户id和分享码
     Share selectShareByUserIdAndExtactionCode(@Param("share")Share share);
+    // 查看下载分享
+    Share downloadShare(@Param("share")Share share);
 }

@@ -7,10 +7,7 @@ import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -31,4 +28,15 @@ public class StoreController {
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectStoreList);
     }
+
+    @ApiOperation(value = "查看距离最近店铺表", notes = "")
+    @PostMapping("/selectStoreList")
+    public ResponseMessage<Store> selectStore(@RequestBody Store store) {
+        Store selectStore =storeService.selectStore(store);
+        if (org.springframework.util.StringUtils.isEmpty(selectStore)) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "暂无店铺");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectStore);
+    }
+
 }

@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface StoreService {
     List<Store> selectStoreList();
+
+    Store selectStore(Store store);
 }

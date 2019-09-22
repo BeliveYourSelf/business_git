@@ -27,6 +27,12 @@ public class OrderDetails {
     @ApiModelProperty(name = "orderDetailsTotalPrice",value = "订单明细总价")
     private Double orderDetailsTotalPrice;
 
+    @ApiModelProperty(name = "orderSpecName",value = "规格名称（文档打印使用）")
+    private String orderSpecName;
+
+    @ApiModelProperty(name = "orderDetailsCountColour",value = "商品彩色数量（文档打印使用）")
+    private String orderDetailsCountColour;
+
     @ApiModelProperty(name = "orderDetailsCreateTime",value = "订单明细创建时间")
     private Date orderDetailsCreateTime;
 
@@ -35,4 +41,6 @@ public class OrderDetails {
 
     @ApiModelProperty(name = "orderDetailsStatus",value = "订单明细状态")
     private Boolean orderDetailsStatus;
+
+
 }

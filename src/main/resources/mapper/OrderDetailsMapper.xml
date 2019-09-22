@@ -9,9 +9,12 @@
     <result column="order_details_one_picture_url" jdbcType="VARCHAR" property="orderDetailsOnePictureUrl" />
     <result column="order_details_typesetting_picture_url" jdbcType="VARCHAR" property="orderDetailsTypesettingPictureUrl" />
     <result column="order_details_total_price" jdbcType="DOUBLE" property="orderDetailsTotalPrice" />
+    <result column="order_spec_name"  property="orderSpecName" />
+    <result column="order_details_count_colour"  property="orderDetailsCountColour" />
     <result column="order_details_create_time" jdbcType="TIMESTAMP" property="orderDetailsCreateTime" />
     <result column="order_details_modify_time" jdbcType="TIMESTAMP" property="orderDetailsModifyTime" />
     <result column="order_details_status" jdbcType="BIT" property="orderDetailsStatus" />
+
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -73,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, order_id, order_details_name, order_details_count, order_details_one_picture_url, 
-    order_details_typesetting_picture_url, order_details_total_price, order_details_create_time, 
+    order_details_typesetting_picture_url, order_details_total_price, order_spec_name, order_details_count_colour, order_details_create_time,
     order_details_modify_time, order_details_status
   </sql>
   <select id="selectByExample" parameterType="com.youxu.business.pojo.OrderDetailsExample" resultMap="BaseResultMap">
@@ -245,6 +248,8 @@
         order_details_one_picture_url,
         order_details_typesetting_picture_url,
         order_details_total_price,
+        order_spec_name,
+        order_details_count_colour,
         order_details_create_time,
         order_details_modify_time,
         order_details_status,
@@ -258,6 +263,8 @@
       #{orderDetails.orderDetailsOnePictureUrl,jdbcType=VARCHAR},
       #{orderDetails.orderDetailsTypesettingPictureUrl,jdbcType=VARCHAR},
       #{orderDetails.orderDetailsTotalPrice,jdbcType=DOUBLE},
+      #{orderDetails.orderSpecName},
+      #{orderDetails.orderDetailsCountColour},
       now(),
       now(),
       false

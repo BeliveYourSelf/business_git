@@ -51,7 +51,8 @@
         <!--<table tableName="tb_share" domainObjectName="Share"/>-->
         <!--<table tableName="tb_collection" domainObjectName="Collection"/>-->
         <!--<table tableName="tb_access_token" domainObjectName="AccessToken"/>-->
-        <table tableName="tb_store" domainObjectName="Store"/>
+        <!--<table tableName="tb_store" domainObjectName="Store"/>-->
+        <table tableName="tb_banner" domainObjectName="Banner"/>
 
     </context>
 </generatorConfiguration>

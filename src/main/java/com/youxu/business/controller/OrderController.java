@@ -20,26 +20,34 @@ public class OrderController {
     private OrderService orderService;
 
     @ApiOperation(value = "新增订单", notes = "{ \"orderActualMoney\": \"100\"\n" +
-            ", \"orderAddresseeAddress\": \"天津市立晟科技\"\n" +
-            ", \"orderAddresseeName\": \"李文轩\"\n" +
-            ", \"orderAddresseePhone\": \"13652157270\"\n" +
-            ", \"orderConsumeMoney\": 10\n" +
-            ", \"orderCouponMoney\": 10\n" +
-            ", \"orderDeliveryMoney\": \"10\", \"orderDeliveryPrescriptioTime\": \"60\"\n" +
-            ", \"orderDetailsList\": [ { \"orderDetailsCount\": 10\n" +
+            " , \"orderAddresseeAddress\": \"天津市立晟科技\" \n" +
+            ", \"orderAddresseeName\": \"李文轩\" \n" +
+            ", \"orderAddresseePhone\": \"13652157270\" \n" +
+            ", \"orderConsumeMoney\": 10 \n" +
+            ", \"orderCouponMoney\": 10 \n" +
+            ", \"orderDeliveryMoney\": \"10\"\n" +
+            ", \"orderDeliveryPrescriptioTime\": \"60\" \n" +
+            ", \"orderDetailsList\": [ { \"orderDetailsCount\": 10 \n" +
             ",\"orderDetailsName\":\"文档打印pdf\"\n" +
-            ",\"orderDetailsOnePictureUrl\":\"xxxx\"\n" +
+            ",\"orderDetailsOnePictureUrl\":\"xxxx\" \n" +
             ",\"orderDetailsTotalPrice\":\"200\"\n" +
-            ",\"orderSpecName\":\"一寸6合一横板\"\n" +
+            ",\"orderSpecName\":\"一寸6合一横板\" \n" +
             ",\"orderDetailsCountColour\":\"10\"\n" +
-            "}]\n" +
-            ", \"orderExtraMoney\": 10\n" +
-            ", \"orderFromStoreGet\": \"3\"\n" +
-            ", \"orderFromStoreGetWhere\": \"天津工业大学1号宿舍楼\"\n" +
-            ", \"orderPrintMoney\": \"10\"\n" +
-            ", \"orderProcess\": 1\n" +
-            ", \"orderType\": 1\n" +
-            ", \"storeId\": 1\n" +
+            " ,\"orderDetailsBookBinding\": {\n" +
+            "        \"coverColor\": \"黑色\",\n" +
+            "        \"coverFileUrl\": \"xxx\",\n" +
+            "        \"faceDirection\": \"横向\"\n" +
+            "    \n" +
+            "      }\n" +
+            " }\n" +
+            "] \n" +
+            ", \"orderExtraMoney\": 10 \n" +
+            ", \"orderFromStoreGet\": \"3\" \n" +
+            ", \"orderFromStoreGetWhere\": \"天津工业大学1号宿舍楼\" \n" +
+            ", \"orderPrintMoney\": \"10\" \n" +
+            ", \"orderProcess\": 1 \n" +
+            ", \"orderType\": 1 \n" +
+            ", \"storeId\": 1 \n" +
             ", \"userId\": 1 }")
     @PostMapping("/insertOrder")
     public ResponseMessage<Integer> insertOrder(@RequestBody Order order) {

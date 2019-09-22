@@ -42,5 +42,9 @@ public class OrderDetails {
     @ApiModelProperty(name = "orderDetailsStatus",value = "订单明细状态")
     private Boolean orderDetailsStatus;
 
+    // 新增
+    @ApiModelProperty(name = "orderDetailsBookBinding",value = "装订订单明细表")
+    private OrderDetailsBookBinding orderDetailsBookBinding;
+
 
 }

@@ -1,10 +1,12 @@
 package com.youxu.business.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.youxu.business.dao.OrderDetailsBookBindingMapper;
 import com.youxu.business.dao.OrderDetailsMapper;
 import com.youxu.business.dao.OrderMapper;
 import com.youxu.business.pojo.Order;
 import com.youxu.business.pojo.OrderDetails;
+import com.youxu.business.pojo.OrderDetailsBookBinding;
 import com.youxu.business.service.OrderService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -18,19 +20,31 @@ public class OrderServiceImpl implements OrderService {
     private OrderMapper orderMapper;
     @Resource
     private OrderDetailsMapper orderDetailsMapper;
+    @Resource
+    private OrderDetailsBookBindingMapper orderDetailsBookBindingMapper;
 
     @Override
     public Integer insertOrder(Order order) {
         Integer insertOrder = orderMapper.insertOrder(order);
-        if(!StringUtils.isEmpty(order)){
+        if (!StringUtils.isEmpty(order)) {
             int orderId = orderMapper.lastInsertId();
             List<OrderDetails> orderDetailsList = order.getOrderDetailsList();
-            for(OrderDetails orderDetails:orderDetailsList){
+            for (OrderDetails orderDetails : orderDetailsList) {
                 orderDetails.setOrderId(orderId);
             }
-            if(orderDetailsList.size()>0){
-            Integer insertOrderDetails = orderDetailsMapper.insertOrderDetails(orderDetailsList);
+            if (orderDetailsList.size() > 0) {
+                Integer insertOrderDetails = orderDetailsMapper.insertOrderDetails(orderDetailsList);
+                int orderDetailsId = orderMapper.lastInsertId();
+                for (int i = 1; orderDetailsList.size() >= i; i++) {
+                    OrderDetailsBookBinding orderDetailsBookBinding = orderDetailsList.get(i-1).getOrderDetailsBookBinding();
+                    if (!StringUtils.isEmpty(orderDetailsBookBinding)) {
+                        orderDetailsBookBinding.setOrderDetailsId(orderDetailsId+i-1);//绑定订单明细和装订一对一关系
+                        orderDetailsBookBindingMapper.insertOrderDetailsBookBinding(orderDetailsBookBinding);
+
+                    }
+                }
             }
+
         }
         return insertOrder;
     }
@@ -39,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
     public Integer reminderOrder(Order order) {
         Integer id = order.getId();
         Integer orderType = order.getOrderType();
-        Integer reminderOrder = orderMapper.reminderOrder(id,orderType);
+        Integer reminderOrder = orderMapper.reminderOrder(id, orderType);
         return reminderOrder;
     }
 
@@ -76,6 +90,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Integer updateOrderPayDateAndProcess(Integer valueCode, Integer orderId, String orderPayDate) {
-        return orderMapper.updateOrderPayDateAndProcess(valueCode,orderId,orderPayDate);
+        return orderMapper.updateOrderPayDateAndProcess(valueCode, orderId, orderPayDate);
     }
 }

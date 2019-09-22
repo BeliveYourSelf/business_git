@@ -2,19 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.youxu.business.dao.OrderDetailsMapper">
   <resultMap id="BaseResultMap" type="com.youxu.business.pojo.OrderDetails">
-    <result column="id" jdbcType="INTEGER" property="id" />
-    <result column="order_id" jdbcType="INTEGER" property="orderId" />
-    <result column="order_details_name" jdbcType="VARCHAR" property="orderDetailsName" />
-    <result column="order_details_count" jdbcType="INTEGER" property="orderDetailsCount" />
-    <result column="order_details_one_picture_url" jdbcType="VARCHAR" property="orderDetailsOnePictureUrl" />
-    <result column="order_details_typesetting_picture_url" jdbcType="VARCHAR" property="orderDetailsTypesettingPictureUrl" />
-    <result column="order_details_total_price" jdbcType="DOUBLE" property="orderDetailsTotalPrice" />
-    <result column="order_spec_name"  property="orderSpecName" />
-    <result column="order_details_count_colour"  property="orderDetailsCountColour" />
-    <result column="order_details_create_time" jdbcType="TIMESTAMP" property="orderDetailsCreateTime" />
-    <result column="order_details_modify_time" jdbcType="TIMESTAMP" property="orderDetailsModifyTime" />
-    <result column="order_details_status" jdbcType="BIT" property="orderDetailsStatus" />
-
+    <result column="tb_order_detailsid" jdbcType="INTEGER" property="id" />
+    <result column="tb_order_detailsorder_id" jdbcType="INTEGER" property="orderId" />
+    <result column="tb_order_detailsorder_details_name" jdbcType="VARCHAR" property="orderDetailsName" />
+    <result column="tb_order_detailsorder_details_count" jdbcType="INTEGER" property="orderDetailsCount" />
+    <result column="tb_order_detailsorder_details_one_picture_url" jdbcType="VARCHAR" property="orderDetailsOnePictureUrl" />
+    <result column="tb_order_detailsorder_details_typesetting_picture_url" jdbcType="VARCHAR" property="orderDetailsTypesettingPictureUrl" />
+    <result column="tb_order_detailsorder_details_total_price" jdbcType="DOUBLE" property="orderDetailsTotalPrice" />
+    <result column="tb_order_detailsorder_spec_name"  property="orderSpecName" />
+    <result column="tb_order_detailsorder_details_count_colour"  property="orderDetailsCountColour" />
+    <result column="tb_order_detailsorder_details_create_time" jdbcType="TIMESTAMP" property="orderDetailsCreateTime" />
+    <result column="tb_order_detailsorder_details_modify_time" jdbcType="TIMESTAMP" property="orderDetailsModifyTime" />
+    <result column="tb_order_detailsorder_details_status" jdbcType="BIT" property="orderDetailsStatus" />
+    <association property="orderDetailsBookBinding" javaType="com.youxu.business.pojo.OrderDetailsBookBinding">
+    <result column="tb_order_details_book_bindingid"  property="id" />
+    <result column="tb_order_details_book_bindingorder_details_id"  property="orderDetailsId" />
+    <result column="tb_order_details_book_bindingcover_color"  property="coverColor" />
+    <result column="tb_order_details_book_bindingface_direction"  property="faceDirection" />
+    <result column="tb_order_details_book_bindingcover_file_url"  property="coverFileUrl" />
+    <result column="tb_order_details_book_bindingcreate_time"  property="createTime" />
+    <result column="tb_order_details_book_bindingmodify_time"  property="modifyTime" />
+    <result column="tb_order_details_book_bindingstatus"  property="status" />
+    </association>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -75,9 +84,28 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, order_id, order_details_name, order_details_count, order_details_one_picture_url, 
-    order_details_typesetting_picture_url, order_details_total_price, order_spec_name, order_details_count_colour, order_details_create_time,
-    order_details_modify_time, order_details_status
+    tb_order_details.id as tb_order_detailsid
+    , tb_order_details.order_id as tb_order_detailsorder_id
+    , tb_order_details.order_details_name as tb_order_detailsorder_details_name
+    , tb_order_details.order_details_count as tb_order_detailsorder_details_count
+    , tb_order_details.order_details_one_picture_url as tb_order_detailsorder_details_one_picture_url
+    , tb_order_details.order_details_typesetting_picture_url as tb_order_detailsorder_details_typesetting_picture_url
+    , tb_order_details.order_details_total_price as tb_order_detailsorder_details_total_price
+    , tb_order_details.order_spec_name as tb_order_detailsorder_spec_name
+    , tb_order_details.order_details_count_colour as tb_order_detailsorder_details_count_colour
+    , tb_order_details.order_details_create_time as tb_order_detailsorder_details_create_time
+    , tb_order_details.order_details_modify_time as tb_order_detailsorder_details_modify_time
+    , tb_order_details.order_details_status as tb_order_detailsorder_details_status
+  </sql>
+  <sql id="Base_Column_List_tb_order_details_book_binding">
+    tb_order_details_book_binding.id as tb_order_details_book_bindingid
+    , tb_order_details_book_binding.order_details_id as tb_order_details_book_bindingorder_details_id
+    , tb_order_details_book_binding.cover_color as tb_order_details_book_bindingcover_color
+    , tb_order_details_book_binding.face_direction as tb_order_details_book_bindingface_direction
+    , tb_order_details_book_binding.cover_file_url as tb_order_details_book_bindingcover_file_url
+    , tb_order_details_book_binding.create_time as tb_order_details_book_bindingcreate_time
+    , tb_order_details_book_binding.modify_time as tb_order_details_book_bindingmodify_time
+    , tb_order_details_book_binding.status as tb_order_details_book_bindingstatus
   </sql>
   <select id="selectByExample" parameterType="com.youxu.business.pojo.OrderDetailsExample" resultMap="BaseResultMap">
     select

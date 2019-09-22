@@ -52,7 +52,9 @@
         <!--<table tableName="tb_collection" domainObjectName="Collection"/>-->
         <!--<table tableName="tb_access_token" domainObjectName="AccessToken"/>-->
         <!--<table tableName="tb_store" domainObjectName="Store"/>-->
-        <table tableName="tb_banner" domainObjectName="Banner"/>
+        <!--<table tableName="tb_banner" domainObjectName="Banner"/>-->
+        <table tableName="tb_dictionary_document_size" domainObjectName="DictionaryDocumentSize"/>
+        <table tableName="tb_dictionary_document_imposition" domainObjectName="DictionaryDocumentImposition"/>
 
     </context>
 </generatorConfiguration>

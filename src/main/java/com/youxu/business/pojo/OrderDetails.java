@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
+
 @Data
 public class OrderDetails {
     @ApiModelProperty(name = "id",value = "订单明细id")
@@ -45,6 +47,9 @@ public class OrderDetails {
     // 新增
     @ApiModelProperty(name = "orderDetailsBookBinding",value = "装订订单明细表")
     private OrderDetailsBookBinding orderDetailsBookBinding;
+
+    @ApiModelProperty(name = "pictureUrlList",value = "文档链接集合")
+    private List<String> pictureUrlList;
 
 
 }

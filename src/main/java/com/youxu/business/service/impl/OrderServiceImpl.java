@@ -1,9 +1,7 @@
 package com.youxu.business.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.youxu.business.dao.OrderDetailsBookBindingMapper;
-import com.youxu.business.dao.OrderDetailsMapper;
-import com.youxu.business.dao.OrderMapper;
+import com.youxu.business.dao.*;
 import com.youxu.business.pojo.Order;
 import com.youxu.business.pojo.OrderDetails;
 import com.youxu.business.pojo.OrderDetailsBookBinding;
@@ -12,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,7 +21,10 @@ public class OrderServiceImpl implements OrderService {
     private OrderDetailsMapper orderDetailsMapper;
     @Resource
     private OrderDetailsBookBindingMapper orderDetailsBookBindingMapper;
-
+    @Resource
+    private OrderDetailsPictureMappingMapper orderDetailsPictureMappingMapper;
+    @Resource
+    private PictureMapper pictureMapper;
     @Override
     public Integer insertOrder(Order order) {
         Integer insertOrder = orderMapper.insertOrder(order);
@@ -40,6 +42,16 @@ public class OrderServiceImpl implements OrderService {
                     if (!StringUtils.isEmpty(orderDetailsBookBinding)) {
                         orderDetailsBookBinding.setOrderDetailsId(orderDetailsId+i-1);//绑定订单明细和装订一对一关系
                         orderDetailsBookBindingMapper.insertOrderDetailsBookBinding(orderDetailsBookBinding);
+                        int orderDetailsBookBindingId = orderMapper.lastInsertId();
+                        List<String> pictureUrlList = orderDetailsList.get(i - 1).getPictureUrlList();
+                        pictureMapper.insertPictureMapper(pictureUrlList);
+                        int pictureFirstId = orderMapper.lastInsertId();
+                        int size = pictureUrlList.size();
+                        List<Integer> pictureIdList = new ArrayList<>();
+                        for(int j = 1; size >= j; j++){
+                            pictureIdList.add(pictureFirstId+j-1);
+                        }
+                        orderDetailsPictureMappingMapper.insertOrderDetailsPictrueMapping(orderDetailsBookBindingId,pictureIdList);
 
                     }
                 }

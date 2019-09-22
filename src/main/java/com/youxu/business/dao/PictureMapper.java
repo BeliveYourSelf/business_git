@@ -19,4 +19,6 @@ public interface PictureMapper {
     int updateByExampleSelective(@Param("record") Picture record, @Param("example") PictureExample example);
 
     int updateByExample(@Param("record") Picture record, @Param("example") PictureExample example);
+
+    int insertPictureMapper(@Param("pictureUrlList")List<String> pictureUrlList);
 }

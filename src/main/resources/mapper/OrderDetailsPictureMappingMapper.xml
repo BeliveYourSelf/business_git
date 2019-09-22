@@ -109,7 +109,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.youxu.business.pojo.OrderDetailsPictureMappingExample" resultType="java.lang.Long">
+    <select id="countByExample" parameterType="com.youxu.business.pojo.OrderDetailsPictureMappingExample" resultType="java.lang.Long">
     select count(*) from tb_order_details_picture_mapping
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -137,4 +137,16 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+  <!--新增图片和文档映射-->
+  <insert id="insertOrderDetailsPictrueMapping">
+    insert into tb_order_details_picture_mapping
+    (order_details_id,
+        picture_id)
+        values
+        <foreach collection="pictureIdList" index="index"  separator="," item="pictureId">
+          (#{orderDetailsBookBindingId,jdbcType=INTEGER},
+        #{pictureId,jdbcType=INTEGER})
+        </foreach>
+  </insert>
+
 </mapper>

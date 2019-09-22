@@ -33,6 +33,10 @@ public class OrderController {
             ",\"orderDetailsTotalPrice\":\"200\"\n" +
             ",\"orderSpecName\":\"一寸6合一横板\" \n" +
             ",\"orderDetailsCountColour\":\"10\"\n" +
+            ",\"pictureUrlList\":[\n" +
+            "            \"string1\"\n" +
+            ",\"string2\"\n" +
+            "        ]\n" +
             " ,\"orderDetailsBookBinding\": {\n" +
             "        \"coverColor\": \"黑色\",\n" +
             "        \"coverFileUrl\": \"xxx\",\n" +

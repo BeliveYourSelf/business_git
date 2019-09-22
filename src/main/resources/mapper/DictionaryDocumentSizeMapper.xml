@@ -208,4 +208,11 @@
       status = #{status,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!--查看文档尺寸列表-->
+  <select id="selectDocumentSize" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tb_dictionary_document_size
+    where tb_dictionary_document_size.status = false
+  </select>
+
 </mapper>

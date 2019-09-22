@@ -3,6 +3,8 @@ package com.youxu.business.dao;
 import com.youxu.business.pojo.DictionaryDocumentSize;
 import com.youxu.business.pojo.DictionaryDocumentSizeExample;
 import java.util.List;
+
+import com.youxu.business.service.DictionaryDocumentSizeService;
 import org.apache.ibatis.annotations.Param;
 
 public interface DictionaryDocumentSizeMapper {
@@ -27,4 +29,6 @@ public interface DictionaryDocumentSizeMapper {
     int updateByPrimaryKeySelective(DictionaryDocumentSize record);
 
     int updateByPrimaryKey(DictionaryDocumentSize record);
+    // 查看文档尺寸列表
+    List<DictionaryDocumentSizeService> selectDocumentSize();
 }

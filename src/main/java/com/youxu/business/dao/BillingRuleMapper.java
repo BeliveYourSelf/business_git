@@ -25,5 +25,5 @@ public interface BillingRuleMapper {
 
     int updateByExample(@Param("record") BillingRule record, @Param("example") BillingRuleExample example);
     // 查看规则计费
-    BillingRule selectBillingRule();
+    BillingRule selectBillingRule(@Param("storeId") String storeId);
 }

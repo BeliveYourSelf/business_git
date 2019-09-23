@@ -3,6 +3,7 @@
 <mapper namespace="com.youxu.business.dao.BillingRuleMapper">
   <resultMap id="BaseResultMap" type="com.youxu.business.pojo.BillingRule">
     <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="store_id" jdbcType="INTEGER" property="storeId" />
     <result column="billing_rule_create_time" jdbcType="TIMESTAMP" property="billingRuleCreateTime" />
     <result column="billing_rule_modify_time" jdbcType="TIMESTAMP" property="billingRuleModifyTime" />
     <result column="billing_rule_status" jdbcType="BIT" property="billingRuleStatus" />
@@ -72,7 +73,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, billing_rule_create_time, billing_rule_modify_time, billing_rule_status
+    id, store_id, billing_rule_create_time, billing_rule_modify_time, billing_rule_status
   </sql>
   <sql id="Blob_Column_List">
     billing_rule_print, billing_rule_photo, billing_rule_delivery, billing_rule_pay_method
@@ -244,6 +245,6 @@
   <select id="selectBillingRule" resultMap="ResultMapWithBLOBs">
     select <include refid="Base_Column_List"/>,<include refid="Blob_Column_List"/>
     from tb_billing_rule
-    where billing_rule_status = false
+    where store_id = #{storeId} and billing_rule_status = false
   </select>
 </mapper>

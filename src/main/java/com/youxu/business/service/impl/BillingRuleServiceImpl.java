@@ -12,7 +12,7 @@ public class BillingRuleServiceImpl implements BillingRuleService {
     @Resource
     private BillingRuleMapper billingRuleMapper;
     @Override
-    public BillingRule selectBillingRule() {
-        return billingRuleMapper.selectBillingRule();
+    public BillingRule selectBillingRule(String storeId) {
+        return billingRuleMapper.selectBillingRule(storeId);
     }
 }

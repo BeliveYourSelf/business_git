@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -21,10 +22,10 @@ public class BillingRuleController {
     @Resource
     private BillingRuleService billingRuleService;
 
-    @ApiOperation(value = "查看计费规则", notes = "")
+    @ApiOperation(value = "查看计费规则", notes = "storeId")
     @GetMapping("/selectBillingRuleController")
-    public ResponseMessage<BillingRule> selectBillingRuleController() {
-        BillingRule billingRule =billingRuleService.selectBillingRule();
+    public ResponseMessage<BillingRule> selectBillingRuleController(@RequestParam String storeId) {
+        BillingRule billingRule =billingRuleService.selectBillingRule(storeId);
         if (StringUtils.isEmpty(billingRule)) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "暂无计费规则");
         }

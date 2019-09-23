@@ -1,9 +1,13 @@
 package com.youxu.business.pojo;
 
-import java.util.Date;
+import lombok.Data;
 
+import java.util.Date;
+@Data
 public class BillingRule {
     private Integer id;
+
+    private Integer storeId;
 
     private Date billingRuleCreateTime;
 
@@ -11,35 +15,5 @@ public class BillingRule {
 
     private Boolean billingRuleStatus;
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Date getBillingRuleCreateTime() {
-        return billingRuleCreateTime;
-    }
-
-    public void setBillingRuleCreateTime(Date billingRuleCreateTime) {
-        this.billingRuleCreateTime = billingRuleCreateTime;
-    }
-
-    public Date getBillingRuleModifyTime() {
-        return billingRuleModifyTime;
-    }
-
-    public void setBillingRuleModifyTime(Date billingRuleModifyTime) {
-        this.billingRuleModifyTime = billingRuleModifyTime;
-    }
-
-    public Boolean getBillingRuleStatus() {
-        return billingRuleStatus;
-    }
-
-    public void setBillingRuleStatus(Boolean billingRuleStatus) {
-        this.billingRuleStatus = billingRuleStatus;
-    }
 }

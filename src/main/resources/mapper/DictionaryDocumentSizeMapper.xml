@@ -3,6 +3,7 @@
 <mapper namespace="com.youxu.business.dao.DictionaryDocumentSizeMapper">
   <resultMap id="BaseResultMap" type="com.youxu.business.pojo.DictionaryDocumentSize">
     <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="store_id"  property="storeId" />
     <result column="document_size_name" jdbcType="VARCHAR" property="documentSizeName" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, document_size_name, create_time, modify_time, status
+    id, store_id, document_size_name, create_time, modify_time, status
   </sql>
   <select id="selectByExample" parameterType="com.youxu.business.pojo.DictionaryDocumentSizeExample" resultMap="BaseResultMap">
     select
@@ -212,7 +213,7 @@
   <select id="selectDocumentSize" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
     from tb_dictionary_document_size
-    where tb_dictionary_document_size.status = false
+    where tb_dictionary_document_size.store_id = #{storeId} and tb_dictionary_document_size.status = false
   </select>
 
 </mapper>

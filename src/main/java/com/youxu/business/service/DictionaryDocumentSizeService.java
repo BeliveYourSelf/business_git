@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface DictionaryDocumentSizeService {
 
-    List<DictionaryDocumentSizeService> selectDocumentSize();
+    List<DictionaryDocumentSizeService> selectDocumentSize(String storeId);
 }

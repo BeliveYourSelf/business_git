@@ -13,7 +13,7 @@ public class DictionaryDocumentSizeServiceImpl implements DictionaryDocumentSize
     private DictionaryDocumentSizeMapper dictionaryDocumentSizeMapper;
 
     @Override
-    public List<DictionaryDocumentSizeService> selectDocumentSize() {
-        return dictionaryDocumentSizeMapper.selectDocumentSize();
+    public List<DictionaryDocumentSizeService> selectDocumentSize(String storeId) {
+        return dictionaryDocumentSizeMapper.selectDocumentSize(storeId);
     }
 }

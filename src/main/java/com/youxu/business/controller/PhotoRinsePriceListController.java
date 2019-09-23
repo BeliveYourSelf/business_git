@@ -24,7 +24,7 @@ public class PhotoRinsePriceListController {
     @Resource
     private PhotoRinsePriceListService photoRinsePriceListService;
 
-    @ApiOperation(value = "查看照片冲印集合根据商户id", notes = "storeId")
+    @ApiOperation(value = "查看照片冲印价格集合根据商户id", notes = "storeId")
     @GetMapping("/selectPhotoRinsePriceList")
     public ResponseMessage<List<PhotoRinsePriceList>> selectPhotoRinsePriceList(@RequestParam String storeId) {
         List<PhotoRinsePriceList> photoRinsePriceList =photoRinsePriceListService.selectPhotoRinsePriceList(storeId);

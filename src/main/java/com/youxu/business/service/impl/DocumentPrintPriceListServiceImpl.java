@@ -25,12 +25,12 @@ public class DocumentPrintPriceListServiceImpl implements DocumentPrintPriceList
         int pdfPageNumber = documentPrintPriceList.getPageNumber();
         //查看价格
         Integer count = documentPrintPriceList.getCount();
-        String documentPrintPriceListCode = documentPrintPriceList.getDocumentPrintPriceListCode();
-        DocumentPrintPriceList documentPrintPriceListNew = documentPrintPriceListMapper.selectDocumentPrintPriceList(documentPrintPriceListCode);
+        DocumentPrintPriceList documentPrintPriceListNew = documentPrintPriceListMapper.selectDocumentPrintPriceList(documentPrintPriceList);
         //份数*单页价*页数
         Double documentPrintPriceListPrice = documentPrintPriceListNew.getDocumentPrintPriceListPrice();
         double totalPrice = count * documentPrintPriceListPrice * pdfPageNumber;
-        documentPrintPriceListNew.setDocumentPrintPriceListPrice(totalPrice);
+        documentPrintPriceListNew.setTotalPrice(totalPrice);
+        documentPrintPriceListNew.setDocumentPrintPriceListPrice(documentPrintPriceListPrice);
         documentPrintPriceListNew.setCount(count);
         documentPrintPriceListNew.setPageNumber(pdfPageNumber);
         return documentPrintPriceListNew;

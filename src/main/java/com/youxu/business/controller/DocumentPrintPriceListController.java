@@ -29,9 +29,8 @@ public class DocumentPrintPriceListController {
      * @param documentPrintPriceList
      * @return
      */
-    @ApiOperation(value = "获取文档打印价格", notes = "{\"count\":\"2\"\n" +
-            ",\"documentPrintPriceListCode\":\"1，2，3，4\"\n" +
-            ",\"pageNumber\":\"30\"}    count:份数，documentPrintPriceListCode:文档打印价格表排列组合, pageNumber:文件总页数")
+    @ApiOperation(value = "获取文档打印价格", notes = "{\"count\":\"2\" ,\"documentPrintPriceListCode\":\"1，2，3，4\" ,\"pageNumber\":\"30\"\n" +
+            ",\"storeId\":\"1\"}    count:份数，documentPrintPriceListCode:文档打印价格表排列组合, pageNumber:文件总页数      返回值：totalPrice  为总价")
     @PostMapping("/selectDocumentPrintPriceList")
     public ResponseMessage<DocumentPrintPriceList> selectDocumentPrintPriceList(@RequestBody DocumentPrintPriceList documentPrintPriceList) throws IOException {
         DocumentPrintPriceList documentPrintPriceListNew = documentPrintPriceListService.selectDocumentPrintPriceList(documentPrintPriceList);

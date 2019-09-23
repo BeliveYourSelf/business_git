@@ -28,5 +28,5 @@ public interface DictionaryDocumentImpositionMapper {
 
     int updateByPrimaryKey(DictionaryDocumentImposition record);
     // 查看文档拼版列表
-    List<DictionaryDocumentImposition> selectDocumentImposition();
+    List<DictionaryDocumentImposition> selectDocumentImposition(@Param("storeId")String storeId);
 }

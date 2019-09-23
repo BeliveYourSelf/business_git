@@ -5,5 +5,5 @@ import com.youxu.business.pojo.DictionaryDocumentImposition;
 import java.util.List;
 
 public interface DictionaryDocumentImpositionService {
-    List<DictionaryDocumentImposition> selectDocumentImposition();
+    List<DictionaryDocumentImposition> selectDocumentImposition(String storeId);
 }

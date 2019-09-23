@@ -13,7 +13,7 @@ public class DictionaryDocumentImpositionServiceImpl implements DictionaryDocume
     @Resource
     private DictionaryDocumentImpositionMapper dictionaryDocumentImpositionMapper;
     @Override
-    public List<DictionaryDocumentImposition> selectDocumentImposition() {
-        return dictionaryDocumentImpositionMapper.selectDocumentImposition();
+    public List<DictionaryDocumentImposition> selectDocumentImposition(String storeId) {
+        return dictionaryDocumentImpositionMapper.selectDocumentImposition(storeId);
     }
 }

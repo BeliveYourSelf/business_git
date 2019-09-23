@@ -214,7 +214,7 @@
   <select id="selectDocumentImposition" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
     from tb_dictionary_document_imposition
-    where tb_dictionary_document_imposition.status = false
+    where tb_dictionary_document_imposition.store_id = #{storeId} and tb_dictionary_document_imposition.status = false
   </select>
 
 </mapper>

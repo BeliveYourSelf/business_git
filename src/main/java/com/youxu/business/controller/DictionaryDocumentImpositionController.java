@@ -1,6 +1,5 @@
 package com.youxu.business.controller;
 
-import com.youxu.business.pojo.BillingRule;
 import com.youxu.business.pojo.DictionaryDocumentImposition;
 import com.youxu.business.service.DictionaryDocumentImpositionService;
 import com.youxu.business.utils.Enum.ResultCodeEnum;
@@ -8,9 +7,9 @@ import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -24,10 +23,10 @@ public class DictionaryDocumentImpositionController {
     @Resource
     private DictionaryDocumentImpositionService dictionaryDocumentImpositionService;
 
-    @ApiOperation(value = "查看文档拼版列表", notes = "")
+    @ApiOperation(value = "查看文档拼版列表", notes = "storeId")
     @GetMapping("/selectDocumentImposition")
-    public ResponseMessage<List<DictionaryDocumentImposition>> selectDocumentImposition() {
-        List<DictionaryDocumentImposition> selectDocumentImposition =dictionaryDocumentImpositionService.selectDocumentImposition();
+    public ResponseMessage<List<DictionaryDocumentImposition>> selectDocumentImposition(@RequestParam String storeId) {
+        List<DictionaryDocumentImposition> selectDocumentImposition =dictionaryDocumentImpositionService.selectDocumentImposition(storeId);
         if (selectDocumentImposition.size() <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }

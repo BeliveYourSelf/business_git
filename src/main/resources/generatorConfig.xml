@@ -55,7 +55,8 @@
         <!--<table tableName="tb_banner" domainObjectName="Banner"/>-->
         <!--<table tableName="tb_dictionary_document_size" domainObjectName="DictionaryDocumentSize"/>-->
         <!--<table tableName="tb_dictionary_document_imposition" domainObjectName="DictionaryDocumentImposition"/>-->
-        <table tableName="tb_order_details_book_binding" domainObjectName="OrderDetailsBookBinding"/>
+        <!--<table tableName="tb_order_details_book_binding" domainObjectName="OrderDetailsBookBinding"/>-->
+        <table tableName="tb_photo_rinse_price_list" domainObjectName="PhotoRinsePriceList"/>
 
     </context>
 </generatorConfiguration>

@@ -21,4 +21,6 @@ public interface DeliveryClerkInfoMapper {
     int updateByExample(@Param("record") DeliveryClerkInfo record, @Param("example") DeliveryClerkInfoExample example);
     // 新增配送员信息
     Integer insertDeliveryClerkInfo(DeliveryClerkInfo deliveryClerkInfo);
+    // 更新配送员信息
+    Integer updateDeliveryClerkInfo(@Param("record")DeliveryClerkInfo record);
 }

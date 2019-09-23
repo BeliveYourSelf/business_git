@@ -1,9 +1,10 @@
 package com.youxu.business.pojo;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.util.Date;
-
+@Data
 public class DeliveryClerkInfo {
     @ApiModelProperty(name = "id", value = "配送员id")
     private Integer id;

@@ -39,4 +39,25 @@ public class DeliveryClerkInfoController {
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功");
     }
+//    发送验证码
+
+
+    @ApiOperation(value = "更新配送员信息", notes = "{\n" +
+            "  \"deliveryClerkName\": \"李文轩\",\n" +
+            "  \"deliveryClerkPhone\": \"13652157270\",\n" +
+            "  \"emergencyPerson\": \"老李\",\n" +
+            "  \"emergencyPhone\": \"13652147414\",\n" +
+            "  \"idCardNum\": \"120221199512271411\",\n" +
+            "  \"idCardOtherSize\": \"xxxx\",\n" +
+            "  \"idCardPositive\": \"xxxxx\",\n" +
+            "  \"id\": 1\n" +
+            "}")
+    @PostMapping("/updateDeliveryClerkInfo")
+    public ResponseMessage updateDeliveryClerkInfo(@RequestBody DeliveryClerkInfo deliveryClerkInfo) {
+        Integer updateDeliveryClerkInfo= deliveryClerkInfoService.updateDeliveryClerkInfo(deliveryClerkInfo);
+        if (updateDeliveryClerkInfo<=0) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功");
+    }
 }

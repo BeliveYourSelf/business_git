@@ -16,4 +16,9 @@ public class DeliveryClerkInfoServiceImpl implements DeliveryClerkInfoService {
     public Integer insertDeliveryClerkInfo(DeliveryClerkInfo deliveryClerkInfo) {
         return deliveryClerkInfoMapper.insertDeliveryClerkInfo(deliveryClerkInfo);
     }
+
+    @Override
+    public Integer updateDeliveryClerkInfo(DeliveryClerkInfo deliveryClerkInfo) {
+        return deliveryClerkInfoMapper.updateDeliveryClerkInfo(deliveryClerkInfo);
+    }
 }

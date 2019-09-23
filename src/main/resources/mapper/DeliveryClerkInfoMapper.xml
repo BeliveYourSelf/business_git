@@ -281,7 +281,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-<!--新增配送员信息-->
+  <!--新增配送员信息-->
   <insert id="insertDeliveryClerkInfo" parameterType="com.youxu.business.pojo.DeliveryClerkInfo">
     insert into tb_delivery_clerk_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -355,5 +355,46 @@
         0,
     </trim>
   </insert>
+<!--更新配送员信息-->
+  <update id="updateDeliveryClerkInfo">
+    update tb_delivery_clerk_info
+    <set>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.deliveryClerkName != null">
+        delivery_clerk_name = #{record.deliveryClerkName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deliveryClerkPhone != null">
+        delivery_clerk_phone = #{record.deliveryClerkPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.emergencyPerson != null">
+        emergency_person = #{record.emergencyPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.emergencyPhone != null">
+        emergency_phone = #{record.emergencyPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idCardNum != null">
+        id_card_num = #{record.idCardNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idCardPositive != null">
+        id_card_positive = #{record.idCardPositive,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idCardOtherSize != null">
+        id_card_other_size = #{record.idCardOtherSize,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cumulativeDeliveryThisMonth != null">
+        cumulative_delivery_this_month = #{record.cumulativeDeliveryThisMonth,jdbcType=INTEGER},
+      </if>
+      <if test="record.cumulativeIncome != null">
+        cumulative_income = #{record.cumulativeIncome,jdbcType=DOUBLE},
+      </if>
+        modify_time = now(),
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{record.id} and status = false
+  </update>
 
 </mapper>

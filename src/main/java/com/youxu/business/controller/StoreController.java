@@ -29,8 +29,9 @@ public class StoreController {
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectStoreList);
     }
 
-    @ApiOperation(value = "查看距离最近店铺表", notes = "")
-    @PostMapping("/selectStoreList")
+    @ApiOperation(value = "查看距离最近店铺表", notes = "{\"storeLatitude\":\"11\"\n" +
+            ",\"storeLongitude\":\"11\"}    storeLatitude:纬度   storeLongitude经度 ")
+    @PostMapping("/selectStore")
     public ResponseMessage<Store> selectStore(@RequestBody Store store) {
         Store selectStore =storeService.selectStore(store);
         if (org.springframework.util.StringUtils.isEmpty(selectStore)) {

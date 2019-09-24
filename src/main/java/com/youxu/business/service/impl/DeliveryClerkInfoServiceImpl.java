@@ -4,11 +4,14 @@ import com.youxu.business.dao.DeliveryClerkInfoMapper;
 import com.youxu.business.dao.OrderMapper;
 import com.youxu.business.dao.SotreDeliveryMappingMapper;
 import com.youxu.business.pojo.DeliveryClerkInfo;
+import com.youxu.business.pojo.Order;
 import com.youxu.business.pojo.SotreDeliveryMapping;
 import com.youxu.business.service.DeliveryClerkInfoService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class DeliveryClerkInfoServiceImpl implements DeliveryClerkInfoService {
@@ -37,4 +40,6 @@ public class DeliveryClerkInfoServiceImpl implements DeliveryClerkInfoService {
     public DeliveryClerkInfo selectDeliveryClerkInfoByUserId(String userId) {
         return deliveryClerkInfoMapper.selectDeliveryClerkInfoByUserId(userId);
     }
+
+
 }

@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -145,5 +146,15 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Integer updateOrderPayDateAndProcess(Integer valueCode, Integer orderId, String orderPayDate) {
         return orderMapper.updateOrderPayDateAndProcess(valueCode, orderId, orderPayDate);
+    }
+
+    @Override
+    public List<Order> selectDeliveryFileByStoreIdList(String[] storeIds) {
+        return orderMapper.selectDeliveryFileByStoreIdList(Arrays.asList(storeIds));
+    }
+
+    @Override
+    public Order selectDeliveryFileByOrderId(String orderId) {
+        return orderMapper.selectDeliveryFileByOrderId(orderId);
     }
 }

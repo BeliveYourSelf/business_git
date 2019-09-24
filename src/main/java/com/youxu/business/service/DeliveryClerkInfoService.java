@@ -1,6 +1,10 @@
 package com.youxu.business.service;
 
 import com.youxu.business.pojo.DeliveryClerkInfo;
+import com.youxu.business.pojo.Order;
+
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 public interface DeliveryClerkInfoService {
     Integer insertDeliveryClerkInfo(DeliveryClerkInfo deliveryClerkInfo);
@@ -8,4 +12,5 @@ public interface DeliveryClerkInfoService {
     Integer updateDeliveryClerkInfo(DeliveryClerkInfo deliveryClerkInfo);
 
     DeliveryClerkInfo selectDeliveryClerkInfoByUserId(String userId);
+
 }

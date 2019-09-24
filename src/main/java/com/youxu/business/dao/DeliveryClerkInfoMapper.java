@@ -3,6 +3,8 @@ package com.youxu.business.dao;
 import com.youxu.business.pojo.DeliveryClerkInfo;
 import com.youxu.business.pojo.DeliveryClerkInfoExample;
 import java.util.List;
+
+import com.youxu.business.pojo.Order;
 import org.apache.ibatis.annotations.Param;
 
 public interface DeliveryClerkInfoMapper {
@@ -25,4 +27,5 @@ public interface DeliveryClerkInfoMapper {
     Integer updateDeliveryClerkInfo(@Param("record")DeliveryClerkInfo record);
     // 查看快递员信息
     DeliveryClerkInfo selectDeliveryClerkInfoByUserId(String userId);
+
 }

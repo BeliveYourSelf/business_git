@@ -610,7 +610,7 @@
     on tb_order.id = tb_order_details.order_id
     where order_process = #{order.orderProcess} and order_status = false
   </select>
-<!--更新支付状态和时间-->
+  <!--更新支付状态和时间-->
   <update id="updateOrderPayDateAndProcess">
     update tb_order
     <set>
@@ -624,5 +624,22 @@
     </set>
     where id = #{orderId}
   </update>
+  <!--查看取件列表通过商铺id.  order_from_store_get: 1.到店自取2.自助打印3.及时配送4.顺丰配送-->
+  <select id="selectDeliveryFileByStoreIdList" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tb_order
+    where tb_order.store_id IN
+    <foreach collection="storeIds" index="index" open="(" close=")" separator="," item="storeId">
+      #{storeId}
+    </foreach>
+    and tb_order.order_from_store_get = 3 and tb_order.order_status = false
+  </select>
+  <select id="selectDeliveryFileByOrderId" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>,<include refid="Base_Column_List_tb_order_details"/>
+    from tb_order
+    left join tb_order_details
+    on tb_order.id = tb_order_details.order_id
+    where tb_order.id = #{orderId} and order_status = false
+  </select>
 
 </mapper>

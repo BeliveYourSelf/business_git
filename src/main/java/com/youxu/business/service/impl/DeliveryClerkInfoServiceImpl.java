@@ -21,6 +21,7 @@ public class DeliveryClerkInfoServiceImpl implements DeliveryClerkInfoService {
 
     @Override
     public Integer insertDeliveryClerkInfo(DeliveryClerkInfo deliveryClerkInfo) {
+        deliveryClerkInfo.setAuditStatus(0);//待审核
         deliveryClerkInfoMapper.insertDeliveryClerkInfo(deliveryClerkInfo);
         int dliveryId = orderMapper.lastInsertId();
         deliveryClerkInfo.setId(dliveryId);

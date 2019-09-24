@@ -36,6 +36,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderDetailsPictureMappingMapper orderDetailsPictureMappingMapper;
     @Resource
     private PictureMapper pictureMapper;
+
     @Override
     public Integer insertOrder(Order order) throws Exception {
         // 邀请码
@@ -54,9 +55,9 @@ public class OrderServiceImpl implements OrderService {
                 Integer insertOrderDetails = orderDetailsMapper.insertOrderDetails(orderDetailsList);
                 int orderDetailsId = orderMapper.lastInsertId();
                 for (int i = 1; orderDetailsList.size() >= i; i++) {
-                    OrderDetailsBookBinding orderDetailsBookBinding = orderDetailsList.get(i-1).getOrderDetailsBookBinding();
+                    OrderDetailsBookBinding orderDetailsBookBinding = orderDetailsList.get(i - 1).getOrderDetailsBookBinding();
                     if (!StringUtils.isEmpty(orderDetailsBookBinding)) {
-                        orderDetailsBookBinding.setOrderDetailsId(orderDetailsId+i-1);//绑定订单明细和装订一对一关系
+                        orderDetailsBookBinding.setOrderDetailsId(orderDetailsId + i - 1);//绑定订单明细和装订一对一关系
                         orderDetailsBookBindingMapper.insertOrderDetailsBookBinding(orderDetailsBookBinding);
                         int orderDetailsBookBindingId = orderMapper.lastInsertId();
                         List<String> pictureUrlList = orderDetailsList.get(i - 1).getPictureUrlList();
@@ -64,10 +65,10 @@ public class OrderServiceImpl implements OrderService {
                         int pictureFirstId = orderMapper.lastInsertId();
                         int size = pictureUrlList.size();
                         List<Integer> pictureIdList = new ArrayList<>();
-                        for(int j = 1; size >= j; j++){
-                            pictureIdList.add(pictureFirstId+j-1);
+                        for (int j = 1; size >= j; j++) {
+                            pictureIdList.add(pictureFirstId + j - 1);
                         }
-                        orderDetailsPictureMappingMapper.insertOrderDetailsPictrueMapping(orderDetailsBookBindingId,pictureIdList);
+                        orderDetailsPictureMappingMapper.insertOrderDetailsPictrueMapping(orderDetailsBookBindingId, pictureIdList);
 
                     }
                 }
@@ -98,12 +99,14 @@ public class OrderServiceImpl implements OrderService {
         order.setDeliveryPickUpFileQRCodeUrl(uploadBlog);
         orderMapper.updateOrder(order);
     }
+
     public static MultipartFile fileTransToMultipartFile(String filePath) throws IOException {
         File file = new File(filePath);
         FileInputStream fileInputStream = new FileInputStream(file);
-        MultipartFile multipartFile = new MockMultipartFile("copy"+file.getName(),file.getName(), ContentType.APPLICATION_OCTET_STREAM.toString(),fileInputStream);
+        MultipartFile multipartFile = new MockMultipartFile("copy" + file.getName(), file.getName(), ContentType.APPLICATION_OCTET_STREAM.toString(), fileInputStream);
         return multipartFile;
     }
+
     @Override
     public Integer reminderOrder(Order order) {
         Integer id = order.getId();
@@ -161,6 +164,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Integer updateOrderToPickUp(Order order) {
         return orderMapper.updateOrderToPickUp(order);
+    }
+
+    @Override
+    public Integer updateDeliveryInfoToCompelete(Order order) {
+        Order orderNew = orderMapper.selectOrderById(order.getId().toString());
+        String deliveryHarvestCode = orderNew.getDeliveryHarvestCode();
+        if (!deliveryHarvestCode.equals(order.getDeliveryHarvestCode())) {
+            return -1;
+        }
+        return orderMapper.updateDeliveryInfoToCompelete(order);
     }
 
 

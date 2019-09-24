@@ -662,5 +662,11 @@
     set tb_order.delivery_id = #{order.deliveryId}
     where tb_order.id = #{order.id}
   </update>
+    <!--配送员确认完成订单-->
+    <update id="updateDeliveryInfoToCompelete">
+        update tb_order
+        set tb_order.delivery_status = #{order.deliveryStatus}
+        where tb_order.id = #{order.id}
+    </update>
 
 </mapper>

@@ -29,11 +29,11 @@ public class DeliveryClerkInfoController {
             ",\"storeId\":\"1\"}     具体字段名含义查看swagger中Model")
     @PostMapping("/insertDeliveryClerkInfo")
     public ResponseMessage insertDeliveryClerkInfo(@RequestBody DeliveryClerkInfo deliveryClerkInfo) {
-        Integer insertDeliveryClerkInfo= deliveryClerkInfoService.insertDeliveryClerkInfo(deliveryClerkInfo);
-        if (insertDeliveryClerkInfo<=0) {
+        Integer insertDeliveryClerkInfo = deliveryClerkInfoService.insertDeliveryClerkInfo(deliveryClerkInfo);
+        if (insertDeliveryClerkInfo <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功");
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
     }
 //    发送验证码
 
@@ -50,21 +50,21 @@ public class DeliveryClerkInfoController {
             "}")
     @PostMapping("/updateDeliveryClerkInfo")
     public ResponseMessage updateDeliveryClerkInfo(@RequestBody DeliveryClerkInfo deliveryClerkInfo) {
-        Integer updateDeliveryClerkInfo= deliveryClerkInfoService.updateDeliveryClerkInfo(deliveryClerkInfo);
-        if (updateDeliveryClerkInfo<=0) {
+        Integer updateDeliveryClerkInfo = deliveryClerkInfoService.updateDeliveryClerkInfo(deliveryClerkInfo);
+        if (updateDeliveryClerkInfo <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功");
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
     }
 
     @ApiOperation(value = "查看快递员信息", notes = "userId")
     @GetMapping("/selectDeliveryClerkInfoByUserId")
     public ResponseMessage<DeliveryClerkInfo> selectDeliveryClerkInfoByUserId(@RequestParam String userId) {
-        DeliveryClerkInfo deliveryClerkInfo =deliveryClerkInfoService.selectDeliveryClerkInfoByUserId(userId);
+        DeliveryClerkInfo deliveryClerkInfo = deliveryClerkInfoService.selectDeliveryClerkInfoByUserId(userId);
         if (StringUtils.isEmpty(deliveryClerkInfo)) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "暂无计费规则");
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",deliveryClerkInfo);
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", deliveryClerkInfo);
     }
 
 
@@ -74,34 +74,49 @@ public class DeliveryClerkInfoController {
             "storeIdList:店铺id集合  deliveryStatus： deliveryId：配送人id（注意：查看代取件时此字段什么都不传）deliveryStatus：1.待取件/2.配送中/3.问题件/4.已完成")
     @PostMapping("/selectDeliveryFileByStoreIdList")
     public ResponseMessage<List<Order>> selectDeliveryFileByStoreIdList(@RequestBody Order order) {
-        List<Order> selectDeliveryFileByStoreIdList =orderService.selectDeliveryFileByStoreIdList(order);
+        List<Order> selectDeliveryFileByStoreIdList = orderService.selectDeliveryFileByStoreIdList(order);
         if (selectDeliveryFileByStoreIdList.size() <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "暂无快递件");
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectDeliveryFileByStoreIdList);
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", selectDeliveryFileByStoreIdList);
     }
 
     @ApiOperation(value = "待取件详情", notes = "订单id")
     @GetMapping("/selectDeliveryFileByOrderId")
     public ResponseMessage<Order> selectDeliveryFileByOrderId(@RequestParam String orderId) {
-        Order selectDeliveryFileByOrderId =orderService.selectDeliveryFileByOrderId(orderId);
+        Order selectDeliveryFileByOrderId = orderService.selectDeliveryFileByOrderId(orderId);
         if (StringUtils.isEmpty(selectDeliveryFileByOrderId)) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectDeliveryFileByOrderId);
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", selectDeliveryFileByOrderId);
     }
 
     @ApiOperation(value = "取件", notes = "{\"id\":\"1\"\n" +
             ",\"deliveryId\":\"10\"}   id:订单id   deliveryId:配送员id")
     @PostMapping("/updateOrderToPickUp")
     public ResponseMessage updateOrderToPickUp(@RequestBody Order order) {
-        Integer updateOrderToPickUp= orderService.updateOrderToPickUp(order);
-        if (updateOrderToPickUp<=0) {
+        Integer updateOrderToPickUp = orderService.updateOrderToPickUp(order);
+        if (updateOrderToPickUp <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功");
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
     }
 
+    @ApiOperation(value = "配送员确认完成订单", notes = "{\"id\":\"1\"\n" +
+            ",\"deliveryHarvestCode\":\"uGO3\"\n" +
+            ",\"deliveryStatus\":\"2\"}   " +
+            "   id:订单id   deliveryHarvestCode：收货码")
+    @PostMapping("/updateDeliveryInfoToCompelete")
+    public ResponseMessage updateDeliveryInfoToCompelete(@RequestBody Order order) {
+        Integer updateDeliveryInfoToCompelete = orderService.updateDeliveryInfoToCompelete(order);
+        if (updateDeliveryInfoToCompelete == 0) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        if (updateDeliveryInfoToCompelete == -1) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(),"收获码错误");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
+    }
 
 
 }

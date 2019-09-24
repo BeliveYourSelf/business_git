@@ -41,4 +41,6 @@ public interface OrderMapper {
     Order selectDeliveryFileByOrderId(String orderId);
     // 取件
     Integer updateOrderToPickUp(@Param("order")Order order);
+    // 配送员确认完成订单
+    Integer updateDeliveryInfoToCompelete(@Param("order")Order order);
 }

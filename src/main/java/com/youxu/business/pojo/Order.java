@@ -95,4 +95,7 @@ public class Order extends PageInfo{
 
     private String openId;
 
+    @ApiModelProperty(name = "storeIdList",value = "商铺id集合")
+    private List<String> storeIdList;
+
 }

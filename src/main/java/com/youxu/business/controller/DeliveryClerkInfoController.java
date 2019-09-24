@@ -68,10 +68,13 @@ public class DeliveryClerkInfoController {
     }
 
 
-    @ApiOperation(value = "待取件", notes = "storeIds")
-    @GetMapping("/selectDeliveryFileByStoreIdList")
-    public ResponseMessage<List<Order>> selectDeliveryFileByStoreIdList(@NotNull @RequestParam String[] storeIds) {
-        List<Order> selectDeliveryFileByStoreIdList =orderService.selectDeliveryFileByStoreIdList(storeIds);
+    @ApiOperation(value = "查看待取件/配送中/问题件/已完成", notes = "{\"storeIdList\":[\"1\",\"2\"]\n" +
+            ",\"deliveryStatus\":\"1\"\n" +
+            ",\"deliveryId\":\"10\"}" +
+            "storeIdList:店铺id集合  deliveryStatus： deliveryId：配送人id（注意：查看代取件时此字段什么都不传）deliveryStatus：1.待取件/2.配送中/3.问题件/4.已完成")
+    @PostMapping("/selectDeliveryFileByStoreIdList")
+    public ResponseMessage<List<Order>> selectDeliveryFileByStoreIdList(@RequestBody Order order) {
+        List<Order> selectDeliveryFileByStoreIdList =orderService.selectDeliveryFileByStoreIdList(order);
         if (selectDeliveryFileByStoreIdList.size() <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "暂无快递件");
         }
@@ -98,6 +101,7 @@ public class DeliveryClerkInfoController {
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功");
     }
+
 
 
 }

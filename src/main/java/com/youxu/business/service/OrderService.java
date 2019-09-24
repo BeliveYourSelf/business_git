@@ -22,9 +22,10 @@ public interface OrderService {
 
     Integer updateOrderPayDateAndProcess(Integer valueCode, Integer orderId, String orderPayDate);
 
-    List<Order> selectDeliveryFileByStoreIdList(String[] storeIds);
+    List<Order> selectDeliveryFileByStoreIdList(Order order);
 
     Order selectDeliveryFileByOrderId(String orderId);
 
     Integer updateOrderToPickUp(Order order);
+
 }

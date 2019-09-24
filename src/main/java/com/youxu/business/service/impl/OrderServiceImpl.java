@@ -149,8 +149,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> selectDeliveryFileByStoreIdList(String[] storeIds) {
-        return orderMapper.selectDeliveryFileByStoreIdList(Arrays.asList(storeIds));
+    public List<Order> selectDeliveryFileByStoreIdList(Order order) {
+        return orderMapper.selectDeliveryFileByStoreIdList(order);
     }
 
     @Override
@@ -162,4 +162,6 @@ public class OrderServiceImpl implements OrderService {
     public Integer updateOrderToPickUp(Order order) {
         return orderMapper.updateOrderToPickUp(order);
     }
+
+
 }

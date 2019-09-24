@@ -47,4 +47,10 @@ public class DeliveryClerkInfo {
 
     @ApiModelProperty(name = "status", value = "显示状态")
     private Boolean status;
+
+//  新增
+    @ApiModelProperty(name = "storeId", value = "商铺id")
+    private Integer storeId;
+
+
 }

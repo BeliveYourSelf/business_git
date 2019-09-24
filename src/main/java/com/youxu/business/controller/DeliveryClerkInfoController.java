@@ -19,16 +19,8 @@ public class DeliveryClerkInfoController {
     @Resource
     private DeliveryClerkInfoService deliveryClerkInfoService;
 
-    @ApiOperation(value = "新增配送员信息", notes = "{\n" +
-            "  \"deliveryClerkName\": \"李文轩\",\n" +
-            "  \"deliveryClerkPhone\": \"13652157270\",\n" +
-            "  \"emergencyPerson\": \"老李\",\n" +
-            "  \"emergencyPhone\": \"13652147414\",\n" +
-            "  \"idCardNum\": \"120221199512271411\",\n" +
-            "  \"idCardOtherSize\": \"xxxx\",\n" +
-            "  \"idCardPositive\": \"xxxxx\",\n" +
-            "  \"userId\": 1\n" +
-            "}     具体字段名含义查看swagger中Model")
+    @ApiOperation(value = "新增配送员信息", notes = "{ \"deliveryClerkName\": \"李文轩\", \"deliveryClerkPhone\": \"13652157270\", \"emergencyPerson\": \"老李\", \"emergencyPhone\": \"13652147414\", \"idCardNum\": \"120221199512271411\", \"idCardOtherSize\": \"xxxx\", \"idCardPositive\": \"xxxxx\", \"userId\": 1 \n" +
+            ",\"storeId\":\"1\"}     具体字段名含义查看swagger中Model")
     @PostMapping("/insertDeliveryClerkInfo")
     public ResponseMessage insertDeliveryClerkInfo(@RequestBody DeliveryClerkInfo deliveryClerkInfo) {
         Integer insertDeliveryClerkInfo= deliveryClerkInfoService.insertDeliveryClerkInfo(deliveryClerkInfo);

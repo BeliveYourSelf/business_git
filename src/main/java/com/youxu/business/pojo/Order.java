@@ -65,11 +65,26 @@ public class Order extends PageInfo{
     @ApiModelProperty(name = "orderModifyTime",value = "修改时间")
     private Date orderModifyTime;
 
+    @ApiModelProperty(name = "orderProcess",value = "订单进行状态:1.待付款2.进行中3.已完成4.已取消")
+    private Integer orderProcess;
+
     @ApiModelProperty(name = "orderStatus",value = "状态")
     private Boolean orderStatus;
 
-    @ApiModelProperty(name = "orderProcess",value = "订单进行状态:1.待付款2.进行中3.已完成4.已取消")
-    private Integer orderProcess;
+    @ApiModelProperty(name = "deliveryId",value = "配送人id")
+    private Integer deliveryId;
+
+    @ApiModelProperty(name = "deliveryPickUpFileQRCodeUrl",value = "取件二维码url")
+    private String deliveryPickUpFileQRCodeUrl;
+
+    @ApiModelProperty(name = "deliveryHarvestCode",value = "收货码")
+    private String deliveryHarvestCode;
+
+    @ApiModelProperty(name = "deliveryStatus",value = "配送状态（1.待取件/2.配送中/3.问题件/4.已完成）")
+    private Integer deliveryStatus;
+
+    @ApiModelProperty(name = "deliveryProblemFileMark",value = "问题件标注")
+    private Integer deliveryProblemFileMark;
 
     // 新增对象
     @ApiModelProperty(name = "orderDetails",value = "订单对象")

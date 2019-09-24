@@ -6,10 +6,20 @@ import com.youxu.business.pojo.Order;
 import com.youxu.business.pojo.OrderDetails;
 import com.youxu.business.pojo.OrderDetailsBookBinding;
 import com.youxu.business.service.OrderService;
+import com.youxu.business.utils.OtherUtil.OSSUploadUtil;
+import com.youxu.business.utils.OtherUtil.UploadUtils;
+import com.youxu.business.utils.normalQRcode.QRCodeUtil;
+import com.youxu.business.utils.uuid.UUIDUtils;
+import org.apache.http.entity.ContentType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,10 +36,15 @@ public class OrderServiceImpl implements OrderService {
     @Resource
     private PictureMapper pictureMapper;
     @Override
-    public Integer insertOrder(Order order) {
+    public Integer insertOrder(Order order) throws Exception {
+        // 邀请码
+        String shareCode = UUIDUtils.generateShortUuid();
+        order.setDeliveryHarvestCode(shareCode);
         Integer insertOrder = orderMapper.insertOrder(order);
+        int orderId = orderMapper.lastInsertId();
+        // 取件码url
+        addDeliveryPickUpFileQRCodeUrl(orderId);
         if (!StringUtils.isEmpty(order)) {
-            int orderId = orderMapper.lastInsertId();
             List<OrderDetails> orderDetailsList = order.getOrderDetailsList();
             for (OrderDetails orderDetails : orderDetailsList) {
                 orderDetails.setOrderId(orderId);
@@ -61,6 +76,33 @@ public class OrderServiceImpl implements OrderService {
         return insertOrder;
     }
 
+    public void addDeliveryPickUpFileQRCodeUrl(Integer orderId) throws Exception {
+        Order order = orderMapper.selectOrderById(orderId.toString());
+        // 存放上传图片的文件夹
+        File fileDir = UploadUtils.getImgDirFileCeshi(UploadUtils.IMG_PATH_PREFIX_QRcodeCeshi);
+
+        // 存放在二维码中的内容
+        String text = orderId.toString();
+
+        // 嵌入二维码的图片路径
+//            String imgPath = fileDir.getAbsolutePath() + File.separator + filename + ".png";
+        String imgPath = null;
+        // 生成的二维码的路径及名称
+        String destPath = fileDir.getAbsolutePath() + File.separator + text + ".png";
+        //生成二维码
+        QRCodeUtil.encode(text, imgPath, destPath, true);
+        //PDFUtils.createPDF417(text, destPath);
+        MultipartFile multipartFileQRCode = fileTransToMultipartFile(destPath);
+        String uploadBlog = OSSUploadUtil.uploadBlog(multipartFileQRCode, "barcode/");
+        order.setDeliveryPickUpFileQRCodeUrl(uploadBlog);
+        orderMapper.updateOrder(order);
+    }
+    public static MultipartFile fileTransToMultipartFile(String filePath) throws IOException {
+        File file = new File(filePath);
+        FileInputStream fileInputStream = new FileInputStream(file);
+        MultipartFile multipartFile = new MockMultipartFile("copy"+file.getName(),file.getName(), ContentType.APPLICATION_OCTET_STREAM.toString(),fileInputStream);
+        return multipartFile;
+    }
     @Override
     public Integer reminderOrder(Order order) {
         Integer id = order.getId();

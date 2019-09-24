@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.List;
 
 @Api(description = "订单表")
@@ -55,7 +56,12 @@ public class OrderController {
             ", \"userId\": 1 }")
     @PostMapping("/insertOrder")
     public ResponseMessage<Integer> insertOrder(@RequestBody Order order) {
-        Integer insertOrder = orderService.insertOrder(order);
+        Integer insertOrder = null;
+        try {
+            insertOrder = orderService.insertOrder(order);
+        } catch (Exception e) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "新增失败");
+        }
         if (insertOrder.equals(0)) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "新增失败");
         }
@@ -116,7 +122,12 @@ public class OrderController {
     @GetMapping("/insertOrderAgain")
     public ResponseMessage<Integer> insertOrderAgain(@RequestParam String id) {
         Order insertOrderAgain = orderService.insertOrderAgain(id);
-        Integer insertOrder = orderService.insertOrder(insertOrderAgain);
+        Integer insertOrder = null;
+        try {
+            insertOrder = orderService.insertOrder(insertOrderAgain);
+        } catch (Exception e) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
         if (insertOrder <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }

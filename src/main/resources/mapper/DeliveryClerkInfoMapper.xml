@@ -396,5 +396,12 @@
     </set>
     where id = #{record.id} and status = false
   </update>
+<!--查看快递员信息-->
+  <select id="selectDeliveryClerkInfoByUserId" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    FROM
+    tb_delivery_clerk_info
+    where tb_delivery_clerk_info.user_id = #{userId} and tb_delivery_clerk_info.status = false
+  </select>
 
 </mapper>

@@ -7,10 +7,8 @@ import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -59,5 +57,15 @@ public class DeliveryClerkInfoController {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功");
+    }
+
+    @ApiOperation(value = "查看快递员信息", notes = "userId")
+    @GetMapping("/selectDeliveryClerkInfoByUserId")
+    public ResponseMessage<DeliveryClerkInfo> selectDeliveryClerkInfoByUserId(@RequestParam String userId) {
+        DeliveryClerkInfo deliveryClerkInfo =deliveryClerkInfoService.selectDeliveryClerkInfoByUserId(userId);
+        if (StringUtils.isEmpty(deliveryClerkInfo)) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "暂无计费规则");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",deliveryClerkInfo);
     }
 }

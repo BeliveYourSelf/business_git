@@ -6,4 +6,6 @@ public interface DeliveryClerkInfoService {
     Integer insertDeliveryClerkInfo(DeliveryClerkInfo deliveryClerkInfo);
 
     Integer updateDeliveryClerkInfo(DeliveryClerkInfo deliveryClerkInfo);
+
+    DeliveryClerkInfo selectDeliveryClerkInfoByUserId(String userId);
 }

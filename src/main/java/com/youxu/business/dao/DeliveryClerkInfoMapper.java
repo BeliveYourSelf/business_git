@@ -23,4 +23,6 @@ public interface DeliveryClerkInfoMapper {
     Integer insertDeliveryClerkInfo(DeliveryClerkInfo deliveryClerkInfo);
     // 更新配送员信息
     Integer updateDeliveryClerkInfo(@Param("record")DeliveryClerkInfo record);
+    // 查看快递员信息
+    DeliveryClerkInfo selectDeliveryClerkInfoByUserId(String userId);
 }

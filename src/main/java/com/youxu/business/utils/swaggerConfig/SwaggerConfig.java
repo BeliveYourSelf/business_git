@@ -16,8 +16,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
     private String version;
-        @Value("${sop.swagger.host}")
-//    @Value("localhost:8081")
+//        @Value("${sop.swagger.host}")
+    @Value("localhost:8081")
     private String host;
 
     @Bean

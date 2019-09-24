@@ -39,4 +39,6 @@ public interface OrderMapper {
     List<Order> selectDeliveryFileByStoreIdList(@Param("storeIds") List<String> storeIds);
     // 待取件详情
     Order selectDeliveryFileByOrderId(String orderId);
+    // 取件
+    Integer updateOrderToPickUp(@Param("order")Order order);
 }

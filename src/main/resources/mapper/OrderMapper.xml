@@ -641,5 +641,11 @@
     on tb_order.id = tb_order_details.order_id
     where tb_order.id = #{orderId} and order_status = false
   </select>
+  <!--取件-->
+  <update id="updateOrderToPickUp">
+    update tb_order
+    set tb_order.delivery_id = #{order.deliveryId}
+    where tb_order.id = #{order.id}
+  </update>
 
 </mapper>

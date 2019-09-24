@@ -88,5 +88,16 @@ public class DeliveryClerkInfoController {
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectDeliveryFileByOrderId);
     }
 
+    @ApiOperation(value = "取件", notes = "{\"id\":\"1\"\n" +
+            ",\"deliveryId\":\"10\"}   id:订单id   deliveryId:配送员id")
+    @PostMapping("/updateOrderToPickUp")
+    public ResponseMessage updateOrderToPickUp(@RequestBody Order order) {
+        Integer updateOrderToPickUp= orderService.updateOrderToPickUp(order);
+        if (updateOrderToPickUp<=0) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功");
+    }
+
 
 }

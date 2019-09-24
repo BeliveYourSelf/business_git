@@ -157,4 +157,9 @@ public class OrderServiceImpl implements OrderService {
     public Order selectDeliveryFileByOrderId(String orderId) {
         return orderMapper.selectDeliveryFileByOrderId(orderId);
     }
+
+    @Override
+    public Integer updateOrderToPickUp(Order order) {
+        return orderMapper.updateOrderToPickUp(order);
+    }
 }

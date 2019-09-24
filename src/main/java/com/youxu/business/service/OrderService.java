@@ -25,4 +25,6 @@ public interface OrderService {
     List<Order> selectDeliveryFileByStoreIdList(String[] storeIds);
 
     Order selectDeliveryFileByOrderId(String orderId);
+
+    Integer updateOrderToPickUp(Order order);
 }

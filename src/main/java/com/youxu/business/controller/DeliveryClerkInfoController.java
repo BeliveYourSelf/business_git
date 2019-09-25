@@ -118,5 +118,17 @@ public class DeliveryClerkInfoController {
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
     }
 
+    @ApiOperation(value = "标记问题", notes = "{\"id\":\"1\"\n" +
+            ",\"deliveryProblemFileMark\":\"我是评论\"}" +
+            "id：订单id  deliveryProblemFileMark：问题件标注 ")
+    @PostMapping("/updateDeliveryOrderProblem")
+    public ResponseMessage updateDeliveryOrderProblem(@RequestBody Order order) {
+        Integer updateDeliveryOrderProblem = orderService.updateDeliveryOrderProblem(order);
+        if (updateDeliveryOrderProblem == 0) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
+    }
+
 
 }

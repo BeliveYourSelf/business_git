@@ -29,4 +29,6 @@ public interface OrderService {
     Integer updateOrderToPickUp(Order order);
 
     Integer updateDeliveryInfoToCompelete(Order order);
+
+    Integer updateDeliveryOrderProblem(Order order);
 }

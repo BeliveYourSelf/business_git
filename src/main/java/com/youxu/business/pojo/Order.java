@@ -83,8 +83,8 @@ public class Order extends PageInfo{
     @ApiModelProperty(name = "deliveryStatus",value = "配送状态（1.待取件/2.配送中/3.问题件/4.已完成）")
     private Integer deliveryStatus;
 
-    @ApiModelProperty(name = "deliveryProblemFileMark",value = "问题件标注")
-    private Integer deliveryProblemFileMark;
+    @ApiModelProperty(name = "deliveryProblemFileMark",value = "问题件标注     #:(间隔符：间隔追加问题）")
+    private String deliveryProblemFileMark;
 
     // 新增对象
     @ApiModelProperty(name = "orderDetails",value = "订单对象")

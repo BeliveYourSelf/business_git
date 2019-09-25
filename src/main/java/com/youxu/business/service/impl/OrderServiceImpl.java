@@ -176,5 +176,20 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.updateDeliveryInfoToCompelete(order);
     }
 
+    @Override
+    public Integer updateDeliveryOrderProblem(Order order) {
+        // 第一次评价
+        Order orderNew = orderMapper.selectOrderById(order.getId().toString());
+        String deliveryProblemFileMark = orderNew.getDeliveryProblemFileMark();
+        if(StringUtils.isEmpty(deliveryProblemFileMark)){
+            return orderMapper.updateDeliveryOrderProblem(order);
+        }
+        // 追加评价
+        StringBuffer deliveryProblemFileMarkStringBuffer = new StringBuffer(deliveryProblemFileMark);
+        deliveryProblemFileMarkStringBuffer.append("#").append(order.getDeliveryProblemFileMark());
+        order.setDeliveryProblemFileMark(deliveryProblemFileMarkStringBuffer.toString());
+        return orderMapper.updateDeliveryOrderProblem(order);
+    }
+
 
 }

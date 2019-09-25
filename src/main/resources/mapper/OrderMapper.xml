@@ -668,5 +668,12 @@
         set tb_order.delivery_status = #{order.deliveryStatus}
         where tb_order.id = #{order.id}
     </update>
+    <!--更新快件为问题快件   delivery_status:配送状态（1.待取件/2.配送中/3.问题件/4.已完成）  -->
+    <update id="updateDeliveryOrderProblem">
+        update tb_order
+        set tb_order.delivery_problem_file_mark = #{order.deliveryProblemFileMark}
+        , tb_order.delivery_status = 3
+        where tb_order.id = #{order.id}
+    </update>
 
 </mapper>

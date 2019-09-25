@@ -55,7 +55,7 @@ public class OSSUploadUtil extends BaseService {
                 String s = file1.getAbsolutePath();
                 DeleteFileUtil.delete(s);
                 //先拼接域名:
-                StringBuilder yuming = new StringBuilder("https://lisheng-aricle.oss-cn-beijing.aliyuncs.com/");
+                StringBuilder yuming = new StringBuilder("https://youxu-print.oss-cn-beijing.aliyuncs.com/");
                 //再拼接/log
                 yuming.append(yuming1);
                 return (yuming.toString());
@@ -101,7 +101,7 @@ public class OSSUploadUtil extends BaseService {
                 String s = file1.getAbsolutePath();
                 DeleteFileUtil.delete(s);
                 //先拼接域名:
-                StringBuilder yuming = new StringBuilder("http://lisheng-aricle.oss-cn-beijing.aliyuncs.com/");
+                StringBuilder yuming = new StringBuilder("http://youxu-print.oss-cn-beijing.aliyuncs.com/");
                 //再拼接/log
                 yuming.append(yuming1);
                 return (yuming.toString());

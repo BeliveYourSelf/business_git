@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Value;
  */
 public class BaseService {
     private final static Logger logger = LoggerFactory.getLogger(BaseService.class);
-    public String path = "http://lisheng-aricle.oss-cn-beijing.aliyuncs.com";
+    public String path = "http://youxu-print.oss-cn-beijing.aliyuncs.com";
     public static String ali_endpoint = "oss-cn-beijing.aliyuncs.com";
-    public static String ali_accesskey_id = "LTAIqKkqq1qxxp6V";
-    public static String ali_accesskey_secret = "zrtMiZu72pwt1SFA8J1HnshhdXp5O1";
-    public static String ali_logstorage = "lisheng-aricle";
+    // ali的发送短信和oss公用一个key
+    public static String ali_accesskey_id = "LTAIdvojFwkg1aq7";
+    public static String ali_accesskey_secret = "jsse6hma4a0EITy5wdkElpNSjXm2js";
+    // 未使用日志存储
+    public static String ali_logstorage = "youxu-print";
     /**
      * 微信支付 APPID
      */
@@ -25,7 +27,7 @@ public class BaseService {
     /**
      * TODO 微信支付 商户号
      */
-    public static String WXPAYMCHID = "1551028611";//番茄
+    public static String WXPAYMCHID = "1536452691";//有需
     /**
      * 微信支付 回掉地址
      */

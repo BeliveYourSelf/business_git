@@ -41,5 +41,10 @@ public class DeliveryClerkInfoServiceImpl implements DeliveryClerkInfoService {
         return deliveryClerkInfoMapper.selectDeliveryClerkInfoByUserId(userId);
     }
 
+    @Override
+    public DeliveryClerkInfo selectDeliveryClerkInfoByPhone(String phone) {
+        return deliveryClerkInfoMapper.selectDeliveryClerkInfoByPhone(phone);
+    }
+
 
 }

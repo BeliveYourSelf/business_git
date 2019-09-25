@@ -5,8 +5,10 @@ import com.youxu.business.pojo.Order;
 import com.youxu.business.service.DeliveryClerkInfoService;
 import com.youxu.business.service.OrderService;
 import com.youxu.business.utils.Enum.ResultCodeEnum;
+import com.youxu.business.utils.Enum.SendSmsTemplateCodeEnum;
 import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
+import com.youxu.business.utils.wechat.requestapitool.CommonRpc;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.util.StringUtils;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Random;
 
 @RequestMapping("/api")
 @Api(description = "配送员信息表")
@@ -35,7 +38,24 @@ public class DeliveryClerkInfoController {
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
     }
-//    发送验证码
+
+    @ApiOperation(value = "发送验证码", notes = "")
+    @GetMapping("/sendCheckCode")
+    public ResponseMessage sendCheckCode(@RequestParam String phone) {
+        DeliveryClerkInfo deliveryClerkInfo = deliveryClerkInfoService.selectDeliveryClerkInfoByPhone(phone);
+        if (!StringUtils.isEmpty(deliveryClerkInfo)) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "该手机号已注册配送员");
+        }
+        String str = new String();
+        Random random = new Random();
+        for (int i = 0; i < 6; i++) {
+            int randomMath = random.nextInt(10);
+            str = str + randomMath;
+        }
+        String commonRpc = CommonRpc.getCommonRpc(phone, "{\"code\":\"" + str + "\"}", SendSmsTemplateCodeEnum.REGISTERDELIVERYCLERK.getTemplateCodeValue());
+
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
+    }
 
 
     @ApiOperation(value = "更新配送员信息", notes = "{\n" +
@@ -113,7 +133,7 @@ public class DeliveryClerkInfoController {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
         if (updateDeliveryInfoToCompelete == -1) {
-            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(),"收获码错误");
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "收获码错误");
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
     }

@@ -27,5 +27,6 @@ public interface DeliveryClerkInfoMapper {
     Integer updateDeliveryClerkInfo(@Param("record")DeliveryClerkInfo record);
     // 查看快递员信息
     DeliveryClerkInfo selectDeliveryClerkInfoByUserId(String userId);
-
+    // 查看配送员通过手机号
+    DeliveryClerkInfo selectDeliveryClerkInfoByPhone(String phone);
 }

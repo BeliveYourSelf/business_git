@@ -418,5 +418,13 @@
         tb_delivery_clerk_info
         where tb_delivery_clerk_info.user_id = #{userId} and tb_delivery_clerk_info.status = false
     </select>
+    <!--查看配送员通过手机号-->
+    <select id="selectDeliveryClerkInfoByPhone" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        tb_delivery_clerk_info
+        where tb_delivery_clerk_info.delivery_clerk_name = #{phone} and tb_delivery_clerk_info.status = false
+    </select>
 
 </mapper>

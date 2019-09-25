@@ -8,14 +8,15 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
+import com.youxu.business.service.BaseService;
 
 /**
  * 发送短信
  */
-public class CommonRpc {
+public class CommonRpc extends BaseService{
 
     public static String getCommonRpc(String mobilePhone,String param,String sendSmsTemplateCodeEnum) {
-        DefaultProfile profile = DefaultProfile.getProfile("default", "LTAIr1dxK8Mz2wVr", "RIPswd11pARrpkWTZH5sNyIFb7uydz");
+        DefaultProfile profile = DefaultProfile.getProfile("default", ali_accesskey_id, ali_accesskey_secret);
         IAcsClient client = new DefaultAcsClient(profile);
 
         CommonRequest request = new CommonRequest();
@@ -26,7 +27,7 @@ public class CommonRpc {
         request.setAction("SendSms");
         request.putQueryParameter("PhoneNumbers",mobilePhone);
         request.putQueryParameter("TemplateCode",sendSmsTemplateCodeEnum);
-        request.putQueryParameter("SignName","番茄sport");
+        request.putQueryParameter("SignName","有需文印");
         request.putQueryParameter("TemplateParam", param);
 
         try {

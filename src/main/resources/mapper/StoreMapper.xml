@@ -3,6 +3,7 @@
 <mapper namespace="com.youxu.business.dao.StoreMapper">
   <resultMap id="BaseResultMap" type="com.youxu.business.pojo.Store">
     <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="store_name"  property="storeName" />
     <result column="store_address" jdbcType="VARCHAR" property="storeAddress" />
     <result column="store_phone" jdbcType="VARCHAR" property="storePhone" />
     <result column="store_time" jdbcType="VARCHAR" property="storeTime" />
@@ -75,7 +76,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, store_address, store_phone, store_time, store_open_for_out, output_size, store_output_colour, 
+    id, store_name, store_address, store_phone, store_time, store_open_for_out, output_size, store_output_colour,
     store_quality, store_latitude, store_longitude, create_time, modify_time, status
   </sql>
   <select id="selectByExample" parameterType="com.youxu.business.pojo.StoreExample" resultMap="BaseResultMap">

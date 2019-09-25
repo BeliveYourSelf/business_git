@@ -7,6 +7,8 @@ import java.util.Date;
 public class Store {
     private Integer id;
 
+    private String storeName;
+
     private String storeAddress;
 
     private String storePhone;

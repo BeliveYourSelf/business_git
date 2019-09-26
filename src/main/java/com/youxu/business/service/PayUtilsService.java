@@ -15,7 +15,7 @@ public interface PayUtilsService {
 
     String wepay_codeUrl(Map input, HttpServletRequest request, String openid, String body, String wx_trade_no, Double total_fee, String ip, String openId, String callbackPath) throws Exception;
 
-    Map wepay_orderSign(HttpServletRequest request, String openid, String body, String wx_trade_no, Double total_fee, String ip, String callbackPath) throws Exception;
+    Map wepay_orderSign(HttpServletRequest request, String openid, String body, String orderId, Double total_fee, String ip, String callbackPath) throws Exception;
 
     // 获取拉起微信授权链接--
 //    ReturnResult getWeixinCodeUrl(Map input, HttpServletRequest request) throws Exception;

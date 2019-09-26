@@ -2,6 +2,8 @@ package com.youxu.business.controller;
 
 import com.github.wxpay.sdk.WXPayUtil;
 import com.youxu.business.pojo.Order;
+import com.youxu.business.pojo.remotepojo.User;
+import com.youxu.business.remoteinterface.MemberInterface;
 import com.youxu.business.service.BaseService;
 import com.youxu.business.service.OrderService;
 import com.youxu.business.service.PayUtilsService;
@@ -51,13 +53,16 @@ public class PayUtilsController extends BaseService {
     private PayUtilsService payUtilsService;
 
     @Resource
+    private MemberInterface memberInterface;
+
+    @Resource
     private OrderService orderService;
     private String ip;
 
 
 
     /**
-     * 培训课程微信支付
+     * 订单支付
      *
      * @param request
      * @param order
@@ -67,11 +72,16 @@ public class PayUtilsController extends BaseService {
     @ApiOperation(value = "微信签名+5个参数：支付", notes = "id   openId  orderAddresseeName orderActualMoney")
     @RequestMapping(value = "/wepay_sign", method = RequestMethod.POST)
     public ResponseMessage<Map> wepay_sign(HttpServletRequest request, @RequestBody Order order) {
-        // 判断是否为会员
+        // 判断是否为会员  isMembers:0非会员  1会员
+        ResponseMessage<User> userResponseMessage = memberInterface.selectUserInfoByUId(order.getUserId());
+        int isMembers = userResponseMessage.getData().getIsMembers();
+        if(isMembers == 1){
+        // 更新会员价格
+        }
         // 会员卡钱不充足，走微信支付
             try {
                 ip = ClientIPUtils.getIp(request);
-                Map map = payUtilsService.wepay_orderSign(request, order.getOpenId(), order.getOrderAddresseeName(), order.getId().toString(), order.getOrderActualMoney(), ip, WXPAYNOTIFYURL);
+                Map map = payUtilsService.wepay_orderSign(request, order.getOpenId(), order.getOrderAddresseeName(), order.getId().toString(), order.getOrderActualMoney(), ip, ORDERPAY);
                 logger.info("微信签名+5个参数---------------------------------------------------------------------------" + map);
                 return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", map);
             } catch (Exception e) {
@@ -83,7 +93,7 @@ public class PayUtilsController extends BaseService {
 
     //回调函数
     @ApiOperation(value = "回调函数", notes = "content（Map），openid，orderId")
-    @RequestMapping(value = "/wepay_codeUrl", method = RequestMethod.POST)
+    @RequestMapping(value = "/orderPayUrl", method = RequestMethod.POST)
     public void payCallback(HttpServletRequest request, HttpServletResponse response) {
         logger.info("微信回调接口方法 start------------------------------------------------------------------------------");
         logger.info("微信回调接口 操作逻辑 start-------------------------------------------------------------------------");

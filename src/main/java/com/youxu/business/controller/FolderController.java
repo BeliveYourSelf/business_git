@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.*;
 
-@Api(description = "文件夹表")
+@Api(description = "资料库文件夹表")
 @RestController
 @RequestMapping("/api")
 public class FolderController {

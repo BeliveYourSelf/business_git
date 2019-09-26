@@ -135,12 +135,12 @@ public class PayUtilsServiceImpl extends BaseService implements PayUtilsService 
     }
 
     //再次签名：    //微信签名+5个参数
-    public Map wepay_orderSign(HttpServletRequest request, String openid, String body, String wx_trade_no, Double total_fee, String ip, String callbackPath) throws Exception {
+    public Map wepay_orderSign(HttpServletRequest request, String openid, String body, String orderId, Double total_fee, String ip, String callbackPath) throws Exception {
         Map<String, String> map = new HashMap<>();
         map.put("appId", WXPAYAPPID);
         map.put("timeStamp", String.valueOf(new Date().getTime() / 1000));
         map.put("nonceStr", UUID.randomUUID().toString().trim().replaceAll("-", ""));
-        map.put("package", "prepay_id=" + goWePay(body, wx_trade_no, total_fee, ip, openid,callbackPath));
+        map.put("package", "prepay_id=" + goWePay(body, orderId, total_fee, ip, openid,callbackPath));
         map.put("signType", "MD5");
         map.put("paySign", wepay_sign(map));
         return map;

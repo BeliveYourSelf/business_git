@@ -31,13 +31,14 @@ public class BaseService {
     /**
      * 微信支付 回掉地址
      */
-    public String WXPAYNOTIFYURL = "https://fqapi.lishengjt.com/api/wepay_codeUrl";
+    public String   DOWNLOADFOLDER = "https://yxapi.lishengjt.com/api/downloadFolder";
+    public String   ORDERPAY = "https://yxapi.lishengjt.com/api/orderPayUrl";
 
 
     /**
      * TODO 微信支付 商户Key
      */
-    public static String WXPAYKEY = "8374uieryeujkhk5y478hdnbasdjpqoi";
+    public static String WXPAYKEY = "20190920youxuwenyinQAEHGFtYKMdsw";//有需
     /**
      * 微信支付 证书
      */

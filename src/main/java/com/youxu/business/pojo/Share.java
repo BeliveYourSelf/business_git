@@ -34,5 +34,11 @@ public class Share {
 
     private Boolean status;
 
+    private Integer buyUserId;//收藏人的用户id
+
+
+    //新增
+    private Order order;
+
 
 }

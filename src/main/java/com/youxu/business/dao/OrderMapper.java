@@ -45,4 +45,9 @@ public interface OrderMapper {
     Integer updateDeliveryInfoToCompelete(@Param("order")Order order);
     // 更新快件为问题快件
     Integer updateDeliveryOrderProblem(@Param("order") Order order);
+
+    // 新增订单：查看别人分享的文件
+    Integer insertOrderForShareMemberPrice(Order order);
+    // 更新订单完成
+    Integer updateOrderCompelete(Integer orderId);
 }

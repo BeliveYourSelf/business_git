@@ -1,6 +1,7 @@
 package com.youxu.business.service;
 
 import com.youxu.business.pojo.Order;
+import com.youxu.business.pojo.Share;
 
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
@@ -31,4 +32,10 @@ public interface OrderService {
     Integer updateDeliveryInfoToCompelete(Order order);
 
     Integer updateDeliveryOrderProblem(Order order);
+
+    Integer insertOrderForMemberPrice(Share share);
+
+    Integer lastInsertId();
+
+    Integer updateOrderCompelete(Integer orderId);
 }

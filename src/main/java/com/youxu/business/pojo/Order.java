@@ -14,7 +14,7 @@ public class Order extends PageInfo{
     @ApiModelProperty(name = "storeId",value = "商铺id")
     private Integer storeId;
 
-    @ApiModelProperty(name = "userId",value = "用户id")
+    @ApiModelProperty(name = "userId",value = "用户id（付款方）")
     private Integer userId;
 
     @ApiModelProperty(name = "orderAddresseeName",value = "收件人姓名")
@@ -86,6 +86,9 @@ public class Order extends PageInfo{
     @ApiModelProperty(name = "deliveryProblemFileMark",value = "问题件标注     #:(间隔符：间隔追加问题）")
     private String deliveryProblemFileMark;
 
+    @ApiModelProperty(name = "shareUserId",value = "分享人id（收款方，orderType：6和7的时候使用）")
+    private Integer shareUserId;
+
     // 新增对象
     @ApiModelProperty(name = "orderDetails",value = "订单对象")
     private OrderDetails orderDetails;
@@ -97,5 +100,8 @@ public class Order extends PageInfo{
 
     @ApiModelProperty(name = "storeIdList",value = "商铺id集合")
     private List<String> storeIdList;
+
+    @ApiModelProperty(name = "whetherMembers",value = "是否是会员")
+    private Boolean whetherMembers;
 
 }

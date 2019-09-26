@@ -5,6 +5,7 @@ import com.youxu.business.dao.*;
 import com.youxu.business.pojo.Order;
 import com.youxu.business.pojo.OrderDetails;
 import com.youxu.business.pojo.OrderDetailsBookBinding;
+import com.youxu.business.pojo.Share;
 import com.youxu.business.service.OrderService;
 import com.youxu.business.utils.OtherUtil.OSSUploadUtil;
 import com.youxu.business.utils.OtherUtil.UploadUtils;
@@ -189,6 +190,22 @@ public class OrderServiceImpl implements OrderService {
         deliveryProblemFileMarkStringBuffer.append("#").append(order.getDeliveryProblemFileMark());
         order.setDeliveryProblemFileMark(deliveryProblemFileMarkStringBuffer.toString());
         return orderMapper.updateDeliveryOrderProblem(order);
+    }
+
+    @Override
+    public Integer insertOrderForMemberPrice(Share share) {
+        Order orderNew = share.getOrder();
+        return orderMapper.insertOrderForShareMemberPrice(orderNew);
+    }
+
+    @Override
+    public Integer lastInsertId() {
+        return orderMapper.lastInsertId();
+    }
+
+    @Override
+    public Integer updateOrderCompelete(Integer orderId) {
+        return orderMapper.updateOrderCompelete(orderId);
     }
 
 

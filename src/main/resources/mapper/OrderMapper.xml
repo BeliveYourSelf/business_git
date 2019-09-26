@@ -28,6 +28,7 @@
         <result column="delivery_harvest_code" property="deliveryHarvestCode"/>
         <result column="delivery_status" property="deliveryStatus"/>
         <result column="delivery_problem_file_mark" property="deliveryProblemFileMark"/>
+        <result column="share_user_id" property="shareUserId"/>
         <collection property="orderDetailsList" ofType="com.youxu.business.pojo.OrderDetails">
             <result column="tb_order_detailsid" jdbcType="INTEGER" property="id"/>
             <result column="order_id" jdbcType="INTEGER" property="orderId"/>
@@ -673,6 +674,61 @@
         update tb_order
         set tb_order.delivery_problem_file_mark = #{order.deliveryProblemFileMark}
         , tb_order.delivery_status = 3
+        where tb_order.id = #{order.id}
+    </update>
+    <!--新增订单：查看别人分享的文件-->
+    <insert id="insertOrderForShareMemberPrice">
+        insert into tb_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="storeId != null">
+                store_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="orderActualMoney != null">
+                order_actual_money,
+            </if>
+            <if test="orderType != null">
+                order_type,
+            </if>
+            <if test="orderProcess != null">
+                order_process,
+            </if>
+            order_create_time,
+            order_modify_time,
+            order_status
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="storeId != null">
+                #{storeId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="orderActualMoney != null">
+                #{orderActualMoney},
+            </if>
+            <if test="orderType != null">
+                #{orderType,jdbcType=INTEGER},
+            </if>
+            <if test="orderProcess != null">
+                #{orderProcess,jdbcType=INTEGER},
+            </if>
+            now(),
+            now(),
+            false
+        </trim>
+
+    </insert>
+    <!--更新订单完成    order_process：订单进行状态:1.待付款2.进行中3.已完成4.已取消-->
+    <update id="updateOrderCompelete">
+       update tb_order
+        set tb_order.delivery_status = #{order.deliveryStatus}
+        and order_modify_time = now(),
+        order_pay_date = now(),
+        order_process = 3
         where tb_order.id = #{order.id}
     </update>
 

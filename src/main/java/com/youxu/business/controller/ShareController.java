@@ -127,9 +127,6 @@ public class ShareController extends BaseService {
         Integer orderId = orderService.lastInsertId();
         // 判断是否为会员  isMembers:0非会员  1会员
         String shareContentUrl = share.getShareContentUrl();
-        Boolean whetherMembers = share.getOrder().getWhetherMembers();
-        // 会员支付
-        // 会员卡钱不充足，走微信支付
         try {
             ip = ClientIPUtils.getIp(request);
             Map map = payUtilsService.wepay_orderSign(request, share.getOrder().getOpenId(), "下载打印", orderId.toString(), share.getOrder().getOrderActualMoney(), ip, DOWNLOADFOLDER);

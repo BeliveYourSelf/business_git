@@ -20,7 +20,7 @@ public class ServiceTimeController {
     @Resource
     private ServiceTimeService serviceTimeService;
 
-    @ApiOperation(value = "查看配送时间列表", notes = "{\"storeId\":\"1\"\n" +
+    @ApiOperation(value = "查看配送时间价格列表", notes = "{\"storeId\":\"1\"\n" +
             ",\"dayType\":\"1\"\n" +
             "}       storeId  商铺id   dayType 1.今天2.明天3.后天 ")
     @PostMapping("/selectServiceTime")

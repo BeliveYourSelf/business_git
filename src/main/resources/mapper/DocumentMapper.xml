@@ -148,7 +148,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.youxu.business.pojo.DocumentExample" resultType="java.lang.Long">
+    <select id="countByExample" parameterType="com.youxu.business.pojo.DocumentExample" resultType="java.lang.Long">
     select count(*) from tb_document
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -220,5 +220,15 @@
       #{documentId}
     </foreach>
   </update>
+  <!--转存后支付-->
+  <insert id="insertDocument" parameterType="com.youxu.business.pojo.Document">
+    insert into tb_document ( user_id, folder_id,
+      document_url, create_time, modify_time,
+      status)
+    values ( #{userId,jdbcType=INTEGER}, #{folderId,jdbcType=INTEGER},
+      #{documentUrl,jdbcType=VARCHAR},now(), now(),
+      false)
+  </insert>
+
 
 </mapper>

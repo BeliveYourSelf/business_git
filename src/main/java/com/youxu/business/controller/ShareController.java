@@ -1,15 +1,13 @@
 package com.youxu.business.controller;
 
 import com.github.wxpay.sdk.WXPayUtil;
+import com.youxu.business.pojo.Document;
 import com.youxu.business.pojo.Harvest;
 import com.youxu.business.pojo.Order;
 import com.youxu.business.pojo.Share;
 import com.youxu.business.pojo.remotepojo.User;
 import com.youxu.business.remoteinterface.MemberInterface;
-import com.youxu.business.service.BaseService;
-import com.youxu.business.service.OrderService;
-import com.youxu.business.service.PayUtilsService;
-import com.youxu.business.service.ShareService;
+import com.youxu.business.service.*;
 import com.youxu.business.utils.Enum.PayStatusEnum;
 import com.youxu.business.utils.Enum.ResultCodeEnum;
 import com.youxu.business.utils.OtherUtil.ClientIPUtils;
@@ -49,6 +47,10 @@ public class ShareController extends BaseService {
 
     @Resource
     private OrderService orderService;
+
+    @Resource
+    private DocumentService documentService;
+
     private String ip;
 
     @ApiOperation(value = "新增分享", notes = "{ \n" +
@@ -88,7 +90,22 @@ public class ShareController extends BaseService {
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", selectShareById);
     }
 
-    @ApiOperation(value = "存入资料库", notes = "     id: 分享表id   extactionCode: 提取码  folderId: 文件id")
+    @ApiOperation(value = "存入资料库", notes = "{\"id\":\"1\"\n" +
+            ",\"shareUserId\":\"1\"\n" +
+            ",\"extactionCodeStatus\":true\n" +
+            ",\"extactionCode\":\"VVka\"\n" +
+            ",\"folderId\":\"2\"\n" +
+            ",\"userId\":\"1\"\n" +
+            ",\"shareContentUrl\":\"xxx\"\n" +
+            ",\"order\":{\n" +
+            "   \"storeId\":\"1\"\n" +
+            ",\"userId\":\"1\"\n" +
+            ",\"orderActualMoney\":\"10\"\n" +
+            ",\"orderType\":\"6\"\n" +
+            ",\"orderProcess\":\"1\"\n" +
+            ",\"openId\":\"oM1Ip44WRFWLyHiSS_FujH_4U4ow\"\n" +
+            ",\"whetherMembers\":\"true\"\n" +
+            "}}")
     @PostMapping("/downloadShare")
     public ResponseMessage<Map> downloadShare(HttpServletRequest request, @RequestBody Share share) {
         Share downloadShare = shareService.downloadShare(share);
@@ -190,6 +207,24 @@ public class ShareController extends BaseService {
         }
     }
 
+    @ApiOperation(value = "支付后转存", notes = "{\"userId\":\"1\"\n" +
+            ",\"folderId\":\"1\"\n" +
+            ",\"documentUrl\":\"xxx\"}     userId：支付人用户id   folderId：待存入的文件夹id    documentUrl：文件内容路径")
+    @PostMapping("/insertPostPaymentStorage")
+    public ResponseMessage insertPostPaymentStorage(@RequestBody Document document) {
+        Integer insertDocument = documentService.insertDocument(document);
+        if (insertDocument <= 0) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
+    }
+
+    /*@ApiOperation(value = "加入打印列表", notes = "insertPrintList")
+    @GetMapping("/insertPrintList")
+    public ResponseMessage<Map> insertPrintList(@RequestBody Share share) {
+
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", selectShareById);
+    }*/
 
     public Share expireDate(Share shareNew) {
 // 判断文件过期

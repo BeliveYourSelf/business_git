@@ -79,6 +79,8 @@ public class ShareServiceImpl implements ShareService {
         return shareNew;
     }
 
+
+
     /**
      * 生成二维码
      * @param userIdAndInvitationCode

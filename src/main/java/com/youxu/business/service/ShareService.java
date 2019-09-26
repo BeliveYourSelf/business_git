@@ -12,4 +12,5 @@ public interface ShareService {
     Share selectShareById(String id);
 
     Share downloadShare(Share share);
+
 }

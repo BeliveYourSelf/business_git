@@ -27,5 +27,6 @@ public interface DocumentMapper {
 
     // 移动文件到某个文件夹
     Integer updateMoveDocument(@Param("folder") Folder folder);
-
+    // 支付后转存
+    Integer insertDocument(Document document);
 }

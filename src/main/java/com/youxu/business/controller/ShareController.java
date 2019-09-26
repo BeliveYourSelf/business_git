@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @RequestMapping("/api")
@@ -90,11 +91,10 @@ public class ShareController extends BaseService {
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", selectShareById);
     }
 
-    @ApiOperation(value = "存入资料库", notes = "{\"id\":\"1\"\n" +
+    @ApiOperation(value = "存入资料库/加入打印：支付", notes = "{\"id\":\"1\"\n" +
             ",\"shareUserId\":\"1\"\n" +
             ",\"extactionCodeStatus\":true\n" +
             ",\"extactionCode\":\"VVka\"\n" +
-            ",\"folderId\":\"2\"\n" +
             ",\"userId\":\"1\"\n" +
             ",\"shareContentUrl\":\"xxx\"\n" +
             ",\"order\":{\n" +
@@ -105,7 +105,7 @@ public class ShareController extends BaseService {
             ",\"orderProcess\":\"1\"\n" +
             ",\"openId\":\"oM1Ip44WRFWLyHiSS_FujH_4U4ow\"\n" +
             ",\"whetherMembers\":\"true\"\n" +
-            "}}")
+            "}}                    6.下载/存入资料库（分享支付）7.加入打印（分享支付）")
     @PostMapping("/downloadShare")
     public ResponseMessage<Map> downloadShare(HttpServletRequest request, @RequestBody Share share) {
         Share downloadShare = shareService.downloadShare(share);
@@ -139,14 +139,24 @@ public class ShareController extends BaseService {
      */
 
     public ResponseMessage<Map> wepay_sign(HttpServletRequest request, Share share) {
+        Map<String, String> map = new HashMap<String, String>();
         // 新增订单
-        Integer  insertOrderForMemberPrice = orderService.insertOrderForMemberPrice(share);
+        orderService.insertOrderForMemberPrice(share);
         Integer orderId = orderService.lastInsertId();
-        // 判断是否为会员  isMembers:0非会员  1会员
+        String body = null;
+        Integer orderType = share.getOrder().getOrderType();
         String shareContentUrl = share.getShareContentUrl();
         try {
             ip = ClientIPUtils.getIp(request);
-            Map map = payUtilsService.wepay_orderSign(request, share.getOrder().getOpenId(), "下载打印", orderId.toString(), share.getOrder().getOrderActualMoney(), ip, DOWNLOADFOLDER);
+            if (orderType == 6) {
+                body = "存入资料库";
+                map = payUtilsService.wepay_orderSign(request, share.getOrder().getOpenId(), body, orderId.toString(), share.getOrder().getOrderActualMoney(), ip, DOWNLOADFOLDER);
+            } else if (orderType == 7) {
+                body = "加入打印";
+                map = payUtilsService.wepay_orderSign(request, share.getOrder().getOpenId(), body, orderId.toString(), share.getOrder().getOrderActualMoney(), ip, DOWNLOADFOLDER);
+            } else {
+                return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), "orderType：此状态必须为6或7。6：下载/存入资料库（分享支付）7：加入打印（分享支付）");
+            }
             map.put("shareContentUrl", shareContentUrl);
             logger.info("微信签名+5个参数---------------------------------------------------------------------------" + map);
             return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", map);
@@ -186,7 +196,7 @@ public class ShareController extends BaseService {
                 Integer updateOrderCompelete = orderService.updateOrderCompelete(orderId);
                 // ToDO
                 // 修改分享人卡金额:根据userId和增加的金额更新卡金额
-                if(updateOrderCompelete>=0){
+                if (updateOrderCompelete >= 0) {
                     logger.info("微信回调  订单号：" + outTradeNo + ",修改状态成功");
                     //封装 返回值
                     StringBuffer buffer = new StringBuffer();
@@ -210,7 +220,7 @@ public class ShareController extends BaseService {
     @ApiOperation(value = "支付后转存", notes = "{\"userId\":\"1\"\n" +
             ",\"folderId\":\"1\"\n" +
             ",\"documentUrl\":\"xxx\"}     userId：支付人用户id   folderId：待存入的文件夹id    documentUrl：文件内容路径")
-    @PostMapping("/insertPostPaymentStorage")
+        @PostMapping("/insertPostPaymentStorage")
     public ResponseMessage insertPostPaymentStorage(@RequestBody Document document) {
         Integer insertDocument = documentService.insertDocument(document);
         if (insertDocument <= 0) {
@@ -219,12 +229,6 @@ public class ShareController extends BaseService {
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
     }
 
-    /*@ApiOperation(value = "加入打印列表", notes = "insertPrintList")
-    @GetMapping("/insertPrintList")
-    public ResponseMessage<Map> insertPrintList(@RequestBody Share share) {
-
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", selectShareById);
-    }*/
 
     public Share expireDate(Share shareNew) {
 // 判断文件过期

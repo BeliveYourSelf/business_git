@@ -58,7 +58,8 @@
         <!--<table tableName="tb_order_details_book_binding" domainObjectName="OrderDetailsBookBinding"/>-->
         <!--<table tableName="tb_problem_file_mark_dictionary" domainObjectName="ProblemFileMarkDictionary"/>-->
         <!--<table tableName="tb_delivery_clerk_info" domainObjectName="DeliveryClerkInfo"/>-->
-        <table tableName="tb_sotre_delivery_mapping" domainObjectName="SotreDeliveryMapping"/>
+        <!--<table tableName="tb_sotre_delivery_mapping" domainObjectName="SotreDeliveryMapping"/>-->
+        <table tableName="tb_service_time" domainObjectName="ServiceTime"/>
 
     </context>
 </generatorConfiguration>

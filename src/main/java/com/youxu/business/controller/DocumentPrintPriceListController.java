@@ -61,7 +61,7 @@ public class DocumentPrintPriceListController {
 
     @ApiOperation(value = "上传图片", notes = "需要上传图片")
     @PostMapping("/uploadFile")
-    public ResponseMessage<String> uploadBlog(@RequestParam("file") MultipartFile file) {
+    public ResponseMessage<String> uploadFile(@RequestParam("file") MultipartFile file) {
         String uploadSuccess = OSSUploadUtil.uploadBlog(file);
         if (StringUtils.isEmpty(uploadSuccess)) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "上传失败");

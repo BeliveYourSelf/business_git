@@ -22,7 +22,8 @@ public class ImageSizeTool {
      *image 图片流
      */
     public static String imageSubstring(String image){
-        String str=image.substring(23); // 1.需要计算文件流大小，首先把头部的data:image/png;base64,（注意有逗号）去掉。
-        return str;
+        String[] split = image.split(";base64,");// 1.需要计算文件流大小，首先把头部的data:image/png;base64,（注意有逗号）去掉。
+        String handleBase64 = split[1];
+        return handleBase64;
     }
 }

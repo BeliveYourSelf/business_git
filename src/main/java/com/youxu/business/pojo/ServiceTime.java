@@ -1,5 +1,6 @@
 package com.youxu.business.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -9,6 +10,7 @@ public class ServiceTime {
     @ApiModelProperty(name = "id", value = "配送时间价格表id")
     private Integer id;
 
+    @JsonFormat(timezone = "GMT", pattern = "HH:mm")
     @ApiModelProperty(name = "serviceTime", value = "送达时间")
     private Date serviceTime;
 

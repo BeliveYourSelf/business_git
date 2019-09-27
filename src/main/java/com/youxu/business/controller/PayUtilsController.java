@@ -70,7 +70,17 @@ public class PayUtilsController extends BaseService {
      * @return
      */
     //微信签名+5个参数
-    @ApiOperation(value = "微信签名+5个参数：支付", notes = "id   openId  orderAddresseeName orderActualMoney")
+    @ApiOperation(value = "微信签名+5个参数：支付", notes = "{\"id\":\"1\"\n" +
+            ",\"openId\":\"oM1Ip44WRFWLyHiSS_FujH_4U4ow\"\n" +
+            ",\"orderAddresseeName\":\"李文轩\"\n" +
+            ",\"orderActualMoney\":\"10\"\n" +
+            ",\"userId\":\"1\"\n" +
+            ",\"whetherMembers\":\"true\"\n" +
+            ",\"orderConsumeMoney \":\"3\"\n" +
+            ",\"vouchersIdList\":[\n" +
+            "\"1\",\"2\"\n" +
+            "]\n" +
+            "} ")
     @RequestMapping(value = "/wepay_sign", method = RequestMethod.POST)
     public ResponseMessage<Map> wepay_sign(HttpServletRequest request, @RequestBody Order order) {
         // 会员支付
@@ -125,6 +135,7 @@ public class PayUtilsController extends BaseService {
                 Order order = orderService.selectDeliveryFileByOrderId(orderId.toString());
                 if (orderService.updateOrderPayDateAndProcess(orderId, PayStatusEnum.COMPLETE.getValueCode()) == 1) {
                     memberInterface.updateUserWallet(order.getUserId(),order.getOrderConsumeMoney());
+                    // 修改优惠券
                     logger.info("微信回调  订单号：" + outTradeNo + ",修改状态成功");
                     //封装 返回值
                     StringBuffer buffer = new StringBuffer();

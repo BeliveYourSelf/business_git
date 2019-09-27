@@ -104,4 +104,7 @@ public class Order extends PageInfo{
     @ApiModelProperty(name = "whetherMembers",value = "是否是会员")
     private Boolean whetherMembers;
 
+    @ApiModelProperty(name = "vouchersIdList",value = "优惠券id：可能是代金券或者配送券。支付的时候返回给前端让他删除")
+    private List<Integer> vouchersIdList;
+
 }

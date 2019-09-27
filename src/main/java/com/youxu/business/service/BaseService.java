@@ -85,7 +85,7 @@ public class BaseService {
      * 证件照接口参数
      */
     //证件照环境监测接口参数
-    String app_key = "e235edf918da000631b2814cfbaaad036e7f77be";
+    String app_key = "2abf79c1e6f1aa18583f6a38d05336eae9baf3e3";
     String facepose = "50";
     String eyegaze = "50";
     String eyeskew = "50";

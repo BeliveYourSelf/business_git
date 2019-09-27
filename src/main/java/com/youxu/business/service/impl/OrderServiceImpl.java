@@ -148,8 +148,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Integer updateOrderPayDateAndProcess(Integer valueCode, Integer orderId, String orderPayDate) {
-        return orderMapper.updateOrderPayDateAndProcess(valueCode, orderId, orderPayDate);
+    public Integer updateOrderPayDateAndProcess(Integer orderId, Integer orderProcess) {
+        return orderMapper.updateOrderPayDateAndProcess(orderId, orderProcess);
     }
 
     @Override

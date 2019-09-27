@@ -34,7 +34,7 @@ public interface OrderMapper {
     // 查看订单集合
     List<Order> selectOrderList(@Param("order") Order order);
     // 更新支付状态和时间
-    Integer updateOrderPayDateAndProcess(Integer valueCode, Integer orderId, String orderPayDate);
+    Integer updateOrderPayDateAndProcess(Integer orderId, Integer orderProcess);
     // 取件列表集合
     List<Order> selectDeliveryFileByStoreIdList(@Param("order") Order order);
     // 待取件详情

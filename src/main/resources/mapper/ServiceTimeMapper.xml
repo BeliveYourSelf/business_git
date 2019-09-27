@@ -11,7 +11,6 @@
     <result column="status" jdbcType="BIT" property="status" />
     <result column="weight" jdbcType="INTEGER" property="weight" />
     <result column="day_type" jdbcType="TINYINT" property="dayType" />
-    <result column="one_hour_service_price" jdbcType="DOUBLE" property="oneHourServicePrice" />
     <result column="service_type" jdbcType="TINYINT" property="serviceType" />
   </resultMap>
   <sql id="Example_Where_Clause">

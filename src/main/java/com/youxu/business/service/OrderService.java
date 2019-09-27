@@ -21,7 +21,7 @@ public interface OrderService {
 
     List<Order> selectOrderList(Order order);
 
-    Integer updateOrderPayDateAndProcess(Integer valueCode, Integer orderId, String orderPayDate);
+    Integer updateOrderPayDateAndProcess(Integer orderId, Integer orderProcess);
 
     List<Order> selectDeliveryFileByStoreIdList(Order order);
 

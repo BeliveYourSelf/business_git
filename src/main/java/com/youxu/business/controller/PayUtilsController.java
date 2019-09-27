@@ -3,6 +3,7 @@ package com.youxu.business.controller;
 import com.github.wxpay.sdk.WXPayUtil;
 import com.youxu.business.pojo.Order;
 import com.youxu.business.pojo.remotepojo.User;
+import com.youxu.business.pojo.remotepojo.UserWallet;
 import com.youxu.business.remoteinterface.MemberInterface;
 import com.youxu.business.service.BaseService;
 import com.youxu.business.service.OrderService;
@@ -72,13 +73,14 @@ public class PayUtilsController extends BaseService {
     @ApiOperation(value = "微信签名+5个参数：支付", notes = "id   openId  orderAddresseeName orderActualMoney")
     @RequestMapping(value = "/wepay_sign", method = RequestMethod.POST)
     public ResponseMessage<Map> wepay_sign(HttpServletRequest request, @RequestBody Order order) {
-        // 判断是否为会员  isMembers:0非会员  1会员
-        ResponseMessage<User> userResponseMessage = memberInterface.selectUserInfoByUId(order.getUserId());
-        int isMembers = userResponseMessage.getData().getIsMembers();
-        if(isMembers == 1){
-        // 更新会员价格
+        // 会员支付
+        if(order.getWhetherMembers()) {
+            return memberPay(order);
         }
+        ResponseMessage<UserWallet> userWalletResponseMessage = memberInterface.selectUserMemberByUserId(order.getUserId());
+        UserWallet userWallet = userWalletResponseMessage.getData();
         // 会员卡钱不充足，走微信支付
+        if(userWallet.getWalletBalance() > order.getOrderActualMoney()){
             try {
                 ip = ClientIPUtils.getIp(request);
                 Map map = payUtilsService.wepay_orderSign(request, order.getOpenId(), order.getOrderAddresseeName(), order.getId().toString(), order.getOrderActualMoney(), ip, ORDERPAY);
@@ -88,9 +90,10 @@ public class PayUtilsController extends BaseService {
                 e.printStackTrace();
                 return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
             }
+        }else {
+            return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(),"消费金不足，请重新生成订单");
         }
-
-
+    }
     //回调函数
     @ApiOperation(value = "回调函数", notes = "content（Map），openid，orderId")
     @RequestMapping(value = "/orderPayUrl", method = RequestMethod.POST)
@@ -119,7 +122,9 @@ public class PayUtilsController extends BaseService {
                 logger.info("微信回调返回商户订单号：" + transactionId);
                 //修改账单状态为已完成
                 //修改支付状态
-                if (orderService.updateOrderPayDateAndProcess(PayStatusEnum.PAYING.getValueCode(), orderId, "支付时间") == 1) {
+                Order order = orderService.selectDeliveryFileByOrderId(orderId.toString());
+                if (orderService.updateOrderPayDateAndProcess(orderId, PayStatusEnum.COMPLETE.getValueCode()) == 1) {
+                    memberInterface.updateUserWallet(order.getUserId(),order.getOrderConsumeMoney());
                     logger.info("微信回调  订单号：" + outTradeNo + ",修改状态成功");
                     //封装 返回值
                     StringBuffer buffer = new StringBuffer();
@@ -138,6 +143,26 @@ public class PayUtilsController extends BaseService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    // 会员支付订单
+    private ResponseMessage memberPay(Order order){
+        // 判断是否为会员  isMembers:0非会员  1会员
+        Integer userId = order.getUserId();
+        Integer orderId = order.getId();
+        Double orderActualMoney = order.getOrderActualMoney();// 钱包消费额
+        Double orderConsumeMoney = order.getOrderConsumeMoney();// 消费金
+            // 更新订单/会员/消费金/优惠券价格
+            ResponseMessage<Integer> updateUserWallet = memberInterface.updateUserWallet(userId, orderConsumeMoney, orderActualMoney);
+            String respCode = updateUserWallet.getRespCode();
+            String message = updateUserWallet.getMessage();
+            if("200".equals(respCode)){
+                Integer updateOrderPayDateAndProcess = orderService.updateOrderPayDateAndProcess(orderId, PayStatusEnum.COMPLETE.getValueCode());
+                if(updateOrderPayDateAndProcess >= 0){
+                    return Result.success(respCode,"钱包支付成功");
+                }
+            }
+                return Result.error(respCode,message);
     }
 
 }

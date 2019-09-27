@@ -46,5 +46,10 @@ public class DeliveryClerkInfoServiceImpl implements DeliveryClerkInfoService {
         return deliveryClerkInfoMapper.selectDeliveryClerkInfoByPhone(phone);
     }
 
+    @Override
+    public Integer updateDeliveryClerkScore(DeliveryClerkInfo deliveryClerkInfo) {
+        return deliveryClerkInfoMapper.updateDeliveryClerkScore(deliveryClerkInfo);
+    }
+
 
 }

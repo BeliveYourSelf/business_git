@@ -14,4 +14,6 @@ public interface DeliveryClerkInfoService {
     DeliveryClerkInfo selectDeliveryClerkInfoByUserId(String userId);
 
     DeliveryClerkInfo selectDeliveryClerkInfoByPhone(String phone);
+
+    Integer updateDeliveryClerkScore(DeliveryClerkInfo deliveryClerkInfo);
 }

@@ -426,5 +426,11 @@
         tb_delivery_clerk_info
         where tb_delivery_clerk_info.delivery_clerk_name = #{phone} and tb_delivery_clerk_info.status = false
     </select>
+<!--更新配送员评分-->
+    <update id="updateDeliveryClerkScore">
+        update tb_delivery_clerk_info
+        set tb_delivery_clerk_info.score = #{deliveryClerkInfo.score}
+        where tb_delivery_clerk_info.id = #{deliveryClerkInfo.id}
+    </update>
 
 </mapper>

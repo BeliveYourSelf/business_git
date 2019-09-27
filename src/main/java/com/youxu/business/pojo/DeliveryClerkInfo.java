@@ -51,9 +51,17 @@ public class DeliveryClerkInfo {
     @ApiModelProperty(name = "auditStatus", value = "配送员信息表")
     private Integer auditStatus;
 
+    @ApiModelProperty(name = "score", value = "人脸评分")
+    private Integer score;
+
 //  新增
     @ApiModelProperty(name = "storeId", value = "商铺id")
     private Integer storeId;
+
+    @ApiModelProperty(name = "image", value = "base64图片")
+    private String image;
+
+
 
 
 

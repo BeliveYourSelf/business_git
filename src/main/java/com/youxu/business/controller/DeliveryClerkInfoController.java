@@ -1,13 +1,16 @@
 package com.youxu.business.controller;
 
 import com.youxu.business.pojo.DeliveryClerkInfo;
+import com.youxu.business.pojo.IdPhotoBusiness;
 import com.youxu.business.pojo.Order;
 import com.youxu.business.service.DeliveryClerkInfoService;
 import com.youxu.business.service.OrderService;
 import com.youxu.business.utils.Enum.ResultCodeEnum;
 import com.youxu.business.utils.Enum.SendSmsTemplateCodeEnum;
+import com.youxu.business.utils.OtherUtil.ImageSizeTool;
 import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
+import com.youxu.business.utils.baiducloud.facerecognition.PersonVerify;
 import com.youxu.business.utils.wechat.requestapitool.CommonRpc;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,6 +30,7 @@ public class DeliveryClerkInfoController {
     private DeliveryClerkInfoService deliveryClerkInfoService;
     @Resource
     private OrderService orderService;
+
 
     @ApiOperation(value = "新增配送员信息", notes = "{ \"deliveryClerkName\": \"李文轩\", \"deliveryClerkPhone\": \"13652157270\", \"emergencyPerson\": \"老李\", \"emergencyPhone\": \"13652147414\", \"idCardNum\": \"120221199512271411\", \"idCardOtherSize\": \"xxxx\", \"idCardPositive\": \"xxxxx\", \"userId\": 1 \n" +
             ",\"storeId\":\"1\"}     具体字段名含义查看swagger中Model")
@@ -149,6 +153,34 @@ public class DeliveryClerkInfoController {
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
     }
+
+
+    @ApiOperation(value = "百度云人脸识别", notes = "userId image")
+    @PostMapping("/baiduCloudFaceRecognition")
+    public ResponseMessage baiduCloudFaceRecognition(@RequestBody DeliveryClerkInfo deliveryClerkInfoParam) {
+        // 判断不超过两兆
+        String image = deliveryClerkInfoParam.getImage();
+        Integer twoTrillion = 1 * 1024 * 1024 * 2;
+        Integer base64Size = ImageSizeTool.imageSize(image);
+        if (base64Size > twoTrillion) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "上传图片不能大于2M");
+        }
+        DeliveryClerkInfo deliveryClerkInfo = deliveryClerkInfoService.selectDeliveryClerkInfoByUserId(deliveryClerkInfoParam.getUserId().toString());
+       // 截取base64前缀
+        String imageSubstring = ImageSizeTool.imageSubstring(image);
+        deliveryClerkInfo.setImage(imageSubstring);
+        // 生成人脸识别评分
+        PersonVerify personVerify = new PersonVerify();
+        String personverify = personVerify.personverify(deliveryClerkInfo);
+        deliveryClerkInfo.setScore(50);
+        Integer updateDeliveryClerkScore = deliveryClerkInfoService.updateDeliveryClerkScore(deliveryClerkInfo);
+        if (updateDeliveryClerkScore <= 0) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
+    }
+
+
 
 
 }

@@ -70,17 +70,7 @@ public class PayUtilsController extends BaseService {
      * @return
      */
     //微信签名+5个参数
-    @ApiOperation(value = "微信签名+5个参数：支付", notes = "{\"id\":\"1\"\n" +
-            ",\"openId\":\"oM1Ip44WRFWLyHiSS_FujH_4U4ow\"\n" +
-            ",\"orderAddresseeName\":\"李文轩\"\n" +
-            ",\"orderActualMoney\":\"10\"\n" +
-            ",\"userId\":\"1\"\n" +
-            ",\"whetherMembers\":\"true\"\n" +
-            ",\"orderConsumeMoney \":\"3\"\n" +
-            ",\"vouchersIdList\":[\n" +
-            "\"1\",\"2\"\n" +
-            "]\n" +
-            "} ")
+    @ApiOperation(value = "微信签名+5个参数：支付", notes = "{\"id\":\"1\" ,\"openId\":\"oM1Ip44WRFWLyHiSS_FujH_4U4ow\" ,\"orderAddresseeName\":\"李文轩\" ,\"orderActualMoney\":\"10\" ,\"userId\":\"1\" ,\"whetherMembers\":\"true\" ,\"orderConsumeMoney\":\"3\" ,\"vouchersIdList\":[ \"1\",\"2\" ] }")
     @RequestMapping(value = "/wepay_sign", method = RequestMethod.POST)
     public ResponseMessage<Map> wepay_sign(HttpServletRequest request, @RequestBody Order order) {
         // 会员支付

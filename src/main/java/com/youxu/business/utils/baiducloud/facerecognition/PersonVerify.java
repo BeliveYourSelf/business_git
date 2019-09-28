@@ -1,9 +1,13 @@
 package com.youxu.business.utils.baiducloud.facerecognition;
 
 
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.youxu.business.pojo.DeliveryClerkInfo;
 import com.youxu.business.utils.baiducloud.facerecognition.baiducloudutil.GsonUtils;
 import com.youxu.business.utils.baiducloud.facerecognition.baiducloudutil.HttpUtil;
+import com.youxu.business.utils.baiducloud.facerecognition.baiducloudutil.ResultObject;
 
 import java.util.*;
 
@@ -36,8 +40,9 @@ public class PersonVerify {
             // 注意这里仅为了简化编码每一次请求都去获取access_token，线上环境access_token有过期时间， 客户端可自行缓存，过期后重新获取。
             String accessToken = AuthService.getAuth();
             String result = HttpUtil.post(url, accessToken, "application/json", param);
-            System.out.println(result);
-            return result;
+            ResultObject resultObject = new GsonBuilder().create().fromJson(result, ResultObject.class);
+            String score = resultObject.getResult().getScore();
+            return score;
         } catch (Exception e) {
             e.printStackTrace();
         }

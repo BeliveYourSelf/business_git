@@ -171,8 +171,8 @@ public class DeliveryClerkInfoController {
         deliveryClerkInfo.setImage(imageSubstring);
         // 生成人脸识别评分
         PersonVerify personVerify = new PersonVerify();
-        String personverify = personVerify.personverify(deliveryClerkInfo);
-        deliveryClerkInfo.setScore(50);
+        String score = personVerify.personverify(deliveryClerkInfo);
+        deliveryClerkInfo.setScore(Integer.valueOf(score));
         Integer updateDeliveryClerkScore = deliveryClerkInfoService.updateDeliveryClerkScore(deliveryClerkInfo);
         if (updateDeliveryClerkScore <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");

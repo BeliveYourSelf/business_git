@@ -47,7 +47,7 @@ public class DocumentPrintPriceListController {
      * @param file
      * @return
      */
-    @ApiOperation(value = "获取文档页数", notes = "份数，文档打印价格表排列组合")
+    @ApiOperation(value = "获取pdf文档页数", notes = "份数，文档打印价格表排列组合")
     @PostMapping("/selectDocumentPageNumber")
     public ResponseMessage<Integer> selectDocumentPageNumber(@RequestParam("file") MultipartFile file) throws IOException {
         if (file.isEmpty()) {
@@ -67,7 +67,7 @@ public class DocumentPrintPriceListController {
      * @param fileUrl
      * @return
      */
-    @ApiOperation(value = "通过地址路径获取文档页数", notes = "fileUrl")
+    @ApiOperation(value = "通过地址路径获取文档页数（pdf/word/excel/ppt）", notes = "fileUrl")
     @PostMapping("/selectDocumentPageNumberByUrl")
     public ResponseMessage<Integer> selectDocumentPageNumberByUrl(@RequestParam("fileUrl") String fileUrl) throws IOException {
         if (fileUrl.isEmpty()) {

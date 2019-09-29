@@ -29,20 +29,19 @@ public class OSSUploadUtil extends BaseService {
                 StringBuilder path = new StringBuilder("log/");
                 //获取时间戳
                 Date fileDate = new Date();
-                StringBuilder fileName = new StringBuilder(String.valueOf(fileDate.getTime()));
+                StringBuilder datetime = new StringBuilder(String.valueOf(fileDate.getTime()));
                 //获取时间文件夹,并且与时间戳进行拼接
                 SimpleDateFormat dateFormatShow = new SimpleDateFormat("yyyyMMdd");
                 String date = (dateFormatShow.format(new Date()));
                 StringBuilder newName = new StringBuilder(date);
                 path.append(newName.toString());
                 path.append("/");
-                path.append(fileName);
-                //获取文件后缀名
-                String filename3 = file.getOriginalFilename();
-                String extName = filename3.substring(filename3.lastIndexOf("."));
-                path.append(extName);
-//                System.out.println(path);
-                //http://47.95.222.85/log/20190517/1558074106768.png
+                path.append(datetime);
+                path.append("/");
+                path.append(filename);
+                //获取文件后缀名--file.getOriginalFilename(); 获取的名字带后缀
+               /* String extName = filename.substring(filename.lastIndexOf("."));
+                path.append(extName);*/
                 String yuming1 = path.toString();
                 File newFile = new File(filename);
                 FileOutputStream os = new FileOutputStream(newFile);
@@ -77,18 +76,19 @@ public class OSSUploadUtil extends BaseService {
                 StringBuilder path = new StringBuilder(pathPart);
                 //获取时间戳
                 Date fileDate = new Date();
-                StringBuilder fileName = new StringBuilder(String.valueOf(fileDate.getTime()));
+                StringBuilder datetime = new StringBuilder(String.valueOf(fileDate.getTime()));
                 //获取时间文件夹,并且与时间戳进行拼接
                 SimpleDateFormat dateFormatShow = new SimpleDateFormat("yyyyMMdd");
                 String date = (dateFormatShow.format(new Date()));
                 StringBuilder newName = new StringBuilder(date);
                 path.append(newName.toString());
                 path.append("/");
-                path.append(fileName);
-                //获取文件后缀名
-                String filename3 = file.getOriginalFilename();
-                String extName = filename3.substring(filename3.lastIndexOf("."));
-                path.append(extName);
+                path.append(datetime);
+                path.append("/");
+                path.append(filename);
+                //获取文件后缀名--file.getOriginalFilename(); 获取的名字带后缀
+               /* String extName = filename.substring(filename.lastIndexOf("."));
+                path.append(extName);*/
                 String yuming1 = path.toString();
                 File newFile = new File(filename);
                 FileOutputStream os = new FileOutputStream(newFile);

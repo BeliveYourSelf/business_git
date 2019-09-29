@@ -6,6 +6,7 @@ import com.youxu.business.utils.Enum.ResultCodeEnum;
 import com.youxu.business.utils.OtherUtil.OSSUploadUtil;
 import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
+import com.youxu.business.utils.readdocumentpagesizeutils.Readword;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -41,7 +42,7 @@ public class DocumentPrintPriceListController {
     }
 
     /**
-     * 获取文档页数
+     * 通过file获取文档页数
      *
      * @param file
      * @return
@@ -58,6 +59,23 @@ public class DocumentPrintPriceListController {
         PDDocument load = PDDocument.load(inputStream);
         int numberOfPages = load.getNumberOfPages();
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", numberOfPages);
+    }
+
+    /**
+     * 通过地址路径获取文档页数
+     *
+     * @param fileUrl
+     * @return
+     */
+    @ApiOperation(value = "通过地址路径获取文档页数", notes = "fileUrl")
+    @PostMapping("/selectDocumentPageNumberByUrl")
+    public ResponseMessage<Integer> selectDocumentPageNumberByUrl(@RequestParam("fileUrl") String fileUrl) throws IOException {
+        if (fileUrl.isEmpty()) {
+            return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), "路径不能为空");
+        }
+        //获取pdf页数
+        int xlsxNum = Readword.getFilePageNum(fileUrl);
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", xlsxNum);
     }
 
 

@@ -53,6 +53,8 @@ public class DocumentPrintPriceListController {
             return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), "文件不能为空");
         }
         InputStream inputStream = file.getInputStream();
+
+        //获取pdf页数
         PDDocument load = PDDocument.load(inputStream);
         int numberOfPages = load.getNumberOfPages();
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", numberOfPages);
@@ -63,6 +65,7 @@ public class DocumentPrintPriceListController {
     @PostMapping("/uploadFile")
     public ResponseMessage<String> uploadFile(@RequestParam("file") MultipartFile file) {
         String uploadSuccess = OSSUploadUtil.uploadBlog(file);
+        //获取文件页数
         if (StringUtils.isEmpty(uploadSuccess)) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "上传失败");
         }

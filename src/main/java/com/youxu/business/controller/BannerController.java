@@ -70,9 +70,9 @@ public class BannerController {
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",user);
     }
-    @ApiOperation(value = "测试：查看用户信息通过userId", notes = "userId")
-    @GetMapping("/selectUserInfo")
-    public ResponseMessage<User> userTest(@RequestParam("userId") String userId){
+    /*@ApiOperation(value = "测试：查看用户信息通过userId", notes = "userId")
+    @GetMapping("/selectUserInfoOther")
+    public ResponseMessage<User> selectUserInfoOther(@RequestParam("userId") String userId){
         //根据ID获取服务实力
         List<ServiceInstance> instances = discoveryClient.getInstances("useraccount");
         //获取实例ip与端口
@@ -83,5 +83,5 @@ public class BannerController {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",user);
-    }
+    }*/
 }

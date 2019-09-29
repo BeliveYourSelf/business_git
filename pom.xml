@@ -270,20 +270,6 @@
                 </dependencies>
             </plugin>
         </plugins>
-        <!--帮助本地jar打包发布服务器-->
-        <resources>
-            <resource>
-                <directory>${project.basedir}/lib</directory>
-                <targetPath>BOOT-INF/lib/</targetPath>
-                <includes>
-                    <include>**/*.jar</include>
-                </includes>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <targetPath>BOOT-INF/classes/</targetPath>
-            </resource>
-        </resources>
     </build>
 
 </project>

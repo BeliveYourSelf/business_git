@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface MemberInterface {
     // 查看用户信息
     @RequestMapping(value = "/userLogin/selectUserInfoByUId", method = RequestMethod.GET)
-    public ResponseMessage<User> selectUserInfoByUId(Integer userId);
+    public ResponseMessage<User> selectUserInfoByUId(@RequestParam("userId")Integer userId);
     // 查看用户会员信息
     @RequestMapping(value = "/userLogin/userWallet", method = RequestMethod.GET)
-    public ResponseMessage<UserWallet> selectUserMemberByUserId(Integer userId);
+    public ResponseMessage<UserWallet> selectUserMemberByUserId(@RequestParam("userId")Integer userId);
     // 更新用户消费金和钱包余额
     @RequestMapping(value = "/userLogin/updateUserWallet", method = RequestMethod.GET)
     public ResponseMessage<Integer> updateUserWallet(@RequestParam("userId") Integer userId,@RequestParam("amount") Double amount,@RequestParam("cashback") Double cashback);

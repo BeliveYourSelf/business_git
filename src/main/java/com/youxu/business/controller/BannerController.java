@@ -50,7 +50,7 @@ public class BannerController {
 
     @ApiOperation(value = "测试feign：查看用户信息通过userId", notes = "userId")
     @GetMapping("/selectBannerById")
-    public ResponseMessage<User> selectUserInfoByUId(@RequestParam String userId) {
+    public ResponseMessage<User> selectUserInfoByUId(@RequestParam("userId") String userId) {
         ResponseMessage<User> userResponseMessage = memberInterface.selectUserInfoByUId(Integer.valueOf(userId));
         User user = userResponseMessage.getData();
         if (StringUtils.isEmpty(user)) {

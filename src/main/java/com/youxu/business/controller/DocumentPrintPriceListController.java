@@ -67,8 +67,8 @@ public class DocumentPrintPriceListController {
      * @param fileUrl
      * @return
      */
-    @ApiOperation(value = "通过地址路径获取文档页数（pdf/word/excel/ppt）", notes = "fileUrl")
-    @PostMapping("/selectDocumentPageNumberByUrl")
+    @ApiOperation(value = "通过地址路径获取文档页数（pdf/word/excel/ppt）", notes = "https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20190929/1569741897178/woshipdf.pdf")
+    @GetMapping("/selectDocumentPageNumberByUrl")
     public ResponseMessage<Integer> selectDocumentPageNumberByUrl(@RequestParam("fileUrl") String fileUrl) throws IOException {
         if (fileUrl.isEmpty()) {
             return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), "路径不能为空");

@@ -39,7 +39,7 @@ public class BannerController {
     }
 
     @ApiOperation(value = "查看其中一个banner", notes = "banner的id")
-    @GetMapping("/selectBannerById")
+    @GetMapping("/selectOneBannerById")
     public ResponseMessage<Banner> selectOneBannerById(@RequestParam String id) {
         Banner selectBannerById =bannerService.selectBannerById(id);
         if (StringUtils.isEmpty(selectBannerById)) {

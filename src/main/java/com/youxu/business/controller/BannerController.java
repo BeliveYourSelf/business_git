@@ -31,14 +31,14 @@ public class BannerController {
     @Resource
     private BannerService bannerService;
 
-    @Autowired
-    private RestTemplate restTemplate;
+/*    @Autowired
+    private RestTemplate restTemplate;*/
 
     @Resource
     private MemberInterface memberInterface;
 
-    @Autowired
-    private DiscoveryClient discoveryClient;
+   /* @Autowired
+    private DiscoveryClient discoveryClient;*/
 
     @ApiOperation(value = "查看所有banner", notes = "")
     @GetMapping("/selectBannerList")

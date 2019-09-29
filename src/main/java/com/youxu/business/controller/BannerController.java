@@ -9,14 +9,20 @@ import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -25,8 +31,14 @@ public class BannerController {
     @Resource
     private BannerService bannerService;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     @Resource
     private MemberInterface memberInterface;
+
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
     @ApiOperation(value = "查看所有banner", notes = "")
     @GetMapping("/selectBannerList")
@@ -49,10 +61,24 @@ public class BannerController {
     }
 
     @ApiOperation(value = "测试feign：查看用户信息通过userId", notes = "userId")
-    @GetMapping("/selectBannerById")
+    @GetMapping("/selectUserInfoByUId")
     public ResponseMessage<User> selectUserInfoByUId(@RequestParam("userId") String userId) {
         ResponseMessage<User> userResponseMessage = memberInterface.selectUserInfoByUId(Integer.valueOf(userId));
         User user = userResponseMessage.getData();
+        if (StringUtils.isEmpty(user)) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",user);
+    }
+    @ApiOperation(value = "测试：查看用户信息通过userId", notes = "userId")
+    @GetMapping("/selectUserInfo")
+    public ResponseMessage<User> userTest(@RequestParam("userId") String userId){
+        //根据ID获取服务实力
+        List<ServiceInstance> instances = discoveryClient.getInstances("useraccount");
+        //获取实例ip与端口
+        ServiceInstance instance = instances.get(0);
+        String url="http://"+instance.getHost()+":"+instance.getPort()+"/userLogin/selectUserInfoByUId";
+        User user = restTemplate.getForObject(url, User.class);
         if (StringUtils.isEmpty(user)) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }

@@ -1,6 +1,8 @@
 package com.youxu.business.controller;
 
 import com.youxu.business.pojo.Banner;
+import com.youxu.business.pojo.remotepojo.User;
+import com.youxu.business.remoteinterface.MemberInterface;
 import com.youxu.business.service.BannerService;
 import com.youxu.business.utils.Enum.ResultCodeEnum;
 import com.youxu.business.utils.ResponseUtil.ResponseMessage;
@@ -23,6 +25,9 @@ public class BannerController {
     @Resource
     private BannerService bannerService;
 
+    @Resource
+    private MemberInterface memberInterface;
+
     @ApiOperation(value = "查看所有banner", notes = "")
     @GetMapping("/selectBannerList")
     public ResponseMessage<List<Banner>> selectBannerList() {
@@ -41,5 +46,16 @@ public class BannerController {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectBannerById);
+    }
+
+    @ApiOperation(value = "测试feign：查看用户信息通过userId", notes = "userId")
+    @GetMapping("/selectBannerById")
+    public ResponseMessage<User> selectUserInfoByUId(@RequestParam String userId) {
+        ResponseMessage<User> userResponseMessage = memberInterface.selectUserInfoByUId(Integer.valueOf(userId));
+        User user = userResponseMessage.getData();
+        if (StringUtils.isEmpty(user)) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",user);
     }
 }

@@ -105,7 +105,7 @@ public class ShareController extends BaseService {
             ",\"orderProcess\":\"1\"\n" +
             ",\"openId\":\"oM1Ip44WRFWLyHiSS_FujH_4U4ow\"\n" +
             ",\"whetherMembers\":\"true\"\n" +
-            "}}                    6.下载/存入资料库（分享支付）7.加入打印（分享支付）")
+            "}}    tradeType     支付类别：  JSAPI/NATIVE           6.下载/存入资料库（分享支付）7.加入打印（分享支付）")
     @PostMapping("/downloadShare")
     public ResponseMessage<Map> downloadShare(HttpServletRequest request, @RequestBody Share share) {
         Share downloadShare = shareService.downloadShare(share);
@@ -150,10 +150,10 @@ public class ShareController extends BaseService {
             ip = ClientIPUtils.getIp(request);
             if (orderType == 6) {
                 body = "存入资料库";
-                map = payUtilsService.wepay_orderSign(request, share.getOrder().getOpenId(), body, orderId.toString(), share.getOrder().getOrderActualMoney(), ip, DOWNLOADFOLDER);
+                map = payUtilsService.wepay_orderSign(request, share.getOrder().getOpenId(), body, orderId.toString(), share.getOrder().getOrderActualMoney(), ip, DOWNLOADFOLDER,share.getTradeType());
             } else if (orderType == 7) {
                 body = "加入打印";
-                map = payUtilsService.wepay_orderSign(request, share.getOrder().getOpenId(), body, orderId.toString(), share.getOrder().getOrderActualMoney(), ip, DOWNLOADFOLDER);
+                map = payUtilsService.wepay_orderSign(request, share.getOrder().getOpenId(), body, orderId.toString(), share.getOrder().getOrderActualMoney(), ip, DOWNLOADFOLDER,share.getTradeType());
             } else {
                 return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), "orderType：此状态必须为6或7。6：下载/存入资料库（分享支付）7：加入打印（分享支付）");
             }

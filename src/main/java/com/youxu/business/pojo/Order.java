@@ -107,4 +107,7 @@ public class Order extends PageInfo{
     @ApiModelProperty(name = "vouchersIdList",value = "优惠券id：可能是代金券或者配送券。支付的时候返回给前端让他删除")
     private List<Integer> vouchersIdList;
 
+    @ApiModelProperty(name = "tradeType",value = "支付类别：  JSAPI/NATIVE")
+    private String tradeType;
+
 }

@@ -2,8 +2,10 @@ package com.youxu.business.service.impl;
 
 
 import com.github.wxpay.sdk.WXPayUtil;
+import com.youxu.business.pojo.Order;
 import com.youxu.business.service.BaseService;
 import com.youxu.business.service.PayUtilsService;
+import com.youxu.business.utils.OtherUtil.ClientIPUtils;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,12 +22,11 @@ import java.util.UUID;
 public class PayUtilsServiceImpl extends BaseService implements PayUtilsService {
 
 //返回prepay_id     第一次签名
-    private String goWePay(String body, String wx_trade_no, Double total_fee, String ip, String openId, String callbackPath) {
-        String resp;
+    private Map goWePay(String body, String wx_trade_no, Double total_fee, String ip, String openId, String callbackPath,String tradeType) {
+        Map<String, String> map = new HashMap<>();
         try {
             //设置请求参数（必须）
             String nonce_str = UUID.randomUUID().toString().trim().replaceAll("-", "");
-            Map<String, String> map = new HashMap<>();
             map.put("appid", WXPAYAPPID);
             map.put("mch_id", WXPAYMCHID);
             map.put("nonce_str", nonce_str);
@@ -36,7 +37,7 @@ public class PayUtilsServiceImpl extends BaseService implements PayUtilsService 
             map.put("total_fee", total_fee_int.toString());
             map.put("spbill_create_ip", ip);
             map.put("notify_url", callbackPath);
-            map.put("trade_type", "JSAPI");
+            map.put("trade_type", tradeType);
             map.put("openid", openId);
             String sign = WXPayUtil.generateSignature(map, WXPAYKEY);
             map.put("sign", sign);
@@ -63,7 +64,6 @@ public class PayUtilsServiceImpl extends BaseService implements PayUtilsService 
                 stringBuffer.append(line);
             }
             map = WXPayUtil.xmlToMap(stringBuffer.toString());
-            resp = map.get("prepay_id");
             if (stringBuffer != null) {
                 try {
                     bufferedReader.close();
@@ -86,9 +86,9 @@ public class PayUtilsServiceImpl extends BaseService implements PayUtilsService 
                 }
             }
         } catch (Exception e) {
-            resp = null;
+            map = null;
         }
-        return resp;
+        return map;
     }
 
 
@@ -115,11 +115,14 @@ public class PayUtilsServiceImpl extends BaseService implements PayUtilsService 
         return sign;
     }
 
+
+
     //回调函数
-    public String wepay_codeUrl(Map input, HttpServletRequest request, String openid, String body, String wx_trade_no, Double total_fee, String ip, String openId, String callbackPath) throws Exception {
+    public String wepay_codeUrl(Map input, HttpServletRequest request, String openid, String body, String wx_trade_no, Double total_fee, String ip, String openId, String callbackPath,String tradeType) throws Exception {
 //        returnResult1 = go_pay(input, request);//      修改支付成功--修改已完成
         PayUtilsServiceImpl payUtilsService = new PayUtilsServiceImpl();
-        String prepay_id = payUtilsService.goWePay(body, wx_trade_no, total_fee, ip, openId,callbackPath);
+        Map goWePay = payUtilsService.goWePay(body, wx_trade_no, total_fee, ip, openId, callbackPath,tradeType);
+        String prepay_id = (String) goWePay.get("prepay_id");
         Map<String, String> map = new HashMap<>();
         map.put("appId", WXPAYAPPID);
         map.put("timeStamp", Long.toString(new Date().getTime()));
@@ -135,14 +138,18 @@ public class PayUtilsServiceImpl extends BaseService implements PayUtilsService 
     }
 
     //再次签名：    //微信签名+5个参数
-    public Map wepay_orderSign(HttpServletRequest request, String openid, String body, String orderId, Double total_fee, String ip, String callbackPath) throws Exception {
+    public Map wepay_orderSign(HttpServletRequest request, String openid, String body, String orderId, Double total_fee, String ip, String callbackPath,String tradeType) throws Exception {
+        Map goWePay = goWePay(body, orderId, total_fee, ip, openid, callbackPath, tradeType);
+        String prepay_id = (String) goWePay.get("prepay_id");
+        String code_url = (String) goWePay.get("code_url");
         Map<String, String> map = new HashMap<>();
         map.put("appId", WXPAYAPPID);
         map.put("timeStamp", String.valueOf(new Date().getTime() / 1000));
         map.put("nonceStr", UUID.randomUUID().toString().trim().replaceAll("-", ""));
-        map.put("package", "prepay_id=" + goWePay(body, orderId, total_fee, ip, openid,callbackPath));
+        map.put("package", "prepay_id=" + prepay_id);
         map.put("signType", "MD5");
         map.put("paySign", wepay_sign(map));
+        map.put("code_url",code_url);
         return map;
     }
 

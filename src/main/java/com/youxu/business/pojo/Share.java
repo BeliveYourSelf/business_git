@@ -57,5 +57,8 @@ public class Share {
     @ApiModelProperty(name = "order", value = "订单对象")
     private Order order;
 
+    @ApiModelProperty(name = "tradeType",value = "支付类别：  JSAPI/NATIVE")
+    private String tradeType;
+
 
 }

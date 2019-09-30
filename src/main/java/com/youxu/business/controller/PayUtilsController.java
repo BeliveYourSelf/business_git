@@ -11,8 +11,11 @@ import com.youxu.business.service.PayUtilsService;
 import com.youxu.business.utils.Enum.PayStatusEnum;
 import com.youxu.business.utils.Enum.ResultCodeEnum;
 import com.youxu.business.utils.OtherUtil.ClientIPUtils;
+import com.youxu.business.utils.OtherUtil.OSSUploadUtil;
+import com.youxu.business.utils.OtherUtil.UploadUtils;
 import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
+import com.youxu.business.utils.normalQRcode.QRCodeUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.http.entity.ContentType;
@@ -36,6 +39,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+
+import static com.youxu.business.service.impl.OrderServiceImpl.fileTransToMultipartFile;
 
 /**
  * Created with IntelliJ IDEA.
@@ -61,7 +67,6 @@ public class PayUtilsController extends BaseService {
     private String ip;
 
 
-
     /**
      * 订单支付
      *
@@ -70,30 +75,32 @@ public class PayUtilsController extends BaseService {
      * @return
      */
     //微信签名+5个参数
-    @ApiOperation(value = "微信签名+5个参数：支付", notes = "{\"id\":\"1\" ,\"openId\":\"oM1Ip44WRFWLyHiSS_FujH_4U4ow\" ,\"orderAddresseeName\":\"李文轩\" ,\"orderActualMoney\":\"10\" ,\"userId\":\"1\" ,\"whetherMembers\":\"true\" ,\"orderConsumeMoney\":\"3\" ,\"vouchersIdList\":[ \"1\",\"2\" ] }")
+    @ApiOperation(value = "微信签名+5个参数：支付", notes = "{\"id\":\"1465\" ,\"openId\":\"oM1Ip44WRFWLyHiSS_FujH_4U4ow\" ,\"orderAddresseeName\":\"李文轩\" ,\"orderActualMoney\":\"10\" ,\"userId\":\"1\" ,\"whetherMembers\":\"false\" ,\"orderConsumeMoney\":\"3\" ,\"vouchersIdList\":[ \"1\",\"2\" ]\n" +
+            ",\"tradeType\":\"JSAPI\" }   tradeType支付类别：  JSAPI（小程序传）或NATIVE（b/s传）   ")
     @RequestMapping(value = "/wepay_sign", method = RequestMethod.POST)
     public ResponseMessage<Map> wepay_sign(HttpServletRequest request, @RequestBody Order order) {
         // 会员支付
-        if(order.getWhetherMembers()) {
+        if (order.getWhetherMembers()) {
             return memberPay(order);
         }
-        ResponseMessage<UserWallet> userWalletResponseMessage = memberInterface.selectUserMemberByUserId(order.getUserId());
+        /*ResponseMessage<UserWallet> userWalletResponseMessage = memberInterface.selectUserMemberByUserId(order.getUserId());
         UserWallet userWallet = userWalletResponseMessage.getData();
         // 会员卡钱不充足，走微信支付
-        if(userWallet.getWalletBalance() > order.getOrderActualMoney()){
+        if (userWallet.getWalletBalance() > order.getOrderActualMoney()) {*/
             try {
                 ip = ClientIPUtils.getIp(request);
-                Map map = payUtilsService.wepay_orderSign(request, order.getOpenId(), order.getOrderAddresseeName(), order.getId().toString(), order.getOrderActualMoney(), ip, ORDERPAY);
+                Map map = payUtilsService.wepay_orderSign(request, order.getOpenId(), order.getOrderAddresseeName(), order.getId().toString(), order.getOrderActualMoney(), ip, ORDERPAY, order.getTradeType());
                 logger.info("微信签名+5个参数---------------------------------------------------------------------------" + map);
                 return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", map);
             } catch (Exception e) {
                 e.printStackTrace();
                 return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
             }
-        }else {
-            return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(),"消费金不足，请重新生成订单");
-        }
+        /*} else {
+            return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), "消费金不足，请重新生成订单");
+        }*/
     }
+
     //回调函数
     @ApiOperation(value = "回调函数", notes = "content（Map），openid，orderId")
     @RequestMapping(value = "/orderPayUrl", method = RequestMethod.POST)
@@ -124,7 +131,7 @@ public class PayUtilsController extends BaseService {
                 //修改支付状态
                 Order order = orderService.selectDeliveryFileByOrderId(orderId.toString());
                 if (orderService.updateOrderPayDateAndProcess(orderId, PayStatusEnum.COMPLETE.getValueCode()) == 1) {
-                    memberInterface.updateUserWallet(order.getUserId(),order.getOrderConsumeMoney());
+                    memberInterface.updateUserWallet(order.getUserId(), order.getOrderConsumeMoney());
                     // 修改优惠券
                     logger.info("微信回调  订单号：" + outTradeNo + ",修改状态成功");
                     //封装 返回值
@@ -147,23 +154,43 @@ public class PayUtilsController extends BaseService {
     }
 
     // 会员支付订单
-    private ResponseMessage memberPay(Order order){
+    private ResponseMessage memberPay(Order order) {
         // 判断是否为会员  isMembers:0非会员  1会员
         Integer userId = order.getUserId();
         Integer orderId = order.getId();
         Double orderActualMoney = order.getOrderActualMoney();// 钱包消费额
         Double orderConsumeMoney = order.getOrderConsumeMoney();// 消费金
-            // 更新订单/会员/消费金/优惠券价格
-            ResponseMessage<Integer> updateUserWallet = memberInterface.updateUserWallet(userId, orderConsumeMoney, orderActualMoney);
-            String respCode = updateUserWallet.getRespCode();
-            String message = updateUserWallet.getMessage();
-            if("200".equals(respCode)){
-                Integer updateOrderPayDateAndProcess = orderService.updateOrderPayDateAndProcess(orderId, PayStatusEnum.COMPLETE.getValueCode());
-                if(updateOrderPayDateAndProcess >= 0){
-                    return Result.success(respCode,"钱包支付成功");
-                }
+        // 更新订单/会员/消费金/优惠券价格
+        ResponseMessage<Integer> updateUserWallet = memberInterface.updateUserWallet(userId, orderConsumeMoney, orderActualMoney);
+        String respCode = updateUserWallet.getRespCode();
+        String message = updateUserWallet.getMessage();
+        if ("200".equals(respCode)) {
+            Integer updateOrderPayDateAndProcess = orderService.updateOrderPayDateAndProcess(orderId, PayStatusEnum.COMPLETE.getValueCode());
+            if (updateOrderPayDateAndProcess >= 0) {
+                return Result.success(respCode, "钱包支付成功");
             }
-                return Result.error(respCode,message);
+        }
+        return Result.error(respCode, message);
     }
 
+    @ApiOperation(value = "生成支付图片", notes = "")
+    @RequestMapping(value = "/createPayQRCode", method = RequestMethod.POST)
+    public ResponseMessage<String> createPayQRCode(String payUrl) {
+        String imgPath = null;
+        String uploadBlog = null;
+        Date date = new Date();
+        // 存放上传图片的文件夹
+        File fileDir = UploadUtils.getImgDirFileCeshi(UploadUtils.IMG_PATH_PREFIX_QRcodeCeshi);
+        // 生成的二维码的路径及名称
+        String destPath = fileDir.getAbsolutePath() + File.separator + date.getTime() + ".png";
+        // 生成二维码
+        try {
+            QRCodeUtil.encode(payUrl, imgPath, destPath, true);
+            MultipartFile multipartFileQRCode = fileTransToMultipartFile(destPath);
+            uploadBlog = OSSUploadUtil.uploadBlog(multipartFileQRCode, "barcode/");
+        } catch (Exception e) {
+            Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), "生成支付图片失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", uploadBlog);
+    }
 }

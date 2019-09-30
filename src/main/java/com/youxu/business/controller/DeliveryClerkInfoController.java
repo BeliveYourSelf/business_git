@@ -81,7 +81,7 @@ public class DeliveryClerkInfoController {
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
     }
 
-    @ApiOperation(value = "查看快递员信息", notes = "userId   配送员信息表  0待审核  1已审核，2不通过")
+    @ApiOperation(value = "查看快递员信息", notes = "userId   ")
     @GetMapping("/selectDeliveryClerkInfoByUserId")
     public ResponseMessage<DeliveryClerkInfo> selectDeliveryClerkInfoByUserId(@RequestParam String userId) {
         DeliveryClerkInfo deliveryClerkInfo = deliveryClerkInfoService.selectDeliveryClerkInfoByUserId(userId);

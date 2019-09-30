@@ -45,7 +45,7 @@ public class DeliveryClerkInfoController {
 
     @ApiOperation(value = "发送验证码", notes = "")
     @GetMapping("/sendCheckCode")
-    public ResponseMessage sendCheckCode(@RequestParam String phone) {
+    public ResponseMessage<String> sendCheckCode(@RequestParam String phone) {
         DeliveryClerkInfo deliveryClerkInfo = deliveryClerkInfoService.selectDeliveryClerkInfoByPhone(phone);
         if (!StringUtils.isEmpty(deliveryClerkInfo)) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "该手机号已注册配送员");
@@ -58,7 +58,7 @@ public class DeliveryClerkInfoController {
         }
         String commonRpc = CommonRpc.getCommonRpc(phone, "{\"code\":\"" + str + "\"}", SendSmsTemplateCodeEnum.REGISTERDELIVERYCLERK.getTemplateCodeValue());
 
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",str);
     }
 
 

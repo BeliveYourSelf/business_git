@@ -81,14 +81,20 @@ public class DeliveryClerkInfoController {
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
     }
 
-    @ApiOperation(value = "查看快递员信息", notes = "userId")
+    @ApiOperation(value = "查看快递员信息", notes = "userId   配送员信息表  0待审核  1已审核，2不通过")
     @GetMapping("/selectDeliveryClerkInfoByUserId")
     public ResponseMessage<DeliveryClerkInfo> selectDeliveryClerkInfoByUserId(@RequestParam String userId) {
         DeliveryClerkInfo deliveryClerkInfo = deliveryClerkInfoService.selectDeliveryClerkInfoByUserId(userId);
         if (StringUtils.isEmpty(deliveryClerkInfo)) {
-            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "暂无计费规则");
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "暂无快递员信息");
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", deliveryClerkInfo);
+        Integer auditStatus = deliveryClerkInfo.getAuditStatus();
+        if ("0".equals(auditStatus.toString())) {
+            return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "待审核");
+        } else if ("1".equals(auditStatus.toString())) {
+            return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", deliveryClerkInfo);
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "不通过");
     }
 
 
@@ -166,7 +172,7 @@ public class DeliveryClerkInfoController {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "上传图片不能大于2M");
         }
         DeliveryClerkInfo deliveryClerkInfo = deliveryClerkInfoService.selectDeliveryClerkInfoByUserId(deliveryClerkInfoParam.getUserId().toString());
-       // 截取base64前缀
+        // 截取base64前缀
         String imageSubstring = ImageSizeTool.imageSubstring(image);
         deliveryClerkInfo.setImage(imageSubstring);
         // 生成人脸识别评分
@@ -179,8 +185,6 @@ public class DeliveryClerkInfoController {
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
     }
-
-
 
 
 }

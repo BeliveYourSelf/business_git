@@ -6,6 +6,7 @@
     <result column="store_id"  property="storeId" />
     <result column="document_print_price_list_code" jdbcType="VARCHAR" property="documentPrintPriceListCode" />
     <result column="document_print_price_list_price" jdbcType="DOUBLE" property="documentPrintPriceListPrice" />
+    <result column="document_print_price_cover" jdbcType="DOUBLE" property="documentPrintPriceCover" />
     <result column="document_print_price_list_create_time" jdbcType="TIMESTAMP" property="documentPrintPriceListCreateTime" />
     <result column="document_print_price_list_modify_time" jdbcType="TIMESTAMP" property="documentPrintPriceListModifyTime" />
     <result column="document_print_price_list_status" jdbcType="BIT" property="documentPrintPriceListStatus" />
@@ -69,7 +70,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, store_id, document_print_price_list_code, document_print_price_list_price, document_print_price_list_create_time,
+    id, store_id, document_print_price_list_code, document_print_price_list_price, document_print_price_cover,
+    document_print_price_list_create_time,
     document_print_price_list_modify_time, document_print_price_list_status
   </sql>
   <select id="selectByExample" parameterType="com.youxu.business.pojo.DocumentPrintPriceListExample" resultMap="BaseResultMap">

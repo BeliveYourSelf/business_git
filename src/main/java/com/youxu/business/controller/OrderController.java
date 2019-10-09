@@ -56,16 +56,13 @@ public class OrderController {
             ", \"userId\": 1 }")
     @PostMapping("/insertOrder")
     public ResponseMessage<Integer> insertOrder(@RequestBody Order order) {
-        Integer insertOrder = null;
+        Integer orderId = null;
         try {
-            insertOrder = orderService.insertOrder(order);
+            orderId = orderService.insertOrder(order);
         } catch (Exception e) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "新增失败");
         }
-        if (insertOrder.equals(0)) {
-            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "新增失败");
-        }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",orderId);
     }
 
     /**

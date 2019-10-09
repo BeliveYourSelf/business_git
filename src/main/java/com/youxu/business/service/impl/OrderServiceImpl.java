@@ -76,7 +76,7 @@ public class OrderServiceImpl implements OrderService {
             }
 
         }
-        return insertOrder;
+        return orderId;
     }
 
     public void addDeliveryPickUpFileQRCodeUrl(Integer orderId) throws Exception {

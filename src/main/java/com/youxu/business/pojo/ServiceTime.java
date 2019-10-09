@@ -10,7 +10,7 @@ public class ServiceTime {
     @ApiModelProperty(name = "id", value = "配送时间价格表id")
     private Integer id;
 
-    @JsonFormat(timezone = "GMT", pattern = "HH:mm")
+    @JsonFormat(timezone = "GMT+8", pattern = "HH:mm")
     @ApiModelProperty(name = "serviceTime", value = "送达时间")
     private Date serviceTime;
 

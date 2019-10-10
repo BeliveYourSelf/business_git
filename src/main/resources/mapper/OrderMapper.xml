@@ -614,7 +614,7 @@
         from tb_order
         left join tb_order_details
         on tb_order.id = tb_order_details.order_id
-        where order_process = #{order.orderProcess} and order_status = false
+        where tb_order.user_id = #{order.userId} and order_process = #{order.orderProcess} and order_status = false
     </select>
     <!--更新支付状态和时间  orderProcess 订单进行状态:1.待付款2.进行中3.已完成4.已取消-->
     <update id="updateOrderPayDateAndProcess">

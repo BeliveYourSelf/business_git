@@ -131,9 +131,8 @@ public class OrderController {
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
     }
 
-    @ApiOperation(value = "查看订单打印列表", notes = "{\"pageNo\":\"1\"\n" +
-            ",\"pageSize\":\"1\"\n" +
-            ",\"orderProcess\":\"1\"}        orderProcess：订单进行状态:1.待付款2.进行中3.已完成4.已取消")
+    @ApiOperation(value = "查看订单打印列表", notes = "{\"pageNo\":\"1\" ,\"pageSize\":\"1\" ,\"orderProcess\":\"1\"\n" +
+            ",\"userId\":\"1\"}         orderProcess：订单进行状态:1.待付款2.进行中3.已完成4.已取消")
     @PostMapping("/selectOrderList")
     public ResponseMessage<List<Order>> selectOrderList(@RequestBody Order order) {
         List<Order> selectOrderList = orderService.selectOrderList(order);

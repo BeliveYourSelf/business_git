@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 @Service
 public class DocumentPrintPriceListServiceImpl implements DocumentPrintPriceListService {
@@ -24,7 +25,7 @@ public class DocumentPrintPriceListServiceImpl implements DocumentPrintPriceList
     public DocumentPrintPriceList selectDocumentPrintPriceList(DocumentPrintPriceList documentPrintPriceList) throws IOException {
         // 查看页数
         int pdfPageNumber = documentPrintPriceList.getPageNumber();
-        //查看价格
+        // 查看价格
         Integer count = documentPrintPriceList.getCount();// 黑白
         Integer countColour = documentPrintPriceList.getCountColour();// 彩色
         DocumentPrintPriceList documentPrintPriceListNew = documentPrintPriceListMapper.selectDocumentPrintPriceList(documentPrintPriceList);
@@ -36,7 +37,10 @@ public class DocumentPrintPriceListServiceImpl implements DocumentPrintPriceList
         Double documentPrintPriceCover = documentPrintPriceListNew.getDocumentPrintPriceCover();
         double blackAndWhitePrice = count * documentPrintPriceListPrice * pdfPageNumber;
         double colorPrice = countColour * documentPrintPriceCover * pdfPageNumber;
-        double totalPrice = blackAndWhitePrice + colorPrice;
+        double totalPriceDouble = blackAndWhitePrice + colorPrice;
+        DecimalFormat decimalFormat = new DecimalFormat("######.00");
+        String totalPriceString = decimalFormat.format(totalPriceDouble);
+        Double totalPrice = Double.valueOf(totalPriceString);
         documentPrintPriceListNew.setTotalPrice(totalPrice);
         documentPrintPriceListNew.setCountColour(countColour);
         documentPrintPriceListNew.setDocumentPrintPriceListPrice(documentPrintPriceListPrice);

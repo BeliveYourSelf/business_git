@@ -60,7 +60,8 @@
         <!--<table tableName="tb_delivery_clerk_info" domainObjectName="DeliveryClerkInfo"/>-->
         <!--<table tableName="tb_sotre_delivery_mapping" domainObjectName="SotreDeliveryMapping"/>-->
         <!--<table tableName="tb_service_time" domainObjectName="ServiceTime"/>-->
-        <table tableName="tb_document_cover_color" domainObjectName="DocumentCoverColor"/>
+        <!--<table tableName="tb_document_cover_color" domainObjectName="DocumentCoverColor"/>-->
+        <table tableName="tb_order_evaluate_picture_mapping" domainObjectName="OrderEvaluatePictureMapping"/>
 
     </context>
 </generatorConfiguration>

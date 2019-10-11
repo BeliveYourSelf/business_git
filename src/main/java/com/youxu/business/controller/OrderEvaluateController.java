@@ -30,7 +30,7 @@ public class OrderEvaluateController {
             "  \"orderEvaluateStar\": 1,\n" +
             "\n" +
             "  \"orderId\": 2\n" +
-            "}   orderEvaluateOptionCartIdList:评价选项卡id ")
+            "}   orderEvaluateOptionCartIdList:评价选项卡id    orderEvaluatePictureList: 订单评价图片集合")
     @PostMapping("/insertOrderEvaluate")
     public ResponseMessage insertOrderEvaluate(@RequestBody OrderEvaluate orderEvaluate) {
         Integer insertOrderEvaluate =orderEvaluateService.insertOrderEvaluate(orderEvaluate);

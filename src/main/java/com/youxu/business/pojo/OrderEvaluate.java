@@ -21,5 +21,8 @@ public class OrderEvaluate {
 
     private Boolean orderEvaluateStatus;
 
+    // 新增
     private List<Integer> orderEvaluateOptionCartIdList;
+
+    private List<String> orderEvaluatePictureList;
 }

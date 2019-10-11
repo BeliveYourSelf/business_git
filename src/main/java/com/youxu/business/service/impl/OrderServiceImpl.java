@@ -111,8 +111,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Integer reminderOrder(Order order) {
         Integer id = order.getId();
-        Integer orderType = order.getOrderType();
-        Integer reminderOrder = orderMapper.reminderOrder(id, orderType);
+        Integer orderProcess = order.getOrderProcess();
+        Integer reminderOrder = orderMapper.reminderOrder(id, orderProcess);
         return reminderOrder;
     }
 

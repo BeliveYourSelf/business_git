@@ -24,7 +24,7 @@ public interface OrderMapper {
     // 返回最新插入orderId
     int lastInsertId();
     // 催单/确认收件
-    Integer reminderOrder(@Param("id") Integer id,@Param("orderType") Integer orderType);
+    Integer reminderOrder(@Param("id") Integer id,@Param("orderProcess") Integer orderProcess);
     // 取消订单
     Integer cancelOrder(String id);
     // 更新订单

@@ -529,7 +529,7 @@
     <!--催单/确认收件-->
     <update id="reminderOrder">
     update tb_order
-    set  order_type = #{orderType}
+    set  order_process = #{orderProcess}
     where id = #{id}
   </update>
     <!--取消订单-->

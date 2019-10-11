@@ -67,10 +67,10 @@ public class OrderController {
     }
 
     /**
-     * 催单/确认收件
+     * 催单/确认收件-----------------------------------
      */
     @ApiOperation(value = "催单/确认收件", notes = "{\"id\":\"1\"\n" +
-            ",\"orderType\":\"2\"}")
+            ",\"orderProcess\":\"2\"}")
     @PostMapping("/reminderOrder")
     public ResponseMessage<Integer> reminderOrder(@RequestBody Order order) {
         Integer reminderOrder = orderService.reminderOrder(order);

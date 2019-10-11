@@ -17,6 +17,8 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
         <result column="status" jdbcType="BIT" property="status"/>
+        <result column="tb_storeid"  property="storeId"/>
+        <result column="store_name"  property="storeName"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -79,9 +81,23 @@
         </where>
     </sql>
     <sql id="Base_Column_List">
-    id, user_id, delivery_clerk_name, delivery_clerk_phone, emergency_person, emergency_phone, 
-    id_card_num, id_card_positive, id_card_other_size, cumulative_delivery_this_month, 
-    cumulative_income,audit_status, create_time, modify_time, status
+    tb_delivery_clerk_info.id
+    , tb_delivery_clerk_info.user_id
+    , tb_delivery_clerk_info.delivery_clerk_name
+    , tb_delivery_clerk_info.delivery_clerk_phone
+    , tb_delivery_clerk_info.emergency_person
+    , tb_delivery_clerk_info.emergency_phone
+    , tb_delivery_clerk_info.id_card_num
+    , tb_delivery_clerk_info.id_card_positive
+    , tb_delivery_clerk_info.id_card_other_size
+    , tb_delivery_clerk_info.cumulative_delivery_this_month
+    , tb_delivery_clerk_info.cumulative_income
+    , tb_delivery_clerk_info.audit_status
+    , tb_delivery_clerk_info.create_time
+    , tb_delivery_clerk_info.modify_time
+    , tb_delivery_clerk_info.status
+    , tb_store.id as tb_storeid
+    , tb_store.store_name
   </sql>
     <select id="selectByExample" parameterType="com.youxu.business.pojo.DeliveryClerkInfoExample"
             resultMap="BaseResultMap">
@@ -416,6 +432,8 @@
         <include refid="Base_Column_List"/>
         FROM
         tb_delivery_clerk_info
+        left join tb_sotre_delivery_mapping on  tb_sotre_delivery_mapping.delivery_id = tb_delivery_clerk_info.id
+        left join tb_store on tb_store.id = tb_sotre_delivery_mapping.store_id
         where tb_delivery_clerk_info.user_id = #{userId} and tb_delivery_clerk_info.status = false
     </select>
     <!--查看配送员通过手机号-->

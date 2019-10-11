@@ -58,6 +58,9 @@ public class DeliveryClerkInfo {
     @ApiModelProperty(name = "storeId", value = "商铺id")
     private Integer storeId;
 
+    @ApiModelProperty(name = "storeName", value = "商铺名称")
+    private String storeName;
+
     @ApiModelProperty(name = "image", value = "base64图片")
     private String image;
 

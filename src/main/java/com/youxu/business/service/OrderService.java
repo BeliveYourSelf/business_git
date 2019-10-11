@@ -40,4 +40,6 @@ public interface OrderService {
     Integer updateOrderCompelete(Integer orderId);
 
     Integer deleteOrder(String id);
+
+    Order selectOrderById(String id);
 }

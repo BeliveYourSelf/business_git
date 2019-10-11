@@ -7,6 +7,7 @@ import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -153,6 +154,16 @@ public class OrderController {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",selectOrderList);
+    }
+
+    @ApiOperation(value = "查看订单详情", notes = "id：订单id")
+    @GetMapping("/selectOrderById")
+    public ResponseMessage<Order> selectOrderById(@RequestParam String id) {
+        Order selectOrderById = orderService.selectOrderById(id);
+        if (org.springframework.util.StringUtils.isEmpty(selectOrderById)) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",selectOrderById);
     }
 
 

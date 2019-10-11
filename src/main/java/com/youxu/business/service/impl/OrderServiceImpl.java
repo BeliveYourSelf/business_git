@@ -21,8 +21,10 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -43,6 +45,11 @@ public class OrderServiceImpl implements OrderService {
         // 邀请码
         String shareCode = UUIDUtils.generateShortUuid();
         order.setDeliveryHarvestCode(shareCode);
+        // 配送时间分改为毫秒
+        String orderDeliveryPrescriptioTime = order.getOrderDeliveryPrescriptioTime();
+        Long orderDeliveryPrescriptioTimeInteger = Long.valueOf(orderDeliveryPrescriptioTime);
+        Long orderTimeLong = orderDeliveryPrescriptioTimeInteger * 60000;
+        order.setOrderDeliveryPrescriptioTime(orderTimeLong.toString());
         Integer insertOrder = orderMapper.insertOrder(order);
         int orderId = orderMapper.lastInsertId();
         // 取件码url
@@ -154,7 +161,20 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> selectDeliveryFileByStoreIdList(Order order) {
-        return orderMapper.selectDeliveryFileByStoreIdList(order);
+        List<Order> orders = orderMapper.selectDeliveryFileByStoreIdList(order);
+        for(Order orderNew:orders){
+            String orderDeliveryPrescriptioTime = orderNew.getOrderDeliveryPrescriptioTime();
+            // 配送时间 mm
+            Long orderDeliveryPrescriptioTimeLong = Long.valueOf(orderDeliveryPrescriptioTime);
+            Date orderPayDate = orderNew.getOrderPayDate();
+            // 支付时间 mm
+            if(!StringUtils.isEmpty(orderPayDate)){
+                Long orderPayDateLong = orderPayDate.getTime();
+                Long expireTime = orderDeliveryPrescriptioTimeLong+orderPayDateLong;
+                orderNew.setExpireTime(expireTime.toString());
+            }
+        }
+        return orders;
     }
 
     @Override

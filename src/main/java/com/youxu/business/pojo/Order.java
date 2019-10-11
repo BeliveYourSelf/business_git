@@ -113,4 +113,7 @@ public class Order extends PageInfo{
     @ApiModelProperty(name = "tradeType",value = "支付类别：  JSAPI/NATIVE")
     private String tradeType;
 
+    @ApiModelProperty(name = "expireTime",value = "到期时间")
+    private String expireTime;
+
 }

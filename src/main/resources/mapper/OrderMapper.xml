@@ -110,8 +110,11 @@
     order_print_money, order_delivery_money, order_coupon_money, order_actual_money, 
     order_consume_money, order_extra_money, order_type, order_pay_date, order_process, order_create_time, order_modify_time,
     order_status, delivery_id, delivery_pick_up_file_qr_code_url, delivery_harvest_code, delivery_status, delivery_problem_file_mark
-    ,tb_user.user_piecture_url
+
   </sql>
+    <sql id="Base_Column_List_user">
+        tb_user.user_piecture_url
+    </sql>
     <sql id="Base_Column_List_tb_order_details">
     tb_order_details.id as tb_order_detailsid, order_id, order_details_name, order_details_count, order_details_one_picture_url,
     order_details_typesetting_picture_url, order_details_total_price, order_details_create_time,
@@ -635,7 +638,7 @@
     <!--查看取件列表通过商铺id.  order_from_store_get: 1.到店自取2.自助打印3.及时配送4.顺丰配送-->
     <select id="selectDeliveryFileByStoreIdList" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List"/>,<include refid="Base_Column_List_user"/>
         from tb_order
         left join tb_user on tb_user.id = tb_order.user_id
         where

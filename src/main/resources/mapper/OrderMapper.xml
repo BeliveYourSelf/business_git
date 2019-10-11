@@ -29,6 +29,7 @@
         <result column="delivery_status" property="deliveryStatus"/>
         <result column="delivery_problem_file_mark" property="deliveryProblemFileMark"/>
         <result column="share_user_id" property="shareUserId"/>
+        <result column="user_piecture_url" jdbcType="VARCHAR" property="userPiectureUrl" />
         <collection property="orderDetailsList" ofType="com.youxu.business.pojo.OrderDetails">
             <result column="tb_order_detailsid" jdbcType="INTEGER" property="id"/>
             <result column="order_id" jdbcType="INTEGER" property="orderId"/>
@@ -109,6 +110,7 @@
     order_print_money, order_delivery_money, order_coupon_money, order_actual_money, 
     order_consume_money, order_extra_money, order_type, order_pay_date, order_process, order_create_time, order_modify_time,
     order_status, delivery_id, delivery_pick_up_file_qr_code_url, delivery_harvest_code, delivery_status, delivery_problem_file_mark
+    ,tb_user.user_piecture_url
   </sql>
     <sql id="Base_Column_List_tb_order_details">
     tb_order_details.id as tb_order_detailsid, order_id, order_details_name, order_details_count, order_details_one_picture_url,
@@ -635,6 +637,7 @@
         select
         <include refid="Base_Column_List"/>
         from tb_order
+        left join tb_user on tb_user.id = tb_order.user_id
         where
         tb_order.store_id IN
         (

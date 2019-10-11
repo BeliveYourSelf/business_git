@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youxu.business.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.youxu.business.pojo.User">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_open_id" jdbcType="VARCHAR" property="userOpenId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
+    <result column="user_password" jdbcType="VARCHAR" property="userPassword" />
+    <result column="user_piecture_url" jdbcType="VARCHAR" property="userPiectureUrl" />
+    <result column="others_resourceQR_code" jdbcType="VARCHAR" property="othersResourceqrCode" />
+    <result column="user_create_time" jdbcType="TIMESTAMP" property="userCreateTime" />
+    <result column="user_modify_time" jdbcType="TIMESTAMP" property="userModifyTime" />
+    <result column="user_status" jdbcType="BIT" property="userStatus" />
+    <result column="user_is_members" jdbcType="BIT" property="userIsMembers" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, user_open_id, user_name, user_phone, user_password, user_piecture_url, others_resourceQR_code, 
+    user_create_time, user_modify_time, user_status, user_is_members
+  </sql>
+  <select id="selectByExample" parameterType="com.youxu.business.pojo.UserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.youxu.business.pojo.UserExample">
+    delete from tb_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.youxu.business.pojo.User">
+    insert into tb_user (id, user_open_id, user_name, 
+      user_phone, user_password, user_piecture_url, 
+      others_resourceQR_code, user_create_time, 
+      user_modify_time, user_status, user_is_members
+      )
+    values (#{id,jdbcType=INTEGER}, #{userOpenId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{userPhone,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR}, #{userPiectureUrl,jdbcType=VARCHAR}, 
+      #{othersResourceqrCode,jdbcType=VARCHAR}, #{userCreateTime,jdbcType=TIMESTAMP}, 
+      #{userModifyTime,jdbcType=TIMESTAMP}, #{userStatus,jdbcType=BIT}, #{userIsMembers,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.youxu.business.pojo.User">
+    insert into tb_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userOpenId != null">
+        user_open_id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="userPhone != null">
+        user_phone,
+      </if>
+      <if test="userPassword != null">
+        user_password,
+      </if>
+      <if test="userPiectureUrl != null">
+        user_piecture_url,
+      </if>
+      <if test="othersResourceqrCode != null">
+        others_resourceQR_code,
+      </if>
+      <if test="userCreateTime != null">
+        user_create_time,
+      </if>
+      <if test="userModifyTime != null">
+        user_modify_time,
+      </if>
+      <if test="userStatus != null">
+        user_status,
+      </if>
+      <if test="userIsMembers != null">
+        user_is_members,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userOpenId != null">
+        #{userOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null">
+        #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null">
+        #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userPiectureUrl != null">
+        #{userPiectureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="othersResourceqrCode != null">
+        #{othersResourceqrCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userCreateTime != null">
+        #{userCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userModifyTime != null">
+        #{userModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userStatus != null">
+        #{userStatus,jdbcType=BIT},
+      </if>
+      <if test="userIsMembers != null">
+        #{userIsMembers,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.youxu.business.pojo.UserExample" resultType="java.lang.Long">
+    select count(*) from tb_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_user
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userOpenId != null">
+        user_open_id = #{record.userOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userName != null">
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userPhone != null">
+        user_phone = #{record.userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userPassword != null">
+        user_password = #{record.userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userPiectureUrl != null">
+        user_piecture_url = #{record.userPiectureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.othersResourceqrCode != null">
+        others_resourceQR_code = #{record.othersResourceqrCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userCreateTime != null">
+        user_create_time = #{record.userCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userModifyTime != null">
+        user_modify_time = #{record.userModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userStatus != null">
+        user_status = #{record.userStatus,jdbcType=BIT},
+      </if>
+      <if test="record.userIsMembers != null">
+        user_is_members = #{record.userIsMembers,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_user
+    set id = #{record.id,jdbcType=INTEGER},
+      user_open_id = #{record.userOpenId,jdbcType=VARCHAR},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      user_phone = #{record.userPhone,jdbcType=VARCHAR},
+      user_password = #{record.userPassword,jdbcType=VARCHAR},
+      user_piecture_url = #{record.userPiectureUrl,jdbcType=VARCHAR},
+      others_resourceQR_code = #{record.othersResourceqrCode,jdbcType=VARCHAR},
+      user_create_time = #{record.userCreateTime,jdbcType=TIMESTAMP},
+      user_modify_time = #{record.userModifyTime,jdbcType=TIMESTAMP},
+      user_status = #{record.userStatus,jdbcType=BIT},
+      user_is_members = #{record.userIsMembers,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.youxu.business.pojo.User">
+    update tb_user
+    <set>
+      <if test="userOpenId != null">
+        user_open_id = #{userOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null">
+        user_phone = #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null">
+        user_password = #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userPiectureUrl != null">
+        user_piecture_url = #{userPiectureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="othersResourceqrCode != null">
+        others_resourceQR_code = #{othersResourceqrCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userCreateTime != null">
+        user_create_time = #{userCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userModifyTime != null">
+        user_modify_time = #{userModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userStatus != null">
+        user_status = #{userStatus,jdbcType=BIT},
+      </if>
+      <if test="userIsMembers != null">
+        user_is_members = #{userIsMembers,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.youxu.business.pojo.User">
+    update tb_user
+    set user_open_id = #{userOpenId,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      user_phone = #{userPhone,jdbcType=VARCHAR},
+      user_password = #{userPassword,jdbcType=VARCHAR},
+      user_piecture_url = #{userPiectureUrl,jdbcType=VARCHAR},
+      others_resourceQR_code = #{othersResourceqrCode,jdbcType=VARCHAR},
+      user_create_time = #{userCreateTime,jdbcType=TIMESTAMP},
+      user_modify_time = #{userModifyTime,jdbcType=TIMESTAMP},
+      user_status = #{userStatus,jdbcType=BIT},
+      user_is_members = #{userIsMembers,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

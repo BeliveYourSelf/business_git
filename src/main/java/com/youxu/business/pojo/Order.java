@@ -90,6 +90,9 @@ public class Order extends PageInfo{
     private Integer shareUserId;
 
     // 新增对象
+    @ApiModelProperty(name = "userPiectureUrl",value = "用户头像")
+    private String userPiectureUrl;
+
     @ApiModelProperty(name = "orderDetails",value = "订单对象")
     private OrderDetails orderDetails;
     // 新增对象集合

@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
+
 @Data
 public class DeliveryClerkInfo {
     @ApiModelProperty(name = "id", value = "配送员id")
@@ -55,11 +57,11 @@ public class DeliveryClerkInfo {
     private Integer score;
 
 //  新增
-    @ApiModelProperty(name = "storeId", value = "商铺id")
-    private Integer storeId;
+    @ApiModelProperty(name = "storeIdList", value = "商铺id")
+    private List<Integer> storeIdList;
 
-    @ApiModelProperty(name = "storeName", value = "商铺名称")
-    private String storeName;
+    @ApiModelProperty(name = "storeNameList", value = "商铺名称")
+    private List<String> storeNameList;
 
     @ApiModelProperty(name = "image", value = "base64图片")
     private String image;

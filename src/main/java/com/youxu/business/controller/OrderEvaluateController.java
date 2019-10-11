@@ -20,17 +20,10 @@ public class OrderEvaluateController {
     @Resource
     private OrderEvaluateService orderEvaluateService;
 
-    @ApiOperation(value = "插入订单评价", notes = "{\n" +
-            "  \"id\": 0,\n" +
-            "  \"orderComment\": \"快递不好\",\n" +
-            "\n" +
-            "  \"orderEvaluateOptionCartIdList\": [\n" +
-            "    1,2,3\n" +
-            "  ],\n" +
-            "  \"orderEvaluateStar\": 1,\n" +
-            "\n" +
-            "  \"orderId\": 2\n" +
-            "}   orderEvaluateOptionCartIdList:评价选项卡id    orderEvaluatePictureList: 订单评价图片集合")
+    @ApiOperation(value = "插入订单评价", notes = "{ \"orderComment\": \"快递不好\",\n" +
+            "\"orderEvaluateOptionCartIdList\": [ 1,2,3 ], \"orderEvaluateStar\": 1,\n" +
+            "\"orderId\": 2\n" +
+            ",\"orderEvaluatePictureList\":[ xxxx,xxx,xxxx ] }   orderEvaluateOptionCartIdList:评价选项卡id    orderEvaluatePictureList: 订单评价图片集合")
     @PostMapping("/insertOrderEvaluate")
     public ResponseMessage insertOrderEvaluate(@RequestBody OrderEvaluate orderEvaluate) {
         Integer insertOrderEvaluate =orderEvaluateService.insertOrderEvaluate(orderEvaluate);

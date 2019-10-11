@@ -17,8 +17,12 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
         <result column="status" jdbcType="BIT" property="status"/>
-        <collection property="storeIdList" column = "tb_storeid" ofType="int"/>
-        <collection property="storeNameList" column = "store_name" ofType="string"/>
+        <collection property="storeIdList" ofType="java.lang.Integer" javaType="java.util.List">
+        <result column="tb_storeid"/>
+        </collection>
+        <collection property="storeNameList" ofType="java.lang.String" javaType="java.util.List">
+            <result column="store_name"/>
+        </collection>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>

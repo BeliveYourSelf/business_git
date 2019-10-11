@@ -156,21 +156,12 @@ public class PayUtilsController extends BaseService {
     // 会员支付订单
     private ResponseMessage memberPay(Order order) {
         // 判断是否为会员  isMembers:0非会员  1会员
-        Integer userId = order.getUserId();
         Integer orderId = order.getId();
-        Double orderActualMoney = order.getOrderActualMoney();// 钱包消费额
-        Double orderConsumeMoney = order.getOrderConsumeMoney();// 消费金
-        // 更新订单/会员/消费金/优惠券价格
-        ResponseMessage<Integer> updateUserWallet = memberInterface.updateUserWallet(userId, orderConsumeMoney, orderActualMoney);
-        String respCode = updateUserWallet.getRespCode();
-        String message = updateUserWallet.getMessage();
-        if ("200".equals(respCode)) {
-            Integer updateOrderPayDateAndProcess = orderService.updateOrderPayDateAndProcess(orderId, PayStatusEnum.COMPLETE.getValueCode());
+        Integer updateOrderPayDateAndProcess = orderService.updateOrderPayDateAndProcess(orderId, PayStatusEnum.COMPLETE.getValueCode());
             if (updateOrderPayDateAndProcess >= 0) {
-                return Result.success(respCode, "钱包支付成功");
+                return Result.success("200", "钱包支付成功");
             }
-        }
-        return Result.error(respCode, message);
+        return Result.error("500.1", "支付失败");
     }
 
     @ApiOperation(value = "生成支付图片", notes = "")

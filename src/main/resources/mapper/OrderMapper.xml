@@ -731,5 +731,11 @@
         order_process = 3
         where tb_order.id = #{order.id}
     </update>
+    <!--删除订单-->
+    <update id="deleteOrder">
+        update tb_order
+    set tb_order.order_status = true
+    where id = #{id}
+    </update>
 
 </mapper>

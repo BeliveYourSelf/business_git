@@ -208,5 +208,10 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.updateOrderCompelete(orderId);
     }
 
+    @Override
+    public Integer deleteOrder(String id) {
+        return orderMapper.deleteOrder(id);
+    }
+
 
 }

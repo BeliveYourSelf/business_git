@@ -50,4 +50,6 @@ public interface OrderMapper {
     Integer insertOrderForShareMemberPrice(Order order);
     // 更新订单完成
     Integer updateOrderCompelete(Integer orderId);
+    // 删除订单
+    Integer deleteOrder(@Param("id") String id);
 }

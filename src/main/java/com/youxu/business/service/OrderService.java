@@ -38,4 +38,6 @@ public interface OrderService {
     Integer lastInsertId();
 
     Integer updateOrderCompelete(Integer orderId);
+
+    Integer deleteOrder(String id);
 }

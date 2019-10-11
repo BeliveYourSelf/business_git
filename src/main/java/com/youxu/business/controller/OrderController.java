@@ -93,6 +93,19 @@ public class OrderController {
     }
 
     /**
+     * 删除订单
+     */
+    @ApiOperation(value = "删除订单", notes = "{\"id\":\"1\"}")
+    @GetMapping("/deleteOrder")
+    public ResponseMessage<Integer> deleteOrder(@RequestParam String id) {
+        Integer cancelOrder = orderService.deleteOrder(id);
+        if (cancelOrder <= 0) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
+    }
+
+    /**
      * 更新订单
      */
     @ApiOperation(value = "更新订单", notes = "{\"id\":\"1\", \"orderActualMoney\": \"100\", \"orderAddresseeAddress\": \"天津市立晟科技\", \"orderAddresseeName\": \"李文轩1\", \"orderAddresseePhone\": \"13652157270\", \"orderConsumeMoney\": 10, \"orderCouponMoney\": 10, \"orderDeliveryMoney\": \"10\", \"orderDeliveryPrescriptioTime\": \"60\", \"orderDetailsList\": [ { \"orderDetailsCount\": 10,\n" +

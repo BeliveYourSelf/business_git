@@ -535,7 +535,7 @@
     <!--取消订单-->
     <update id="cancelOrder">
     update tb_order
-    set order_status = true
+    set order_process = 4
     where id = #{id}
   </update>
     <update id="updateOrder">

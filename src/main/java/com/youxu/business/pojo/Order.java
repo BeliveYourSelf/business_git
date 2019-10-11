@@ -57,7 +57,7 @@ public class Order extends PageInfo{
     private Integer orderType;
 
     @ApiModelProperty(name = "orderPayDate",value = "订单支付时间")
-    private Integer orderPayDate;
+    private Date orderPayDate;
 
     @ApiModelProperty(name = "orderCreateTime",value = "创建时间")
     private Date orderCreateTime;

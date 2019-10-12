@@ -21,5 +21,5 @@ public interface SotreDeliveryMappingMapper {
 
     int updateByExample(@Param("record") SotreDeliveryMapping record, @Param("example") SotreDeliveryMappingExample example);
     // 关联商铺和配送员
-    Integer insertSotreDeliveryMappingMapper(DeliveryClerkInfo deliveryClerkInfo);
+    Integer insertSotreDeliveryMappingMapper(@Param("deliveryClerkInfo") DeliveryClerkInfo deliveryClerkInfo);
 }

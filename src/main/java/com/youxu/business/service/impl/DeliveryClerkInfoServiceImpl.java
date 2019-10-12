@@ -7,6 +7,7 @@ import com.youxu.business.pojo.DeliveryClerkInfo;
 import com.youxu.business.pojo.Order;
 import com.youxu.business.pojo.SotreDeliveryMapping;
 import com.youxu.business.service.DeliveryClerkInfoService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,6 +25,12 @@ public class DeliveryClerkInfoServiceImpl implements DeliveryClerkInfoService {
 
     @Override
     public Integer insertDeliveryClerkInfo(DeliveryClerkInfo deliveryClerkInfo) {
+        // 查看该用户是否已申请为配送员
+        Integer userId = deliveryClerkInfo.getUserId();
+        DeliveryClerkInfo deliveryClerkInfoNew = deliveryClerkInfoMapper.selectDeliveryClerkInfoByUserId(userId.toString());
+        if(!org.springframework.util.StringUtils.isEmpty(deliveryClerkInfoNew)){
+            return -1;
+        }
         deliveryClerkInfo.setAuditStatus(0);//待审核
         deliveryClerkInfoMapper.insertDeliveryClerkInfo(deliveryClerkInfo);
         int dliveryId = orderMapper.lastInsertId();

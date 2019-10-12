@@ -154,8 +154,11 @@
   <insert id="insertSotreDeliveryMappingMapper" parameterType="com.youxu.business.pojo.SotreDeliveryMapping">
     insert into tb_sotre_delivery_mapping (delivery_id, store_id
       )
-    values (#{id,jdbcType=INTEGER}, #{storeId,jdbcType=INTEGER}
+    values
+    <foreach collection="deliveryClerkInfo.storeIdList" index="index" separator="," item="storeId">
+    (#{deliveryClerkInfo.id,jdbcType=INTEGER}, #{storeId,jdbcType=INTEGER}
       )
+    </foreach>
   </insert>
 
 </mapper>

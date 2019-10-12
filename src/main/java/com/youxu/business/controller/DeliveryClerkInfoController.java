@@ -32,13 +32,15 @@ public class DeliveryClerkInfoController {
     private OrderService orderService;
 
 
-    @ApiOperation(value = "新增配送员信息", notes = "{ \"deliveryClerkName\": \"李文轩\", \"deliveryClerkPhone\": \"13652157270\", \"emergencyPerson\": \"老李\", \"emergencyPhone\": \"13652147414\", \"idCardNum\": \"120221199512271411\", \"idCardOtherSize\": \"xxxx\", \"idCardPositive\": \"xxxxx\", \"userId\": 1 \n" +
-            ",\"storeId\":\"1\"}     具体字段名含义查看swagger中Model")
+    @ApiOperation(value = "新增配送员信息", notes = "{ \"deliveryClerkName\": \"李文轩\", \"deliveryClerkPhone\": \"13652157270\", \"emergencyPerson\": \"老李\", \"emergencyPhone\": \"13652147414\", \"idCardNum\": \"120221199512271411\", \"idCardOtherSize\": \"xxxx\", \"idCardPositive\": \"xxxxx\", \"userId\": 13 ,\"storeIdList\":[1,2]}      具体字段名含义查看swagger中Model")
     @PostMapping("/insertDeliveryClerkInfo")
     public ResponseMessage insertDeliveryClerkInfo(@RequestBody DeliveryClerkInfo deliveryClerkInfo) {
         Integer insertDeliveryClerkInfo = deliveryClerkInfoService.insertDeliveryClerkInfo(deliveryClerkInfo);
-        if (insertDeliveryClerkInfo <= 0) {
+        if (insertDeliveryClerkInfo == 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        if (insertDeliveryClerkInfo == -1) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "该用户已申请为配送员，请等待审核");
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
     }

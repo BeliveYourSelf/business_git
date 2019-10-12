@@ -670,10 +670,11 @@
         on tb_order.id = tb_order_details.order_id
         where tb_order.id = #{orderId} and order_status = false
     </select>
-    <!--取件-->
+    <!--取件:delivery_status 配送状态（1.待取件/2.配送中/3.问题件/4.已完成）-->
     <update id="updateOrderToPickUp">
     update tb_order
     set tb_order.delivery_id = #{order.deliveryId}
+    , tb_order.delivery_status = 2
     where tb_order.id = #{order.id}
   </update>
     <!--配送员确认完成订单-->

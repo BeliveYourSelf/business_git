@@ -89,6 +89,8 @@ public class Order extends PageInfo{
     @ApiModelProperty(name = "shareUserId",value = "分享人id（收款方，orderType：6和7的时候使用）")
     private Integer shareUserId;
 
+    @ApiModelProperty(name = "orderRemark",value = "备注信息")
+    private String orderRemark;
     // 新增对象
     @ApiModelProperty(name = "userPiectureUrl",value = "用户头像")
     private String userPiectureUrl;
@@ -115,5 +117,7 @@ public class Order extends PageInfo{
 
     @ApiModelProperty(name = "expireTime",value = "到期时间")
     private String expireTime;
+
+
 
 }

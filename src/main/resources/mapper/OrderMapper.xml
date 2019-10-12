@@ -23,6 +23,7 @@
         <result column="order_create_time" jdbcType="TIMESTAMP" property="orderCreateTime"/>
         <result column="order_modify_time" jdbcType="TIMESTAMP" property="orderModifyTime"/>
         <result column="order_status" jdbcType="BIT" property="orderStatus"/>
+        <result column="order_remark"  property="orderRemark"/>
         <result column="delivery_id" property="deliveryId"/>
         <result column="delivery_pick_up_file_qr_code_url" property="deliveryPickUpFileQRCodeUrl"/>
         <result column="delivery_harvest_code" property="deliveryHarvestCode"/>
@@ -108,7 +109,7 @@
     tb_order.id as tb_orderid, store_id, user_id, order_addressee_name, order_addressee_phone, order_addressee_address,
     order_from_store_get, order_from_store_get_where, order_delivery_prescriptio_time, 
     order_print_money, order_delivery_money, order_coupon_money, order_actual_money, 
-    order_consume_money, order_extra_money, order_type, order_pay_date, order_process, order_create_time, order_modify_time,
+    order_consume_money, order_extra_money, order_type, order_pay_date, order_process, order_remark, order_create_time, order_modify_time,
     order_status, delivery_id, delivery_pick_up_file_qr_code_url, delivery_harvest_code, delivery_status, delivery_problem_file_mark
 
   </sql>
@@ -438,6 +439,9 @@
             <if test="orderProcess != null">
                 order_process,
             </if>
+            <if test="orderRemark != null">
+                order_remark,
+            </if>
             <if test="deliveryId != null">
                 delivery_id,
             </if>
@@ -506,6 +510,9 @@
             </if>
             <if test="orderProcess != null">
                 #{orderProcess,jdbcType=INTEGER},
+            </if>
+            <if test="orderRemark != null">
+                #{orderRemark},
             </if>
             <if test="deliveryId != null">
                 #{deliveryId},

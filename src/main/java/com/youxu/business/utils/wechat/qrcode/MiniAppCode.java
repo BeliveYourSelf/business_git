@@ -47,11 +47,11 @@ public class MiniAppCode extends BaseService {
 
     /**
      * 获取店铺推荐二维码
-     * @param userId
+     * @param userIdAndInvitationCode
      * @param accessToken
      * @return
      */
-    public StringBuilder getminiqrQr(String userId, String accessToken) {
+    public StringBuilder getminiqrQr(String userIdAndInvitationCode, String accessToken) {
         RestTemplate rest = new RestTemplate();
         FileOutputStream os = null;
         String originalName = "推荐二维码"+".png";
@@ -59,7 +59,7 @@ public class MiniAppCode extends BaseService {
         try {
             String url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=" + accessToken;
             Map<String, Object> param = new HashMap<>();
-            param.put("scene", userId);
+            param.put("scene", userIdAndInvitationCode);
 //            param.put("page", "pages/register/register");//-------------上线后换路径
             param.put("width", 430);
             param.put("auto_color", false);

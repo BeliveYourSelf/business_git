@@ -10,8 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class FolderServiceImpl implements FolderService {
@@ -68,12 +67,12 @@ public class FolderServiceImpl implements FolderService {
         List<Integer> folderListId = folder.getFolderListId();
         List<Integer> documentListId = folder.getDocumentListId();
         // 删除文件夹
-        if(folderListId.size()>=1){
-        Integer deleteFolderList = folderMapper.deleteFolderList(folderListId);
+        if (folderListId.size() >= 1) {
+            Integer deleteFolderList = folderMapper.deleteFolderList(folderListId);
         }
         // 删除文件
-        if(documentListId.size()>=1){
-        Integer deleteDocumentList = documentMapper.deleteDocumentList(documentListId);
+        if (documentListId.size() >= 1) {
+            Integer deleteDocumentList = documentMapper.deleteDocumentList(documentListId);
         }
         return 1;
     }
@@ -82,11 +81,22 @@ public class FolderServiceImpl implements FolderService {
     public Integer updateMoveFolderAndDocument(Folder folder) {
         Integer updateMoveFolder = folderMapper.updateMoveFolder(folder);
         Integer updateMoveDocument = documentMapper.updateMoveDocument(folder);
-        return updateMoveFolder+updateMoveDocument;
+        return updateMoveFolder + updateMoveDocument;
+    }
+
+    @Override
+    public Map<String, List<Object>> selectFolderAndDocumentByLike(String userId, String resourceName) {
+        HashMap<String, List<Object>> stringListHashMap = new HashMap<>();
+        List<Folder> selectFolderByLike= folderMapper.selectFolderByLike(userId, resourceName);
+        List<Document> selectDocumentByLike = documentMapper.selectDocumentByLike(userId,resourceName);
+        stringListHashMap.put("文件夹", Collections.singletonList(selectFolderByLike));
+        stringListHashMap.put("文件集合", Collections.singletonList(selectDocumentByLike));
+        return stringListHashMap;
     }
 
     /**
      * 递归：获取文件和文件夹通过文件夹id和用户id
+     *
      * @param foldersNew
      * @param folderId
      * @return

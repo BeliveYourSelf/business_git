@@ -29,4 +29,6 @@ public interface DocumentMapper {
     Integer updateMoveDocument(@Param("folder") Folder folder);
     // 支付后转存
     Integer insertDocument(Document document);
+    // 查看文件集合模糊查找
+    List<Document> selectDocumentByLike(@Param("userId") String userId, @Param("resourceName") String resourceName);
 }

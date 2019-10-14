@@ -33,4 +33,6 @@ public interface FolderMapper {
     Integer deleteFolderList(@Param("folderListId") List<Integer> folderListId);
     // 移动文件夹到某个文件
     Integer updateMoveFolder(@Param("folder") Folder folder);
+    // 查看文件夹对象通过模糊名称
+    List<Folder> selectFolderByLike(@Param("userId") String userId, @Param("resourceName") String resourceName);
 }

@@ -104,4 +104,11 @@ public class FolderController {
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
     }
 
+    @ApiOperation(value = "模糊搜索资料库", notes = "1,电视剧        userId：用户id  resourceName：模糊查找内容")
+    @GetMapping("/selectFolderAndDocumentByLike")
+    public ResponseMessage<Map<String,List<Object>>> selectFolderAndDocumentByLike(@RequestParam("userId") String userId,@RequestParam("resourceName") String resourceName) {
+        Map<String,List<Object>> selectFolderAndDocumentByLike = folderService.selectFolderAndDocumentByLike(userId, resourceName);
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",selectFolderAndDocumentByLike);
+    }
+
 }

@@ -2,10 +2,7 @@ package com.youxu.business.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.youxu.business.dao.*;
-import com.youxu.business.pojo.Order;
-import com.youxu.business.pojo.OrderDetails;
-import com.youxu.business.pojo.OrderDetailsBookBinding;
-import com.youxu.business.pojo.Share;
+import com.youxu.business.pojo.*;
 import com.youxu.business.service.OrderService;
 import com.youxu.business.utils.OtherUtil.OSSUploadUtil;
 import com.youxu.business.utils.OtherUtil.UploadUtils;
@@ -39,7 +36,10 @@ public class OrderServiceImpl implements OrderService {
     private OrderDetailsPictureMappingMapper orderDetailsPictureMappingMapper;
     @Resource
     private PictureMapper pictureMapper;
-
+    @Resource
+    private DeliveryClerkInfoMapper deliveryClerkInfoMapper;
+    @Resource
+    private StoreMapper storeMapper;
     @Override
     public Integer insertOrder(Order order) throws Exception {
         // 邀请码
@@ -194,6 +194,15 @@ public class OrderServiceImpl implements OrderService {
         if (!deliveryHarvestCode.equals(order.getDeliveryHarvestCode())) {
             return -1;
         }
+        // 配送员：配送数+1，配送收益增加
+        // 查看该店铺的配送价格信息
+        Integer storeId = orderNew.getStoreId();
+        Store store = storeMapper.selectByStoreId(storeId);
+        Integer deliveryId = orderNew.getDeliveryId();
+        DeliveryClerkInfo deliveryClerkInfo = deliveryClerkInfoMapper.selectDeliveryClerkInfoById(deliveryId.toString());
+        deliveryClerkInfo.setCumulativeDeliveryThisMonth(deliveryClerkInfo.getCumulativeDeliveryThisMonth() + 1);// 本月单数+1
+        deliveryClerkInfo.setCumulativeIncome(deliveryClerkInfo.getCumulativeIncome() + store.getDeliveryclerkPricePerOne());// 本月收入
+        deliveryClerkInfoMapper.updateDeliveryClerkInfo(deliveryClerkInfo)
         return orderMapper.updateDeliveryInfoToCompelete(order);
     }
 

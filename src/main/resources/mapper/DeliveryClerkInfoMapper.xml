@@ -17,8 +17,9 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
         <result column="status" jdbcType="BIT" property="status"/>
+        <result column="delivery_clerk_per_one"  property="deliveryClerkPerOne"/>
         <collection property="storeIdList" ofType="java.lang.Integer" javaType="java.util.List">
-        <result column="tb_storeid"/>
+            <result column="tb_storeid"/>
         </collection>
         <collection property="storeNameList" ofType="java.lang.String" javaType="java.util.List">
             <result column="store_name"/>
@@ -100,6 +101,7 @@
     , tb_delivery_clerk_info.create_time
     , tb_delivery_clerk_info.modify_time
     , tb_delivery_clerk_info.status
+    , tb_store.delivery_clerk_per_one
     , tb_store.id as tb_storeid
     , tb_store.store_name
   </sql>
@@ -436,7 +438,7 @@
         <include refid="Base_Column_List"/>
         FROM
         tb_delivery_clerk_info
-        left join tb_sotre_delivery_mapping on  tb_sotre_delivery_mapping.delivery_id = tb_delivery_clerk_info.id
+        left join tb_sotre_delivery_mapping on tb_sotre_delivery_mapping.delivery_id = tb_delivery_clerk_info.id
         left join tb_store on tb_store.id = tb_sotre_delivery_mapping.store_id
         where tb_delivery_clerk_info.user_id = #{userId} and tb_delivery_clerk_info.status = false
     </select>
@@ -446,13 +448,23 @@
         <include refid="Base_Column_List"/>
         from
         tb_delivery_clerk_info
+        left join tb_sotre_delivery_mapping on tb_sotre_delivery_mapping.delivery_id = tb_delivery_clerk_info.id
+        left join tb_store on tb_store.id = tb_sotre_delivery_mapping.store_id
         where tb_delivery_clerk_info.delivery_clerk_name = #{phone} and tb_delivery_clerk_info.status = false
     </select>
-<!--更新配送员评分-->
+    <!--更新配送员评分-->
     <update id="updateDeliveryClerkScore">
         update tb_delivery_clerk_info
         set tb_delivery_clerk_info.score = #{deliveryClerkInfo.score}
         where tb_delivery_clerk_info.id = #{deliveryClerkInfo.id}
     </update>
+    <!--查看配送员信息通过id-->
+    <select id="selectDeliveryClerkInfoById" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from tb_delivery_clerk_info
+        left join tb_sotre_delivery_mapping on tb_sotre_delivery_mapping.delivery_id = tb_delivery_clerk_info.id
+        left join tb_store on tb_store.id = tb_sotre_delivery_mapping.store_id
+        where tb_delivery_clerk_info.id = #{id} and tb_delivery_clerk_info.status = false
+    </select>
 
 </mapper>

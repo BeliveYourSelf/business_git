@@ -21,4 +21,6 @@ public interface StoreMapper {
     int updateByExample(@Param("record") Store record, @Param("example") StoreExample example);
     // 查看所有店铺表
     List<Store> selectStoreList();
+    // 查看店铺信息通过id
+    Store selectByStoreId(@Param("storeId") Integer storeId);
 }

@@ -31,4 +31,6 @@ public interface DeliveryClerkInfoMapper {
     DeliveryClerkInfo selectDeliveryClerkInfoByPhone(String phone);
     // 更新配送员评分
     Integer updateDeliveryClerkScore(@Param("deliveryClerkInfo") DeliveryClerkInfo deliveryClerkInfo);
+    // 查看配送员信息通过id
+    DeliveryClerkInfo selectDeliveryClerkInfoById(@Param("id") String id);
 }

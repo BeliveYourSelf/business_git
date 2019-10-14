@@ -32,6 +32,8 @@ public class DeliveryClerkInfoServiceImpl implements DeliveryClerkInfoService {
             return -1;
         }
         deliveryClerkInfo.setAuditStatus(0);//待审核
+        deliveryClerkInfo.setCumulativeIncome(0.0);// 初始化收入
+        deliveryClerkInfo.setCumulativeDeliveryThisMonth(0);// 初始化本月单数
         deliveryClerkInfoMapper.insertDeliveryClerkInfo(deliveryClerkInfo);
         int dliveryId = orderMapper.lastInsertId();
         deliveryClerkInfo.setId(dliveryId);

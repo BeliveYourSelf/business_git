@@ -66,6 +66,9 @@ public class DeliveryClerkInfo {
     @ApiModelProperty(name = "image", value = "base64图片")
     private String image;
 
+    @ApiModelProperty(name = "deliveryClerkPerOne", value = "配送员配单价格")
+    private String deliveryClerkPerOne;
+
 
 
 

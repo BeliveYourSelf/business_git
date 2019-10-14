@@ -16,6 +16,7 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
     <result column="status" jdbcType="BIT" property="status" />
+    <result column="delivery_clerk_per_one"  property="deliveryclerkPricePerOne" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -77,7 +78,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, store_name, store_address, store_phone, store_time, store_open_for_out, output_size, store_output_colour,
-    store_quality, store_latitude, store_longitude, create_time, modify_time, status
+    store_quality, store_latitude, store_longitude, create_time, modify_time, status, delivery_clerk_per_one
   </sql>
   <select id="selectByExample" parameterType="com.youxu.business.pojo.StoreExample" resultMap="BaseResultMap">
     select
@@ -274,6 +275,12 @@
     FROM tb_store
     where tb_store.status = false
   </select>
+  <!--查看店铺通过店铺id-->
+    <select id="selectByStoreId" resultMap="BaseResultMap">
+      select <include refid="Base_Column_List"/>
+      from tb_store
+      where tb_store.id = #{storeId} and tb_store.status = false
+    </select>
 
 
 </mapper>

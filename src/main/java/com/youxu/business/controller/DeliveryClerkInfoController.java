@@ -60,7 +60,7 @@ public class DeliveryClerkInfoController {
         }
         String commonRpc = CommonRpc.getCommonRpc(phone, "{\"code\":\"" + str + "\"}", SendSmsTemplateCodeEnum.REGISTERDELIVERYCLERK.getTemplateCodeValue());
 
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",str);
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", str);
     }
 
 
@@ -136,18 +136,22 @@ public class DeliveryClerkInfoController {
 
     @ApiOperation(value = "配送员确认完成订单", notes = "{\"id\":\"1\"\n" +
             ",\"deliveryHarvestCode\":\"uGO3\"\n" +
-            ",\"deliveryStatus\":\"2\"}   " +
-            "   id:订单id   deliveryHarvestCode：收货码")
+            ",\"deliveryStatus\":\"4\"}   " +
+            "   id:订单id   deliveryHarvestCode：收货码             deliveryStatus：配送状态（1.待取件/2.配送中/3.问题件/4.已完成）")
     @PostMapping("/updateDeliveryInfoToCompelete")
     public ResponseMessage updateDeliveryInfoToCompelete(@RequestBody Order order) {
-        Integer updateDeliveryInfoToCompelete = orderService.updateDeliveryInfoToCompelete(order);
-        if (updateDeliveryInfoToCompelete == 0) {
-            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        try {
+            Integer updateDeliveryInfoToCompelete = orderService.updateDeliveryInfoToCompelete(order);
+            if (updateDeliveryInfoToCompelete == 0) {
+                return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+            }
+            if (updateDeliveryInfoToCompelete == -1) {
+                return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "收获码错误");
+            }
+            return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
+        } catch (Exception e) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "异常错误");
         }
-        if (updateDeliveryInfoToCompelete == -1) {
-            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "收获码错误");
-        }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
     }
 
     @ApiOperation(value = "标记问题", notes = "{\"id\":\"1\"\n" +

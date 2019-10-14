@@ -52,6 +52,8 @@ public class Share {
     @ApiModelProperty(name = "buyUserId", value = "收藏人的用户id")
     private Integer buyUserId;//收藏人的用户id
 
+    @ApiModelProperty(name = "browserShareContentUrl", value = "浏览器分享内容路径")
+    private String browserShareContentUrl;
 
     //新增
     @ApiModelProperty(name = "order", value = "订单对象")

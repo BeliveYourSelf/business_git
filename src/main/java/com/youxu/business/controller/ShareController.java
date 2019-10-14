@@ -54,13 +54,8 @@ public class ShareController extends BaseService {
 
     private String ip;
 
-    @ApiOperation(value = "新增分享", notes = "{ \n" +
-            "\"downloadDuplicatedPrintStatus\": 1\n" +
-            ",\"resourcePrintMoney\":\"10\"\n" +
-            ",\"resourceSaveDownloadMoney\": 10\n" +
-            ", \"extactionCodeStatus\": true\n" +
-            ", \"periodOfValidity\": \"2019-09-17T10:44:11.950Z\"\n" +
-            ", \"shareUserId\": 1, \"usreHeadImage\": \"/image/4654653498/10231.jpeg\" ,\"shareContentUrl\":\"xxxxxxxxxxxxxxxx\" }    resourcePrintMoney：资源打印价格    resourceSaveDownloadMoney：资源转存下载价格   shareContentUrl:文件内容路径   downloadDuplicatedPrintStatus: 是否可下载或转存  false(不可以) true(可以)    downloadDuplicatedPrintMoney: 资源打印售价/资源转存下载售价(double)  extactionCodeStatus: 是否有提取码(true/false)  ")
+    @ApiOperation(value = "新增分享", notes = "{ \"downloadDuplicatedPrintStatus\": 1 ,\"resourcePrintMoney\":\"10\" ,\"resourceSaveDownloadMoney\": 10 , \"extactionCodeStatus\": true , \"periodOfValidity\": \"2019-10-04 18:44:12\" , \"shareUserId\": 1, \"usreHeadImage\": \"/image/4654653498/10231.jpeg\" ,\"shareContentUrl\":\"xxxxxxxxxxxxxxxx\"\n" +
+            ",\"browserShareContentUrl\":\"www.baidu.com/api/selectResource\" } 注：返回browserShareContentUrl的shareCode取中间四位   resourcePrintMoney：资源打印价格    resourceSaveDownloadMoney：资源转存下载价格   shareContentUrl:文件内容路径   downloadDuplicatedPrintStatus: 是否可下载或转存  false(不可以) true(可以)    downloadDuplicatedPrintMoney: 资源打印售价/资源转存下载售价(double)  extactionCodeStatus: 是否有提取码(true/false)  ")
     @PostMapping("/insertShare")
     public ResponseMessage<Share> insertShare(@RequestBody Share share) throws ParseException {
         Share insertShare = shareService.insertShare(share);

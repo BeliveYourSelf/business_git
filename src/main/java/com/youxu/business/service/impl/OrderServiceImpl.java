@@ -202,7 +202,7 @@ public class OrderServiceImpl implements OrderService {
         DeliveryClerkInfo deliveryClerkInfo = deliveryClerkInfoMapper.selectDeliveryClerkInfoById(deliveryId.toString());
         deliveryClerkInfo.setCumulativeDeliveryThisMonth(deliveryClerkInfo.getCumulativeDeliveryThisMonth() + 1);// 本月单数+1
         deliveryClerkInfo.setCumulativeIncome(deliveryClerkInfo.getCumulativeIncome() + store.getDeliveryclerkPricePerOne());// 本月收入
-        deliveryClerkInfoMapper.updateDeliveryClerkInfo(deliveryClerkInfo)
+        deliveryClerkInfoMapper.updateDeliveryClerkInfo(deliveryClerkInfo);
         return orderMapper.updateDeliveryInfoToCompelete(order);
     }
 

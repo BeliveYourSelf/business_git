@@ -37,15 +37,23 @@ public class ShareServiceImpl implements ShareService {
     private RequestApiTool requestApiTool;
     @Resource
     private OrderMapper orderMapper;
+
     @Override
     public Share insertShare(Share share) throws ParseException {
         //更新accessToken
-        String userIdAndInvitationCode = share.getShareUserId().toString();
-            String shareCode = UUIDUtils.generateShortUuid();
-             userIdAndInvitationCode = userIdAndInvitationCode + "#" + shareCode;
-            share.setExtactionCode(shareCode);
+        String userId = share.getShareUserId().toString();
+        String shareCode = UUIDUtils.generateShortUuid();
+        String fakerOne = UUIDUtils.generateShortUuid();
+        String fakerTwo = UUIDUtils.generateShortUuid();
+        String userIdAndInvitationCode = userId + "#" + shareCode;
+        share.setExtactionCode(shareCode);
         String qrCodePath = updateAccessTokenAndCreateQRcode(userIdAndInvitationCode);
         share.setQrCode(qrCodePath);
+        // 添加b/s分享路径
+        String browserShareContentUrl = share.getBrowserShareContentUrl();
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(browserShareContentUrl)) {
+            share.setBrowserShareContentUrl(browserShareContentUrl + "?userId=" + userId + "&" + "shareCode=" + fakerOne+shareCode+fakerTwo);
+        }
         shareMapper.insertShare(share);
         int shareId = orderMapper.lastInsertId();
         Share shareNew = shareMapper.selectShareById(shareId);
@@ -61,7 +69,7 @@ public class ShareServiceImpl implements ShareService {
         Date date = new Date();
         long nowTime = date.getTime();
         long periodOfValidityTime = periodOfValidityNew.getTime();
-        if(nowTime-periodOfValidityTime>0){
+        if (nowTime - periodOfValidityTime > 0) {
             return null;
         }
         return shareNew;
@@ -80,9 +88,9 @@ public class ShareServiceImpl implements ShareService {
     }
 
 
-
     /**
      * 生成二维码
+     *
      * @param userIdAndInvitationCode
      * @return
      * @throws ParseException
@@ -93,15 +101,15 @@ public class ShareServiceImpl implements ShareService {
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date dataBaseTime = sdf1.parse(modifyTimeString);
         Date nowDate = new Date();
-        logger.info("原始时间"+nowDate);
+        logger.info("原始时间" + nowDate);
         TimeProblem timeProblem = new TimeProblem();
         Date date = timeProblem.addEightHour(nowDate);
-        logger.info("加八小时"+date);
+        logger.info("加八小时" + date);
         long diff = date.getTime() - dataBaseTime.getTime();//毫秒1728000（8小时）
         // 计算差多少分钟
-        long min = diff /1000/60;
-        logger.info("时间差大于是否60分钟---------------------"+min+"现在时间："+date.getTime()+"数据库accessToken更新时间:"+dataBaseTime.getTime());
-        if (min >=60) {
+        long min = diff / 1000 / 60;
+        logger.info("时间差大于是否60分钟---------------------" + min + "现在时间：" + date.getTime() + "数据库accessToken更新时间:" + dataBaseTime.getTime());
+        if (min >= 60) {
             AccessToken accessTokenMethod = requestApiTool.getAccessTokenMethod();//微信平台获得accesstoken和更新状况
             int i = accessTokenService.updateToken(accessTokenMethod.getAccessToken());//超过两小时更新accessToken
             String accessTokenNew = accessTokenMethod.getAccessToken();
@@ -111,7 +119,7 @@ public class ShareServiceImpl implements ShareService {
         MiniAppCode miniAppCode = new MiniAppCode();
         StringBuilder stringBuilderPath = miniAppCode.getminiqrQr(userIdAndInvitationCode, token);//上传图片路径
         String stringPath = stringBuilderPath.toString();
-    return stringPath;
+        return stringPath;
     }
 
 

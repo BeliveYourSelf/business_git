@@ -89,8 +89,8 @@ public class FolderServiceImpl implements FolderService {
         HashMap<String, List<Object>> stringListHashMap = new HashMap<>();
         List<Folder> selectFolderByLike= folderMapper.selectFolderByLike(userId, resourceName);
         List<Document> selectDocumentByLike = documentMapper.selectDocumentByLike(userId,resourceName);
-        stringListHashMap.put("文件夹", Collections.singletonList(selectFolderByLike));
-        stringListHashMap.put("文件集合", Collections.singletonList(selectDocumentByLike));
+        stringListHashMap.put("folderList", Collections.singletonList(selectFolderByLike));
+        stringListHashMap.put("documentList", Collections.singletonList(selectDocumentByLike));
         return stringListHashMap;
     }
 

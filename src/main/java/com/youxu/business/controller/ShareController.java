@@ -217,7 +217,12 @@ public class ShareController extends BaseService {
             ",\"documentUrl\":\"xxx\"}     userId：支付人用户id   folderId：待存入的文件夹id    documentUrl：文件内容路径")
         @PostMapping("/insertPostPaymentStorage")
     public ResponseMessage insertPostPaymentStorage(@RequestBody Document document) {
-        Integer insertDocument = documentService.insertDocument(document);
+        Integer insertDocument = null;
+        try {
+            insertDocument = documentService.insertDocument(document);
+        } catch (IOException e) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "获取文件页数异常");
+        }
         if (insertDocument <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }

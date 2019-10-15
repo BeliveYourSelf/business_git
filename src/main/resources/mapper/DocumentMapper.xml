@@ -226,10 +226,10 @@
     <!--转存后支付-->
     <insert id="insertDocument" parameterType="com.youxu.business.pojo.Document">
     insert into tb_document ( user_id, folder_id,
-      document_url, create_time, modify_time,
+      document_url, size_page, file_size, create_time, modify_time,
       status)
     values ( #{userId,jdbcType=INTEGER}, #{folderId,jdbcType=INTEGER},
-      #{documentUrl,jdbcType=VARCHAR},now(), now(),
+      #{documentUrl,jdbcType=VARCHAR}, #{sizePage}, #{fileSize}, now(), now(),
       false)
   </insert>
     <!--查看文件集合模糊查找-->

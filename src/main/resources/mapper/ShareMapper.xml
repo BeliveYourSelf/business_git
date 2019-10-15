@@ -14,6 +14,7 @@
     <result column="usre_head_image" jdbcType="VARCHAR" property="usreHeadImage" />
     <result column="share_content_url" jdbcType="VARCHAR" property="shareContentUrl" />
     <result column="browser_share_content_url" jdbcType="VARCHAR" property="browserShareContentUrl" />
+    <result column="folder_ids"  property="folderIds" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
     <result column="status" jdbcType="BIT" property="status" />
@@ -288,6 +289,9 @@
       <if test="browserShareContentUrl != null">
         browser_share_content_url,
       </if>
+      <if test="folderIds != null">
+        folder_ids,
+      </if>
         create_time,
         modify_time,
         status,
@@ -325,6 +329,9 @@
       </if>
       <if test="browserShareContentUrl != null">
         #{browserShareContentUrl},
+      </if>
+      <if test="folderIds != null">
+        #{folderIds},
       </if>
         now(),
         now(),

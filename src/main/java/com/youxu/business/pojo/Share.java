@@ -37,8 +37,11 @@ public class Share {
     @ApiModelProperty(name = "usreHeadImage", value = "用户头像url")
     private String usreHeadImage;
 
-    @ApiModelProperty(name = "shareContentUrl", value = "分享内容url")
+    @ApiModelProperty(name = "shareContentUrl", value = "分享内容url：多个路径，中间用英文逗号间隔")
     private String shareContentUrl;
+
+    @ApiModelProperty(name = "folderIds", value = "文件夹id集合,多个路径，中间用英文逗号间隔")
+    private String folderIds;
 
     @ApiModelProperty(name = "createTime", value = "创建时间")
     private Date createTime;
@@ -52,7 +55,7 @@ public class Share {
     @ApiModelProperty(name = "buyUserId", value = "收藏人的用户id")
     private Integer buyUserId;//收藏人的用户id
 
-    @ApiModelProperty(name = "browserShareContentUrl", value = "浏览器分享内容路径")
+    @ApiModelProperty(name = "browserShareContentUrl", value = "浏览器分享文件路径（多个路径，中间用英文逗号间隔）")
     private String browserShareContentUrl;
 
     //新增

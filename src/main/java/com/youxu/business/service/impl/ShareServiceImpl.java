@@ -4,6 +4,8 @@ import com.youxu.business.dao.AccessTokenMapper;
 import com.youxu.business.dao.OrderMapper;
 import com.youxu.business.dao.ShareMapper;
 import com.youxu.business.pojo.AccessToken;
+import com.youxu.business.pojo.Document;
+import com.youxu.business.pojo.Folder;
 import com.youxu.business.pojo.Share;
 import com.youxu.business.service.AccessTokenService;
 import com.youxu.business.service.ShareService;
@@ -21,7 +23,9 @@ import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ShareServiceImpl implements ShareService {
@@ -50,14 +54,44 @@ public class ShareServiceImpl implements ShareService {
         String qrCodePath = updateAccessTokenAndCreateQRcode(userIdAndInvitationCode);
         share.setQrCode(qrCodePath);
         // 添加b/s分享路径
-        String browserShareContentUrl = share.getBrowserShareContentUrl();
-        if (org.apache.commons.lang.StringUtils.isNotEmpty(browserShareContentUrl)) {
-            share.setBrowserShareContentUrl(browserShareContentUrl + "?userId=" + userId + "&" + "shareCode=" + fakerOne+shareCode+fakerTwo);
+        String browserUrl = share.getBrowserUrl();
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(browserUrl)) {
+            share.setBrowserUrl(browserUrl + "?userId=" + userId + "&" + "shareCode=" + fakerOne + shareCode + fakerTwo);
         }
+        // 抽取文件夹中的文件
+        Folder folder = share.getFolder();
+        List<Document> document = new ArrayList<>();
+        List<Document> documentInFolder = getDocumentInFolder(folder, document);
+        List<String> documentConsult = new ArrayList<>();
+        for(Document documentNew:documentInFolder){
+            String documentUrl = documentNew.getDocumentUrl();
+            documentConsult.add(documentUrl);
+        }
+        String documentConsultString = documentConsult.toString();
+        share.setShareContentUrl(documentConsultString);
         shareMapper.insertShare(share);
         int shareId = orderMapper.lastInsertId();
         Share shareNew = shareMapper.selectShareById(shareId);
         return shareNew;
+    }
+
+    /**
+     * 获取文件中所有文件
+     * @param folder
+     * @return
+     */
+    private List<Document> getDocumentInFolder(Folder folder, List<Document> document) {
+        List<Document> documentList = folder.getDocumentList();
+        if (documentList.size() > 0) {
+            document.addAll(documentList);
+        }
+        List<Folder> folderList = folder.getFolderList();
+        if(!StringUtils.isEmpty(folderList) && folderList.size() > 0) {
+            for (Folder folderNew : folderList) {
+                getDocumentInFolder(folderNew, document);
+            }
+        }
+        return document;
     }
 
     @Override

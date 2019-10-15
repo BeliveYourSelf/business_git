@@ -31,16 +31,22 @@ public class Share {
     @ApiModelProperty(name = "resourceSaveDownloadMoney", value = "资源转存下载售价")
     private BigDecimal resourceSaveDownloadMoney;
 
-    @ApiModelProperty(name = "qrCode", value = "二维码链接")
+    @ApiModelProperty(name = "qrCode", value = "小程序二维码链接")
     private String qrCode;
+
+    @ApiModelProperty(name = "browserUrl", value = "浏览器跳转链接")
+    private String browserUrl;
+
+    @ApiModelProperty(name = "shareContentUrl", value = "分享内容url：文件文件夹json串")
+    private String shareContentUrl;
 
     @ApiModelProperty(name = "usreHeadImage", value = "用户头像url")
     private String usreHeadImage;
 
-    @ApiModelProperty(name = "shareContentUrl", value = "分享内容url：多个路径，中间用英文逗号间隔")
-    private String shareContentUrl;
+    @ApiModelProperty(name = "folder", value = "文件夹")
+    private Folder folder;
 
-    @ApiModelProperty(name = "folderIds", value = "文件夹id集合,多个路径，中间用英文逗号间隔")
+    @ApiModelProperty(name = "folderIds", value = "未使用")
     private String folderIds;
 
     @ApiModelProperty(name = "createTime", value = "创建时间")
@@ -54,9 +60,6 @@ public class Share {
 
     @ApiModelProperty(name = "buyUserId", value = "收藏人的用户id")
     private Integer buyUserId;//收藏人的用户id
-
-    @ApiModelProperty(name = "browserShareContentUrl", value = "浏览器分享文件路径（多个路径，中间用英文逗号间隔）")
-    private String browserShareContentUrl;
 
     //新增
     @ApiModelProperty(name = "order", value = "订单对象")

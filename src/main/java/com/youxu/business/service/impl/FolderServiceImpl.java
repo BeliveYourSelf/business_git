@@ -57,7 +57,10 @@ public class FolderServiceImpl implements FolderService {
             if (folderNew.getId() == folder.getId()) {
                 return folderNew;
             }
-            getFolderAndDocumentByIdAndUserId = getFolderAndDocumentByIdAndUserId(folderNew.getFolderList(), folder.getId());
+            List<Folder> folderList = folderNew.getFolderList();
+            if (!org.springframework.util.StringUtils.isEmpty(folderList)) {
+                getFolderAndDocumentByIdAndUserId = getFolderAndDocumentByIdAndUserId(folderList, folder.getId());
+            }
         }
         return getFolderAndDocumentByIdAndUserId;
     }
@@ -87,8 +90,8 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public Map<String, List<Object>> selectFolderAndDocumentByLike(String userId, String resourceName) {
         HashMap<String, List<Object>> stringListHashMap = new HashMap<>();
-        List<Folder> selectFolderByLike= folderMapper.selectFolderByLike(userId, resourceName);
-        List<Document> selectDocumentByLike = documentMapper.selectDocumentByLike(userId,resourceName);
+        List<Folder> selectFolderByLike = folderMapper.selectFolderByLike(userId, resourceName);
+        List<Document> selectDocumentByLike = documentMapper.selectDocumentByLike(userId, resourceName);
         stringListHashMap.put("folderList", Collections.singletonList(selectFolderByLike));
         stringListHashMap.put("documentList", Collections.singletonList(selectDocumentByLike));
         return stringListHashMap;

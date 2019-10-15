@@ -54,8 +54,81 @@ public class ShareController extends BaseService {
 
     private String ip;
 
-    @ApiOperation(value = "新增分享", notes = "{ \"downloadDuplicatedPrintStatus\": 1 ,\"resourcePrintMoney\":\"10\" ,\"resourceSaveDownloadMoney\": 10 , \"extactionCodeStatus\": true , \"periodOfValidity\": \"2019-10-04 18:44:12\" , \"shareUserId\": 1, \"usreHeadImage\": \"/image/4654653498/10231.jpeg\" ,\"shareContentUrl\":\"xxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxx\" ,\"browserShareContentUrl\":\"www.baidu.com/api/selectResource,www.baidu.com/api/selectResource\",\n" +
-            "\"folderIds\":\"1,2,3\" }  注：返回browserShareContentUrl的shareCode取中间四位   resourcePrintMoney：资源打印价格    resourceSaveDownloadMoney：资源转存下载价格   shareContentUrl:文件内容路径   downloadDuplicatedPrintStatus: 是否可下载或转存  false(不可以) true(可以)    downloadDuplicatedPrintMoney: 资源打印售价/资源转存下载售价(double)  extactionCodeStatus: 是否有提取码(true/false)  ")
+    @ApiOperation(value = "新增分享", notes = "{ \"downloadDuplicatedPrintStatus\": 1 ,\"resourcePrintMoney\":\"10\" ,\"resourceSaveDownloadMoney\": 10 , \"extactionCodeStatus\": true , \"periodOfValidity\": \"2019-10-04 18:44:12\" , \"shareUserId\": 1, \"usreHeadImage\": \"/image/4654653498/10231.jpeg\" ,\"folder\":\n" +
+            "    {\n" +
+            "      \"id\": 14,\n" +
+            "      \"userId\": 1,\n" +
+            "      \"folderParentId\": null,\n" +
+            "      \"folderName\": \"照片\",\n" +
+            "      \"createTime\": \"2019-09-30T08:50:05.000+0000\",\n" +
+            "      \"modifyTime\": \"2019-09-30T08:50:05.000+0000\",\n" +
+            "      \"status\": false,\n" +
+            "      \"folderList\": [\n" +
+            "        {\n" +
+            "          \"id\": 33,\n" +
+            "          \"userId\": 1,\n" +
+            "          \"folderParentId\": 14,\n" +
+            "          \"folderName\": \"音乐会\",\n" +
+            "          \"createTime\": \"2019-10-15T08:50:04.000+0000\",\n" +
+            "          \"modifyTime\": \"2019-10-15T08:50:04.000+0000\",\n" +
+            "          \"status\": false,\n" +
+            "          \"folderList\": null,\n" +
+            "          \"documentList\": [\n" +
+            "            {\n" +
+            "              \"id\": 44,\n" +
+            "              \"userId\": 1,\n" +
+            "              \"folderId\": 33,\n" +
+            "              \"documentUrl\": \"https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20191015/1571130154100/tmp_6a4773494ee3061d010456ef99f28030b2e86849936dc2de.pdf\",\n" +
+            "              \"sizePage\": null,\n" +
+            "              \"fileSize\": null,\n" +
+            "              \"createTime\": \"2019-10-15T09:02:34.000+0000\",\n" +
+            "              \"modifyTime\": \"2019-10-15T09:02:34.000+0000\",\n" +
+            "              \"status\": false\n" +
+            "            }\n" +
+            "          ],\n" +
+            "          \"documentListId\": null,\n" +
+            "          \"folderListId\": null\n" +
+            "        }\n" +
+            "      ],\n" +
+            "      \"documentList\": [\n" +
+            "        {\n" +
+            "          \"id\": 39,\n" +
+            "          \"userId\": 1,\n" +
+            "          \"folderId\": 14,\n" +
+            "          \"documentUrl\": \"https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20191015/1571118540090/tmp_b192887175058e43f2460168529dae9bd9fd7ab855d9f7a7.pdf\",\n" +
+            "          \"sizePage\": null,\n" +
+            "          \"fileSize\": null,\n" +
+            "          \"createTime\": \"2019-10-15T05:49:00.000+0000\",\n" +
+            "          \"modifyTime\": \"2019-10-15T05:49:00.000+0000\",\n" +
+            "          \"status\": false\n" +
+            "        },\n" +
+            "        {\n" +
+            "          \"id\": 40,\n" +
+            "          \"userId\": 1,\n" +
+            "          \"folderId\": 14,\n" +
+            "          \"documentUrl\": \"https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20191015/1571118914717/tmp_d5f2d679fca69bf673f1ee4213f104e2f85945cbed200042.pdf\",\n" +
+            "          \"sizePage\": null,\n" +
+            "          \"fileSize\": null,\n" +
+            "          \"createTime\": \"2019-10-15T05:55:15.000+0000\",\n" +
+            "          \"modifyTime\": \"2019-10-15T05:55:15.000+0000\",\n" +
+            "          \"status\": false\n" +
+            "        },\n" +
+            "        {\n" +
+            "          \"id\": 41,\n" +
+            "          \"userId\": 1,\n" +
+            "          \"folderId\": 14,\n" +
+            "          \"documentUrl\": \"https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20191015/1571118954427/tmp_3445257552078326cefc0335ec3e4cb9d3df72f82928e4bd.pdf\",\n" +
+            "          \"sizePage\": null,\n" +
+            "          \"fileSize\": null,\n" +
+            "          \"createTime\": \"2019-10-15T05:55:54.000+0000\",\n" +
+            "          \"modifyTime\": \"2019-10-15T05:55:54.000+0000\",\n" +
+            "          \"status\": false\n" +
+            "        }\n" +
+            "      ],\n" +
+            "      \"documentListId\": null,\n" +
+            "      \"folderListId\": null\n" +
+            "    }\n" +
+            "  }   注：返回browserShareContentUrl的shareCode取中间四位       folderList：文件夹json串  resourcePrintMoney：资源打印价格    resourceSaveDownloadMoney：资源转存下载价格   shareContentUrl:文件内容路径   downloadDuplicatedPrintStatus: 是否可下载或转存  false(不可以) true(可以)    downloadDuplicatedPrintMoney: 资源打印售价/资源转存下载售价(double)  extactionCodeStatus: 是否有提取码(true/false)  ")
     @PostMapping("/insertShare")
     public ResponseMessage<Share> insertShare(@RequestBody Share share) throws ParseException {
         Share insertShare = shareService.insertShare(share);

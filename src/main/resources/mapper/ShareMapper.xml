@@ -13,7 +13,7 @@
     <result column="qr_code" jdbcType="VARCHAR" property="qrCode" />
     <result column="usre_head_image" jdbcType="VARCHAR" property="usreHeadImage" />
     <result column="share_content_url" jdbcType="VARCHAR" property="shareContentUrl" />
-    <result column="browser_share_content_url" jdbcType="VARCHAR" property="browserShareContentUrl" />
+    <result column="browser_url" jdbcType="VARCHAR" property="browserUrl" />
     <result column="folder_ids"  property="folderIds" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
@@ -80,7 +80,7 @@
   <sql id="Base_Column_List">
     id, share_user_id, period_of_validity, extaction_code_status, extaction_code, download_duplicated_print_status, 
     resource_print_money, resource_save_download_money, resource_print_money, resource_save_download_money,  qr_code, usre_head_image, share_content_url,
-    browser_share_content_url, create_time, modify_time,
+    browser_url, create_time, modify_time,
     status
   </sql>
   <select id="selectByExample" parameterType="com.youxu.business.pojo.ShareExample" resultMap="BaseResultMap">
@@ -286,8 +286,8 @@
       <if test="shareContentUrl != null">
         share_content_url,
       </if>
-      <if test="browserShareContentUrl != null">
-        browser_share_content_url,
+      <if test="browserUrl != null">
+          browser_url,
       </if>
       <if test="folderIds != null">
         folder_ids,
@@ -327,8 +327,8 @@
       <if test="shareContentUrl != null">
         #{shareContentUrl,jdbcType=VARCHAR},
       </if>
-      <if test="browserShareContentUrl != null">
-        #{browserShareContentUrl},
+      <if test="browserUrl != null">
+        #{browserUrl},
       </if>
       <if test="folderIds != null">
         #{folderIds},

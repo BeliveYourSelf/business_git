@@ -23,9 +23,8 @@ public class OrderController {
 
     @ApiOperation(value = "新增订单", notes = "{ \"orderActualMoney\": \"100\" , \"orderAddresseeAddress\": \"天津市立晟科技\" , \"orderAddresseeName\": \"李文轩\" , \"orderAddresseePhone\": \"13652157270\" , \"orderConsumeMoney\": 10 , \"orderCouponMoney\": 10 , \"orderDeliveryMoney\": \"10\" , \"orderDeliveryPrescriptioTime\": \"60\" , \"orderDetailsList\": [ { \"orderDetailsCount\": 10 ,\"orderDetailsName\":\"文档打印pdf\" ,\"orderDetailsOnePictureUrl\":\"xxxx\" ,\"orderDetailsTotalPrice\":\"200\" ,\"orderSpecName\":\"一寸6合一横板\" ,\"orderDetailsCountColour\":\"10\" ,\"pictureUrlList\":[ \"string1\" ,\"string2\" ] ,\"orderDetailsBookBinding\": { \"coverColor\": \"黑色\", \"coverFileUrl\": \"xxx\", \"faceDirection\": \"横向\"\n" +
             "\n" +
-            "  }\n" +
-            "} ] , \"orderExtraMoney\": 10 , \"orderFromStoreGet\": \"3\" , \"orderFromStoreGetWhere\": \"天津工业大学1号宿舍楼\" , \"orderPrintMoney\": \"10\" , \"orderProcess\": 1 , \"orderType\": 1 , \"storeId\": 1 , \"userId\": 1 ,\n" +
-            "\"orderRemark\":\"帮我装订好哦\"}")
+            "} } ] , \"orderExtraMoney\": 10 , \"orderFromStoreGet\": \"3\" , \"orderFromStoreGetWhere\": \"天津工业大学1号宿舍楼\" , \"orderPrintMoney\": \"10\" , \"orderProcess\": 1 , \"orderType\": 1 , \"storeId\": 1 , \"userId\": 1 , \"orderRemark\":\"帮我装订好哦\"\n" +
+            ",\"shareId\":\"1\"}")
     @PostMapping("/insertOrder")
     public ResponseMessage<Integer> insertOrder(@RequestBody Order order) {
         Integer orderId = null;

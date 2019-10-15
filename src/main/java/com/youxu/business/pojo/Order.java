@@ -91,6 +91,9 @@ public class Order extends PageInfo{
 
     @ApiModelProperty(name = "orderRemark",value = "备注信息")
     private String orderRemark;
+
+    @ApiModelProperty(name = "shareId",value = "分享id")
+    private Integer shareId;
     // 新增对象
     @ApiModelProperty(name = "userPiectureUrl",value = "用户头像")
     private String userPiectureUrl;

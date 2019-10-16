@@ -21,11 +21,29 @@ public class CollectionController {
     @Resource
     private CollectionService collectionService;
 
-    @ApiOperation(value = "新增收藏", notes = "{\"collectionUserId\":\"10\"\n" +
-            ",\"shareId\":\"3\"}      collectionUserId：收藏人用户信息  shareId:分享表id")
+    @ApiOperation(value = "新增收藏", notes = "[\n" +
+            "  {\n" +
+            "    \"collectionImage\": \"https://youxu/oss/headImage.jpg\",\n" +
+            "    \"collectionName\": \"李文轩\",\n" +
+            "    \"collectionUserId\": 1,\n" +
+            "    \"effectiveTime\": \"string\",\n" +
+            "    \"fileSize\": 0,\n" +
+            "    \"shareId\": 3,\n" +
+            "    \"status\": false\n" +
+            "  },\n" +
+            "{\n" +
+            "    \"collectionImage\": \"https://youxu/oss/headImage.jpg\",\n" +
+            "    \"collectionName\": \"陈凯\",\n" +
+            "    \"collectionUserId\": 1,\n" +
+            "    \"effectiveTime\": \"string\",\n" +
+            "    \"fileSize\": 0,\n" +
+            "    \"shareId\": 3,\n" +
+            "    \"status\": false\n" +
+            "  }\n" +
+            "]      collectionUserId：收藏人用户信息  shareId:分享表id   collectionImage 来源人头像  collectionName  来源人名称 fileSize  文件大小（单位兆） ")
     @PostMapping("/insertCollection")
-    public ResponseMessage insertCollection(@RequestBody Collection collection) {
-        Integer insertCollection= collectionService.insertCollection(collection);
+    public ResponseMessage insertCollection(@RequestBody List<Collection> collectionList) {
+        Integer insertCollection= collectionService.insertCollection(collectionList);
         if (insertCollection<=0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }

@@ -7,7 +7,7 @@ import com.youxu.business.pojo.Collection;
 import java.util.List;
 
 public interface CollectionService {
-    Integer insertCollection(Collection collection);
+    Integer insertCollection(List<Collection> collectionList);
 
     PageInfo<Collection> selectCollection(Collection collection);
 

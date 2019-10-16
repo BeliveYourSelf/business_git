@@ -20,7 +20,7 @@ public interface CollectionMapper {
 
     int updateByExample(@Param("record") Collection record, @Param("example") CollectionExample example);
     // 新增收藏
-    Integer insertCollection(Collection collection);
+    Integer insertCollection(@Param("collectionList") List<Collection> collectionList);
     // 查看收藏列表
     List<Collection> selectCollection(@Param("collection") Collection collection);
     // 删除收藏列表

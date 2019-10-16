@@ -18,8 +18,8 @@ public class CollectionServiceImpl implements CollectionService {
     private CollectionMapper collectionMapper;
 
     @Override
-    public Integer insertCollection(Collection collection) {
-        return collectionMapper.insertCollection(collection);
+    public Integer insertCollection(List<Collection> collectionList) {
+        return collectionMapper.insertCollection(collectionList);
     }
 
     @Override

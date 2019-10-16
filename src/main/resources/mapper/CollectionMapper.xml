@@ -5,6 +5,10 @@
         <result column="tb_collectionid" jdbcType="INTEGER" property="id"/>
         <result column="tb_collectioncollection_user_id" jdbcType="INTEGER" property="collectionUserId"/>
         <result column="tb_collectionshare_id" jdbcType="INTEGER" property="shareId"/>
+        <result column="tb_collectioncollection_image" property="collectionImage"/>
+        <result column="tb_collectioncollection_name" property="collectionName"/>
+        <result column="tb_collectioneffective_time" property="effectiveTime"/>
+        <result column="tb_collectionfile_size" property="fileSize"/>
         <result column="tb_collectioncreate_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="tb_collectionmodify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
         <result column="tb_collectionstatus" jdbcType="BIT" property="status"/>
@@ -14,8 +18,11 @@
             <result column="tb_shareperiod_of_validity" jdbcType="TIMESTAMP" property="periodOfValidity"/>
             <result column="tb_shareextaction_code_status" jdbcType="BIT" property="extactionCodeStatus"/>
             <result column="tb_shareextaction_code" jdbcType="VARCHAR" property="extactionCode"/>
-            <result column="tb_sharedownload_duplicated_print_status" jdbcType="BIT" property="downloadDuplicatedPrintStatus"/>
-            <result column="tb_sharedownload_duplicated_print_money" jdbcType="DOUBLE" property="downloadDuplicatedPrintMoney"/>
+            <result column="tb_sharedownload_duplicated_print_status" jdbcType="BIT"
+                    property="downloadDuplicatedPrintStatus"/>
+            <result column="tb_shareresource_print_money" jdbcType="DOUBLE" property="resourcePrintMoney"/>
+            <result column="tb_shareresource_save_download_money" jdbcType="DOUBLE"
+                    property="resourceSaveDownloadMoney"/>
             <result column="tb_shareqr_code" jdbcType="VARCHAR" property="qrCode"/>
             <result column="tb_shareusre_head_image" jdbcType="VARCHAR" property="usreHeadImage"/>
             <result column="tb_sharecreate_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -87,6 +94,10 @@
     tb_collection.id as tb_collectionid
     , tb_collection.collection_user_id as tb_collectioncollection_user_id
     , tb_collection.share_id as tb_collectionshare_id
+    , tb_collection.collection_image as tb_collectioncollection_image
+    , tb_collection.collection_name as tb_collectioncollection_name
+    , tb_collection.effective_time as tb_collectioneffective_time
+    , tb_collection.file_size as tb_collectionfile_size
     , tb_collection.create_time as tb_collectioncreate_time
     , tb_collection.modify_time as tb_collectionmodify_time
     , tb_collection.status as tb_collectionstatus
@@ -98,7 +109,8 @@
     , tb_share.extaction_code_status as tb_shareextaction_code_status
     , tb_share.extaction_code as tb_shareextaction_code
     , tb_share.download_duplicated_print_status as tb_sharedownload_duplicated_print_status
-    , tb_share.download_duplicated_print_money as tb_sharedownload_duplicated_print_money
+    , tb_share.resource_print_money as tb_shareresource_print_money
+    , tb_share.resource_save_download_money as tb_shareresource_save_download_money
     , tb_share.qr_code as tb_shareqr_code
     , tb_share.usre_head_image as tb_shareusre_head_image
     , tb_share.create_time as tb_sharecreate_time
@@ -223,28 +235,27 @@
     <!--新增收藏-->
     <insert id="insertCollection" parameterType="com.youxu.business.pojo.Collection">
         insert into tb_collection
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="collectionUserId != null">
-                collection_user_id,
-            </if>
-            <if test="shareId != null">
-                share_id,
-            </if>
-            create_time,
-            modify_time,
-            status,
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="collectionUserId != null">
-                #{collectionUserId,jdbcType=INTEGER},
-            </if>
-            <if test="shareId != null">
-                #{shareId,jdbcType=INTEGER},
-            </if>
+        (collection_user_id,
+        share_id,
+        collection_image,
+        collection_name,
+        effective_time,
+        file_size,
+        create_time,
+        modify_time,
+        status)
+        VALUES
+        <foreach collection="collectionList" index="index" separator="," item="collection">
+            (#{collection.collectionUserId,jdbcType=INTEGER},
+            #{collection.shareId,jdbcType=INTEGER},
+            #{collection.collectionImage},
+            #{collection.collectionName},
+            #{collection.effectiveTime},
+            #{collection.fileSize},
             now(),
             now(),
-            false,
-        </trim>
+            false)
+        </foreach>
     </insert>
     <!--查看收藏列表-->
     <select id="selectCollection" resultMap="BaseResultMap">

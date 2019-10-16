@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class DocumentServiceImpl implements DocumentService {
@@ -31,6 +33,9 @@ public class DocumentServiceImpl implements DocumentService {
         Integer xlsxNum = Readword.getFilePageNum(documentUrl);
         document.setSizePage(xlsxNum.toString());
         // 新增文件
-        return documentMapper.insertDocument(document);
+        String documentUrlNew = document.getDocumentUrl();
+        String[] split = documentUrlNew.split(",");
+        List<String> documentUrlList = Arrays.asList(split);
+        return documentMapper.insertDocument(document,documentUrlList);
     }
 }

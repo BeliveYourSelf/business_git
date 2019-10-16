@@ -27,8 +27,8 @@ public interface DocumentMapper {
 
     // 移动文件到某个文件夹
     Integer updateMoveDocument(@Param("folder") Folder folder);
-    // 支付后转存
-    Integer insertDocument(Document document);
+    // 支付后转存    todo ceshi**********
+    Integer insertDocument(@Param("document")Document document,@Param("documentUrlList") List<String> documentUrlList);
     // 查看文件集合模糊查找
     List<Document> selectDocumentByLike(@Param("userId") String userId, @Param("resourceName") String resourceName);
 }

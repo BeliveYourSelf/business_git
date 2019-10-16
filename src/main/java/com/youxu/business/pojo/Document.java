@@ -32,6 +32,10 @@ public class Document {
 
     @ApiModelProperty(name = "status", value = "显示状态")
     private Boolean status;
+    // 新增
+
+    @ApiModelProperty(name = "documentUrlList", value = "文件url集合")
+    private String documentUrlList;
 
 
 }

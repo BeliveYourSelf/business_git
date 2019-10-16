@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.youxu.business.dao.*;
 import com.youxu.business.pojo.*;
 import com.youxu.business.service.OrderService;
+import com.youxu.business.utils.OtherUtil.DeleteFileUtil;
 import com.youxu.business.utils.OtherUtil.OSSUploadUtil;
 import com.youxu.business.utils.OtherUtil.UploadUtils;
 import com.youxu.business.utils.normalQRcode.QRCodeUtil;
@@ -103,6 +104,7 @@ public class OrderServiceImpl implements OrderService {
         QRCodeUtil.encode(text, imgPath, destPath, true);
         //PDFUtils.createPDF417(text, destPath);
         MultipartFile multipartFileQRCode = fileTransToMultipartFile(destPath);
+        DeleteFileUtil.delete(destPath);
         String uploadBlog = OSSUploadUtil.uploadBlog(multipartFileQRCode, "barcode/");
         order.setDeliveryPickUpFileQRCodeUrl(uploadBlog);
         orderMapper.updateOrder(order);

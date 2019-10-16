@@ -70,11 +70,11 @@ public class FolderServiceImpl implements FolderService {
         List<Integer> folderListId = folder.getFolderListId();
         List<Integer> documentListId = folder.getDocumentListId();
         // 删除文件夹
-        if (folderListId.size() >= 1) {
+        if (!org.springframework.util.StringUtils.isEmpty(folderListId) && folderListId.size() >= 1) {
             Integer deleteFolderList = folderMapper.deleteFolderList(folderListId);
         }
         // 删除文件
-        if (documentListId.size() >= 1) {
+        if (!org.springframework.util.StringUtils.isEmpty(documentListId) && documentListId.size() >= 1) {
             Integer deleteDocumentList = documentMapper.deleteDocumentList(documentListId);
         }
         return 1;

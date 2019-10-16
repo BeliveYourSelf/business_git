@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,21 +22,29 @@ public class DocumentServiceImpl implements DocumentService {
     public Integer insertDocument(Document document) throws IOException {
         // 读取文件大小
         String fileSize;
-        String documentUrl = document.getDocumentUrl();
-        File file = new File(documentUrl);
-        if (file.isFile() && file.exists()) {
-            fileSize = String.valueOf(file.length()/1024/1024);
-        } else {
-            fileSize = "0";
-        }
-        document.setFileSize(fileSize);
-        // 获取文件页数
-        Integer xlsxNum = Readword.getFilePageNum(documentUrl);
-        document.setSizePage(xlsxNum.toString());
+
         // 新增文件
+        List documentList = new ArrayList<Document>();
         String documentUrlNew = document.getDocumentUrl();
-        String[] split = documentUrlNew.split(",");
-        List<String> documentUrlList = Arrays.asList(split);
-        return documentMapper.insertDocument(document,documentUrlList);
+        String[] documentUrlArr = documentUrlNew.split(",");
+        if (documentUrlArr.length >= 1) {
+            for(int i = 0;documentUrlArr.length > i;i++){
+                // 添加文件页数
+                Integer xlsxNum = Readword.getFilePageNum(documentUrlArr[i]);
+                document.setSizePage(xlsxNum.toString());
+                // 添加文件大小
+                File file = new File(documentUrlArr[i]);
+                if (file.isFile() && file.exists()) {
+                    fileSize = String.valueOf(file.length() / 1024 / 1024);
+                } else {
+                    fileSize = "0";
+                }
+                document.setFileSize(fileSize);
+                documentList.add(document);
+            }
+        }
+
+
+        return documentMapper.insertDocument(documentList);
     }
 }

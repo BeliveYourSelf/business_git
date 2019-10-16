@@ -285,7 +285,7 @@ public class ShareController extends BaseService {
         }
     }
 
-    @ApiOperation(value = "支付后转存", notes = "{\"userId\":\"1\" ,\"folderId\":\"1\" ,\"documentUrl\":\"https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20190929/1569724765061.pdf\"}     userId：支付人用户id   folderId：待存入的文件夹id    documentUrl：文件内容路径")
+    @ApiOperation(value = "支付后转存", notes = "{\"userId\":\"1\" ,\"folderId\":\"1\" ,\"documentUrl\":\"https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20190929/1569724765061.pdf,https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20190929/1569724765061.pdf\"}     userId：支付人用户id   folderId：待存入的文件夹id    documentUrl：文件内容路径（多文件中间用英文逗号间隔）")
         @PostMapping("/insertPostPaymentStorage")
     public ResponseMessage insertPostPaymentStorage(@RequestBody Document document) {
         Integer insertDocument = null;

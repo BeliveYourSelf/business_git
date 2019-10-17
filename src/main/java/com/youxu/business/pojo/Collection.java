@@ -38,6 +38,12 @@ public class Collection {
     @ApiModelProperty(name = "status", value = "显示状态")
     private Boolean status;
 
+    @ApiModelProperty(name = "contentUrl", value = "收藏内容")
+    private String contentUrl;
+
+    @ApiModelProperty(name = "sizePage", value = "内容页数")
+    private Integer sizePage;
+
     // 新增
     @ApiModelProperty(name = "pageNo", value = "第几页")
     private Integer pageNo;

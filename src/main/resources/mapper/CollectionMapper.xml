@@ -12,6 +12,8 @@
         <result column="tb_collectioncreate_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="tb_collectionmodify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
         <result column="tb_collectionstatus" jdbcType="BIT" property="status"/>
+        <result column="tb_collectioncontent_url" property="contentUrl"/>
+        <result column="tb_collectionsize_page" property="sizePage"/>
         <collection property="shareList" ofType="com.youxu.business.pojo.Share">
             <result column="tb_shareid" jdbcType="INTEGER" property="id"/>
             <result column="tb_shareshare_user_id" jdbcType="INTEGER" property="shareUserId"/>
@@ -101,6 +103,8 @@
     , tb_collection.create_time as tb_collectioncreate_time
     , tb_collection.modify_time as tb_collectionmodify_time
     , tb_collection.status as tb_collectionstatus
+    , tb_collection.content_url as tb_collectioncontent_url
+    , tb_collection.size_page as tb_collectionsize_page
   </sql>
     <sql id="Base_Column_List_tb_share">
     tb_share.id as tb_shareid
@@ -243,7 +247,9 @@
         file_size,
         create_time,
         modify_time,
-        status)
+        status,
+        content_url,
+        size_page)
         VALUES
         <foreach collection="collectionList" index="index" separator="," item="collection">
             (#{collection.collectionUserId,jdbcType=INTEGER},
@@ -254,7 +260,9 @@
             #{collection.fileSize},
             now(),
             now(),
-            false)
+            false,
+            #{collection.contentUrl},
+            #{collection.sizePage})
         </foreach>
     </insert>
     <!--查看收藏列表-->

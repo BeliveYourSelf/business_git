@@ -60,7 +60,7 @@ public class MiniAppCode extends BaseService {
             String url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=" + accessToken;
             Map<String, Object> param = new HashMap<>();
             param.put("scene", userIdAndInvitationCode);
-            param.put("page", "pages/share_view/share_view");//-------------上线后换路径
+            // param.put("page", "pages/share_view/share_view");//-------------上线后换路径
             param.put("width", 430);
             param.put("auto_color", false);
             Map<String, Object> line_color = new HashMap<>();
@@ -102,7 +102,7 @@ public class MiniAppCode extends BaseService {
             DeleteFileUtil.delete(absolutePath);
             //http://lisheng-aricle.oss-cn-beijing.aliyuncs.com/log/20190517/1218209821212.jpg
             //先拼接域名:
-            StringBuilder yuming = new StringBuilder("https://lisheng-aricle.oss-cn-beijing.aliyuncs.com/");
+            StringBuilder yuming = new StringBuilder("https://youxu-print.oss-cn-beijing.aliyuncs.com/");
             //再拼接/log
             completeRoute = yuming.append(uploadPath);
         } catch (Exception e) {

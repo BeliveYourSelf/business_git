@@ -60,15 +60,15 @@ public class ShareServiceImpl implements ShareService {
         }
         // 抽取文件夹中的文件
         Folder folder = share.getFolder();
-        List<Document> document = new ArrayList<>();
+        /*List<Document> document = new ArrayList<>();
         List<Document> documentInFolder = getDocumentInFolder(folder, document);
         List<String> documentConsult = new ArrayList<>();
         for(Document documentNew:documentInFolder){
             String documentUrl = documentNew.getDocumentUrl();
             documentConsult.add(documentUrl);
         }
-        String documentConsultString = documentConsult.toString();
-        share.setShareContentUrl(documentConsultString);
+        String documentConsultString = documentConsult.toString();*/
+        share.setShareContentUrl(folder.toString());
         shareMapper.insertShare(share);
         int shareId = orderMapper.lastInsertId();
         Share shareNew = shareMapper.selectShareById(shareId);

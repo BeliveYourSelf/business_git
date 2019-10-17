@@ -1,5 +1,7 @@
 package com.youxu.business.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.youxu.business.dao.AccessTokenMapper;
 import com.youxu.business.dao.OrderMapper;
 import com.youxu.business.dao.ShareMapper;
@@ -68,7 +70,8 @@ public class ShareServiceImpl implements ShareService {
             documentConsult.add(documentUrl);
         }
         String documentConsultString = documentConsult.toString();*/
-        share.setShareContentUrl(folder.toString());
+        String folderString = JSON.toJSONString(folder);
+        share.setShareContentUrl(folderString);
         shareMapper.insertShare(share);
         int shareId = orderMapper.lastInsertId();
         Share shareNew = shareMapper.selectShareById(shareId);

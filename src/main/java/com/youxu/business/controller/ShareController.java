@@ -144,7 +144,7 @@ public class ShareController extends BaseService {
     public ResponseMessage<Share> selectShareByUserIdAndExtactionCode(@RequestBody Share share) {
         Share selectShareByUserIdAndExtactionCode = shareService.selectShareByUserIdAndExtactionCode(share);
         if (StringUtils.isEmpty(selectShareByUserIdAndExtactionCode)) {
-            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "已过期");
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", selectShareByUserIdAndExtactionCode);
     }

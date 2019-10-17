@@ -97,15 +97,6 @@ public class ShareServiceImpl implements ShareService {
     @Override
     public Share selectShareByUserIdAndExtactionCode(Share share) {
         Share shareNew = shareMapper.selectShareByUserIdAndExtactionCode(share);
-        // 判断文件过期
-        String periodOfValidity = shareNew.getPeriodOfValidity();
-        Date periodOfValidityNew = DateTransform.stringFormatTransToDate(periodOfValidity);
-        Date date = new Date();
-        long nowTime = date.getTime();
-        long periodOfValidityTime = periodOfValidityNew.getTime();
-        if (nowTime - periodOfValidityTime > 0) {
-            return null;
-        }
         return shareNew;
     }
 

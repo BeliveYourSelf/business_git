@@ -9,8 +9,12 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -33,12 +37,8 @@ public class DocumentServiceImpl implements DocumentService {
                 Integer xlsxNum = Readword.getFilePageNum(documentUrlArr[i]);
                 document.setSizePage(xlsxNum.toString());
                 // 添加文件大小
-                File file = new File(documentUrlArr[i]);
-                if (file.isFile() && file.exists()) {
-                    fileSize = String.valueOf(file.length() / 1024 / 1024);
-                } else {
-                    fileSize = "0";
-                }
+                 fileSize = getFileSize(documentUrlArr[i]);
+                document.setDocumentUrl(documentUrlArr[i]);
                 document.setFileSize(fileSize);
                 documentList.add(document);
             }
@@ -46,5 +46,22 @@ public class DocumentServiceImpl implements DocumentService {
 
 
         return documentMapper.insertDocument(documentList);
+    }
+
+    // 获取文件大小
+    private String getFileSize(String url){
+        Double read = 0.0;
+        try {
+            // 创建url
+            URL filePath = new URL(url);
+
+            URLConnection urlConnection = filePath.openConnection();
+            read = Double.valueOf(urlConnection.getContentLength());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return String.valueOf(read / (1024 * 1024)); // 转换为兆
     }
 }

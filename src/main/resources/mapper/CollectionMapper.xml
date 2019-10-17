@@ -15,7 +15,7 @@
         <collection property="shareList" ofType="com.youxu.business.pojo.Share">
             <result column="tb_shareid" jdbcType="INTEGER" property="id"/>
             <result column="tb_shareshare_user_id" jdbcType="INTEGER" property="shareUserId"/>
-            <result column="tb_shareperiod_of_validity" jdbcType="TIMESTAMP" property="periodOfValidity"/>
+            <result column="tb_shareperiod_of_validity"  property="periodOfValidity"/>
             <result column="tb_shareextaction_code_status" jdbcType="BIT" property="extactionCodeStatus"/>
             <result column="tb_shareextaction_code" jdbcType="VARCHAR" property="extactionCode"/>
             <result column="tb_sharedownload_duplicated_print_status" jdbcType="BIT"

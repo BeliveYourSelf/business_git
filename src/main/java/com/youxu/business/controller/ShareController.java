@@ -304,11 +304,8 @@ public class ShareController extends BaseService {
     public Share expireDate(Share shareNew) {
 // 判断文件过期
         String periodOfValidity = shareNew.getPeriodOfValidity();
-        Date periodOfValidityNew = DateTransform.stringFormatTransToDate(periodOfValidity);
-        Date date = new Date();
-        long nowTime = date.getTime();
-        long periodOfValidityTime = periodOfValidityNew.getTime();
-        if (nowTime - periodOfValidityTime > 0) {
+        Integer periodOfValidityInteger = Integer.valueOf(periodOfValidity);
+        if (periodOfValidityInteger == 0) {
             return null;  //过期
         }
         return shareNew;

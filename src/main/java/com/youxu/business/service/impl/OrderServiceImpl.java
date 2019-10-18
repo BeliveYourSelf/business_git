@@ -1,10 +1,13 @@
 package com.youxu.business.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.pagehelper.PageHelper;
 import com.youxu.business.dao.*;
 import com.youxu.business.pojo.*;
 import com.youxu.business.service.OrderService;
 import com.youxu.business.utils.OtherUtil.DeleteFileUtil;
+import com.youxu.business.utils.OtherUtil.MapUtils;
 import com.youxu.business.utils.OtherUtil.OSSUploadUtil;
 import com.youxu.business.utils.OtherUtil.UploadUtils;
 import com.youxu.business.utils.normalQRcode.QRCodeUtil;
@@ -19,11 +22,9 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -210,19 +211,44 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Integer updateDeliveryOrderProblem(Order order) {
-        // 第一次评价
+        String deliveryProblemFileMarkNew = order.getDeliveryProblemFileMark();
         Order orderNew = orderMapper.selectOrderById(order.getId().toString());
         String deliveryProblemFileMark = orderNew.getDeliveryProblemFileMark();
+        // 获取指定格式的当前时间
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateTimeFormat = simpleDateFormat.format(date);
+        String mapKey = "deliveryClerk" + "#" + dateTimeFormat;
+        // 第一次评价
         if(StringUtils.isEmpty(deliveryProblemFileMark)){
-            return orderMapper.updateDeliveryOrderProblem(order);
+            HashMap<String, String> problemMark = new HashMap<>();
+            problemMark.put(mapKey,deliveryProblemFileMarkNew);
+            String problemMarkMapJsonString = JSON.toJSONString(problemMark);
+            order.setDeliveryProblemFileMark(problemMarkMapJsonString);
         }
-        // 追加评价
-        StringBuffer deliveryProblemFileMarkStringBuffer = new StringBuffer(deliveryProblemFileMark);
-        deliveryProblemFileMarkStringBuffer.append("#").append(order.getDeliveryProblemFileMark());
-        order.setDeliveryProblemFileMark(deliveryProblemFileMarkStringBuffer.toString());
+        Map<String,String> problemMarkMap= mapStringToMap(deliveryProblemFileMark);
+        problemMarkMap.put(mapKey,deliveryProblemFileMarkNew);
+        String problemMarkMapJsonString = JSON.toJSONString(problemMarkMap);
+        order.setDeliveryProblemFileMark(problemMarkMapJsonString);
         return orderMapper.updateDeliveryOrderProblem(order);
     }
 
+    /**
+     * 字符串map转Map
+     * @param str
+     * @return
+     */
+    public static Map<String,String> mapStringToMap(String str){
+        str=str.substring(1, str.length()-1);
+        String[] strs=str.split(",");
+        Map<String,String> map = new HashMap<String, String>();
+        for (String string : strs) {
+            String key=string.split("=")[0];
+            String value=string.split("=")[1];
+            map.put(key, value);
+        }
+        return map;
+    }
     @Override
     public Integer insertOrderForMemberPrice(Share share) {
         Order orderNew = share.getOrder();

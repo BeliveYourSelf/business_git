@@ -42,6 +42,7 @@ public class OrderServiceImpl implements OrderService {
     private DeliveryClerkInfoMapper deliveryClerkInfoMapper;
     @Resource
     private StoreMapper storeMapper;
+
     @Override
     public Integer insertOrder(Order order) throws Exception {
         // 邀请码
@@ -165,15 +166,15 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> selectDeliveryFileByStoreIdList(Order order) {
         List<Order> orders = orderMapper.selectDeliveryFileByStoreIdList(order);
-        for(Order orderNew:orders){
+        for (Order orderNew : orders) {
             String orderDeliveryPrescriptioTime = orderNew.getOrderDeliveryPrescriptioTime();
             // 配送时间 mm
             Long orderDeliveryPrescriptioTimeLong = Long.valueOf(orderDeliveryPrescriptioTime);
             Date orderPayDate = orderNew.getOrderPayDate();
             // 支付时间 mm
-            if(!StringUtils.isEmpty(orderPayDate)){
+            if (!StringUtils.isEmpty(orderPayDate)) {
                 Long orderPayDateLong = orderPayDate.getTime();
-                Long expireTime = orderDeliveryPrescriptioTimeLong+orderPayDateLong;
+                Long expireTime = orderDeliveryPrescriptioTimeLong + orderPayDateLong;
                 orderNew.setExpireTime(expireTime.toString());
             }
         }
@@ -220,35 +221,40 @@ public class OrderServiceImpl implements OrderService {
         String dateTimeFormat = simpleDateFormat.format(date);
         String mapKey = "deliveryClerk" + "#" + dateTimeFormat;
         // 第一次评价
-        if(StringUtils.isEmpty(deliveryProblemFileMark)){
+        if (StringUtils.isEmpty(deliveryProblemFileMark)) {
             HashMap<String, String> problemMark = new HashMap<>();
-            problemMark.put(mapKey,deliveryProblemFileMarkNew);
+            problemMark.put(mapKey, deliveryProblemFileMarkNew);
             String problemMarkMapJsonString = JSON.toJSONString(problemMark);
             order.setDeliveryProblemFileMark(problemMarkMapJsonString);
+        } else {
+            Map<String, String> problemMarkMap = mapStringToMap(deliveryProblemFileMark);
+            problemMarkMap.put(mapKey, deliveryProblemFileMarkNew);
+            String problemMarkMapJsonString = JSON.toJSONString(problemMarkMap);
+            order.setDeliveryProblemFileMark(problemMarkMapJsonString);
         }
-        Map<String,String> problemMarkMap= mapStringToMap(deliveryProblemFileMark);
-        problemMarkMap.put(mapKey,deliveryProblemFileMarkNew);
-        String problemMarkMapJsonString = JSON.toJSONString(problemMarkMap);
-        order.setDeliveryProblemFileMark(problemMarkMapJsonString);
         return orderMapper.updateDeliveryOrderProblem(order);
     }
 
     /**
      * 字符串map转Map
+     *
      * @param str
      * @return
      */
-    public static Map<String,String> mapStringToMap(String str){
-        str=str.substring(1, str.length()-1);
-        String[] strs=str.split(",");
-        Map<String,String> map = new HashMap<String, String>();
+    public static Map<String, String> mapStringToMap(String str) {
+        str = str.substring(1, str.length() - 1);
+        String[] strs = str.split(",");
+        Map<String, String> map = new HashMap<String, String>();
         for (String string : strs) {
-            String key=string.split("=")[0];
-            String value=string.split("=")[1];
+            String key = string.split("\":\"")[0];
+            key = key.substring(1);
+            String value = string.split("\":\"")[1];
+            value = value.substring(0,value.length() - 1);
             map.put(key, value);
         }
         return map;
     }
+
     @Override
     public Integer insertOrderForMemberPrice(Share share) {
         Order orderNew = share.getOrder();

@@ -30,6 +30,14 @@ public class CollectionServiceImpl implements CollectionService {
         PageInfo<Collection> objectPageInfo = new PageInfo<Collection>(collectionList);
         return objectPageInfo;
     }
+    public List<Collection> selectCollection() {
+        return collectionMapper.selectCollectionAll();
+    }
+
+    @Override
+    public Integer updateCollectionEffectiveTime() {
+        return collectionMapper.updateCollectionEffectiveTime();
+    }
 
     @Override
     public Integer deleteCollection(String[] arrayCollectionId) {

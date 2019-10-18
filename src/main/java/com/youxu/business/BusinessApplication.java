@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Properties;
@@ -15,6 +16,7 @@ import java.util.Properties;
 @MapperScan("com.youxu.business.dao")
 @EnableEurekaClient
 @EnableFeignClients
+@EnableScheduling //开启定时任务
 public class BusinessApplication {
 
 	public static void main(String[] args) {

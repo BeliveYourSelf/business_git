@@ -285,5 +285,18 @@
             #{id}
         </foreach>
     </update>
+    <!--查看收藏列表集合-->
+    <select id="selectCollectionAll" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from tb_collection
+        where tb_collection.status = false
+    </select>
+    <!--更新收藏有效期-->
+    <update id="updateCollectionEffectiveTime">
+        update tb_collection
+        set tb_collection.effective_time = tb_collection.effective_time -1
+        where tb_collection.effective_time > 0
+    </update>
+
 
 </mapper>

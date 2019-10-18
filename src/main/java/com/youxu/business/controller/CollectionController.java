@@ -8,6 +8,9 @@ import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +21,8 @@ import java.util.List;
 @RestController
 @Api(description = "收藏表")
 public class CollectionController {
+    private final static Logger logger = LoggerFactory.getLogger(CollectionController.class);
+
     @Resource
     private CollectionService collectionService;
 
@@ -54,4 +59,18 @@ public class CollectionController {
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",deleteCollection);
     }
+    /**
+     * 定时修改收藏有效期天数（86400000毫秒 = 1天）
+     */
+    @Scheduled(fixedDelay = 86400000)
+    public void updateCollectionPeriodOfValidity(){
+        // 更新有效期
+        Integer updateCollectionEffectiveTime = collectionService.updateCollectionEffectiveTime();
+        logger.info("开始定时修改收藏有效期个数======================================================================");
+        logger.info("定时修改收藏有效期个数========================"+updateCollectionEffectiveTime.toString()+"个");
+        logger.info("完成定时修改收藏有效期个数======================================================================");
+
+    }
+
+
 }

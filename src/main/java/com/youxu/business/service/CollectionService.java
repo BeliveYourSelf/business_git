@@ -12,4 +12,8 @@ public interface CollectionService {
     PageInfo<Collection> selectCollection(Collection collection);
 
     Integer deleteCollection(String[] arrayCollectionId);
+
+    List<Collection> selectCollection();
+
+    Integer updateCollectionEffectiveTime();
 }

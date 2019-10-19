@@ -246,5 +246,11 @@
         0,
     </trim>
   </insert>
+  <!--查看装订文档通过id-->
+  <select id="selectOrderDetailsBookBinding" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tb_order_details_book_binding
+    where tb_order_details_book_binding.order_details_id = #{orderDetailsId}
+  </select>
 
 </mapper>

@@ -21,4 +21,6 @@ public interface OrderDetailsBookBindingMapper {
     int updateByExample(@Param("record") OrderDetailsBookBinding record, @Param("example") OrderDetailsBookBindingExample example);
     // 新增装订文档
     int insertOrderDetailsBookBinding(OrderDetailsBookBinding orderDetailsBookBinding);
+    // 查看装订文档通过id
+    OrderDetailsBookBinding selectOrderDetailsBookBinding(@Param("orderDetailsId") Integer orderDetailsId);
 }

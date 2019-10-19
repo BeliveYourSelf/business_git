@@ -44,6 +44,7 @@
             <result column="order_details_create_time" jdbcType="TIMESTAMP" property="orderDetailsCreateTime"/>
             <result column="order_details_modify_time" jdbcType="TIMESTAMP" property="orderDetailsModifyTime"/>
             <result column="order_details_status" jdbcType="BIT" property="orderDetailsStatus"/>
+            <association property="orderDetailsBookBinding" select="com.youxu.business.dao.OrderDetailsBookBindingMapper.selectOrderDetailsBookBinding" column="tb_order_detailsid"/>
         </collection>
     </resultMap>
     <sql id="Example_Where_Clause">
@@ -631,8 +632,7 @@
         select<include refid="Base_Column_List"/>,
         <include refid="Base_Column_List_tb_order_details"/>
         from tb_order
-        left join tb_order_details
-        on tb_order.id = tb_order_details.order_id
+        left join tb_order_details on tb_order.id = tb_order_details.order_id
         where tb_order.user_id = #{order.userId} and order_process = #{order.orderProcess} and order_status = false
     </select>
     <!--更新支付状态和时间  orderProcess 订单进行状态:1.待付款2.进行中3.已完成4.已取消-->

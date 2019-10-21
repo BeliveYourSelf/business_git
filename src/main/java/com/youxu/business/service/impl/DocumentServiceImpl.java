@@ -42,7 +42,7 @@ public class DocumentServiceImpl implements DocumentService {
                 int nameLocal = documentUrlArr[i].lastIndexOf("/") + 1;
                 String fileName = documentUrlArr[i].substring(nameLocal);
                 // 获取项目所在服务器的全路径，如：D:\apache-tomcat-7.0.25\webapps\TestSytem\
-                String localPath = request.getServletContext().getRealPath("/")+fileName;
+                String localPath = "https://yxapi.lishengjt.com" + request.getServletContext().getRealPath("/")+fileName;
                 DownLoadFileFromOss downLoadFileFromOss = new DownLoadFileFromOss();
                 downLoadFileFromOss.downloadFile(documentUrlArr[i], localPath);
                 // 添加文件页数

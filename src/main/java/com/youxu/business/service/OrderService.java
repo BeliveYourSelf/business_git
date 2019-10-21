@@ -3,9 +3,6 @@ package com.youxu.business.service;
 import com.youxu.business.pojo.Order;
 import com.youxu.business.pojo.Share;
 
-import javax.validation.constraints.NotNull;
-import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 public interface OrderService {
@@ -42,4 +39,7 @@ public interface OrderService {
     Integer deleteOrder(String id);
 
     Order selectOrderById(String id);
+
+    Integer updateOrderPayDateAndProcessOverWrite(Integer orderId, Integer orderProcess);
+
 }

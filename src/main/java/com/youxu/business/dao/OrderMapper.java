@@ -57,4 +57,8 @@ public interface OrderMapper {
     // 查看订单重构
     Order selectOrderByIdOverWrite(String id);
 
+    // 更新支付状态和时间 重写
+    Integer updateOrderPayDateAndProcessOverWrite(@Param("orderId")Integer orderId,@Param("orderProcess") Integer orderProcess);
+
+
 }

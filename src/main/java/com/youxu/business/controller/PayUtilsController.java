@@ -95,6 +95,8 @@ public class PayUtilsController extends BaseService {
                 Double orderConsumeMoney = order.getOrderConsumeMoney();
                 map.put("vouchersIdList",vouchersIdList);
                 map.put("orderConsumeMoney",orderConsumeMoney);
+                // 回调没有问题后删除
+                Integer integer1 = orderService.updateOrderPayDateAndProcessOverWrite(order.getId(), PayStatusEnum.COMPLETE.getValueCode());
                 return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", map);
             } catch (Exception e) {
                 e.printStackTrace();

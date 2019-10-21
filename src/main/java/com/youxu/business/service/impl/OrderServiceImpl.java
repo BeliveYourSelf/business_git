@@ -1,13 +1,11 @@
 package com.youxu.business.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.pagehelper.PageHelper;
 import com.youxu.business.dao.*;
 import com.youxu.business.pojo.*;
 import com.youxu.business.service.OrderService;
 import com.youxu.business.utils.OtherUtil.DeleteFileUtil;
-import com.youxu.business.utils.OtherUtil.MapUtils;
 import com.youxu.business.utils.OtherUtil.OSSUploadUtil;
 import com.youxu.business.utils.OtherUtil.UploadUtils;
 import com.youxu.business.utils.normalQRcode.QRCodeUtil;
@@ -22,7 +20,6 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -332,6 +329,11 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderMapper.selectOrderByIdOverWrite(id);
         Order orderNew = addMoreUrl(order);
         return orderNew;
+    }
+
+    @Override
+    public Integer updateOrderPayDateAndProcessOverWrite(Integer orderId, Integer orderProcess) {
+        return orderMapper.updateOrderPayDateAndProcessOverWrite(orderId,orderProcess);
     }
 
 

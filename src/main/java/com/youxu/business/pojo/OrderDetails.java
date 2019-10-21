@@ -51,5 +51,8 @@ public class OrderDetails {
     @ApiModelProperty(name = "pictureUrlList",value = "文档链接集合")
     private List<String> pictureUrlList;
 
+    @ApiModelProperty(name = "pictureList",value = "图片对象")
+    private List<Picture> pictureList;
+
 
 }

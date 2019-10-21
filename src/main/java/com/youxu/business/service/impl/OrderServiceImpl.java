@@ -79,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
                         for (int j = 1; size >= j; j++) {
                             pictureIdList.add(pictureFirstId + j - 1);
                         }
-                        orderDetailsPictureMappingMapper.insertOrderDetailsPictrueMapping(orderDetailsBookBindingId, pictureIdList);
+                        orderDetailsPictureMappingMapper.insertOrderDetailsPictrueMapping(orderDetailsId + i - 1, pictureIdList);
 
                     }
                 }
@@ -249,7 +249,7 @@ public class OrderServiceImpl implements OrderService {
             String key = string.split("\":\"")[0];
             key = key.substring(1);
             String value = string.split("\":\"")[1];
-            value = value.substring(0,value.length() - 1);
+            value = value.substring(0, value.length() - 1);
             map.put(key, value);
         }
         return map;
@@ -278,7 +278,26 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order selectOrderById(String id) {
-        return orderMapper.selectOrderById(id);
+        Order order = orderMapper.selectOrderById(id);
+        // 获取装订的多个文件pictureUrl
+        List<OrderDetails> orderDetailsList = order.getOrderDetailsList();
+        for (OrderDetails orderDetails : orderDetailsList) {
+            ArrayList<String> pictureUlrList = new ArrayList<>();
+            Integer orderDetalsId = orderDetails.getId();
+            List<OrderDetailsPictureMapping> orderDetailsPictureMapping = orderDetailsPictureMappingMapper.selectOrderDetailsPictureMappingByOrderDetailId(orderDetalsId);
+            if (!StringUtils.isEmpty(orderDetailsPictureMapping)) {
+                for (OrderDetailsPictureMapping orderDetailsPictureMappingNew:orderDetailsPictureMapping) {
+                    List<Picture> pictureList = orderDetailsPictureMappingNew.getPictureList();
+                    if (!StringUtils.isEmpty(pictureList) && pictureList.size() > 0) {
+                        for (Picture picture : pictureList) {
+                            pictureUlrList.add(picture.getPictureUrl());
+                        }
+                        orderDetails.setPictureUrlList(pictureUlrList);
+                    }
+                }
+            }
+        }
+        return order;
     }
 
 

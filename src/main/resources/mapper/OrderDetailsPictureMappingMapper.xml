@@ -2,8 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.youxu.business.dao.OrderDetailsPictureMappingMapper">
   <resultMap id="BaseResultMap" type="com.youxu.business.pojo.OrderDetailsPictureMapping">
-    <result column="order_details_id" jdbcType="INTEGER" property="orderDetailsId" />
-    <result column="picture_id" jdbcType="INTEGER" property="pictureId" />
+    <result column="tb_order_details_picture_mappingorder_details_id" jdbcType="INTEGER" property="orderDetailsId" />
+    <result column="tb_order_details_picture_mappingpicture_id" jdbcType="INTEGER" property="pictureId" />
+    <collection property="pictureList" ofType="com.youxu.business.pojo.Picture">
+      <result column="tb_picturepicture_id"  property="pictureId" />
+      <result column="tb_picturepicture_url"  property="pictureUrl" />
+    </collection>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -64,7 +68,12 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    order_details_id, picture_id
+    tb_order_details_picture_mapping.order_details_id as tb_order_details_picture_mappingorder_details_id
+    , tb_order_details_picture_mapping.picture_id as tb_order_details_picture_mappingpicture_id
+  </sql>
+  <sql id="Base_Column_List_Picture">
+    tb_picture.picture_id as tb_picturepicture_id
+    , tb_picture.picture_url as tb_picturepicture_url
   </sql>
   <select id="selectByExample" parameterType="com.youxu.business.pojo.OrderDetailsPictureMappingExample" resultMap="BaseResultMap">
     select
@@ -148,5 +157,21 @@
         #{pictureId,jdbcType=INTEGER})
         </foreach>
   </insert>
+<!--通过orderDetailsId查看集合-->
+  <select id="selectOrderDetailsPictureMappingByOrderDetailIdList" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tb_order_details_picture_mapping
+    left join tb_picture on tb_order_details_picture_mapping.picture_id = tb_picture.picture_id
+    where tb_order_details_picture_mapping.order_details_id in
+    <foreach collection="orderDetailIdList" index="index" item="orderDetailsId" open="(" close=")" separator=",">
+      #{orderDetailsId}
+    </foreach>
+  </select>
 
+  <select id="selectOrderDetailsPictureMappingByOrderDetailId" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/> ,<include refid="Base_Column_List_Picture"/>
+    from tb_order_details_picture_mapping
+    left join tb_picture on tb_order_details_picture_mapping.picture_id = tb_picture.picture_id
+    WHERE  tb_order_details_picture_mapping.order_details_id = #{orderDetailId}
+  </select>
 </mapper>

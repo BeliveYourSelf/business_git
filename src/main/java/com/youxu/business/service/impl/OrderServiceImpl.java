@@ -153,12 +153,42 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> selectOrderList(Order order) {
+        List<Order> orderListNew= new ArrayList<>();
         //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
         PageHelper.startPage(order.getPageNo(), order.getPageSize());
-//        orderMapper.selectOrderList(order);
-        List<Order> orders = orderMapper.selectOrderListOverWrite(order);
-        return orders;
+        List<Order> orderList = orderMapper.selectOrderListOverWrite(order);
+        // 把多个文件路径写到 pictureUrlList中
+        for(Order orderOne :orderList){
+            Order orderNew = addMoreUrl(orderOne);
+            orderListNew.add(orderNew);
+        }
+        return orderListNew;
     }
+
+        private Order addMoreUrl(Order order){
+            // 获取装订的多个文件pictureUrl
+            List<OrderDetails> orderDetailsList = order.getOrderDetailsList();
+            for (OrderDetails orderDetails : orderDetailsList) {
+                ArrayList<String> pictureUlrList = new ArrayList<>();
+                Integer orderDetalsId = orderDetails.getId();
+                List<OrderDetailsPictureMapping> orderDetailsPictureMapping = orderDetailsPictureMappingMapper.selectOrderDetailsPictureMappingByOrderDetailId(orderDetalsId);
+                if (!StringUtils.isEmpty(orderDetailsPictureMapping)) {
+                    for (OrderDetailsPictureMapping orderDetailsPictureMappingNew:orderDetailsPictureMapping) {
+                        List<Picture> pictureList = orderDetailsPictureMappingNew.getPictureList();
+                        if (!StringUtils.isEmpty(pictureList) && pictureList.size() > 0) {
+                            for (Picture picture : pictureList) {
+                                pictureUlrList.add(picture.getPictureUrl());
+                            }
+                            orderDetails.setPictureUrlList(pictureUlrList);
+                        }
+                    }
+                }
+            }
+            order.setOrderDetailsList(orderDetailsList);
+            return order;
+        }
+
+
 
     @Override
     public Integer updateOrderPayDateAndProcess(Integer orderId, Integer orderProcess) {
@@ -300,7 +330,8 @@ public class OrderServiceImpl implements OrderService {
             }
         }*/
         Order order = orderMapper.selectOrderByIdOverWrite(id);
-        return order;
+        Order orderNew = addMoreUrl(order);
+        return orderNew;
     }
 
 

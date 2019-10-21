@@ -112,7 +112,7 @@ public class OrderController {
         if (insertOrder <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",insertOrder);
     }
 
     @ApiOperation(value = "查看订单打印列表", notes = "{\"pageNo\":\"1\" ,\"pageSize\":\"1\" ,\"orderProcess\":\"1\"\n" +

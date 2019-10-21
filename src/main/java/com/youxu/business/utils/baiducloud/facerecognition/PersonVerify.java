@@ -8,6 +8,8 @@ import com.youxu.business.pojo.DeliveryClerkInfo;
 import com.youxu.business.utils.baiducloud.facerecognition.baiducloudutil.GsonUtils;
 import com.youxu.business.utils.baiducloud.facerecognition.baiducloudutil.HttpUtil;
 import com.youxu.business.utils.baiducloud.facerecognition.baiducloudutil.ResultObject;
+import com.youxu.business.utils.baiducloud.facerecognition.baiducloudutil.ResultScore;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.*;
 
@@ -25,10 +27,9 @@ public class PersonVerify {
      * https://ai.baidu.com/file/470B3ACCA3FE43788B5A963BF0B625F3
      * 下载
      */
-    public String personverify(DeliveryClerkInfo deliveryClerkInfo) {
+    public ResultObject personverify(DeliveryClerkInfo deliveryClerkInfo) throws Exception {
         // 请求url
         String url = "https://aip.baidubce.com/rest/2.0/face/v3/person/verify";
-        try {
             Map<String, Object> map = new HashMap<>();
             map.put("image", deliveryClerkInfo.getImage());
             map.put("image_type", "BASE64");
@@ -41,11 +42,8 @@ public class PersonVerify {
             String accessToken = AuthService.getAuth();
             String result = HttpUtil.post(url, accessToken, "application/json", param);
             ResultObject resultObject = new GsonBuilder().create().fromJson(result, ResultObject.class);
-            String score = resultObject.getResult().getScore();
-            return score;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+           /* ResultScore resultNew = resultObject.getResult();
+            String score = resultNew.getScore();*/
+            return resultObject;
     }
 }

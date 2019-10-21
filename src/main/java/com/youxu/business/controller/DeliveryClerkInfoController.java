@@ -11,6 +11,7 @@ import com.youxu.business.utils.OtherUtil.ImageSizeTool;
 import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
 import com.youxu.business.utils.baiducloud.facerecognition.PersonVerify;
+import com.youxu.business.utils.baiducloud.facerecognition.baiducloudutil.ResultObject;
 import com.youxu.business.utils.wechat.requestapitool.CommonRpc;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -170,6 +171,7 @@ public class DeliveryClerkInfoController {
     @ApiOperation(value = "百度云人脸识别", notes = "userId image")
     @PostMapping("/baiduCloudFaceRecognition")
     public ResponseMessage baiduCloudFaceRecognition(@RequestBody DeliveryClerkInfo deliveryClerkInfoParam) {
+        ResultObject personverify = new ResultObject();
         // 判断不超过两兆
         String image = deliveryClerkInfoParam.getImage();
         Integer twoTrillion = 1 * 1024 * 1024 * 2;
@@ -183,7 +185,13 @@ public class DeliveryClerkInfoController {
         deliveryClerkInfo.setImage(imageSubstring);
         // 生成人脸识别评分
         PersonVerify personVerify = new PersonVerify();
-        String score = personVerify.personverify(deliveryClerkInfo);
+        String score = null;
+        try {
+             personverify = personVerify.personverify(deliveryClerkInfo);
+             score = personverify.getResult().getScore();
+        } catch (Exception e) {
+            return Result.error(personverify.getError_code(),personverify.getError_msg());
+        }
         deliveryClerkInfo.setScore(Integer.valueOf(score));
         Integer updateDeliveryClerkScore = deliveryClerkInfoService.updateDeliveryClerkScore(deliveryClerkInfo);
         if (updateDeliveryClerkScore <= 0) {

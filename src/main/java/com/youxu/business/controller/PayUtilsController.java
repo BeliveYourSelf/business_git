@@ -91,6 +91,10 @@ public class PayUtilsController extends BaseService {
                 ip = ClientIPUtils.getIp(request);
                 Map map = payUtilsService.wepay_orderSign(request, order.getOpenId(), order.getOrderAddresseeName(), order.getId().toString(), order.getOrderActualMoney(), ip, ORDERPAY, order.getTradeType());
                 logger.info("微信签名+5个参数---------------------------------------------------------------------------" + map);
+                List<Integer> vouchersIdList = order.getVouchersIdList();
+                Double orderConsumeMoney = order.getOrderConsumeMoney();
+                map.put("vouchersIdList",vouchersIdList);
+                map.put("orderConsumeMoney",orderConsumeMoney);
                 return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", map);
             } catch (Exception e) {
                 e.printStackTrace();

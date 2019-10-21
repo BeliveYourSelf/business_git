@@ -47,6 +47,40 @@
             <association property="orderDetailsBookBinding" select="com.youxu.business.dao.OrderDetailsBookBindingMapper.selectOrderDetailsBookBinding" column="tb_order_detailsid"/>
         </collection>
     </resultMap>
+    <!--重构订单查看-->
+    <resultMap id="BaseResultMapOverWrite" type="com.youxu.business.pojo.Order">
+        <result column="tb_orderid" jdbcType="INTEGER" property="id"/>
+        <result column="store_id" jdbcType="INTEGER" property="storeId"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="order_addressee_name" jdbcType="VARCHAR" property="orderAddresseeName"/>
+        <result column="order_addressee_phone" jdbcType="VARCHAR" property="orderAddresseePhone"/>
+        <result column="order_addressee_address" jdbcType="VARCHAR" property="orderAddresseeAddress"/>
+        <result column="order_from_store_get" jdbcType="VARCHAR" property="orderFromStoreGet"/>
+        <result column="order_from_store_get_where" jdbcType="VARCHAR" property="orderFromStoreGetWhere"/>
+        <result column="order_delivery_prescriptio_time" jdbcType="VARCHAR" property="orderDeliveryPrescriptioTime"/>
+        <result column="order_print_money" jdbcType="VARCHAR" property="orderPrintMoney"/>
+        <result column="order_delivery_money" property="orderDeliveryMoney"/>
+        <result column="order_coupon_money" jdbcType="DOUBLE" property="orderCouponMoney"/>
+        <result column="order_actual_money" property="orderActualMoney"/>
+        <result column="order_consume_money" jdbcType="DOUBLE" property="orderConsumeMoney"/>
+        <result column="order_extra_money" jdbcType="DOUBLE" property="orderExtraMoney"/>
+        <result column="order_type" jdbcType="INTEGER" property="orderType"/>
+        <result column="order_pay_date" property="orderPayDate"/>
+        <result column="order_process" jdbcType="INTEGER" property="orderProcess"/>
+        <result column="order_create_time" jdbcType="TIMESTAMP" property="orderCreateTime"/>
+        <result column="order_modify_time" jdbcType="TIMESTAMP" property="orderModifyTime"/>
+        <result column="order_status" jdbcType="BIT" property="orderStatus"/>
+        <result column="order_remark"  property="orderRemark"/>
+        <result column="delivery_id" property="deliveryId"/>
+        <result column="delivery_pick_up_file_qr_code_url" property="deliveryPickUpFileQRCodeUrl"/>
+        <result column="delivery_harvest_code" property="deliveryHarvestCode"/>
+        <result column="delivery_status" property="deliveryStatus"/>
+        <result column="delivery_problem_file_mark" property="deliveryProblemFileMark"/>
+        <result column="share_user_id" property="shareUserId"/>
+        <result column="user_piecture_url" jdbcType="VARCHAR" property="userPiectureUrl" />
+        <result column="share_id" property="shareId" />
+        <collection property="orderDetailsList" select="com.youxu.business.dao.OrderDetailsMapper.selectOrderDetailsList" column="tb_orderid"/>
+    </resultMap>
     <sql id="Example_Where_Clause">
         <where>
             <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -758,5 +792,16 @@
     set tb_order.order_status = true
     where id = #{id}
     </update>
-
+    <!--查看订单集合重构-->
+    <select id="selectOrderListOverWrite" resultMap="BaseResultMapOverWrite">
+        select<include refid="Base_Column_List"/>
+        from tb_order
+        where tb_order.user_id = #{order.userId} and order_process = #{order.orderProcess} and order_status = false
+    </select>
+    <!--查看订单重构-->
+    <select id="selectOrderByIdOverWrite" resultMap="BaseResultMapOverWrite">
+        select<include refid="Base_Column_List"/>
+        from tb_order
+        where tb_order.id = #{id} and order_status = false
+    </select>
 </mapper>

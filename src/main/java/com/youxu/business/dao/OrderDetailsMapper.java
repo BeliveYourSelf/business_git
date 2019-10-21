@@ -23,4 +23,7 @@ public interface OrderDetailsMapper {
     int insertOrderDetails(@Param("orderDetailslist") List<OrderDetails> orderDetailslist);
     // 删除订单明细
     Integer deleteOrderDetailsList(@Param("orderId")Integer orderId);
+    // 通过orderId查看订单详情集合
+    List<OrderDetails> selectOrderDetailsList(@Param("orderId")Integer orderId);
+
 }

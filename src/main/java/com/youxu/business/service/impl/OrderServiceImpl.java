@@ -155,7 +155,9 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> selectOrderList(Order order) {
         //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
         PageHelper.startPage(order.getPageNo(), order.getPageSize());
-        return orderMapper.selectOrderList(order);
+//        orderMapper.selectOrderList(order);
+        List<Order> orders = orderMapper.selectOrderListOverWrite(order);
+        return orders;
     }
 
     @Override
@@ -278,7 +280,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order selectOrderById(String id) {
-        Order order = orderMapper.selectOrderById(id);
+        /*Order order = orderMapper.selectOrderById(id);
         // 获取装订的多个文件pictureUrl
         List<OrderDetails> orderDetailsList = order.getOrderDetailsList();
         for (OrderDetails orderDetails : orderDetailsList) {
@@ -296,7 +298,8 @@ public class OrderServiceImpl implements OrderService {
                     }
                 }
             }
-        }
+        }*/
+        Order order = orderMapper.selectOrderByIdOverWrite(id);
         return order;
     }
 

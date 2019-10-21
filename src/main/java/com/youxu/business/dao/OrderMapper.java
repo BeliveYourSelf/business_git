@@ -52,4 +52,9 @@ public interface OrderMapper {
     Integer updateOrderCompelete(Integer orderId);
     // 删除订单
     Integer deleteOrder(@Param("id") String id);
+    // 查看订单集合重构
+    List<Order> selectOrderListOverWrite(@Param("order") Order order);
+    // 查看订单重构
+    Order selectOrderByIdOverWrite(String id);
+
 }

@@ -192,7 +192,8 @@ public class DeliveryClerkInfoController {
         } catch (Exception e) {
             return Result.error(personverify.getError_code(),personverify.getError_msg());
         }
-        deliveryClerkInfo.setScore(Integer.valueOf(score));
+        Integer scoreInteger = Double.valueOf(score).intValue();
+        deliveryClerkInfo.setScore(scoreInteger);
         Integer updateDeliveryClerkScore = deliveryClerkInfoService.updateDeliveryClerkScore(deliveryClerkInfo);
         if (updateDeliveryClerkScore <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");

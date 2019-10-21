@@ -9,6 +9,7 @@ import com.youxu.business.utils.readdocumentpagesizeutils.Readword;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +28,7 @@ public class DocumentServiceImpl implements DocumentService {
     private DocumentMapper documentMapper;
 
     @Override
-    public Integer insertDocument(Document document) throws IOException {
+    public Integer insertDocument(Document document, HttpServletRequest request) throws IOException {
         // 读取文件大小
         String fileSize;
 
@@ -40,8 +41,8 @@ public class DocumentServiceImpl implements DocumentService {
                 // oss文件下载到本地获取文件页数
                 int nameLocal = documentUrlArr[i].lastIndexOf("/") + 1;
                 String fileName = documentUrlArr[i].substring(nameLocal);
-//                String localPath = "C:" + File.separator + "Users" + File.separator + "Dell" + File.separator + "Desktop" + File.separator + fileName;
-                String localPath = "file"+"/"+new Date().getTime()+"/"+fileName;
+                // 获取项目所在服务器的全路径，如：D:\apache-tomcat-7.0.25\webapps\TestSytem\
+                String localPath = request.getServletContext().getRealPath("/")+fileName;
                 DownLoadFileFromOss downLoadFileFromOss = new DownLoadFileFromOss();
                 downLoadFileFromOss.downloadFile(documentUrlArr[i], localPath);
                 // 添加文件页数

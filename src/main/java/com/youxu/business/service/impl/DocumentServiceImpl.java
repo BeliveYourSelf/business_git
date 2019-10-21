@@ -40,7 +40,8 @@ public class DocumentServiceImpl implements DocumentService {
                 // oss文件下载到本地获取文件页数
                 int nameLocal = documentUrlArr[i].lastIndexOf("/") + 1;
                 String fileName = documentUrlArr[i].substring(nameLocal);
-                String localPath = "C:" + File.separator + "Users" + File.separator + "Dell" + File.separator + "Desktop" + File.separator + fileName;
+//                String localPath = "C:" + File.separator + "Users" + File.separator + "Dell" + File.separator + "Desktop" + File.separator + fileName;
+                String localPath = "file"+"/"+new Date().getTime()+"/"+fileName;
                 DownLoadFileFromOss downLoadFileFromOss = new DownLoadFileFromOss();
                 downLoadFileFromOss.downloadFile(documentUrlArr[i], localPath);
                 // 添加文件页数

@@ -97,7 +97,7 @@ public class DeliveryClerkInfoController {
         } else if ("1".equals(auditStatus.toString())) {
             return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", deliveryClerkInfo);
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "不通过");
+        return Result.error(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "不通过");
     }
 
 

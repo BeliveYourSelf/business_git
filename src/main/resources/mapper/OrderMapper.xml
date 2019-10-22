@@ -706,6 +706,7 @@
         </if>
         and tb_order.order_from_store_get = 3
         and tb_order.delivery_status = #{order.deliveryStatus}
+        and tb_order.order_process  != 1
         and tb_order.order_status = false
     </select>
     <select id="selectDeliveryFileByOrderId" resultMap="BaseResultMap">

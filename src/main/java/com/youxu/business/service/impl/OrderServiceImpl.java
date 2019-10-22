@@ -48,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
         // 配送时间分改为毫秒
         String orderDeliveryPrescriptioTime = order.getOrderDeliveryPrescriptioTime();
         Long orderDeliveryPrescriptioTimeInteger = Long.valueOf(orderDeliveryPrescriptioTime);
-        Long orderTimeLong = orderDeliveryPrescriptioTimeInteger * 60000;
+        Long orderTimeLong = orderDeliveryPrescriptioTimeInteger * 60000;// 分变成毫秒
         order.setOrderDeliveryPrescriptioTime(orderTimeLong.toString());
         Integer insertOrder = orderMapper.insertOrder(order);
         int orderId = orderMapper.lastInsertId();
@@ -194,20 +194,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> selectDeliveryFileByStoreIdList(Order order) {
+        List<Order> orderList = new ArrayList<>();
         List<Order> orders = orderMapper.selectDeliveryFileByStoreIdList(order);
+        // 统计到期时间
         for (Order orderNew : orders) {
-            String orderDeliveryPrescriptioTime = orderNew.getOrderDeliveryPrescriptioTime();
-            // 配送时间 mm
-            Long orderDeliveryPrescriptioTimeLong = Long.valueOf(orderDeliveryPrescriptioTime);
-            Date orderPayDate = orderNew.getOrderPayDate();
-            // 支付时间 mm
-            if (!StringUtils.isEmpty(orderPayDate)) {
-                Long orderPayDateLong = orderPayDate.getTime();
-                Long expireTime = orderDeliveryPrescriptioTimeLong + orderPayDateLong;
-                orderNew.setExpireTime(expireTime.toString());
-            }
+            Order order1 = getOrder(orderNew);
+            orderList.add(order1);
         }
-        return orders;
+        return orderList;
     }
 
     @Override
@@ -328,8 +322,12 @@ public class OrderServiceImpl implements OrderService {
         }*/
         Order order = orderMapper.selectOrderByIdOverWrite(id);
         Order orderNew = addMoreUrl(order);
-        return orderNew;
+        // 设置过期时间
+        Order orderNow = getOrder(orderNew);
+        return orderNow;
     }
+
+
 
     @Override
     public Integer updateOrderPayDateAndProcessOverWrite(Integer orderId, Integer orderProcess) {
@@ -345,6 +343,25 @@ public class OrderServiceImpl implements OrderService {
         order.setDeliveryHarvestCode(shareCode);
         addDeliveryPickUpFileQRCodeUrl(orderId);
        return orderMapper.updateOrder(order);
+    }
+
+    /**
+     * 设置过期时间
+     * @param orderNew
+     * @return
+     */
+    private Order getOrder(Order orderNew){
+        String orderDeliveryPrescriptioTime = orderNew.getOrderDeliveryPrescriptioTime();
+        // 配送时间 mm
+        Long orderDeliveryPrescriptioTimeLong = Long.valueOf(orderDeliveryPrescriptioTime);
+        Date orderPayDate = orderNew.getOrderPayDate();
+        // 支付时间 mm
+        if (!StringUtils.isEmpty(orderPayDate)) {
+            Long orderPayDateLong = orderPayDate.getTime();
+            Long expireTime = orderDeliveryPrescriptioTimeLong + orderPayDateLong;
+            orderNew.setExpireTime(expireTime.toString());
+        }
+        return orderNew;
     }
 
 

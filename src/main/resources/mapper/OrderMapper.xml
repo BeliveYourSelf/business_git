@@ -32,6 +32,7 @@
         <result column="share_user_id" property="shareUserId"/>
         <result column="user_piecture_url" jdbcType="VARCHAR" property="userPiectureUrl"/>
         <result column="share_id" property="shareId"/>
+        <result column="order_coupon_money_ids" property="vouchersIds"/>
         <collection property="orderDetailsList" ofType="com.youxu.business.pojo.OrderDetails">
             <result column="tb_order_detailsid" jdbcType="INTEGER" property="id"/>
             <result column="order_id" jdbcType="INTEGER" property="orderId"/>
@@ -150,6 +151,7 @@
     order_print_money, order_delivery_money, order_coupon_money, order_actual_money, 
     order_consume_money, order_extra_money, order_type, order_pay_date, order_process, order_remark, order_create_time, order_modify_time,
     order_status, delivery_id, delivery_pick_up_file_qr_code_url, delivery_harvest_code, delivery_status, delivery_problem_file_mark, share_id
+    ,order_coupon_money_ids
 
   </sql>
     <sql id="Base_Column_List_user">
@@ -499,6 +501,9 @@
             <if test="shareId != null">
                 share_id,
             </if>
+            <if test="vouchersIds != null">
+                order_coupon_money_ids,
+            </if>
             order_create_time,
             order_modify_time,
             order_status
@@ -573,6 +578,9 @@
             </if>
             <if test="shareId != null">
                 #{shareId},
+            </if>
+            <if test="vouchersIds != null">
+                #{vouchersIds},
             </if>
             now(),
             now(),

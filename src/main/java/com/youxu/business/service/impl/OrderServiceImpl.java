@@ -50,6 +50,17 @@ public class OrderServiceImpl implements OrderService {
         Long orderDeliveryPrescriptioTimeInteger = Long.valueOf(orderDeliveryPrescriptioTime);
         Long orderTimeLong = orderDeliveryPrescriptioTimeInteger * 60000;// 分变成毫秒
         order.setOrderDeliveryPrescriptioTime(orderTimeLong.toString());
+        // 插入优惠券id
+        List<Integer> vouchersIdList = order.getVouchersIdList();
+        String vouchersIdString = null;
+        for (Integer vouchersId : vouchersIdList) {
+            if (StringUtils.isEmpty(vouchersIdString)) {
+                vouchersIdString = vouchersId.toString();
+            } else {
+                vouchersIdString = vouchersIdString + "," + vouchersId.toString();
+            }
+        }
+        order.setVouchersIds(vouchersIdString);
         Integer insertOrder = orderMapper.insertOrder(order);
         int orderId = orderMapper.lastInsertId();
         // 取件二维码url
@@ -150,41 +161,40 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> selectOrderList(Order order) {
-        List<Order> orderListNew= new ArrayList<>();
+        List<Order> orderListNew = new ArrayList<>();
         //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
         PageHelper.startPage(order.getPageNo(), order.getPageSize());
         List<Order> orderList = orderMapper.selectOrderListOverWrite(order);
         // 把多个文件路径写到 pictureUrlList中
-        for(Order orderOne :orderList){
+        for (Order orderOne : orderList) {
             Order orderNew = addMoreUrl(orderOne);
             orderListNew.add(orderNew);
         }
         return orderListNew;
     }
 
-        private Order addMoreUrl(Order order){
-            // 获取装订的多个文件pictureUrl
-            List<OrderDetails> orderDetailsList = order.getOrderDetailsList();
-            for (OrderDetails orderDetails : orderDetailsList) {
-                ArrayList<String> pictureUlrList = new ArrayList<>();
-                Integer orderDetalsId = orderDetails.getId();
-                List<OrderDetailsPictureMapping> orderDetailsPictureMapping = orderDetailsPictureMappingMapper.selectOrderDetailsPictureMappingByOrderDetailId(orderDetalsId);
-                if (!StringUtils.isEmpty(orderDetailsPictureMapping)) {
-                    for (OrderDetailsPictureMapping orderDetailsPictureMappingNew:orderDetailsPictureMapping) {
-                        List<Picture> pictureList = orderDetailsPictureMappingNew.getPictureList();
-                        if (!StringUtils.isEmpty(pictureList) && pictureList.size() > 0) {
-                            for (Picture picture : pictureList) {
-                                pictureUlrList.add(picture.getPictureUrl());
-                            }
-                            orderDetails.setPictureUrlList(pictureUlrList);
+    private Order addMoreUrl(Order order) {
+        // 获取装订的多个文件pictureUrl
+        List<OrderDetails> orderDetailsList = order.getOrderDetailsList();
+        for (OrderDetails orderDetails : orderDetailsList) {
+            ArrayList<String> pictureUlrList = new ArrayList<>();
+            Integer orderDetalsId = orderDetails.getId();
+            List<OrderDetailsPictureMapping> orderDetailsPictureMapping = orderDetailsPictureMappingMapper.selectOrderDetailsPictureMappingByOrderDetailId(orderDetalsId);
+            if (!StringUtils.isEmpty(orderDetailsPictureMapping)) {
+                for (OrderDetailsPictureMapping orderDetailsPictureMappingNew : orderDetailsPictureMapping) {
+                    List<Picture> pictureList = orderDetailsPictureMappingNew.getPictureList();
+                    if (!StringUtils.isEmpty(pictureList) && pictureList.size() > 0) {
+                        for (Picture picture : pictureList) {
+                            pictureUlrList.add(picture.getPictureUrl());
                         }
+                        orderDetails.setPictureUrlList(pictureUlrList);
                     }
                 }
             }
-            order.setOrderDetailsList(orderDetailsList);
-            return order;
         }
-
+        order.setOrderDetailsList(orderDetailsList);
+        return order;
+    }
 
 
     @Override
@@ -328,10 +338,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-
     @Override
     public Integer updateOrderPayDateAndProcessOverWrite(Integer orderId, Integer orderProcess) {
-        return orderMapper.updateOrderPayDateAndProcessOverWrite(orderId,orderProcess);
+        return orderMapper.updateOrderPayDateAndProcessOverWrite(orderId, orderProcess);
     }
 
     @Override
@@ -342,15 +351,16 @@ public class OrderServiceImpl implements OrderService {
         String shareCode = UUIDUtils.generateShortUuid();
         order.setDeliveryHarvestCode(shareCode);
         addDeliveryPickUpFileQRCodeUrl(orderId);
-       return orderMapper.updateOrder(order);
+        return orderMapper.updateOrder(order);
     }
 
     /**
      * 设置过期时间
+     *
      * @param orderNew
      * @return
      */
-    private Order getOrder(Order orderNew){
+    private Order getOrder(Order orderNew) {
         String orderDeliveryPrescriptioTime = orderNew.getOrderDeliveryPrescriptioTime();
         // 配送时间 mm
         Long orderDeliveryPrescriptioTimeLong = Long.valueOf(orderDeliveryPrescriptioTime);

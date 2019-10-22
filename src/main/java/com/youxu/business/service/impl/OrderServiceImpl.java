@@ -340,10 +340,12 @@ public class OrderServiceImpl implements OrderService {
         Order orderNow = getOrder(orderNew);
         // vouchersIds 转化vouchersIdList( java 8+)
         String vouchersIds = orderNow.getVouchersIds();
-        List<Integer> list = Arrays.asList(vouchersIds.split(",")).stream()
-                .map(s -> Integer.parseInt(s))  //.map(Integer::valueOf)
-                .collect(Collectors.toList());
-        orderNow.setVouchersIdList(list);
+        if (!StringUtils.isEmpty(vouchersIds)) {
+            List<Integer> list = Arrays.asList(vouchersIds.split(",")).stream()
+                    .map(s -> Integer.parseInt(s))  //.map(Integer::valueOf)
+                    .collect(Collectors.toList());
+            orderNow.setVouchersIdList(list);
+        }
         return orderNow;
     }
 

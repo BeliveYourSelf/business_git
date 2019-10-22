@@ -10,6 +10,8 @@ import com.youxu.business.utils.OtherUtil.OSSUploadUtil;
 import com.youxu.business.utils.OtherUtil.UploadUtils;
 import com.youxu.business.utils.normalQRcode.QRCodeUtil;
 import com.youxu.business.utils.uuid.UUIDUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Transformer;
 import org.apache.http.entity.ContentType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -334,6 +338,12 @@ public class OrderServiceImpl implements OrderService {
         Order orderNew = addMoreUrl(order);
         // 设置过期时间
         Order orderNow = getOrder(orderNew);
+        // vouchersIds 转化vouchersIdList( java 8+)
+        String vouchersIds = orderNow.getVouchersIds();
+        List<Integer> list = Arrays.asList(vouchersIds.split(",")).stream()
+                .map(s -> Integer.parseInt(s))  //.map(Integer::valueOf)
+                .collect(Collectors.toList());
+        orderNow.setVouchersIdList(list);
         return orderNow;
     }
 

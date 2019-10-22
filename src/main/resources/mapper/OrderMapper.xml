@@ -82,6 +82,7 @@
         <result column="share_user_id" property="shareUserId"/>
         <result column="user_piecture_url" jdbcType="VARCHAR" property="userPiectureUrl"/>
         <result column="share_id" property="shareId"/>
+        <result column="order_coupon_money_ids" property="vouchersIds"/>
         <collection property="orderDetailsList"
                     select="com.youxu.business.dao.OrderDetailsMapper.selectOrderDetailsList" column="tb_orderid"/>
     </resultMap>

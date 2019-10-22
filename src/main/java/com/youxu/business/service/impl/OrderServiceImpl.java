@@ -42,7 +42,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Integer insertOrder(Order order) throws Exception {
-        // 邀请码
+        // 收货码
         String shareCode = UUIDUtils.generateShortUuid();
         order.setDeliveryHarvestCode(shareCode);
         // 配送时间分改为毫秒
@@ -52,7 +52,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderDeliveryPrescriptioTime(orderTimeLong.toString());
         Integer insertOrder = orderMapper.insertOrder(order);
         int orderId = orderMapper.lastInsertId();
-        // 取件码url
+        // 取件二维码url
         addDeliveryPickUpFileQRCodeUrl(orderId);
         if (!StringUtils.isEmpty(order)) {
             List<OrderDetails> orderDetailsList = order.getOrderDetailsList();
@@ -334,6 +334,17 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Integer updateOrderPayDateAndProcessOverWrite(Integer orderId, Integer orderProcess) {
         return orderMapper.updateOrderPayDateAndProcessOverWrite(orderId,orderProcess);
+    }
+
+    @Override
+    public Integer updateOrderOverWrite(Integer orderId) throws Exception {
+        Order order = new Order();
+        order.setId(orderId);
+        order.setOrderProcess(1);// 订单进行状态:1.待付款2.进行中3.已完成4.已取消
+        String shareCode = UUIDUtils.generateShortUuid();
+        order.setDeliveryHarvestCode(shareCode);
+        addDeliveryPickUpFileQRCodeUrl(orderId);
+       return orderMapper.updateOrder(order);
     }
 
 

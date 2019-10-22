@@ -42,4 +42,6 @@ public interface OrderService {
 
     Integer updateOrderPayDateAndProcessOverWrite(Integer orderId, Integer orderProcess);
 
+    Integer updateOrderOverWrite(Integer orderId) throws Exception;
+
 }

@@ -5,6 +5,7 @@ import com.youxu.business.service.OrderService;
 import com.youxu.business.utils.Enum.ResultCodeEnum;
 import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
+import com.youxu.business.utils.uuid.UUIDUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
@@ -105,7 +106,11 @@ public class OrderController {
         Order insertOrderAgain = orderService.insertOrderAgain(id);
         Integer insertOrder = null;
         try {
+            insertOrderAgain.setOrderProcess(1);
             insertOrder = orderService.insertOrder(insertOrderAgain);
+            Integer orderId = orderService.lastInsertId();
+            // 更新取件二维码和收获码
+            Integer integer = orderService.updateOrderOverWrite(orderId);
         } catch (Exception e) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
@@ -114,6 +119,9 @@ public class OrderController {
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",insertOrder);
     }
+
+
+
 
     @ApiOperation(value = "查看订单打印列表", notes = "{\"pageNo\":\"1\" ,\"pageSize\":\"1\" ,\"orderProcess\":\"1\"\n" +
             ",\"userId\":\"1\"}         orderProcess：订单进行状态:1.待付款2.进行中3.已完成4.已取消")

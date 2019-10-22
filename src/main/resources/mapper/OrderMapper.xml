@@ -820,6 +820,7 @@
             <if test="orderProcess != null">
                 order_process = #{orderProcess},
             </if>
+            tb_order.delivery_status = 1
         </set>
         where id = #{orderId}
     </update>

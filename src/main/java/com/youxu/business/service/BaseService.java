@@ -31,8 +31,8 @@ public class BaseService {
     /**
      * 微信支付 回掉地址
      */
-    public String   DOWNLOADFOLDER = "https://yxapi.lishengjt.com/api/downloadFolder";
-    public String   ORDERPAY = "https://yxapi.lishengjt.com/api/orderPayUrl";
+    public String   DOWNLOADFOLDER = "https://yxapi.lishengjt.com/business/api/downloadFolder";
+    public String   ORDERPAY = "https://yxapi.lishengjt.com/business/api/orderPayUrl";
 
 
     /**

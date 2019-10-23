@@ -56,15 +56,17 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderDeliveryPrescriptioTime(orderTimeLong.toString());
         // 插入优惠券id
         List<Integer> vouchersIdList = order.getVouchersIdList();
-        String vouchersIdString = null;
-        for (Integer vouchersId : vouchersIdList) {
-            if (StringUtils.isEmpty(vouchersIdString)) {
-                vouchersIdString = vouchersId.toString();
-            } else {
-                vouchersIdString = vouchersIdString + "," + vouchersId.toString();
+        if (!StringUtils.isEmpty(vouchersIdList)) {
+            String vouchersIdString = null;
+            for (Integer vouchersId : vouchersIdList) {
+                if (StringUtils.isEmpty(vouchersIdString)) {
+                    vouchersIdString = vouchersId.toString();
+                } else {
+                    vouchersIdString = vouchersIdString + "," + vouchersId.toString();
+                }
             }
+            order.setVouchersIds(vouchersIdString);
         }
-        order.setVouchersIds(vouchersIdString);
         Integer insertOrder = orderMapper.insertOrder(order);
         int orderId = orderMapper.lastInsertId();
         // 取件二维码url
@@ -315,25 +317,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order selectOrderById(String id) {
-        /*Order order = orderMapper.selectOrderById(id);
-        // 获取装订的多个文件pictureUrl
-        List<OrderDetails> orderDetailsList = order.getOrderDetailsList();
-        for (OrderDetails orderDetails : orderDetailsList) {
-            ArrayList<String> pictureUlrList = new ArrayList<>();
-            Integer orderDetalsId = orderDetails.getId();
-            List<OrderDetailsPictureMapping> orderDetailsPictureMapping = orderDetailsPictureMappingMapper.selectOrderDetailsPictureMappingByOrderDetailId(orderDetalsId);
-            if (!StringUtils.isEmpty(orderDetailsPictureMapping)) {
-                for (OrderDetailsPictureMapping orderDetailsPictureMappingNew:orderDetailsPictureMapping) {
-                    List<Picture> pictureList = orderDetailsPictureMappingNew.getPictureList();
-                    if (!StringUtils.isEmpty(pictureList) && pictureList.size() > 0) {
-                        for (Picture picture : pictureList) {
-                            pictureUlrList.add(picture.getPictureUrl());
-                        }
-                        orderDetails.setPictureUrlList(pictureUlrList);
-                    }
-                }
-            }
-        }*/
         Order order = orderMapper.selectOrderByIdOverWrite(id);
         Order orderNew = addMoreUrl(order);
         // 设置过期时间

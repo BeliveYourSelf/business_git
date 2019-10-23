@@ -3,6 +3,7 @@ package com.youxu.business.utils.OtherUtil;
 
 import com.aliyun.oss.OSSClient;
 import com.youxu.business.service.BaseService;
+import com.youxu.business.utils.pojotools.UpLoadFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -140,6 +141,56 @@ private final static Logger logger = LoggerFactory.getLogger(OSSUploadUtil.class
         ossClient.deleteObject(storageName, name);
         // 关闭client
         ossClient.shutdown();
+    }
+
+    /**
+     * 图片上传
+     */
+    public static String uploadBlogOverWrite(MultipartFile multipartFile,String multipartFileName) {
+        try {
+            if (multipartFile != null) {
+                //拼接/log
+                StringBuilder path = new StringBuilder("log/");
+                //获取时间戳
+                Date fileDate = new Date();
+                StringBuilder datetime = new StringBuilder(String.valueOf(fileDate.getTime()));
+                //获取时间文件夹,并且与时间戳进行拼接
+                SimpleDateFormat dateFormatShow = new SimpleDateFormat("yyyyMMdd");
+                String date = (dateFormatShow.format(new Date()));
+                StringBuilder newName = new StringBuilder(date);
+                path.append(newName.toString());
+                path.append("/");
+                path.append(datetime);
+                path.append("/");
+                path.append(multipartFileName);
+                //获取文件后缀名--file.getOriginalFilename(); 获取的名字带后缀
+               /* String extName = filename.substring(filename.lastIndexOf("."));
+                path.append(extName);*/
+                String yuming1 = path.toString();
+                logger.warn("=================================================================================================");
+                logger.warn("yuming1"+yuming1);
+                logger.warn("=================================================================================================");
+                File newFile = new File(multipartFileName);
+                FileOutputStream os = new FileOutputStream(newFile);
+                os.write(multipartFile.getBytes());
+                os.close();
+                // 上传到OSS /log/20190517/1218209821212.jpg
+                OSSUploadUtil.uploadFile(ali_endpoint, ali_accesskey_id, ali_accesskey_secret, ali_logstorage, newFile, yuming1);
+                // 删除上传的文件
+                File file1 = new File(multipartFileName);
+                String s = file1.getAbsolutePath();
+                DeleteFileUtil.delete(s);
+                //先拼接域名:
+                StringBuilder yuming = new StringBuilder("https://youxu-print.oss-cn-beijing.aliyuncs.com/");
+                //再拼接/log
+                yuming.append(yuming1);
+                return (yuming.toString());
+            }
+            return FALSE;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return FALSE;
+        }
     }
 }
 

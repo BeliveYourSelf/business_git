@@ -7,6 +7,7 @@ import com.youxu.business.utils.HttpTools.HttpTool;
 import com.youxu.business.utils.OtherUtil.OSSUploadUtil;
 import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
+import com.youxu.business.utils.pojotools.UpLoadFile;
 import com.youxu.business.utils.readdocumentpagesizeutils.Readword;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -85,6 +86,17 @@ public class DocumentPrintPriceListController {
     @PostMapping("/uploadFile")
     public ResponseMessage<String> uploadFile(@RequestParam("file") MultipartFile file) {
         String uploadSuccess = OSSUploadUtil.uploadBlog(file);
+        //获取文件页数
+        if (StringUtils.isEmpty(uploadSuccess)) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "上传失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", uploadSuccess);
+    }
+
+    @ApiOperation(value = "上传图片(带文件名称)", notes = "需要上传图片")
+    @PostMapping("/uploadFileOverWrite")
+    public ResponseMessage<String> uploadFileOverWrite(@RequestParam("file") MultipartFile file,String multipartFileName) {
+        String uploadSuccess = OSSUploadUtil.uploadBlogOverWrite(file,multipartFileName);
         //获取文件页数
         if (StringUtils.isEmpty(uploadSuccess)) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "上传失败");

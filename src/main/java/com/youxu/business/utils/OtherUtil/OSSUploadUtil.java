@@ -48,6 +48,9 @@ private final static Logger logger = LoggerFactory.getLogger(OSSUploadUtil.class
                /* String extName = filename.substring(filename.lastIndexOf("."));
                 path.append(extName);*/
                 String yuming1 = path.toString();
+                logger.warn("=================================================================================================");
+                logger.warn("yuming1"+yuming1);
+                logger.warn("=================================================================================================");
                 File newFile = new File(filename);
                 FileOutputStream os = new FileOutputStream(newFile);
                 os.write(file.getBytes());

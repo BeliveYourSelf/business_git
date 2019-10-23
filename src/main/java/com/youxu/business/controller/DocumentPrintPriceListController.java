@@ -3,6 +3,7 @@ package com.youxu.business.controller;
 import com.youxu.business.pojo.DocumentPrintPriceList;
 import com.youxu.business.service.DocumentPrintPriceListService;
 import com.youxu.business.utils.Enum.ResultCodeEnum;
+import com.youxu.business.utils.HttpTools.HttpTool;
 import com.youxu.business.utils.OtherUtil.OSSUploadUtil;
 import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
@@ -10,12 +11,13 @@ import com.youxu.business.utils.readdocumentpagesizeutils.Readword;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -23,6 +25,7 @@ import java.io.InputStream;
 @RestController
 @Api(description = "文档打印价格表")
 public class DocumentPrintPriceListController {
+    private final static Logger logger = LoggerFactory.getLogger(DocumentPrintPriceListController.class);
     @Resource
     private DocumentPrintPriceListService documentPrintPriceListService;
 

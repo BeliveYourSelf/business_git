@@ -3,6 +3,8 @@ package com.youxu.business.utils.OtherUtil;
 
 import com.aliyun.oss.OSSClient;
 import com.youxu.business.service.BaseService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,7 +17,7 @@ import java.util.Date;
  * Created by Administrator on 2018/1/4.
  */
 public class OSSUploadUtil extends BaseService {
-
+private final static Logger logger = LoggerFactory.getLogger(OSSUploadUtil.class);
     private static final String FALSE = "上传失败";
 
     /**
@@ -23,6 +25,9 @@ public class OSSUploadUtil extends BaseService {
      */
     public static String uploadBlog(@RequestParam("file") MultipartFile file) {
         String filename = file.getOriginalFilename();
+        logger.warn("=================================================================================================");
+        logger.warn("file.getOriginalFilename()"+filename);
+        logger.warn("=================================================================================================");
         try {
             if (file != null) {
                 //拼接/log

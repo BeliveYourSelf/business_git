@@ -95,8 +95,6 @@ public class PayUtilsController extends BaseService {
                 Double orderConsumeMoney = order.getOrderConsumeMoney();
                 map.put("vouchersIdList",vouchersIdList);
                 map.put("orderConsumeMoney",orderConsumeMoney);
-                // 回调没有问题后删除
-                Integer integer1 = orderService.updateOrderPayDateAndProcessOverWrite(order.getId(), PayStatusEnum.PAYING.getValueCode());
                 return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", map);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -136,7 +134,10 @@ public class PayUtilsController extends BaseService {
                 //修改账单状态为已完成
                 //修改支付状态
                 Order order = orderService.selectDeliveryFileByOrderId(orderId.toString());
-                if (orderService.updateOrderPayDateAndProcess(orderId, PayStatusEnum.COMPLETE.getValueCode()) == 1) {
+                logger.info("订单对象：" + order.toString());
+                Integer updateOrderPaySuccess = orderService.updateOrderPayDateAndProcessOverWrite(orderId, PayStatusEnum.COMPLETE.getValueCode());
+                logger.info("更新订单为配送状态成功（1.成功）：" + order.toString());
+                if ( updateOrderPaySuccess == 1) {
                     memberInterface.updateUserWallet(order.getUserId(), order.getOrderConsumeMoney());
                     // 修改优惠券
                     logger.info("微信回调  订单号：" + outTradeNo + ",修改状态成功");

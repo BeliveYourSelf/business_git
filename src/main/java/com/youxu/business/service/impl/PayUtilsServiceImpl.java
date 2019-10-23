@@ -2,10 +2,9 @@ package com.youxu.business.service.impl;
 
 
 import com.github.wxpay.sdk.WXPayUtil;
-import com.youxu.business.pojo.Order;
 import com.youxu.business.service.BaseService;
 import com.youxu.business.service.PayUtilsService;
-import com.youxu.business.utils.OtherUtil.ClientIPUtils;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,10 +19,11 @@ import java.util.UUID;
 
 @Service
 public class PayUtilsServiceImpl extends BaseService implements PayUtilsService {
-
+private final static org.slf4j.Logger logger = LoggerFactory.getLogger(PayUtilsServiceImpl.class);
 //返回prepay_id     第一次签名
     private Map goWePay(String body, String wx_trade_no, Double total_fee, String ip, String openId, String callbackPath,String tradeType) {
         Map<String, String> map = new HashMap<>();
+        HttpURLConnection httpURLConnection = null;
         try {
             //设置请求参数（必须）
             String nonce_str = UUID.randomUUID().toString().trim().replaceAll("-", "");
@@ -45,7 +45,6 @@ public class PayUtilsServiceImpl extends BaseService implements PayUtilsService 
             reqBody = WXPayUtil.mapToXml(map);
             URL httpUrl = null;
             httpUrl = new URL("https://api.mch.weixin.qq.com/pay/unifiedorder");
-            HttpURLConnection httpURLConnection = null;
             httpURLConnection = (HttpURLConnection) httpUrl.openConnection();
             httpURLConnection.setDoOutput(true);
             httpURLConnection.setRequestMethod("POST");
@@ -55,6 +54,8 @@ public class PayUtilsServiceImpl extends BaseService implements PayUtilsService 
             OutputStream outputStream = null;
             outputStream = httpURLConnection.getOutputStream();
             outputStream.write(reqBody.getBytes("UTF-8"));
+            httpURLConnection.getOutputStream().flush();
+            httpURLConnection.getOutputStream().close();
             //获取内容
             InputStream inputStream = httpURLConnection.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
@@ -64,6 +65,9 @@ public class PayUtilsServiceImpl extends BaseService implements PayUtilsService 
                 stringBuffer.append(line);
             }
             map = WXPayUtil.xmlToMap(stringBuffer.toString());
+            logger.warn("请求支付返回map===================================================================");
+            logger.warn("map"+map.toString());
+            logger.warn("请求支付返回map===================================================================");
             if (stringBuffer != null) {
                 try {
                     bufferedReader.close();
@@ -87,6 +91,9 @@ public class PayUtilsServiceImpl extends BaseService implements PayUtilsService 
             }
         } catch (Exception e) {
             map = null;
+        }
+        finally {
+            if(httpURLConnection!=null) httpURLConnection.disconnect();
         }
         return map;
     }

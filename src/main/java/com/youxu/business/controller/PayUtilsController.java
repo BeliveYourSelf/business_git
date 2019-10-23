@@ -135,8 +135,8 @@ public class PayUtilsController extends BaseService {
                 //修改支付状态
                 Order order = orderService.selectDeliveryFileByOrderId(orderId.toString());
                 logger.info("订单对象：" + order.toString());
-                Integer updateOrderPaySuccess = orderService.updateOrderPayDateAndProcessOverWrite(orderId, PayStatusEnum.COMPLETE.getValueCode());
-                logger.info("更新订单为配送状态成功（1.成功）：" + order.toString());
+                Integer updateOrderPaySuccess = orderService.updateOrderPayDateAndProcessOverWrite(orderId, PayStatusEnum.PAYING.getValueCode());
+                logger.info("更新订单为配送状态成功（1.成功）：" + updateOrderPaySuccess);
                 if ( updateOrderPaySuccess == 1) {
                     memberInterface.updateUserWallet(order.getUserId(), order.getOrderConsumeMoney());
                     // 修改优惠券

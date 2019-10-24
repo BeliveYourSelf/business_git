@@ -10,12 +10,14 @@ import com.youxu.business.service.OrderService;
 import com.youxu.business.service.PayUtilsService;
 import com.youxu.business.utils.Enum.PayStatusEnum;
 import com.youxu.business.utils.Enum.ResultCodeEnum;
+import com.youxu.business.utils.Enum.SendSmsTemplateCodeEnum;
 import com.youxu.business.utils.OtherUtil.ClientIPUtils;
 import com.youxu.business.utils.OtherUtil.OSSUploadUtil;
 import com.youxu.business.utils.OtherUtil.UploadUtils;
 import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
 import com.youxu.business.utils.normalQRcode.QRCodeUtil;
+import com.youxu.business.utils.wechat.requestapitool.CommonRpc;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.http.entity.ContentType;
@@ -139,6 +141,8 @@ public class PayUtilsController extends BaseService {
                 logger.info("更新订单为配送状态成功（1.成功）：" + updateOrderPaySuccess);
                 if ( updateOrderPaySuccess == 1) {
                     memberInterface.updateUserWallet(order.getUserId(), order.getOrderConsumeMoney());
+                    // 发送收获码
+                    String commonRpc = CommonRpc.getCommonRpc(order.getOrderAddresseePhone(), "{\"code\":\"" + order.getDeliveryHarvestCode() + "\"}", SendSmsTemplateCodeEnum.HARVESTCODE.getTemplateCodeValue());
                     // 修改优惠券
                     logger.info("微信回调  订单号：" + outTradeNo + ",修改状态成功");
                     //封装 返回值
@@ -164,8 +168,10 @@ public class PayUtilsController extends BaseService {
     private ResponseMessage memberPay(Order order) {
         // 判断是否为会员  isMembers:0非会员  1会员
         Integer orderId = order.getId();
-        Integer updateOrderPayDateAndProcess = orderService.updateOrderPayDateAndProcess(orderId, PayStatusEnum.COMPLETE.getValueCode());
+        Integer updateOrderPayDateAndProcess = orderService.updateOrderPayDateAndProcess(orderId, PayStatusEnum.PAYING.getValueCode());
             if (updateOrderPayDateAndProcess >= 0) {
+                // 发送收货人收获码
+                String commonRpc = CommonRpc.getCommonRpc(order.getOrderAddresseePhone(), "{\"code\":\"" + order.getDeliveryHarvestCode() + "\"}", SendSmsTemplateCodeEnum.HARVESTCODE.getTemplateCodeValue());
                 return Result.success("200", "钱包支付成功");
             }
         return Result.error("500.1", "支付失败");

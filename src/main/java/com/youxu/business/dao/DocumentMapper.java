@@ -31,4 +31,6 @@ public interface DocumentMapper {
     Integer insertDocument(@Param("documentList") List<Document> documentList);
     // 查看文件集合模糊查找
     List<Document> selectDocumentByLike(@Param("userId") String userId, @Param("resourceName") String resourceName);
+    // 查看最近上传的文件
+    List<Document> selectRecentFileByUserId(@Param("userId")String userId);
 }

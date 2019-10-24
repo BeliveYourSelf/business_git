@@ -9,6 +9,8 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
         <result column="status" jdbcType="BIT" property="status"/>
+        <result column="size_page" property="sizePage"/>
+        <result column="file_size" property="fileSize"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -71,7 +73,7 @@
         </where>
     </sql>
     <sql id="Base_Column_List">
-    id, user_id, folder_id, document_url, create_time, modify_time, status
+    id, user_id, folder_id, document_url, create_time, modify_time, status, size_page, file_size
   </sql>
     <select id="selectByExample" parameterType="com.youxu.business.pojo.DocumentExample" resultMap="BaseResultMap">
         select
@@ -240,6 +242,14 @@
         select <include refid="Base_Column_List"/>
         from tb_document
         where tb_document.user_id = #{userId} and tb_document.document_url like '%${resourceName}%' and tb_document.status = false
+    </select>
+    <!--查看最近上传的文件-->
+    <select id="selectRecentFileByUserId" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from tb_document
+        where tb_document.user_id = #{userId} and tb_document.status = false
+        order by create_time desc
+        limit 10;
     </select>
 
 </mapper>

@@ -59,6 +59,11 @@ public class DocumentServiceImpl implements DocumentService {
         return documentMapper.insertDocument(documentList);
     }
 
+    @Override
+    public List<Document> selectRecentFileByUserId(String userId) {
+        return documentMapper.selectRecentFileByUserId(userId);
+    }
+
 
     // 获取文件大小
     private String getFileSize(String url) {

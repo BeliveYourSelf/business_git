@@ -93,7 +93,7 @@ public class DocumentPrintPriceListController {
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", uploadSuccess);
     }
 
-    @ApiOperation(value = "上传图片(带文件名称)", notes = "需要上传图片")
+    @ApiOperation(value = "上传图片(带文件名称)", notes = "multipartFileName:文件名必须带格式    例如：文档.docx")
     @PostMapping("/uploadFileOverWrite")
     public ResponseMessage<String> uploadFileOverWrite(@RequestParam("file") MultipartFile file,String multipartFileName) {
         String uploadSuccess = OSSUploadUtil.uploadBlogOverWrite(file,multipartFileName);

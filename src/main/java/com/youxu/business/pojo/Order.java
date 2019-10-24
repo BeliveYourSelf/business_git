@@ -124,6 +124,9 @@ public class Order extends PageInfo{
     @ApiModelProperty(name = "expireTime",value = "到期时间")
     private String expireTime;
 
+    @ApiModelProperty(name = "orderAssignExpress",value = "指派快件（0;待指派1.指派到配送池2：指定配送员）")
+    private Integer orderAssignExpress;
+
 
 
 }

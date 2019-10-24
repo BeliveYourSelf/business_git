@@ -33,6 +33,7 @@
         <result column="user_piecture_url" jdbcType="VARCHAR" property="userPiectureUrl"/>
         <result column="share_id" property="shareId"/>
         <result column="order_coupon_money_ids" property="vouchersIds"/>
+        <result column="order_assign_express" property="orderAssignExpress"/>
         <collection property="orderDetailsList" ofType="com.youxu.business.pojo.OrderDetails">
             <result column="tb_order_detailsid" jdbcType="INTEGER" property="id"/>
             <result column="order_id" jdbcType="INTEGER" property="orderId"/>
@@ -152,7 +153,7 @@
     order_print_money, order_delivery_money, order_coupon_money, order_actual_money, 
     order_consume_money, order_extra_money, order_type, order_pay_date, order_process, order_remark, order_create_time, order_modify_time,
     order_status, delivery_id, delivery_pick_up_file_qr_code_url, delivery_harvest_code, delivery_status, delivery_problem_file_mark, share_id
-    ,order_coupon_money_ids
+    ,order_coupon_money_ids, order_assign_express
 
   </sql>
     <sql id="Base_Column_List_user">
@@ -505,6 +506,7 @@
             <if test="vouchersIds != null">
                 order_coupon_money_ids,
             </if>
+            order_assign_express,
             order_create_time,
             order_modify_time,
             order_status
@@ -583,6 +585,7 @@
             <if test="vouchersIds != null">
                 #{vouchersIds},
             </if>
+            0,
             now(),
             now(),
             false
@@ -715,7 +718,7 @@
         </if>
         and tb_order.order_from_store_get = 3
         and tb_order.delivery_status = #{order.deliveryStatus}
-        and tb_order.order_process  != 1
+        and tb_order.order_process != 1
         and tb_order.order_status = false
     </select>
     <select id="selectDeliveryFileByOrderId" resultMap="BaseResultMap">
@@ -821,7 +824,6 @@
         from tb_order
         where tb_order.id = #{id} and order_status = false
     </select>
-
     <update id="updateOrderPayDateAndProcessOverWrite">
         update tb_order
         <set>
@@ -834,4 +836,25 @@
         </set>
         where id = #{orderId}
     </update>
+<!--取件   order_assign_express:指派快件（0;待指派1.指派到配送池2：指定配送员）-->
+    <select id="selectDeliveryFileByStoreIdListGetFile" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>,
+        <include refid="Base_Column_List_user"/>
+        from tb_order
+        left join tb_user on tb_user.id = tb_order.user_id
+        where
+        tb_order.store_id IN
+        (
+        <foreach collection="order.storeIdList" index="index" separator="," item="storeId">
+            #{storeId}
+        </foreach>
+        )
+        and tb_order.order_assign_express = 1
+        and tb_order.order_from_store_get = 3
+        and tb_order.delivery_status = #{order.deliveryStatus}
+        and tb_order.order_process != 1
+        and tb_order.order_status = false
+    </select>
+
 </mapper>

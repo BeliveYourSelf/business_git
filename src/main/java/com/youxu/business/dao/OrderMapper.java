@@ -60,5 +60,6 @@ public interface OrderMapper {
     // 更新支付状态和时间 重写
     Integer updateOrderPayDateAndProcessOverWrite(@Param("orderId")Integer orderId,@Param("orderProcess") Integer orderProcess);
 
-
+    // 取件
+    List<Order> selectDeliveryFileByStoreIdListGetFile(@Param("order") Order order);
 }

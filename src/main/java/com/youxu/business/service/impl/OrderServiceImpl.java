@@ -211,7 +211,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> selectDeliveryFileByStoreIdList(Order order) {
         List<Order> orderList = new ArrayList<>();
-        List<Order> orders = orderMapper.selectDeliveryFileByStoreIdList(order);
+        List<Order> orders = new ArrayList<>();
+        if(StringUtils.isEmpty(order.getDeliveryId()) && order.getDeliveryStatus() == 1){
+            // 取件
+            orders = orderMapper.selectDeliveryFileByStoreIdListGetFile(order);
+        }else{
+            // 配送中/问题件/已完成
+         orders = orderMapper.selectDeliveryFileByStoreIdList(order);
+        }
         // 统计到期时间
         for (Order orderNew : orders) {
             Order order1 = getOrder(orderNew);

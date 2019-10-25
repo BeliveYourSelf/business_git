@@ -12,6 +12,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -145,6 +147,24 @@ public class OrderController {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",selectOrderById);
+    }
+
+    @ApiOperation(value = "批量下载文件到本地重写新", notes = "{\n" +
+            "  \"fileUrlList\": [\n" +
+            "    \"https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20190929/1569720759130.pdf\"\n" +
+            ",\"https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20190929/1569724765061.pdf\"\n" +
+            "  ],\n" +
+            "  \"localFilePath\": \"C:\\\\Users\\\\Dell\\\\Desktop\"\n" +
+            "}")
+    @GetMapping("/downLoadFileListOverWriteNew")
+    public ResponseMessage<HttpServletResponse> downLoadFileListOverWriteNew(@RequestParam String orderId, HttpServletRequest request, HttpServletResponse response) {
+        try {
+            HttpServletResponse httpServletResponse = orderService.downLoadFileListOverWriteNew(orderId, request, response);
+            return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",httpServletResponse);
+        }
+        catch(Exception e){
+            return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), "失败");
+        }
     }
 
 

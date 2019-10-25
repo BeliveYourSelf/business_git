@@ -3,6 +3,8 @@ package com.youxu.business.service;
 import com.youxu.business.pojo.Order;
 import com.youxu.business.pojo.Share;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public interface OrderService {
@@ -44,4 +46,5 @@ public interface OrderService {
 
     Integer updateOrderOverWrite(Integer orderId) throws Exception;
 
+    HttpServletResponse downLoadFileListOverWriteNew(String orderId, HttpServletRequest request, HttpServletResponse response);
 }

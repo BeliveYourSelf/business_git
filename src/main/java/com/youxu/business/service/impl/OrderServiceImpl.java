@@ -9,6 +9,7 @@ import com.youxu.business.utils.OtherUtil.DeleteFileUtil;
 import com.youxu.business.utils.OtherUtil.OSSUploadUtil;
 import com.youxu.business.utils.OtherUtil.UploadUtils;
 import com.youxu.business.utils.normalQRcode.QRCodeUtil;
+import com.youxu.business.utils.oss.download.DownLoadZip;
 import com.youxu.business.utils.uuid.UUIDUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
@@ -19,6 +20,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -354,6 +357,13 @@ public class OrderServiceImpl implements OrderService {
         order.setDeliveryHarvestCode(shareCode);
         addDeliveryPickUpFileQRCodeUrl(orderId);
         return orderMapper.updateOrder(order);
+    }
+
+    @Override
+    public HttpServletResponse downLoadFileListOverWriteNew(String orderId, HttpServletRequest request, HttpServletResponse response) {
+        Order order = orderMapper.selectOrderById(orderId);
+        DownLoadZip.zipFilesDown(order, request, response);
+        return null;
     }
 
     /**

@@ -85,6 +85,9 @@ public class DownLoadZip extends BaseService {
                 zos.closeEntry(); // 当前文件写完，定位为写入下一条项目
             }
             zos.close();
+            csum.close();
+            f.close();
+            ossClient.shutdown();
             String header = request.getHeader("User-Agent").toUpperCase();
             if (header.contains("MSIE") || header.contains("TRIDENT") || header.contains("EDGE")) {
                 fileName = URLEncoder.encode(fileName, "utf-8");
@@ -103,19 +106,20 @@ public class DownLoadZip extends BaseService {
             BufferedInputStream buff = new BufferedInputStream(fis);
             BufferedOutputStream out = new BufferedOutputStream(response.getOutputStream());
             byte[] car = new byte[1024];
-            int l = 0;
+        /*    int l = 0;
             while (l < zipFile.length()) {
                 int j = buff.read(car, 0, 1024);
                 l += j;
                 out.write(car, 0, j);
+            }*/
+            int line=0;
+            while ((line = buff.read(car, 0, 1024)) != -1){
+                out.write(car, 0, line);
             }
             // 关闭流
             out.close();
             buff.close();
             fis.close();
-            csum.close();
-            f.close();
-            ossClient.shutdown();
             // 删除临时文件
             zipFile.delete();
         } catch (Exception e) {

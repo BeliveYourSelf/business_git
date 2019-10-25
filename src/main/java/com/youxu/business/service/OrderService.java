@@ -46,5 +46,5 @@ public interface OrderService {
 
     Integer updateOrderOverWrite(Integer orderId) throws Exception;
 
-    HttpServletResponse downLoadFileListOverWriteNew(String orderId, HttpServletRequest request, HttpServletResponse response);
+    String downLoadFileListOverWriteNew(String orderId);
 }

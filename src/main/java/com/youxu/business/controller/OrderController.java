@@ -157,10 +157,10 @@ public class OrderController {
             "  \"localFilePath\": \"C:\\\\Users\\\\Dell\\\\Desktop\"\n" +
             "}")
     @GetMapping("/downLoadFileListOverWriteNew")
-    public ResponseMessage<HttpServletResponse> downLoadFileListOverWriteNew(@RequestParam String orderId, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseMessage<String> downLoadFileListOverWriteNew(@RequestParam String orderId) {
         try {
-            HttpServletResponse httpServletResponse = orderService.downLoadFileListOverWriteNew(orderId, request, response);
-            return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",httpServletResponse);
+            String path = orderService.downLoadFileListOverWriteNew(orderId);
+            return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",path);
         }
         catch(Exception e){
             return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), "失败");

@@ -360,10 +360,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public HttpServletResponse downLoadFileListOverWriteNew(String orderId, HttpServletRequest request, HttpServletResponse response) {
+    public String downLoadFileListOverWriteNew(String orderId) {
         Order order = orderMapper.selectOrderById(orderId);
-        DownLoadZip.zipFilesDown(order, request, response);
-        return null;
+        String path = DownLoadZip.zipFilesDown(order);
+        return path;
     }
 
     /**

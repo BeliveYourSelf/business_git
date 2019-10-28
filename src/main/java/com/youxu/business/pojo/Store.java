@@ -51,5 +51,8 @@ public class Store {
     @ApiModelProperty(name = "deliveryclerkPricePerOne",value = "配送员每单的价格")
     private Double deliveryclerkPricePerOne;
 
+    @ApiModelProperty(name = "licencePrice",value = "证件照价格")
+    private Double licencePrice;
+
 
 }

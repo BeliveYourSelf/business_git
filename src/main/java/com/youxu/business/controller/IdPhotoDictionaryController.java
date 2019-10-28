@@ -21,8 +21,8 @@ public class IdPhotoDictionaryController {
 
     @ApiOperation(value = "模糊查看证件照规格", notes = "")
     @GetMapping("/selectIdPhotoDictionaryListByName")
-    public ResponseMessage<List<IdPhotoDictionary>> selectIdPhotoDictionaryListByName(@RequestParam String idPhotoDictionaryName) {
-        List<IdPhotoDictionary> IdPhotoDictionaryList =idPhotoDictionaryService.selectIdPhotoDictionaryListByName(idPhotoDictionaryName);
+    public ResponseMessage<List<IdPhotoDictionary>> selectIdPhotoDictionaryListByName(@RequestParam String idPhotoDictionaryName, @RequestParam String storeId) {
+        List<IdPhotoDictionary> IdPhotoDictionaryList =idPhotoDictionaryService.selectIdPhotoDictionaryListByName(idPhotoDictionaryName, storeId);
         if (IdPhotoDictionaryList.size()<=0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "无此规格证件照");
         }

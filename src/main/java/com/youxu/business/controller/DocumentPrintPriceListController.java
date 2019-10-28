@@ -4,6 +4,8 @@ import com.youxu.business.pojo.DocumentPrintPriceList;
 import com.youxu.business.service.DocumentPrintPriceListService;
 import com.youxu.business.utils.Enum.ResultCodeEnum;
 import com.youxu.business.utils.HttpTools.HttpTool;
+import com.youxu.business.utils.OtherUtil.DeleteFileUtil;
+import com.youxu.business.utils.OtherUtil.DownLoadFileFromOss;
 import com.youxu.business.utils.OtherUtil.OSSUploadUtil;
 import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -72,12 +75,18 @@ public class DocumentPrintPriceListController {
      */
     @ApiOperation(value = "通过地址路径获取文档页数（pdf/word/excel/ppt）", notes = "https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20190929/1569741897178/woshipdf.pdf")
     @GetMapping("/selectDocumentPageNumberByUrl")
-    public ResponseMessage<Integer> selectDocumentPageNumberByUrl(@RequestParam("fileUrl") String fileUrl) throws IOException {
+    public ResponseMessage<Integer> selectDocumentPageNumberByUrl(@RequestParam("fileUrl") String fileUrl, HttpServletRequest request) throws IOException {
         if (fileUrl.isEmpty()) {
             return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), "路径不能为空");
         }
+        int nameLocal = fileUrl.lastIndexOf("/") + 1;
+        String fileName = fileUrl.substring(nameLocal);
+        String localPath = request.getServletContext().getRealPath("/") + fileName;
+        DownLoadFileFromOss downLoadFileFromOss = new DownLoadFileFromOss();
+        downLoadFileFromOss.downloadFile(fileUrl, localPath);
         //获取pdf页数
-        int xlsxNum = Readword.getFilePageNum(fileUrl);
+        int xlsxNum = Readword.getFilePageNum(localPath);
+        DeleteFileUtil.delete(localPath);
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", xlsxNum);
     }
 
@@ -95,8 +104,8 @@ public class DocumentPrintPriceListController {
 
     @ApiOperation(value = "上传图片(带文件名称)", notes = "multipartFileName:文件名必须带格式    例如：文档.docx")
     @PostMapping("/uploadFileOverWrite")
-    public ResponseMessage<String> uploadFileOverWrite(@RequestParam("file") MultipartFile file,String multipartFileName) {
-        String uploadSuccess = OSSUploadUtil.uploadBlogOverWrite(file,multipartFileName);
+    public ResponseMessage<String> uploadFileOverWrite(@RequestParam("file") MultipartFile file, String multipartFileName) {
+        String uploadSuccess = OSSUploadUtil.uploadBlogOverWrite(file, multipartFileName);
         //获取文件页数
         if (StringUtils.isEmpty(uploadSuccess)) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "上传失败");

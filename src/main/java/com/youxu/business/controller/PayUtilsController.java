@@ -163,8 +163,10 @@ public class PayUtilsController extends BaseService {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            logger.warn("回调："+e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
+            logger.warn("回调："+e.getMessage());
         }
     }
 

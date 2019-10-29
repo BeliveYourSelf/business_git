@@ -9,12 +9,14 @@ import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.youxu.business.service.BaseService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 发送短信
  */
 public class CommonRpc extends BaseService{
-
+private final static Logger logger = LoggerFactory.getLogger(CommonRpc.class);
     public static String getCommonRpc(String mobilePhone,String param,String sendSmsTemplateCodeEnum) {
         DefaultProfile profile = DefaultProfile.getProfile("default", ali_accesskey_id, ali_accesskey_secret);
         IAcsClient client = new DefaultAcsClient(profile);
@@ -32,11 +34,14 @@ public class CommonRpc extends BaseService{
 
         try {
             CommonResponse response = client.getCommonResponse(request);
+            logger.warn("发送验证码响应："+response.getData().toString());
             return response.getData();
         } catch (ServerException e) {
             e.printStackTrace();
+            logger.warn("发送验证码错误："+e.getMessage());
         } catch (ClientException e) {
             e.printStackTrace();
+            logger.warn("发送验证码错误："+e.getMessage());
         }
         return "false";
     }

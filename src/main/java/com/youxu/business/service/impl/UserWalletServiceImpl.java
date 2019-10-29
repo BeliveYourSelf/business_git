@@ -24,6 +24,10 @@ public class UserWalletServiceImpl implements UserWalletService {
         UserWallet userWallet = userWalletMapper.selectUserWalletByUserId(order.getUserId());
         logger.info("查看userWallet对象：===================="+userWallet.toString());
         int userIntegralAll = userWallet.getUserIntegral() + orderActualMoneyInteger;
+        logger.info("最开始积分：===================="+userWallet.getUserIntegral());
+        logger.info("本次支付获得积分：===================="+orderActualMoneyInteger);
+        logger.info("修改后积分：===================="+userIntegralAll);
+
         userWallet.setUserIntegral(userIntegralAll);
         int updateUserWallet = userWalletMapper.updateUserWallet(userWallet);
         logger.info("更新积分成功：===================="+updateUserWallet);

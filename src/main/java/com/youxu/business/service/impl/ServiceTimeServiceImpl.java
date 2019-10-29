@@ -6,6 +6,7 @@ import com.youxu.business.service.ServiceTimeService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -15,7 +16,7 @@ public class ServiceTimeServiceImpl implements ServiceTimeService {
 
     @Override
     public List<ServiceTime> selectServiceTime(ServiceTime serviceTime) {
-        List<ServiceTime> serviceTimes = null;
+        List<ServiceTime> serviceTimes = new ArrayList<>();
         Byte dayType = serviceTime.getDayType();
         // 查看普通时间价格
         if ("1".equals(dayType.toString())) {

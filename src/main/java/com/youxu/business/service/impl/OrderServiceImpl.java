@@ -54,9 +54,11 @@ public class OrderServiceImpl implements OrderService {
         order.setDeliveryHarvestCode(shareCode);
         // 配送时间分改为毫秒
         String orderDeliveryPrescriptioTime = order.getOrderDeliveryPrescriptioTime();
+        if(!StringUtils.isEmpty(orderDeliveryPrescriptioTime)){
         Long orderDeliveryPrescriptioTimeInteger = Long.valueOf(orderDeliveryPrescriptioTime);
         Long orderTimeLong = orderDeliveryPrescriptioTimeInteger * 60000;// 分变成毫秒
         order.setOrderDeliveryPrescriptioTime(orderTimeLong.toString());
+        }
         // 插入优惠券id
         List<Integer> vouchersIdList = order.getVouchersIdList();
         if (!StringUtils.isEmpty(vouchersIdList)) {

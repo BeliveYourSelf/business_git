@@ -143,7 +143,6 @@ public class PayUtilsController extends BaseService {
                 Integer updateOrderPaySuccess = orderService.updateOrderPayDateAndProcessOverWrite(orderId, PayStatusEnum.PAYING.getValueCode());
                 logger.info("更新订单为配送状态成功（1.成功）：" + updateOrderPaySuccess);
                 if ( updateOrderPaySuccess == 1) {
-                    memberInterface.updateUserWallet(order.getUserId(), order.getOrderConsumeMoney());
                     // 发送收获码
                     String commonRpc = CommonRpc.getCommonRpc(order.getOrderAddresseePhone(), "{\"code\":\"" + order.getDeliveryHarvestCode() + "\"}", SendSmsTemplateCodeEnum.HARVESTCODE.getTemplateCodeValue());
                     // 加积分

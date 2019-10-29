@@ -24,7 +24,8 @@ public class ServiceTimeServiceImpl implements ServiceTimeService {
             List<ServiceTime> selectOneTimeService = serviceTimeMapper.selectServiceTimeAllDay(Integer.valueOf(serviceTime.getStoreId()), Integer.valueOf(dayType),Integer.valueOf(2));
             serviceTimes.addAll(selectOneTimeService);
             // 查看普通时间
-            serviceTimes = serviceTimeMapper.selectServiceTime(Integer.valueOf(serviceTime.getStoreId()), Integer.valueOf(dayType));
+            List<ServiceTime> serviceTimeList = serviceTimeMapper.selectServiceTime(Integer.valueOf(serviceTime.getStoreId()), Integer.valueOf(dayType));
+            serviceTimes.addAll(serviceTimeList);
         } else if ("2".equals(dayType.toString()) || "3".equals(dayType.toString())) {
             serviceTimes = serviceTimeMapper.selectServiceTimeAllDay(Integer.valueOf(serviceTime.getStoreId()), Integer.valueOf(dayType),Integer.valueOf(1));
         }

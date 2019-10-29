@@ -249,7 +249,7 @@
     from tb_service_time
     where tb_service_time.store_id = #{storeId} and tb_service_time.day_type = #{dayType} and tb_service_time.service_type = '1'  and tb_service_time.status= false
     and service_time > curtime()
-    order by weight desc
+    order by create_time,weight desc
   </select>
   <!--查看明后天  service_type  类别:1.普通类别2.一小时达-->
   <select id="selectServiceTimeAllDay" resultMap="BaseResultMap">

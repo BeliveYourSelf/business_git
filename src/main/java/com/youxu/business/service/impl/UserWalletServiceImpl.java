@@ -20,7 +20,7 @@ public class UserWalletServiceImpl implements UserWalletService {
     public void addUserWallet(Order order) {
         logger.info("order订单对象：===================="+order.toString());
         Double orderActualMoney = order.getOrderActualMoney();
-        Integer orderActualMoneyInteger = orderActualMoney.intValue();
+        Integer orderActualMoneyInteger = orderActualMoney.intValue() * 100;
         UserWallet userWallet = userWalletMapper.selectUserWalletByUserId(order.getUserId());
         logger.info("查看userWallet对象：===================="+userWallet.toString());
         int userIntegralAll = userWallet.getUserIntegral() + orderActualMoneyInteger;

@@ -8,6 +8,7 @@ import com.youxu.business.remoteinterface.MemberInterface;
 import com.youxu.business.service.BaseService;
 import com.youxu.business.service.OrderService;
 import com.youxu.business.service.PayUtilsService;
+import com.youxu.business.service.UserWalletService;
 import com.youxu.business.utils.Enum.PayStatusEnum;
 import com.youxu.business.utils.Enum.ResultCodeEnum;
 import com.youxu.business.utils.Enum.SendSmsTemplateCodeEnum;
@@ -66,6 +67,8 @@ public class PayUtilsController extends BaseService {
 
     @Resource
     private OrderService orderService;
+    @Resource
+    private UserWalletService userWalletService;
     private String ip;
 
 
@@ -143,7 +146,8 @@ public class PayUtilsController extends BaseService {
                     memberInterface.updateUserWallet(order.getUserId(), order.getOrderConsumeMoney());
                     // 发送收获码
                     String commonRpc = CommonRpc.getCommonRpc(order.getOrderAddresseePhone(), "{\"code\":\"" + order.getDeliveryHarvestCode() + "\"}", SendSmsTemplateCodeEnum.HARVESTCODE.getTemplateCodeValue());
-                    // 修改优惠券
+                    // 加积分
+                    userWalletService.addUserWallet(order);
                     logger.info("微信回调  订单号：" + outTradeNo + ",修改状态成功");
                     //封装 返回值
                     StringBuffer buffer = new StringBuffer();
@@ -172,6 +176,8 @@ public class PayUtilsController extends BaseService {
             if (updateOrderPayDateAndProcess >= 0) {
                 // 发送收货人收获码
                 String commonRpc = CommonRpc.getCommonRpc(order.getOrderAddresseePhone(), "{\"code\":\"" + order.getDeliveryHarvestCode() + "\"}", SendSmsTemplateCodeEnum.HARVESTCODE.getTemplateCodeValue());
+                // 加积分
+                userWalletService.addUserWallet(order);
                 return Result.success("200", "钱包支付成功");
             }
         return Result.error("500.1", "支付失败");

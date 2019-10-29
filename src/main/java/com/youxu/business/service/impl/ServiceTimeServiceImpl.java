@@ -19,10 +19,11 @@ public class ServiceTimeServiceImpl implements ServiceTimeService {
         Byte dayType = serviceTime.getDayType();
         // 查看普通时间价格
         if ("1".equals(dayType.toString())) {
-            serviceTimes = serviceTimeMapper.selectServiceTime(Integer.valueOf(serviceTime.getStoreId()), Integer.valueOf(dayType));
             // 查看一小时达价格
             List<ServiceTime> selectOneTimeService = serviceTimeMapper.selectServiceTimeAllDay(Integer.valueOf(serviceTime.getStoreId()), Integer.valueOf(dayType),Integer.valueOf(2));
             serviceTimes.addAll(selectOneTimeService);
+            // 查看普通时间
+            serviceTimes = serviceTimeMapper.selectServiceTime(Integer.valueOf(serviceTime.getStoreId()), Integer.valueOf(dayType));
         } else if ("2".equals(dayType.toString()) || "3".equals(dayType.toString())) {
             serviceTimes = serviceTimeMapper.selectServiceTimeAllDay(Integer.valueOf(serviceTime.getStoreId()), Integer.valueOf(dayType),Integer.valueOf(1));
         }

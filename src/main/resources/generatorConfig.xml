@@ -63,7 +63,8 @@
         <!--<table tableName="tb_document_cover_color" domainObjectName="DocumentCoverColor"/>-->
         <!--<table tableName="tb_order_evaluate_picture_mapping" domainObjectName="OrderEvaluatePictureMapping"/>-->
         <!--<table tableName="tb_user" domainObjectName="User"/>-->
-        <table tableName="tb_recent_file" domainObjectName="RecentFile"/>
+        <!--<table tableName="tb_recent_file" domainObjectName="RecentFile"/>-->
+        <table tableName="tb_user_wallet" domainObjectName="UserWallet"/>
 
     </context>
 </generatorConfiguration>

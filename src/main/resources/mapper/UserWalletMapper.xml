@@ -269,9 +269,9 @@
     <!--更新用户积分-->
     <update id="updateUserWallet">
         update tb_user_wallet
-          set user_integral = #{userIntegral,jdbcType=INTEGER}
+          set user_integral = #{userWallet.userIntegral,jdbcType=INTEGER}
           ,wallet_modify_time = now()
-          where user_id = #{userId}
+          where user_id = #{userWallet.userId}
   </update>
 
 </mapper>

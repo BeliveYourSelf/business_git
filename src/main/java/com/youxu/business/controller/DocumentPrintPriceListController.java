@@ -42,7 +42,7 @@ public class DocumentPrintPriceListController {
     public ResponseMessage<DocumentPrintPriceList> selectDocumentPrintPriceList(@RequestBody DocumentPrintPriceList documentPrintPriceList) throws IOException {
         DocumentPrintPriceList documentPrintPriceListNew = documentPrintPriceListService.selectDocumentPrintPriceList(documentPrintPriceList);
         if (StringUtils.isEmpty(documentPrintPriceListNew)) {
-            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "商家没有此规格");
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", documentPrintPriceListNew);
     }

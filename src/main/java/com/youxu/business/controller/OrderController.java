@@ -109,20 +109,19 @@ public class OrderController {
     @GetMapping("/insertOrderAgain")
     public ResponseMessage<Integer> insertOrderAgain(@RequestParam String id) {
         Order insertOrderAgain = orderService.insertOrderAgain(id);
-        Integer insertOrder = null;
+        Integer orderId = null;
         try {
             insertOrderAgain.setOrderProcess(1);
-            insertOrder = orderService.insertOrder(insertOrderAgain);
-            Integer orderId = orderService.lastInsertId();
+            orderId = orderService.insertOrder(insertOrderAgain);
             // 更新取件二维码和收获码
             Integer integer = orderService.updateOrderOverWrite(orderId);
         } catch (Exception e) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
-        if (insertOrder <= 0) {
+        if (orderId <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",insertOrder);
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",orderId);
     }
 
 

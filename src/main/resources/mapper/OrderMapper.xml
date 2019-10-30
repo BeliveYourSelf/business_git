@@ -494,9 +494,6 @@
             <if test="deliveryHarvestCode != null">
                 delivery_harvest_code,
             </if>
-            <if test="deliveryStatus != null">
-                delivery_status,
-            </if>
             <if test="deliveryProblemFileMark != null">
                 delivery_problem_file_mark,
             </if>
@@ -506,6 +503,7 @@
             <if test="vouchersIds != null">
                 order_coupon_money_ids,
             </if>
+            delivery_status,
             order_assign_express,
             order_create_time,
             order_modify_time,
@@ -573,9 +571,6 @@
             <if test="deliveryHarvestCode != null">
                 #{deliveryHarvestCode},
             </if>
-            <if test="deliveryStatus != null">
-                #{deliveryStatus},
-            </if>
             <if test="deliveryProblemFileMark != null">
                 #{deliveryProblemFileMark},
             </if>
@@ -585,6 +580,7 @@
             <if test="vouchersIds != null">
                 #{vouchersIds},
             </if>
+            0,
             0,
             now(),
             now(),

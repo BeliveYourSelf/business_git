@@ -24,7 +24,7 @@ public interface BannerMapper {
 
     int updateByExample(@Param("record") Banner record, @Param("example") BannerExample example);
     // 查看banner集合
-    List<Banner> selectBannerList();
+    List<Banner> selectBannerList(@Param("contentType") String contentType);
     // 查看详细banner通过id
     Banner selectBannerById(@Param("id") String id);
 }

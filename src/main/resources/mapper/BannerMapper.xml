@@ -2,14 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.youxu.business.dao.BannerMapper">
   <resultMap id="BaseResultMap" type="com.youxu.business.pojo.Banner">
-    <result column="id" jdbcType="INTEGER" property="id" />
-    <result column="banner_name" jdbcType="VARCHAR" property="bannerName" />
-    <result column="banner_picture_url" jdbcType="VARCHAR" property="bannerPictureUrl" />
-    <result column="banner_jump_type" jdbcType="TINYINT" property="bannerJumpType" />
-    <result column="banner_weight" jdbcType="INTEGER" property="bannerWeight" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
-    <result column="status" jdbcType="BIT" property="status" />
+    <result column="tb_bannerid" jdbcType="INTEGER" property="id" />
+    <result column="tb_bannerbanner_name" jdbcType="VARCHAR" property="bannerName" />
+    <result column="tb_bannerbanner_picture_url" jdbcType="VARCHAR" property="bannerPictureUrl" />
+    <result column="tb_bannerbanner_jump_type" jdbcType="TINYINT" property="bannerJumpType" />
+    <result column="tb_bannerbanner_weight" jdbcType="INTEGER" property="bannerWeight" />
+    <result column="tb_bannercreate_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="tb_bannermodify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="tb_bannerstatus" jdbcType="BIT" property="status" />
+    <result column="tb_bannerbanner_content_id" property="banner_content_id" />
+    <result column="tb_bannerbanner_comtent_id_for_pc" property="bannerComtentIdForPc" />
+    <association property="bannerMaterial" javaType="com.youxu.business.pojo.BannerMaterial">
+      <id column="tb_banner_materialid"  property="id" />
+      <result column="tb_banner_materialcontent_name"  property="contentName" />
+      <result column="tb_banner_materialcreation_time"  property="creationTime" />
+      <result column="tb_banner_materialupdate_time"  property="updateTime" />
+      <result column="tb_banner_materialcontent_status"  property="contentStatus" />
+      <result column="tb_banner_materialcontent_type"  property="contentType" />
+      <result column="tb_banner_materialcontent" property="content" />
+    </association>
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.youxu.business.pojo.Banner">
     <result column="banner_content" jdbcType="LONGVARCHAR" property="bannerContent" />
@@ -73,11 +84,28 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, banner_name, banner_picture_url, banner_jump_type, banner_weight, create_time, 
-    modify_time, status
+    tb_banner.id as tb_bannerid
+    , tb_banner.banner_name as tb_bannerbanner_name
+    , tb_banner.banner_picture_url as tb_bannerbanner_picture_url
+    , tb_banner.banner_jump_type as tb_bannerbanner_jump_type
+    , tb_banner.banner_weight as tb_bannerbanner_weight
+    , tb_banner.create_time as tb_bannercreate_time
+    , tb_banner.modify_time as tb_bannermodify_time
+    ,tb_banner.status as tb_bannerstatus
+    ,tb_banner.banner_content_id as tb_bannerbanner_content_id
+    ,tb_banner.banner_comtent_id_for_pc as tb_bannerbanner_comtent_id_for_pc
   </sql>
   <sql id="Blob_Column_List">
     banner_content
+  </sql>
+  <sql id="Base_Column_List_BannerMaterial">
+    tb_banner_material.id as tb_banner_materialid,
+    tb_banner_material.content_name as tb_banner_materialcontent_name,
+    tb_banner_material.creation_time as tb_banner_materialcreation_time,
+    tb_banner_material.update_time as tb_banner_materialupdate_time,
+    tb_banner_material.content_status as tb_banner_materialcontent_status,
+    tb_banner_material.content_type as tb_banner_materialcontent_type,
+    tb_banner_material.content as tb_banner_materialcontent
   </sql>
   <select id="selectByExampleWithBLOBs" parameterType="com.youxu.business.pojo.BannerExample" resultMap="ResultMapWithBLOBs">
     select
@@ -258,16 +286,19 @@
   </update>
   <!--查看banner集合-->
   <select id="selectBannerList" resultMap="ResultMapWithBLOBs">
-    select <include refid="Base_Column_List"/>,<include refid="Blob_Column_List"/>
+    select <include refid="Base_Column_List"/>,<include refid="Blob_Column_List"/>,<include refid="Base_Column_List_BannerMaterial"/>
     from tb_banner
-    where tb_banner.status = false
+    left join tb_banner_material on tb_banner.banner_content_id = tb_banner_material.id
+    where tb_banner.status = false and tb_banner_material.content_status = false
+    and tb_banner_material.content_type = #{contentType}
     order by tb_banner.banner_weight desc
     LIMIT 5;
   </select>
   <!--查看详细banner通过id-->
   <select id="selectBannerById" resultMap="ResultMapWithBLOBs">
-    select <include refid="Base_Column_List"/>,<include refid="Blob_Column_List"/>
+    select <include refid="Base_Column_List"/>,<include refid="Blob_Column_List"/>,<include refid="Base_Column_List_BannerMaterial"/>
     from tb_banner
+    left join tb_banner_material on tb_banner.banner_content_id = tb_banner_material.id
     where tb_banner.id = #{id}
   </select>
 

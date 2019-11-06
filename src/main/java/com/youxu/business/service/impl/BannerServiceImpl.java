@@ -14,8 +14,8 @@ public class BannerServiceImpl implements BannerService {
     private BannerMapper bannerMapper;
 
     @Override
-    public List<Banner> selectBannerList() {
-        return bannerMapper.selectBannerList();
+    public List<Banner> selectBannerList(String contentType) {
+        return bannerMapper.selectBannerList(contentType);
     }
 
     @Override

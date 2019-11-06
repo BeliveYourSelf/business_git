@@ -40,10 +40,10 @@ public class BannerController {
    /* @Autowired
     private DiscoveryClient discoveryClient;*/
 
-    @ApiOperation(value = "查看所有banner", notes = "")
+    @ApiOperation(value = "查看所有banner", notes = "contentType :  1.手机素材2.pc端素材")
     @GetMapping("/selectBannerList")
-    public ResponseMessage<List<Banner>> selectBannerList() {
-        List<Banner> selectBannerList =bannerService.selectBannerList();
+    public ResponseMessage<List<Banner>> selectBannerList(@RequestParam String contentType) {
+        List<Banner> selectBannerList =bannerService.selectBannerList(contentType);
         if (selectBannerList.size() <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }

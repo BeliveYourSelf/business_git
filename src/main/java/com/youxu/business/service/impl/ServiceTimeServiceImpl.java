@@ -1,6 +1,9 @@
 package com.youxu.business.service.impl;
 
+import com.youxu.business.dao.DeliveryScheduleMapper;
 import com.youxu.business.dao.ServiceTimeMapper;
+import com.youxu.business.pojo.DeliverySchedule;
+import com.youxu.business.pojo.ServicePrice;
 import com.youxu.business.pojo.ServiceTime;
 import com.youxu.business.service.ServiceTimeService;
 import org.springframework.stereotype.Service;
@@ -13,7 +16,8 @@ import java.util.List;
 public class ServiceTimeServiceImpl implements ServiceTimeService {
     @Resource
     private ServiceTimeMapper serviceTimeMapper;
-
+    @Resource
+    private DeliveryScheduleMapper deliveryScheduleMapper;
     @Override
     public List<ServiceTime> selectServiceTime(ServiceTime serviceTime) {
         List<ServiceTime> serviceTimes = new ArrayList<>();
@@ -31,5 +35,15 @@ public class ServiceTimeServiceImpl implements ServiceTimeService {
         }
 
         return serviceTimes;
+    }
+
+    @Override
+    public List<ServicePrice> selServicePrice(Integer storeId, Integer serviceType) {
+        return serviceTimeMapper.selServicePrice(storeId,serviceType);
+    }
+
+    @Override
+    public List<DeliverySchedule> selAutomaticGeneration(Integer storeId) {
+        return deliveryScheduleMapper.selAutomaticGeneration(storeId);
     }
 }

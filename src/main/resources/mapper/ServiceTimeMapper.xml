@@ -258,4 +258,20 @@
     where tb_service_time.store_id = #{storeId} and tb_service_time.day_type = #{dayType} and tb_service_time.service_type = #{serviceType} and tb_service_time.status= false
     order by weight desc
   </select>
+  <!--查看时间间隔-->
+  <select id="selServicePrice" resultType="com.youxu.business.pojo.ServicePrice">
+    SELECT
+    start_Time AS startTime,
+    end_time AS endTime,
+    service_type AS serviceType,
+    price
+    FROM
+    tb_service_time
+    WHERE
+    status = FALSE
+    AND service_type=#{serviceType}
+    AND store_id=#{storeId}
+  </select>
+
+
 </mapper>

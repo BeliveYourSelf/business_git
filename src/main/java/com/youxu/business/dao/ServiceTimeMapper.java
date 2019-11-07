@@ -1,5 +1,7 @@
 package com.youxu.business.dao;
 
+import com.youxu.business.pojo.DeliverySchedule;
+import com.youxu.business.pojo.ServicePrice;
 import com.youxu.business.pojo.ServiceTime;
 import com.youxu.business.pojo.ServiceTimeExample;
 import java.util.List;
@@ -23,5 +25,9 @@ public interface ServiceTimeMapper {
     List<ServiceTime> selectServiceTime(@Param("storeId")Integer storeId, @Param("dayType") Integer dayType);
     // 查看明后天
     List<ServiceTime> selectServiceTimeAllDay(@Param("storeId")Integer storeId, @Param("dayType") Integer dayType, @Param("serviceType") Integer serviceType);
+    // 查看时间间隔
+    List<ServicePrice> selServicePrice(@Param("storeId") Integer storeId,
+                                       @Param("serviceType") Integer serviceType);
+
 
 }

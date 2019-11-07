@@ -41,9 +41,6 @@ public class Order extends PageInfo{
     @ApiModelProperty(name = "orderDeliveryMoney",value = "配送钱数")
     private String orderDeliveryMoney;
 
-    @ApiModelProperty(name = "orderCouponMoney",value = "优惠券（代金券）")
-    private Double orderCouponMoney;
-
     @ApiModelProperty(name = "orderActualMoney",value = "实际支付")
     private Double orderActualMoney;
 
@@ -112,7 +109,7 @@ public class Order extends PageInfo{
     @ApiModelProperty(name = "whetherMembers",value = "是否是会员")
     private Boolean whetherMembers;
 
-    @ApiModelProperty(name = "vouchersIdList",value = "优惠券id：可能是代金券或者配送券。支付的时候返回给前端让他删除")
+    @ApiModelProperty(name = "vouchersIdList",value = "优惠券id集合：可能是代金券或者配送券。支付的时候返回给前端让他删除")
     private List<Integer> vouchersIdList;
 
     @ApiModelProperty(name = "vouchersIds",value = "(前台未使用)优惠券id：可能是代金券或者配送券。支付的时候返回给前端让他删除")
@@ -126,6 +123,20 @@ public class Order extends PageInfo{
 
     @ApiModelProperty(name = "orderAssignExpress",value = "指派快件（0待指派/1.全部配送员/2特殊指派/3全职配送员/4.兼职配送员/5.顺丰配送）")
     private Integer orderAssignExpress;
+
+    @ApiModelProperty(name = "orderCouponMoneyId",value = "优惠券id（代金券）")
+    private Integer orderCouponMoneyId;
+
+    @ApiModelProperty(name = "orderCouponMoney",value = "优惠券面额（代金券）")
+    private Double orderCouponMoney;
+
+    @ApiModelProperty(name = "orderCouponDeliveryId",value = "配送券id")
+    private Integer orderCouponDeliveryId;
+
+    @ApiModelProperty(name = "orderCouponDeliveryMoney",value = "配送券面额")
+    private Integer orderCouponDeliveryMoney;
+
+
 
 
 

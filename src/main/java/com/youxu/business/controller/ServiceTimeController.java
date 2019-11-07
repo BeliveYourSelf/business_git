@@ -40,18 +40,20 @@ public class ServiceTimeController {
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectServiceTime);
     }
-    @ApiOperation(value = "查看今日，明天，后天预览信息", notes = "serviceType:1今日，2明天，3：后天 ")
+    @ApiOperation(value = "查看今日，明天，后天预览信息", notes = "serviceType:1.今天2.明天3.后天4.一小时达5.精准达 ")
     @GetMapping("/selPreviewMessage")
     public ResponseMessage selPreviewMessage(@RequestParam("storeId") Integer storeId,
                                              @RequestParam("serviceType") Integer serviceType){
         ArrayList<TimeAndPrice> timeAndPriceArrayList=new ArrayList<>();
         if(Integer.valueOf(1).equals(serviceType)){
             TimeAndPrice timeAndPrice = new TimeAndPrice();
-            List<ServicePrice> servicePriceList=serviceTimeService.selServicePrice(storeId,serviceType);
+            List<ServicePrice> servicePriceList=serviceTimeService.selServicePrice(storeId,4);
+            if(servicePriceList.size()>0 && !StringUtils.isEmpty(servicePriceList.get(0).getPrice())){
             double price = servicePriceList.get(0).getPrice();
             timeAndPrice.setPrice(price);
             timeAndPrice.setTheTime("1小时达");
             timeAndPriceArrayList.add(timeAndPrice);
+            }
         }
         List<ServicePrice> servicePriceList=serviceTimeService.selServicePrice(storeId,serviceType);
         List<DeliverySchedule> selAutomaticGenerationList = serviceTimeService.selAutomaticGeneration(storeId);

@@ -136,6 +136,9 @@ public class Order extends PageInfo{
     @ApiModelProperty(name = "orderCouponDeliveryMoney",value = "配送券面额")
     private Integer orderCouponDeliveryMoney;
 
+    @ApiModelProperty(name = "orderTypeOther",value = "1.普通达2.一小时达3.精准达")
+    private Integer orderTypeOther;
+
 
 
 

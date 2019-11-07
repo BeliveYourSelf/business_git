@@ -37,9 +37,9 @@ public class DocumentPrintPriceListController {
      * @param documentPrintPriceList
      * @return
      */
-    @ApiOperation(value = "获取文档打印价格", notes = "{\"count\":\"2\" ,\"documentPrintPriceListCodeBlackAndWhite\":\"77,1,0\"\n" +
-            ",\"documentPrintPriceListCodeColour\":\"77,1,1\"\n" +
-            " ,\"pageNumber\":\"1\" ,\"storeId\":\"1\" ,\"countColour\":\"1\"}   " +
+    @ApiOperation(value = "获取文档打印价格", notes = "{\"count\":\"2\" ,\"documentPrintPriceListCodeBlackAndWhite\": [\"77,1,0\"]\n" +
+            ",\"documentPrintPriceListCodeColour\":[\"77,1,1\"]\n" +
+            " ,\"pageNumber\":\"1\" ,\"storeId\":\"1\" ,\"countColour\":\"1\"}    " +
             "   count:黑白份数，countColour:彩色份数（如果只打印一种，另一种份数传0）   " +
             " documentPrintPriceListCode:文档打印价格表排列组合（ps：（1,1,1））（尺寸/单双面/黑白） 单双面：1.单面  2.双面/    黑白:0黑 1白" +
             ", pageNumber:文件总页数      返回值：totalPrice  为总价")

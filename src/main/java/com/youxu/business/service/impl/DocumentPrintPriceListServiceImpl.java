@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.Date;
 
 @Service
 public class DocumentPrintPriceListServiceImpl implements DocumentPrintPriceListService {
@@ -23,14 +24,21 @@ public class DocumentPrintPriceListServiceImpl implements DocumentPrintPriceList
 
     @Override
     public DocumentPrintPriceList selectDocumentPrintPriceList(DocumentPrintPriceList documentPrintPriceList) throws Exception {
-        // 查看页数
-        int pdfPageNumber = documentPrintPriceList.getPageNumber();
-        // 查看价格
+        double totalPriceDouble =0.0;
+        double blackAndWhitePrice = 0.0;
+        double colorPrice =0.0;
+        int pdfPageNumber = 0;
         Integer count = documentPrintPriceList.getCount();// 黑白
         Integer countColour = documentPrintPriceList.getCountColour();// 彩色
-        documentPrintPriceList.setDocumentPrintPriceListCode(documentPrintPriceList.getDocumentPrintPriceListCodeBlackAndWhite());
+        int size = documentPrintPriceList.getDocumentPrintPriceListCodeBlackAndWhite().size();
+        DocumentPrintPriceList documentPrintPriceListBlackAndWhiteReturn = new DocumentPrintPriceList();
+        for(int i = 0; size > i; i++){
+        // 查看页数
+        pdfPageNumber = documentPrintPriceList.getPageNumber();
+        // 查看价格
+        documentPrintPriceList.setDocumentPrintPriceListCode(documentPrintPriceList.getDocumentPrintPriceListCodeBlackAndWhite().get(i));
         DocumentPrintPriceList documentPrintPriceListBlackAndWhite = documentPrintPriceListMapper.selectDocumentPrintPriceList(documentPrintPriceList);
-        documentPrintPriceList.setDocumentPrintPriceListCode(documentPrintPriceList.getDocumentPrintPriceListCodeColour());
+        documentPrintPriceList.setDocumentPrintPriceListCode(documentPrintPriceList.getDocumentPrintPriceListCodeColour().get(i));
         DocumentPrintPriceList documentPrintPriceListCodeColour = documentPrintPriceListMapper.selectDocumentPrintPriceList(documentPrintPriceList);
         if(StringUtils.isEmpty(documentPrintPriceListBlackAndWhite)){
             return null;
@@ -38,21 +46,27 @@ public class DocumentPrintPriceListServiceImpl implements DocumentPrintPriceList
         // 份数*单页价*页数
         Double documentPrintPriceListPriceBlackAndWhite = documentPrintPriceListBlackAndWhite.getDocumentPrintPriceListPrice();
         Double documentPrintPriceListPriceColour = documentPrintPriceListCodeColour.getDocumentPrintPriceListPrice();
-        double blackAndWhitePrice = count * documentPrintPriceListPriceBlackAndWhite * pdfPageNumber;
-        double colorPrice = countColour * documentPrintPriceListPriceColour * pdfPageNumber;
-        double totalPriceDouble = blackAndWhitePrice + colorPrice;
+        blackAndWhitePrice = count * documentPrintPriceListPriceBlackAndWhite * pdfPageNumber;
+        colorPrice = countColour * documentPrintPriceListPriceColour * pdfPageNumber;
+        totalPriceDouble += blackAndWhitePrice + colorPrice;
+        }
         DecimalFormat decimalFormat = new DecimalFormat("######.00");
         String totalPriceString = decimalFormat.format(totalPriceDouble);
         Double totalPrice = Double.valueOf(totalPriceString);
-        documentPrintPriceListBlackAndWhite.setTotalPrice(totalPrice);
-        documentPrintPriceListBlackAndWhite.setCountColour(countColour);
-        documentPrintPriceListBlackAndWhite.setDocumentPrintPriceListPrice(0.0);
-        documentPrintPriceListBlackAndWhite.setDocumentPrintPriceListPriceBlackAndWhite(documentPrintPriceListPriceBlackAndWhite);// 黑白单价
-        documentPrintPriceListBlackAndWhite.setDocumentPrintPriceListPriceCodeColour(documentPrintPriceListPriceColour);// 彩色单价
-        documentPrintPriceListBlackAndWhite.setDocumentPrintPriceListCodeBlackAndWhite(documentPrintPriceList.getDocumentPrintPriceListCodeBlackAndWhite());
-        documentPrintPriceListBlackAndWhite.setDocumentPrintPriceListCodeColour(documentPrintPriceList.getDocumentPrintPriceListCodeColour());
-        documentPrintPriceListBlackAndWhite.setCount(count);
-        documentPrintPriceListBlackAndWhite.setPageNumber(pdfPageNumber);
-        return documentPrintPriceListBlackAndWhite;
+        documentPrintPriceListBlackAndWhiteReturn.setStoreId(documentPrintPriceList.getStoreId());
+        documentPrintPriceListBlackAndWhiteReturn.setDocumentPrintPriceCover(0.0);
+        documentPrintPriceListBlackAndWhiteReturn.setDocumentPrintPriceListCreateTime(new Date());
+        documentPrintPriceListBlackAndWhiteReturn.setDocumentPrintPriceListModifyTime(new Date());
+        documentPrintPriceListBlackAndWhiteReturn.setDocumentPrintPriceListStatus(false);
+        documentPrintPriceListBlackAndWhiteReturn.setTotalPrice(totalPrice);
+        documentPrintPriceListBlackAndWhiteReturn.setCountColour(countColour);
+        documentPrintPriceListBlackAndWhiteReturn.setDocumentPrintPriceListPrice(0.0);
+        documentPrintPriceListBlackAndWhiteReturn.setDocumentPrintPriceListPriceBlackAndWhite(blackAndWhitePrice);// 黑白单价
+        documentPrintPriceListBlackAndWhiteReturn.setDocumentPrintPriceListPriceCodeColour(colorPrice);// 彩色单价
+        documentPrintPriceListBlackAndWhiteReturn.setDocumentPrintPriceListCodeBlackAndWhite(documentPrintPriceList.getDocumentPrintPriceListCodeBlackAndWhite());
+        documentPrintPriceListBlackAndWhiteReturn.setDocumentPrintPriceListCodeColour(documentPrintPriceList.getDocumentPrintPriceListCodeColour());
+        documentPrintPriceListBlackAndWhiteReturn.setCount(count);
+        documentPrintPriceListBlackAndWhiteReturn.setPageNumber(pdfPageNumber);
+        return documentPrintPriceListBlackAndWhiteReturn;
     }
 }

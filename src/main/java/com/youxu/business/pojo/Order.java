@@ -80,7 +80,7 @@ public class Order extends PageInfo{
     @ApiModelProperty(name = "deliveryHarvestCode",value = "收货码")
     private String deliveryHarvestCode;
 
-    @ApiModelProperty(name = "deliveryStatus",value = "配送状态（1.待取件/2.配送中/3.问题件/4.已完成）")
+    @ApiModelProperty(name = "deliveryStatus",value = "配送状态（0.未发货/1.待取件/2.配送中/3.问题件/4.已完成/5.实时订单/6.顺丰配送）")
     private Integer deliveryStatus;
 
     @ApiModelProperty(name = "deliveryProblemFileMark",value = "问题件标注     #:(间隔符：间隔追加问题）")
@@ -124,7 +124,7 @@ public class Order extends PageInfo{
     @ApiModelProperty(name = "expireTime",value = "到期时间")
     private String expireTime;
 
-    @ApiModelProperty(name = "orderAssignExpress",value = "指派快件（0;待指派1.指派到配送池2：指定配送员）")
+    @ApiModelProperty(name = "orderAssignExpress",value = "指派快件（0待指派/1.全部配送员/2特殊指派/3全职配送员/4.兼职配送员/5.顺丰配送）")
     private Integer orderAssignExpress;
 
 

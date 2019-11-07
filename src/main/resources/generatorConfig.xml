@@ -65,7 +65,8 @@
         <!--<table tableName="tb_user" domainObjectName="User"/>-->
         <!--<table tableName="tb_recent_file" domainObjectName="RecentFile"/>-->
         <!--<table tableName="tb_user_wallet" domainObjectName="UserWallet"/>-->
-        <table tableName="tb_banner_material" domainObjectName="BannerMaterial"/>
+        <!--<table tableName="tb_banner_material" domainObjectName="BannerMaterial"/>-->
+        <table tableName="tb_delivery_schedule" domainObjectName="DeliverySchedule"/>
 
     </context>
 </generatorConfiguration>

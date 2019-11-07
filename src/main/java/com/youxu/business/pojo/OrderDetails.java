@@ -44,6 +44,9 @@ public class OrderDetails {
     @ApiModelProperty(name = "orderDetailsStatus",value = "订单明细状态")
     private Boolean orderDetailsStatus;
 
+    @ApiModelProperty(name = "orderDetailsType",value = "订单类别：1.证件照2.照片冲洗3.文档打印4.普通打印")
+    private Integer orderDetailsType;
+
     // 新增
     @ApiModelProperty(name = "orderDetailsBookBinding",value = "装订订单明细表")
     private OrderDetailsBookBinding orderDetailsBookBinding;

@@ -13,6 +13,7 @@
         <result column="tb_order_detailsorder_details_total_price" jdbcType="DOUBLE" property="orderDetailsTotalPrice"/>
         <result column="tb_order_detailsorder_spec_name" property="orderSpecName"/>
         <result column="tb_order_detailsorder_details_count_colour" property="orderDetailsCountColour"/>
+        <result column="tb_order_detailsorder_details_type" property="orderDetailsType"/>
         <result column="tb_order_detailsorder_details_create_time" jdbcType="TIMESTAMP"
                 property="orderDetailsCreateTime"/>
         <result column="tb_order_detailsorder_details_modify_time" jdbcType="TIMESTAMP"
@@ -103,6 +104,7 @@
     , tb_order_details.order_details_create_time as tb_order_detailsorder_details_create_time
     , tb_order_details.order_details_modify_time as tb_order_detailsorder_details_modify_time
     , tb_order_details.order_details_status as tb_order_detailsorder_details_status
+    , tb_order_details.orderDetailsType as tb_order_detailsorder_details_type
   </sql>
     <sql id="Base_Column_List_tb_order_details_book_binding">
     tb_order_details_book_binding.id as tb_order_details_book_bindingid
@@ -285,6 +287,7 @@
             order_details_total_price,
             order_spec_name,
             order_details_count_colour,
+            order_details_type,
             order_details_create_time,
             order_details_modify_time,
             order_details_status,
@@ -300,6 +303,7 @@
             #{orderDetails.orderDetailsTotalPrice,jdbcType=DOUBLE},
             #{orderDetails.orderSpecName},
             #{orderDetails.orderDetailsCountColour},
+            #{orderDetails.orderDetailsType},
             now(),
             now(),
             false

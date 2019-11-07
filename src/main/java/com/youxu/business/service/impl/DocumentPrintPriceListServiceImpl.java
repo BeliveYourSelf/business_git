@@ -22,30 +22,37 @@ public class DocumentPrintPriceListServiceImpl implements DocumentPrintPriceList
     private DocumentPrintPriceListMapper documentPrintPriceListMapper;
 
     @Override
-    public DocumentPrintPriceList selectDocumentPrintPriceList(DocumentPrintPriceList documentPrintPriceList) throws IOException {
+    public DocumentPrintPriceList selectDocumentPrintPriceList(DocumentPrintPriceList documentPrintPriceList) throws Exception {
         // 查看页数
         int pdfPageNumber = documentPrintPriceList.getPageNumber();
         // 查看价格
         Integer count = documentPrintPriceList.getCount();// 黑白
         Integer countColour = documentPrintPriceList.getCountColour();// 彩色
-        DocumentPrintPriceList documentPrintPriceListNew = documentPrintPriceListMapper.selectDocumentPrintPriceList(documentPrintPriceList);
-        if(StringUtils.isEmpty(documentPrintPriceListNew)){
+        documentPrintPriceList.setDocumentPrintPriceListCode(documentPrintPriceList.getDocumentPrintPriceListCodeBlackAndWhite());
+        DocumentPrintPriceList documentPrintPriceListBlackAndWhite = documentPrintPriceListMapper.selectDocumentPrintPriceList(documentPrintPriceList);
+        documentPrintPriceList.setDocumentPrintPriceListCode(documentPrintPriceList.getDocumentPrintPriceListCodeColour());
+        DocumentPrintPriceList documentPrintPriceListCodeColour = documentPrintPriceListMapper.selectDocumentPrintPriceList(documentPrintPriceList);
+        if(StringUtils.isEmpty(documentPrintPriceListBlackAndWhite)){
             return null;
         }
-        //份数*单页价*页数
-        Double documentPrintPriceListPrice = documentPrintPriceListNew.getDocumentPrintPriceListPrice();
-        Double documentPrintPriceCover = documentPrintPriceListNew.getDocumentPrintPriceCover();
-        double blackAndWhitePrice = count * documentPrintPriceListPrice * pdfPageNumber;
-        double colorPrice = countColour * documentPrintPriceCover * pdfPageNumber;
+        // 份数*单页价*页数
+        Double documentPrintPriceListPriceBlackAndWhite = documentPrintPriceListBlackAndWhite.getDocumentPrintPriceListPrice();
+        Double documentPrintPriceListPriceColour = documentPrintPriceListCodeColour.getDocumentPrintPriceListPrice();
+        double blackAndWhitePrice = count * documentPrintPriceListPriceBlackAndWhite * pdfPageNumber;
+        double colorPrice = countColour * documentPrintPriceListPriceColour * pdfPageNumber;
         double totalPriceDouble = blackAndWhitePrice + colorPrice;
         DecimalFormat decimalFormat = new DecimalFormat("######.00");
         String totalPriceString = decimalFormat.format(totalPriceDouble);
         Double totalPrice = Double.valueOf(totalPriceString);
-        documentPrintPriceListNew.setTotalPrice(totalPrice);
-        documentPrintPriceListNew.setCountColour(countColour);
-        documentPrintPriceListNew.setDocumentPrintPriceListPrice(documentPrintPriceListPrice);
-        documentPrintPriceListNew.setCount(count);
-        documentPrintPriceListNew.setPageNumber(pdfPageNumber);
-        return documentPrintPriceListNew;
+        documentPrintPriceListBlackAndWhite.setTotalPrice(totalPrice);
+        documentPrintPriceListBlackAndWhite.setCountColour(countColour);
+        documentPrintPriceListBlackAndWhite.setDocumentPrintPriceListPrice(0.0);
+        documentPrintPriceListBlackAndWhite.setDocumentPrintPriceListPriceBlackAndWhite(documentPrintPriceListPriceBlackAndWhite);// 黑白单价
+        documentPrintPriceListBlackAndWhite.setDocumentPrintPriceListPriceCodeColour(documentPrintPriceListPriceColour);// 彩色单价
+        documentPrintPriceListBlackAndWhite.setDocumentPrintPriceListCodeBlackAndWhite(documentPrintPriceList.getDocumentPrintPriceListCodeBlackAndWhite());
+        documentPrintPriceListBlackAndWhite.setDocumentPrintPriceListCodeColour(documentPrintPriceList.getDocumentPrintPriceListCodeColour());
+        documentPrintPriceListBlackAndWhite.setCount(count);
+        documentPrintPriceListBlackAndWhite.setPageNumber(pdfPageNumber);
+        return documentPrintPriceListBlackAndWhite;
     }
 }

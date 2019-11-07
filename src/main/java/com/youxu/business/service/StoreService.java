@@ -8,4 +8,6 @@ public interface StoreService {
     List<Store> selectStoreList();
 
     Store selectStore(Store store);
+
+    Store selectStoreById(String storeId);
 }

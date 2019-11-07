@@ -18,6 +18,8 @@
     <result column="status" jdbcType="BIT" property="status" />
     <result column="delivery_clerk_per_one"  property="deliveryclerkPricePerOne" />
     <result column="licence_price"  property="licencePrice" />
+    <result column="store_binding_price_horizontal"  property="storeBindingPriceHorizontal" />
+    <result column="store_binding_price_vertical"  property="storeBindingPriceVertical" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -80,7 +82,8 @@
   <sql id="Base_Column_List">
     id, store_name, store_address, store_phone, store_time, store_open_for_out, output_size, store_output_colour,
     store_quality, store_latitude, store_longitude, create_time, modify_time, status, delivery_clerk_per_one, licence_price
-  </sql>
+    ,store_binding_price_horizontal ,store_binding_price_vertical
+</sql>
   <select id="selectByExample" parameterType="com.youxu.business.pojo.StoreExample" resultMap="BaseResultMap">
     select
     <if test="distinct">

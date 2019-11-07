@@ -40,4 +40,14 @@ public class StoreController {
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectStore);
     }
 
+    @ApiOperation(value = "查看店铺通过id", notes = "storeId")
+    @GetMapping("/selectStoreById")
+    public ResponseMessage<Store> selectStoreById(@RequestParam String storeId) {
+        Store store =storeService.selectStoreById(storeId);
+        if (org.springframework.util.StringUtils.isEmpty(store)) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "暂无店铺");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",store);
+    }
+
 }

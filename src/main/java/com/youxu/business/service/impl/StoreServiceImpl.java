@@ -47,4 +47,10 @@ public class StoreServiceImpl implements StoreService{
         }
         return storeMin;
     }
+
+    @Override
+    public Store selectStoreById(String storeId) {
+        Store store = storeMapper.selectByStoreId(Integer.valueOf(storeId));
+        return store;
+    }
 }

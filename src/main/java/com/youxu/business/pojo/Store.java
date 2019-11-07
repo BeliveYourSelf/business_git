@@ -54,5 +54,14 @@ public class Store {
     @ApiModelProperty(name = "licencePrice",value = "证件照价格")
     private Double licencePrice;
 
+    @ApiModelProperty(name = "storeBindingPriceHorizontal",value = "装订价格-横板")
+    private Double storeBindingPriceHorizontal;
+
+    @ApiModelProperty(name = "storeBindingPriceVertical",value = "装订价格-竖版")
+    private Double storeBindingPriceVertical;
+
+
+
+
 
 }

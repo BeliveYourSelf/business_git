@@ -29,7 +29,7 @@ public class OrderController {
             "\"orderDetailsBookBinding\": { \"coverColor\": \"黑色\", \"coverFileUrl\": \"xxx\", \"faceDirection\": \"横向\"\n" +
             "\n" +
             "} } ] , \"orderExtraMoney\": 10 , \"orderFromStoreGet\": \"3\" , \"orderFromStoreGetWhere\": \"天津工业大学1号宿舍楼\" , \"orderPrintMoney\": \"10\" , \"orderProcess\": 1 , \"orderType\": 1 , \"storeId\": 1 , \"userId\": 1 , \"orderRemark\":\"帮我装订好哦\" ,\"shareId\":\"1\", \"vouchersIdList\":[ \"1\", \"2\" ]\n" +
-            ",\"orderCouponMoneyId\":\"1\",\"orderCouponDeliveryId\":\"2\",\"orderCouponDeliveryMoney\":\"2\"}           注：增加3个字段：orderCouponMoneyId：优惠券/代金券id，orderCouponDeliveryId：配送券id，orderCouponDeliveryMoney: 配送券面额  orderDetailsType:订单明细类别：1.证件照2.照片冲洗3.文档打印4.普通打印   ")
+            ",\"orderCouponMoneyId\":\"1\",\"orderCouponDeliveryId\":\"2\",\"orderCouponDeliveryMoney\":\"2\",\"orderTypeOther\":\"1\"}            注：增加3个字段：orderCouponMoneyId：优惠券/代金券id，orderCouponDeliveryId：配送券id，orderCouponDeliveryMoney: 配送券面额    orderTypeOther:1.普通达2.一小时达3.精准达   orderDetailsType:订单明细类别：1.证件照2.照片冲洗3.文档打印4.普通打印   ")
     @PostMapping("/insertOrder")
     public ResponseMessage<Integer> insertOrder(@RequestBody Order order) {
         Integer orderId = null;

@@ -381,6 +381,7 @@ public class OrderServiceImpl implements OrderService {
      */
     private Order getOrder(Order orderNew) {
         String orderDeliveryPrescriptioTime = orderNew.getOrderDeliveryPrescriptioTime();
+        if(!StringUtils.isEmpty(orderDeliveryPrescriptioTime)){
         // 配送时间 mm
         Long orderDeliveryPrescriptioTimeLong = Long.valueOf(orderDeliveryPrescriptioTime);
         Date orderPayDate = orderNew.getOrderPayDate();
@@ -389,6 +390,7 @@ public class OrderServiceImpl implements OrderService {
             Long orderPayDateLong = orderPayDate.getTime();
             Long expireTime = orderDeliveryPrescriptioTimeLong + orderPayDateLong;
             orderNew.setExpireTime(expireTime.toString());
+        }
         }
         return orderNew;
     }

@@ -139,6 +139,9 @@ public class Order extends PageInfo{
     @ApiModelProperty(name = "orderTypeOther",value = "1.普通达2.一小时达3.精准达")
     private Integer orderTypeOther;
 
+    @ApiModelProperty(name = "orderAppoint",value = "订单指派：0.全部/1.全职配送员/2.兼职配送员/3.顺丰配送/4.特殊指派")
+    private Integer orderAppoint;
+
 
 
 

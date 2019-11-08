@@ -101,10 +101,13 @@ public class Order extends PageInfo{
     @ApiModelProperty(name = "orderDetailsList",value = "订单对象集合")
     private List<OrderDetails> orderDetailsList;
 
-    private String openId;
-
     @ApiModelProperty(name = "storeIdList",value = "商铺id集合")
     private List<String> storeIdList;
+
+    private String openId;
+
+    @ApiModelProperty(name = "theCategory",value = "配送员类别：1:全职，2：兼职")
+    private Integer theCategory;
 
     @ApiModelProperty(name = "whetherMembers",value = "是否是会员")
     private Boolean whetherMembers;
@@ -138,9 +141,6 @@ public class Order extends PageInfo{
 
     @ApiModelProperty(name = "orderTypeOther",value = "1.普通达2.一小时达3.精准达")
     private Integer orderTypeOther;
-
-    @ApiModelProperty(name = "orderAppoint",value = "订单指派：0.全部/1.全职配送员/2.兼职配送员/3.顺丰配送/4.特殊指派")
-    private Integer orderAppoint;
 
 
 

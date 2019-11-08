@@ -167,7 +167,7 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> selectOrderList(Order order) {
         DeliveryClerkInfo deliveryClerkInfo = deliveryClerkInfoMapper.selectDeliveryClerkInfoByUserId(order.getUserId().toString());
         List<Order> orderListNew = new ArrayList<>();
-        order.setOrderAppoint(deliveryClerkInfo.getTheCategory());
+        order.setOrderAssignExpress(deliveryClerkInfo.getTheCategory());
         //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
         PageHelper.startPage(order.getPageNo(), order.getPageSize());
         List<Order> orderList = orderMapper.selectOrderListOverWrite(order);
@@ -210,6 +210,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> selectDeliveryFileByStoreIdList(Order order) {
+        // 查看配送员全职还是兼职（theCategory）
+        Integer deliveryId = order.getDeliveryId();
+        if(!StringUtils.isEmpty(deliveryId)){
+        DeliveryClerkInfo deliveryClerkInfo = deliveryClerkInfoMapper.selectDeliveryClerkInfoById(deliveryId.toString());
+        Integer theCategory = deliveryClerkInfo.getTheCategory();
+        order.setTheCategory(theCategory);
+        }
         List<Order> orderList = new ArrayList<>();
         List<Order> orders = new ArrayList<>();
         if(StringUtils.isEmpty(order.getDeliveryId()) && order.getDeliveryStatus() == 1){

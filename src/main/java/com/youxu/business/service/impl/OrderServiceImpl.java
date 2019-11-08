@@ -214,12 +214,15 @@ public class OrderServiceImpl implements OrderService {
         Integer deliveryId = order.getDeliveryId();
         if(!StringUtils.isEmpty(deliveryId)){
         DeliveryClerkInfo deliveryClerkInfo = deliveryClerkInfoMapper.selectDeliveryClerkInfoById(deliveryId.toString());
-        Integer theCategory = deliveryClerkInfo.getTheCategory();
+            Integer theCategory = deliveryClerkInfo.getTheCategory();
+            if(StringUtils.isEmpty(deliveryClerkInfo) || StringUtils.isEmpty(theCategory)){
+                return null;  //配送员没有分配配送角色（全职/兼职）
+            }
         order.setTheCategory(theCategory);
         }
         List<Order> orderList = new ArrayList<>();
         List<Order> orders = new ArrayList<>();
-        if(StringUtils.isEmpty(order.getDeliveryId()) && order.getDeliveryStatus() == 1){
+        if(StringUtils.isEmpty(deliveryId) && order.getDeliveryStatus() == 1){
             // 取件
             orders = orderMapper.selectDeliveryFileByStoreIdListGetFile(order);
         }else{

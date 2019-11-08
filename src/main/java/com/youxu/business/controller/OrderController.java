@@ -129,7 +129,7 @@ public class OrderController {
     public ResponseMessage<List<Order>> selectOrderList(@RequestBody Order order) {
         List<Order> selectOrderList = orderService.selectOrderList(order);
         if (selectOrderList.size() <= 0) {
-            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "暂无列表");
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",selectOrderList);
     }

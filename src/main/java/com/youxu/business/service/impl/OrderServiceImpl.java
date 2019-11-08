@@ -11,23 +11,17 @@ import com.youxu.business.utils.OtherUtil.UploadUtils;
 import com.youxu.business.utils.normalQRcode.QRCodeUtil;
 import com.youxu.business.utils.oss.download.DownLoadZip;
 import com.youxu.business.utils.uuid.UUIDUtils;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Transformer;
 import org.apache.http.entity.ContentType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,7 +40,6 @@ public class OrderServiceImpl implements OrderService {
     private DeliveryClerkInfoMapper deliveryClerkInfoMapper;
     @Resource
     private StoreMapper storeMapper;
-
     @Override
     public Integer insertOrder(Order order) throws Exception {
         // 收货码
@@ -172,7 +165,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> selectOrderList(Order order) {
+        DeliveryClerkInfo deliveryClerkInfo = deliveryClerkInfoMapper.selectDeliveryClerkInfoByUserId(order.getUserId().toString());
         List<Order> orderListNew = new ArrayList<>();
+        order.setOrderAppoint(deliveryClerkInfo.getTheCategory());
         //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
         PageHelper.startPage(order.getPageNo(), order.getPageSize());
         List<Order> orderList = orderMapper.selectOrderListOverWrite(order);

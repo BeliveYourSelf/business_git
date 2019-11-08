@@ -849,7 +849,7 @@
         select
         <include refid="Base_Column_List"/>
         from tb_order
-        where tb_order.user_id = #{order.userId} and order_process = #{order.orderProcess} and order_status = false
+        where tb_order.user_id = #{order.userId} and order_process = #{order.orderProcess} and (order_appoint = #{order.orderAppoint} or order_appoint = 0) and order_status = false
     </select>
     <!--查看订单重构-->
     <select id="selectOrderByIdOverWrite" resultMap="BaseResultMapOverWrite">

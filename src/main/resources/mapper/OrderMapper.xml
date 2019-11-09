@@ -835,12 +835,12 @@
     set tb_order.order_status = true
     where id = #{id}
     </update>
-    <!--查看订单集合重构 order_assign_express:指派快件（0待指派/1.全部配送员/2特殊指派/3全职配送员/4.兼职配送员/5.顺丰配送）-->
+    <!--查看订单集合重构-->
     <select id="selectOrderListOverWrite" resultMap="BaseResultMapOverWrite">
         select
         <include refid="Base_Column_List"/>
         from tb_order
-        where tb_order.user_id = #{order.userId} and order_process = #{order.orderProcess} and (order_assign_express = #{order.orderAssignExpress} or order_assign_express = 1) and order_status = false
+        where tb_order.user_id = #{order.userId} and order_process = #{order.orderProcess} and order_status = false
     </select>
     <!--查看订单重构-->
     <select id="selectOrderByIdOverWrite" resultMap="BaseResultMapOverWrite">

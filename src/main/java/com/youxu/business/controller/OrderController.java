@@ -121,7 +121,12 @@ public class OrderController {
             ",\"userId\":\"1\"}         orderProcess：订单进行状态:1.待付款2.进行中3.已完成4.已取消")
     @PostMapping("/selectOrderList")
     public ResponseMessage<List<Order>> selectOrderList(@RequestBody Order order) {
-        List<Order> selectOrderList = orderService.selectOrderList(order);
+        List<Order> selectOrderList = null;
+        try {
+            selectOrderList = orderService.selectOrderList(order);
+        } catch (Exception e) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "暂无列表");
+        }
         if (selectOrderList.size() <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "暂无列表");
         }

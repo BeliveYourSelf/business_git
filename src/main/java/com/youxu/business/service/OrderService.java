@@ -18,7 +18,7 @@ public interface OrderService {
 
     Order insertOrderAgain(String id);
 
-    List<Order> selectOrderList(Order order);
+    List<Order> selectOrderList(Order order) throws Exception;
 
     Integer updateOrderPayDateAndProcess(Integer orderId, Integer orderProcess);
 

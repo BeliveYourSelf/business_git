@@ -164,7 +164,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> selectOrderList(Order order) {
+    public List<Order> selectOrderList(Order order) throws Exception{
         DeliveryClerkInfo deliveryClerkInfo = deliveryClerkInfoMapper.selectDeliveryClerkInfoByUserId(order.getUserId().toString());
         List<Order> orderListNew = new ArrayList<>();
         order.setOrderAssignExpress(deliveryClerkInfo.getTheCategory());

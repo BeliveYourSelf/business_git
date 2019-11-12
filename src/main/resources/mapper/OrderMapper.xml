@@ -436,7 +436,7 @@
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
     </update>
-    <!--新增订单-->
+    <!--新增订单： delivery_status 配送状态（0.未发货1.待取件/2.配送中/3.问题件/4.已完成/5.实时订单/6.顺丰配送）-->
     <insert id="insertOrder">
         insert into tb_order
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -609,7 +609,7 @@
             <if test="orderTypeOther != null">
                 #{orderTypeOther},
             </if>
-            0,
+            5,
             0,
             now(),
             now(),

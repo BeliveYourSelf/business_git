@@ -384,10 +384,10 @@ public class OrderServiceImpl implements OrderService {
         if(!StringUtils.isEmpty(orderDeliveryPrescriptioTime)){
         // 配送时间 mm
         Long orderDeliveryPrescriptioTimeLong = Long.valueOf(orderDeliveryPrescriptioTime);
-        Date orderPayDate = orderNew.getOrderPayDate();
+        Date orderCreateTime = orderNew.getOrderCreateTime();
         // 支付时间 mm
-        if (!StringUtils.isEmpty(orderPayDate)) {
-            Long orderPayDateLong = orderPayDate.getTime();
+        if (!StringUtils.isEmpty(orderCreateTime)) {
+            Long orderPayDateLong = orderCreateTime.getTime();
             Long expireTime = orderDeliveryPrescriptioTimeLong + orderPayDateLong;
             orderNew.setExpireTime(expireTime.toString());
         }

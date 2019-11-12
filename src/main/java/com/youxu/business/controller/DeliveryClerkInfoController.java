@@ -15,6 +15,8 @@ import com.youxu.business.utils.baiducloud.facerecognition.baiducloudutil.Result
 import com.youxu.business.utils.wechat.requestapitool.CommonRpc;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +29,8 @@ import java.util.Random;
 @Api(description = "配送员信息表")
 @RestController
 public class DeliveryClerkInfoController {
+    private final static Logger logger = LoggerFactory.getLogger(DeliveryClerkInfoController.class);
+
     @Resource
     private DeliveryClerkInfoService deliveryClerkInfoService;
     @Resource
@@ -187,6 +191,7 @@ public class DeliveryClerkInfoController {
              personverify = personVerify.personverify(deliveryClerkInfo);
              score = personverify.getResult().getScore();
         } catch (Exception e) {
+            logger.info("百度云人脸识别error:"+personverify.getError_code()+personverify.getError_msg());
             return Result.error(personverify.getError_code(),personverify.getError_msg());
         }
         Integer scoreInteger = Double.valueOf(score).intValue();

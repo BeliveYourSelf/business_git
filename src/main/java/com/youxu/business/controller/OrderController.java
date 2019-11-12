@@ -5,16 +5,10 @@ import com.youxu.business.service.OrderService;
 import com.youxu.business.utils.Enum.ResultCodeEnum;
 import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
-import com.youxu.business.utils.uuid.UUIDUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 
 @Api(description = "订单表")
@@ -144,13 +138,7 @@ public class OrderController {
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",selectOrderById);
     }
 
-    @ApiOperation(value = "批量下载文件到本地重写新", notes = "{\n" +
-            "  \"fileUrlList\": [\n" +
-            "    \"https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20190929/1569720759130.pdf\"\n" +
-            ",\"https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20190929/1569724765061.pdf\"\n" +
-            "  ],\n" +
-            "  \"localFilePath\": \"C:\\\\Users\\\\Dell\\\\Desktop\"\n" +
-            "}")
+    @ApiOperation(value = "批量下载文件到本地重写新", notes = "")
     @GetMapping("/downLoadFileListOverWriteNew")
     public ResponseMessage<String> downLoadFileListOverWriteNew(@RequestParam String orderId) {
         try {

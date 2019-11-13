@@ -17,6 +17,9 @@ public class OrderEvaluate {
     @ApiModelProperty(name = "orderId", value = "订单id")
     private Integer orderId;
 
+    @ApiModelProperty(name = "storeId", value = "店铺id")
+    private Integer storeId;
+
     @ApiModelProperty(name = "orderComment", value = "订单评价内容")
     private String orderComment;
 

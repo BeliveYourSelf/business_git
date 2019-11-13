@@ -224,6 +224,9 @@
       <if test="orderEvaluateName != null">
         order_evaluate_name,
       </if>
+      <if test="storeId != null">
+        order_store_id,
+      </if>
         order_evaluate_create_time,
         order_evaluate_modify_time,
         order_evaluate_status,
@@ -246,6 +249,9 @@
       </if>
       <if test="orderEvaluateName != null">
         #{orderEvaluateName},
+      </if>
+      <if test="storeId != null">
+        #{storeId},
       </if>
         now(),
         now(),

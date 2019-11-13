@@ -34,6 +34,7 @@ public class OrderEvaluateServiceImpl implements OrderEvaluateService {
         orderEvaluate.setOrderEvaluateName(user.getUserName());
         orderEvaluate.setOrderEvaluatePhone(user.getUserPhone());
         orderEvaluate.setOrderEvaluateAccount(user.getUserName());
+        orderEvaluate.setStoreId(order.getStoreId());
         Integer insertOrderEvaluate = orderEvaluateMapper.insertOrderEvaluate(orderEvaluate);
         int orderEvaluateId = orderMapper.lastInsertId();
         // 关联订单评价选项卡

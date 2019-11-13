@@ -212,6 +212,15 @@
       <if test="orderComment != null">
         order_comment,
       </if>
+      <if test="orderEvaluateAccount != null">
+        order_evaluate_account,
+      </if>
+      <if test="orderEvaluatePhone != null">
+        order_evaluate_phone,
+      </if>
+      <if test="orderEvaluateName != null">
+        order_evaluate_name,
+      </if>
         order_evaluate_create_time,
         order_evaluate_modify_time,
         order_evaluate_status,
@@ -225,6 +234,15 @@
       </if>
       <if test="orderComment != null">
         #{orderComment,jdbcType=VARCHAR},
+      </if>
+      <if test="orderEvaluateAccount != null">
+        #{orderEvaluateAccount},
+      </if>
+      <if test="orderEvaluatePhone != null">
+        #{orderEvaluatePhone},
+      </if>
+      <if test="orderEvaluateName != null">
+        #{orderEvaluateName},
       </if>
         now(),
         now(),

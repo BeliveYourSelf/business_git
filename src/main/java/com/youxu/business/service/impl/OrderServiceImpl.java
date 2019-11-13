@@ -16,6 +16,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,6 +41,7 @@ public class OrderServiceImpl implements OrderService {
     private DeliveryClerkInfoMapper deliveryClerkInfoMapper;
     @Resource
     private StoreMapper storeMapper;
+
     @Override
     public Integer insertOrder(Order order) throws Exception {
         // 收货码
@@ -47,10 +49,10 @@ public class OrderServiceImpl implements OrderService {
         order.setDeliveryHarvestCode(shareCode);
         // 配送时间分改为毫秒
         String orderDeliveryPrescriptioTime = order.getOrderDeliveryPrescriptioTime();
-        if(!StringUtils.isEmpty(orderDeliveryPrescriptioTime)){
-        Long orderDeliveryPrescriptioTimeInteger = Long.valueOf(orderDeliveryPrescriptioTime);
-        Long orderTimeLong = orderDeliveryPrescriptioTimeInteger * 60000;// 分变成毫秒
-        order.setOrderDeliveryPrescriptioTime(orderTimeLong.toString());
+        if (!StringUtils.isEmpty(orderDeliveryPrescriptioTime)) {
+            Long orderDeliveryPrescriptioTimeInteger = Long.valueOf(orderDeliveryPrescriptioTime);
+            Long orderTimeLong = orderDeliveryPrescriptioTimeInteger * 60000;// 分变成毫秒
+            order.setOrderDeliveryPrescriptioTime(orderTimeLong.toString());
         }
         // 插入优惠券id
         List<Integer> vouchersIdList = order.getVouchersIdList();
@@ -133,9 +135,17 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Integer reminderOrder(Order order) {
+        Integer reminderOrder = null;
         Integer id = order.getId();
         Integer orderProcess = order.getOrderProcess();
-        Integer reminderOrder = orderMapper.reminderOrder(id, orderProcess);
+
+        if (orderProcess == 2) {
+            // 催单
+            reminderOrder = orderMapper.reminderOrder(id, orderProcess);
+        } else {
+            // 确认收件
+            reminderOrder = orderMapper.reminderOrderOverWrite(id, orderProcess);
+        }
         return reminderOrder;
     }
 
@@ -164,7 +174,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> selectOrderList(Order order) throws Exception{
+    public List<Order> selectOrderList(Order order) throws Exception {
         DeliveryClerkInfo deliveryClerkInfo = deliveryClerkInfoMapper.selectDeliveryClerkInfoByUserId(order.getUserId().toString());
         List<Order> orderListNew = new ArrayList<>();
         order.setOrderAssignExpress(deliveryClerkInfo.getTheCategory());
@@ -212,24 +222,24 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> selectDeliveryFileByStoreIdList(Order order) {
         // 查看配送员全职还是兼职（theCategory）
         Integer deliveryId = order.getDeliveryId();
-        if(!StringUtils.isEmpty(deliveryId)){
-        DeliveryClerkInfo deliveryClerkInfo = deliveryClerkInfoMapper.selectDeliveryClerkInfoById(deliveryId.toString());
+        if (!StringUtils.isEmpty(deliveryId)) {
+            DeliveryClerkInfo deliveryClerkInfo = deliveryClerkInfoMapper.selectDeliveryClerkInfoById(deliveryId.toString());
             Integer theCategory = deliveryClerkInfo.getTheCategory();
-            if(StringUtils.isEmpty(deliveryClerkInfo) || StringUtils.isEmpty(theCategory)){
+            if (StringUtils.isEmpty(deliveryClerkInfo) || StringUtils.isEmpty(theCategory)) {
                 return null;  //配送员没有分配配送角色（全职/兼职）
-            }else if(theCategory == 2){
+            } else if (theCategory == 2) {
                 theCategory = 4;  //  两个字段之间的关系     theCategory：1.全职/2.兼职 orderAssignExpress:指派快件（0.待指派/1.全部配送员/2特殊指派/3全职配送员/4.兼职配送员/5.顺丰配送）
             }
-        order.setTheCategory(theCategory);
+            order.setTheCategory(theCategory);
         }
         List<Order> orderList = new ArrayList<>();
         List<Order> orders = new ArrayList<>();
-        if(order.getDeliveryStatus() == 1){
+        if (order.getDeliveryStatus() == 1) {
             // 取件
             orders = orderMapper.selectDeliveryFileByStoreIdListGetFile(order);
-        }else{
+        } else {
             // 配送中/问题件/已完成
-         orders = orderMapper.selectDeliveryFileByStoreIdList(order);
+            orders = orderMapper.selectDeliveryFileByStoreIdList(order);
         }
         // 统计到期时间
         for (Order orderNew : orders) {
@@ -299,7 +309,7 @@ public class OrderServiceImpl implements OrderService {
      * @param str
      * @return
      */
-    public static Map<String, String> mapStringToMap(String str) throws Exception{
+    public static Map<String, String> mapStringToMap(String str) throws Exception {
         str = str.substring(1, str.length() - 1);
         String[] strs = str.split(",");
         Map<String, String> map = new HashMap<String, String>();
@@ -383,16 +393,16 @@ public class OrderServiceImpl implements OrderService {
      */
     private Order getOrder(Order orderNew) {
         String orderDeliveryPrescriptioTime = orderNew.getOrderDeliveryPrescriptioTime();
-        if(!StringUtils.isEmpty(orderDeliveryPrescriptioTime)){
-        // 配送时间 mm
-        Long orderDeliveryPrescriptioTimeLong = Long.valueOf(orderDeliveryPrescriptioTime);
-        Date orderCreateTime = orderNew.getOrderCreateTime();
-        // 支付时间 mm
-        if (!StringUtils.isEmpty(orderCreateTime)) {
-            Long orderPayDateLong = orderCreateTime.getTime();
-            Long expireTime = orderDeliveryPrescriptioTimeLong + orderPayDateLong;
-            orderNew.setExpireTime(expireTime.toString());
-        }
+        if (!StringUtils.isEmpty(orderDeliveryPrescriptioTime)) {
+            // 配送时间 mm
+            Long orderDeliveryPrescriptioTimeLong = Long.valueOf(orderDeliveryPrescriptioTime);
+            Date orderCreateTime = orderNew.getOrderCreateTime();
+            // 支付时间 mm
+            if (!StringUtils.isEmpty(orderCreateTime)) {
+                Long orderPayDateLong = orderCreateTime.getTime();
+                Long expireTime = orderDeliveryPrescriptioTimeLong + orderPayDateLong;
+                orderNew.setExpireTime(expireTime.toString());
+            }
         }
         return orderNew;
     }

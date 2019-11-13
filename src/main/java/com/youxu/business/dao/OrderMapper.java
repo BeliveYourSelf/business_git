@@ -62,4 +62,6 @@ public interface OrderMapper {
 
     // 取件
     List<Order> selectDeliveryFileByStoreIdListGetFile(@Param("order") Order order);
+    // 确认收件
+    Integer reminderOrderOverWrite(@Param("id") Integer id, @Param("orderProcess") Integer orderProcess);
 }

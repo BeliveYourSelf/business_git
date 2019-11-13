@@ -32,7 +32,7 @@ public class Order extends PageInfo{
     @ApiModelProperty(name = "orderFromStoreGetWhere",value = "到店自取的店铺")
     private String orderFromStoreGetWhere;
 
-    @ApiModelProperty(name = "orderDeliveryPrescriptioTime",value = "配送时效")
+    @ApiModelProperty(name = "orderDeliveryPrescriptioTime",value = "配送时效:前台传入是分钟，数据库和后台为时间戳")
     private String orderDeliveryPrescriptioTime;
 
     @ApiModelProperty(name = "orderPrintMoney",value = "打印钱数")

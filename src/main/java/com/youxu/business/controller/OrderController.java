@@ -101,7 +101,19 @@ public class OrderController {
         Order insertOrderAgain = orderService.insertOrderAgain(id);
         Integer orderId = null;
         try {
+            // 重新计算价格
             insertOrderAgain.setOrderProcess(1);
+            insertOrderAgain.setOrderDeliveryPrescriptioTime("5");// 重新下单时效5分钟
+            insertOrderAgain.setVouchersIdList(null);// 优惠券置为空
+            insertOrderAgain.setOrderCouponMoneyId(null);// 优惠券id（代金券）
+            insertOrderAgain.setOrderConsumeMoney(null);// 优惠券为null
+            insertOrderAgain.setOrderCouponDeliveryId(null);// 配送券id
+            insertOrderAgain.setOrderCouponDeliveryMoney(null);// 配送券价格
+            Double orderConsumeMoney = insertOrderAgain.getOrderConsumeMoney();
+            Integer orderCouponDeliveryMoney = insertOrderAgain.getOrderCouponDeliveryMoney();
+            Double orderActualMoney = insertOrderAgain.getOrderActualMoney();
+            double actualMoney = orderActualMoney + (orderConsumeMoney == null ? 0 : orderConsumeMoney) + (orderCouponDeliveryMoney == null ? 0 : orderCouponDeliveryMoney);
+            insertOrderAgain.setOrderActualMoney(actualMoney);
             orderId = orderService.insertOrder(insertOrderAgain);
             // 更新取件二维码和收获码
             Integer integer = orderService.updateOrderOverWrite(orderId);

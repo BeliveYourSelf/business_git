@@ -267,7 +267,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Integer updateDeliveryOrderProblem(Order order) {
+    public Integer updateDeliveryOrderProblem(Order order) throws Exception {
         String deliveryProblemFileMarkNew = order.getDeliveryProblemFileMark();
         Order orderNew = orderMapper.selectOrderById(order.getId().toString());
         String deliveryProblemFileMark = orderNew.getDeliveryProblemFileMark();
@@ -297,7 +297,7 @@ public class OrderServiceImpl implements OrderService {
      * @param str
      * @return
      */
-    public static Map<String, String> mapStringToMap(String str) {
+    public static Map<String, String> mapStringToMap(String str) throws Exception{
         str = str.substring(1, str.length() - 1);
         String[] strs = str.split(",");
         Map<String, String> map = new HashMap<String, String>();

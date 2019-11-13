@@ -161,7 +161,12 @@ public class DeliveryClerkInfoController {
             "id：订单id  deliveryProblemFileMark：问题件标注 ")
     @PostMapping("/updateDeliveryOrderProblem")
     public ResponseMessage updateDeliveryOrderProblem(@RequestBody Order order) {
-        Integer updateDeliveryOrderProblem = orderService.updateDeliveryOrderProblem(order);
+        Integer updateDeliveryOrderProblem = null;
+        try {
+            updateDeliveryOrderProblem = orderService.updateDeliveryOrderProblem(order);
+        } catch (Exception e) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "评价失败",e.getMessage());
+        }
         if (updateDeliveryOrderProblem == 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }

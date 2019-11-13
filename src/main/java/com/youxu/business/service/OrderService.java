@@ -30,7 +30,7 @@ public interface OrderService {
 
     Integer updateDeliveryInfoToCompelete(Order order);
 
-    Integer updateDeliveryOrderProblem(Order order);
+    Integer updateDeliveryOrderProblem(Order order) throws Exception;
 
     Integer insertOrderForMemberPrice(Share share);
 

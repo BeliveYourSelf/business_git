@@ -521,7 +521,6 @@
             <if test="orderTypeOther != null">
                 order_type_other,
             </if>
-            delivery_status,
             order_assign_express,
             order_create_time,
             order_modify_time,
@@ -609,7 +608,6 @@
             <if test="orderTypeOther != null">
                 #{orderTypeOther},
             </if>
-            5,
             0,
             now(),
             now(),
@@ -857,7 +855,7 @@
             <if test="orderProcess != null">
                 order_process = #{orderProcess},
             </if>
-            tb_order.delivery_status = 1
+            tb_order.delivery_status = 5
         </set>
         where id = #{orderId}
     </update>

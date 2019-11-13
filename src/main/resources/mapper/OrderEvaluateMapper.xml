@@ -6,6 +6,9 @@
     <result column="order_evaluate_star" jdbcType="INTEGER" property="orderEvaluateStar" />
     <result column="order_id" jdbcType="INTEGER" property="orderId" />
     <result column="order_comment" jdbcType="VARCHAR" property="orderComment" />
+    <result column="order_evaluate_account"  property="orderEvaluateAccount" />
+    <result column="order_evaluate_phone"  property="orderEvaluatePhone" />
+    <result column="order_evaluate_name"  property="orderEvaluateName" />
     <result column="order_evaluate_create_time" jdbcType="TIMESTAMP" property="orderEvaluateCreateTime" />
     <result column="order_evaluate_modify_time" jdbcType="TIMESTAMP" property="orderEvaluateModifyTime" />
     <result column="order_evaluate_status" jdbcType="BIT" property="orderEvaluateStatus" />
@@ -70,7 +73,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, order_evaluate_star, order_id, order_comment, order_evaluate_create_time, order_evaluate_modify_time, 
-    order_evaluate_status
+    order_evaluate_status, order_evaluate_account, order_evaluate_phone, order_evaluate_name
   </sql>
   <select id="selectByExample" parameterType="com.youxu.business.pojo.OrderEvaluateExample" resultMap="BaseResultMap">
     select

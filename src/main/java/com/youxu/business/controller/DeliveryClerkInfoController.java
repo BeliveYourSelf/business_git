@@ -105,7 +105,7 @@ public class DeliveryClerkInfoController {
 
 
     @ApiOperation(value = "查看待取件/配送中/问题件/已完成", notes = "{\"storeIdList\":[\"1\",\"2\"] ,\"deliveryStatus\":\"2\" ,\"deliveryId\":\"23\"}" +
-            "storeIdList:店铺id集合  deliveryStatus： deliveryId：配送人id（注意：查看代取件时此字段什么都不传）deliveryStatus：0.未发货1.待取件/2.配送中/3.问题件/4.已完成/5.实时订单/6.顺丰配送")
+            "storeIdList:店铺id集合  deliveryStatus： deliveryId：配送人id   ，deliveryStatus：0.未发货1.待取件/2.配送中/3.问题件/4.已完成/5.实时订单/6.顺丰配送")
     @PostMapping("/selectDeliveryFileByStoreIdList")
     public ResponseMessage<List<Order>> selectDeliveryFileByStoreIdList(@RequestBody Order order) {
         List<Order> selectDeliveryFileByStoreIdList = orderService.selectDeliveryFileByStoreIdList(order);

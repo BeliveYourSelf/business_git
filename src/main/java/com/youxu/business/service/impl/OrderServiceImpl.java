@@ -217,12 +217,14 @@ public class OrderServiceImpl implements OrderService {
             Integer theCategory = deliveryClerkInfo.getTheCategory();
             if(StringUtils.isEmpty(deliveryClerkInfo) || StringUtils.isEmpty(theCategory)){
                 return null;  //配送员没有分配配送角色（全职/兼职）
+            }else if(theCategory == 2){
+                theCategory = 4;  //  两个字段之间的关系     theCategory：1.全职/2.兼职 orderAssignExpress:指派快件（0.待指派/1.全部配送员/2特殊指派/3全职配送员/4.兼职配送员/5.顺丰配送）
             }
         order.setTheCategory(theCategory);
         }
         List<Order> orderList = new ArrayList<>();
         List<Order> orders = new ArrayList<>();
-        if(StringUtils.isEmpty(deliveryId) && order.getDeliveryStatus() == 1){
+        if(order.getDeliveryStatus() == 1){
             // 取件
             orders = orderMapper.selectDeliveryFileByStoreIdListGetFile(order);
         }else{

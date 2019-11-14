@@ -247,13 +247,13 @@
                             <include>${project.build.finalName}.jar</include>
                         </resource>
                         <!--引入resources/lib的jar-->
-                        <resource>
+                        <!--<resource>
                             <directory>${basedir}/src/main/resources/lib</directory>
                             <targetPath>BOOT-INF/lib/</targetPath>
                             <includes>
                                 <include>**/*.jar</include>
                             </includes>
-                        </resource>
+                        </resource>-->
                     </resources>
                 </configuration>
             </plugin>

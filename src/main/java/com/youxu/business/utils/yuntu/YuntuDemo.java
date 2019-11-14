@@ -18,7 +18,7 @@
  */
 package com.youxu.business.utils.yuntu;
 
-import com.jingyue.DocConversion.Converter;
+/*import com.jingyue.DocConversion.Converter;
 import com.jingyue.DocConversion.YuntuConfig;
 import com.jingyue.DocConversion.common.YuntuDoc;
 import com.jingyue.DocConversion.common.YuntuException;
@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.URISyntaxException;*/
 
 /**
  * 这是一个演示九云图 Java SDK 的 Demo 程序，可直接运行。
@@ -36,11 +36,11 @@ import java.net.URISyntaxException;
  * @version 1.0
  */
 public class YuntuDemo {
-private final static Logger logger = LoggerFactory.getLogger(YuntuDemo.class);
-	/** 用来演示的样例文档。 */
+/*private final static Logger logger = LoggerFactory.getLogger(YuntuDemo.class);
+	*//** 用来演示的样例文档。 *//*
 	private final static String DEMO_DOC_URL = "https://image2.9yuntu.cn/resources/api/%e4%b9%9d%e4%ba%91%e5%9b%beAPI%e4%bd%bf%e7%94%a8%e8%af%b4%e6%98%8e.docx";
 
-	/**
+	*//**
 	 * 九云图 Demo 主程序。
 	 * 
 	 * @param args
@@ -51,7 +51,7 @@ private final static Logger logger = LoggerFactory.getLogger(YuntuDemo.class);
 	 *             文档显示异常。
 	 * @throws URISyntaxException
 	 *             网络访问异常。
-	 */
+	 *//*
 	public static void main(String[] args) throws YuntuException, IOException,
 			URISyntaxException {
 
@@ -78,9 +78,9 @@ private final static Logger logger = LoggerFactory.getLogger(YuntuDemo.class);
 			System.out.println("转换失败: " + doc.getMessage());
 		}
 	}
-	/**
+	*//**
 	 * 文档转换为Pdf
-	 */
+	 *//*
 	public static String documentTransToPDF(String documentUrl) throws YuntuException {
 		String pdfURL = null;
 		logger.info("九云图转换开始...");
@@ -98,5 +98,5 @@ private final static Logger logger = LoggerFactory.getLogger(YuntuDemo.class);
 			logger.info("转换失败: " + doc.getMessage());
 		}
 		return pdfURL;
-	}
+	}*/
 }

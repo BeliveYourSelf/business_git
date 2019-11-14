@@ -47,6 +47,9 @@ public class OrderDetails {
     @ApiModelProperty(name = "orderDetailsType",value = "订单类别：1.证件照2.照片冲洗3.文档打印4.普通打印")
     private Integer orderDetailsType;
 
+    @ApiModelProperty(name = "orderDetailsPage",value = "订单详情页数")
+    private Integer orderDetailsPage;
+
     // 新增
     @ApiModelProperty(name = "orderDetailsBookBinding",value = "装订订单明细表")
     private OrderDetailsBookBinding orderDetailsBookBinding;

@@ -142,6 +142,9 @@ public class Order extends PageInfo{
     @ApiModelProperty(name = "orderTypeOther",value = "1.普通达2.一小时达3.精准达")
     private Integer orderTypeOther;
 
+    @ApiModelProperty(name = "orderAllPage",value = "文档总页数")
+    private Integer orderAllPage;
+
 
 
 

@@ -7,14 +7,12 @@ import com.youxu.business.pojo.OrderDetails;
 import com.youxu.business.pojo.OrderDetailsBookBinding;
 import com.youxu.business.service.BaseService;
 import com.youxu.business.utils.OtherUtil.OSSUploadUtil;
-import com.youxu.business.utils.transicatetool.YuntuDemo;
+import com.youxu.business.utils.yuntu.YuntuDemo;
 import org.apache.commons.lang.StringUtils;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.URL;
-import java.net.URLConnection;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.zip.Adler32;
 import java.util.zip.CheckedOutputStream;

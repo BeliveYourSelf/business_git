@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.youxu.business.utils.transicatetool;
+package com.youxu.business.utils.yuntu;
 
 import com.jingyue.DocConversion.Converter;
 import com.jingyue.DocConversion.YuntuConfig;
@@ -58,7 +58,6 @@ private final static Logger logger = LoggerFactory.getLogger(YuntuDemo.class);
 		System.out.println("九云图转换开始...");
 
 		Converter converter = new com.jingyue.DocConversion.Converter();
-
 		converter.setConfig(new YuntuConfig("html"));
 
 		YuntuDoc doc = converter.convert(DEMO_DOC_URL);

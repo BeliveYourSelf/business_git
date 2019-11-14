@@ -60,5 +60,10 @@ public class OrderDetails {
     @ApiModelProperty(name = "pictureList",value = "图片对象")
     private List<Picture> pictureList;
 
+    @ApiModelProperty(name = "orderDetailsPictureMapping",value = "图片明细映射表")
+    private List<OrderDetailsPictureMapping> orderDetailsPictureMappingList;
+
+
+
 
 }

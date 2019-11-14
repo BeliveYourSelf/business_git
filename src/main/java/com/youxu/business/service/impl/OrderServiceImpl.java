@@ -86,6 +86,17 @@ public class OrderServiceImpl implements OrderService {
                         orderDetailsBookBindingMapper.insertOrderDetailsBookBinding(orderDetailsBookBinding);
                         int orderDetailsBookBindingId = orderMapper.lastInsertId();
                         List<String> pictureUrlList = orderDetailsList.get(i - 1).getPictureUrlList();
+                        if(StringUtils.isEmpty(pictureUrlList)){
+                            pictureUrlList = new ArrayList<>();
+                            List<OrderDetailsPictureMapping> orderDetailsPictureMappingList = orderDetailsList.get(i - 1).getOrderDetailsPictureMappingList();
+                            for (OrderDetailsPictureMapping orderDetailsPictureMapping: orderDetailsPictureMappingList){
+                            List<Picture> pictureList = orderDetailsPictureMapping.getPictureList();
+                            for(Picture picture:pictureList){
+                                pictureUrlList.add(picture.getPictureUrl());
+                            }
+                            }
+                        }
+                        if(pictureUrlList.size()>0){
                         pictureMapper.insertPictureMapper(pictureUrlList);
                         int pictureFirstId = orderMapper.lastInsertId();
                         int size = pictureUrlList.size();
@@ -94,7 +105,7 @@ public class OrderServiceImpl implements OrderService {
                             pictureIdList.add(pictureFirstId + j - 1);
                         }
                         orderDetailsPictureMappingMapper.insertOrderDetailsPictrueMapping(orderDetailsId + i - 1, pictureIdList);
-
+                        }
                     }
                 }
             }
@@ -169,7 +180,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order insertOrderAgain(String id) {
-        Order order = orderMapper.selectOrderById(id);
+        Order order = orderMapper.selectOrderByIdOverWrite(id);
         return order;
     }
 

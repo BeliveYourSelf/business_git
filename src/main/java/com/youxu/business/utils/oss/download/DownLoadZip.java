@@ -7,8 +7,13 @@ import com.youxu.business.pojo.OrderDetails;
 import com.youxu.business.pojo.OrderDetailsBookBinding;
 import com.youxu.business.service.BaseService;
 import com.youxu.business.utils.OtherUtil.OSSUploadUtil;
+import com.youxu.business.utils.transicatetool.YuntuDemo;
 import org.apache.commons.lang.StringUtils;
+
+import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.zip.Adler32;
@@ -97,12 +102,13 @@ public class DownLoadZip extends BaseService {
      * 订单所有文件转换为pdf
      * @param order
      * @return
-     *//*
+     */
     public static String zipFilesDownOverWtrite(Order order) {
         HashMap<String, String> map = new HashMap<>();
         String mapValueObjectName = null;
         String path = null;
         try {
+            // 取文档路径
             List<OrderDetails> orderDetailsList = order.getOrderDetailsList();
             for (OrderDetails orderDetails : orderDetailsList) {
                 String fileDetailName = orderDetails.getOrderDetailsName();
@@ -117,14 +123,15 @@ public class DownLoadZip extends BaseService {
                 String orderDetailsOnePictureUrl = orderDetails.getOrderDetailsOnePictureUrl();
                 // if:证件照订单    else:照片冲印和文档打印
                 if (!StringUtils.isEmpty(orderDetailsOnePictureUrl)) {
-                    mapValueObjectName = orderDetailsOnePictureUrl.split("https://youxu-print.oss-cn-beijing.aliyuncs.com/")[1];
-                    map.put(fileDetailName, mapValueObjectName);
+                    int lastPoint = fileDetailName.lastIndexOf(".");
+                    fileDetailName = fileDetailName.substring(0,lastPoint);//该子字符串从指定的 beginIndex 处开始， endIndex:到指定的 endIndex-1处结束。
+                    fileDetailName = fileDetailName+".pdf";
+                    map.put(fileDetailName, orderDetailsOnePictureUrl);
                 } else {
                     List<String> pictureUrlList = orderDetails.getPictureUrlList();
                     if (!org.springframework.util.StringUtils.isEmpty(pictureUrlList) && pictureUrlList.size() > 0) {
                         for (String pictureUrl : pictureUrlList) {
-                            String pictureUrlObjectName = pictureUrl.split("https://youxu-print.oss-cn-beijing.aliyuncs.com/")[1];
-                            map.put(fileDetailName + "-" + new Date().getTime() + "-", pictureUrlObjectName);
+                            map.put(fileDetailName + "-" + new Date().getTime() + "-", pictureUrl);
                         }
                     }
                 }
@@ -134,20 +141,21 @@ public class DownLoadZip extends BaseService {
             // 创建临时文件
             File zipFile = File.createTempFile(fileName, ".zip");
             FileOutputStream f = new FileOutputStream(zipFile);
-            *//**
+            /**
              * 作用是为任何OutputStream产生校验和
              * 第一个参数是制定产生校验和的输出流，第二个参数是指定Checksum的类型 （Adler32（较快）和CRC32两种）
-             *//*
+             */
             CheckedOutputStream csum = new CheckedOutputStream(f, new Adler32());
             // 用于将数据压缩成Zip文件格式
             ZipOutputStream zos = new ZipOutputStream(csum);
             for (Map.Entry<String, String> entry : map.entrySet()) {
                 String key = entry.getKey();
                 String value = entry.getValue();
-                // 获取Object，返回结果为OSSObject对象     注意：ossfile（key）全路径（不包含域名）
-
-                // 读去Object内容  返回
-                InputStream inputStream = ossObject.getObjectContent();
+                String pdfValue = YuntuDemo.documentTransToPDF(value);
+                // 获取pdf输出流
+                URL conn_url =  new URL(pdfValue);
+                HttpsURLConnection connection = (HttpsURLConnection)conn_url.openConnection();
+                InputStream inputStream = connection.getInputStream();
                 // 对于每一个要被存放到压缩包的文件，都必须调用ZipOutputStream对象的putNextEntry()方法，确保压缩包里面文件不同名
                 zos.putNextEntry(new ZipEntry(key));
                 int bytesRead = 0;
@@ -156,10 +164,10 @@ public class DownLoadZip extends BaseService {
                     zos.write(bytesRead);
                 }
                 inputStream.close();
+                connection.disconnect();
                 zos.closeEntry(); // 当前文件写完，定位为写入下一条项目
             }
             zos.close();
-            ossClient.shutdown();
             // 上传压缩包到oss
             String absolutePath = zipFile.getAbsolutePath();
             File file = new File(absolutePath);
@@ -169,5 +177,5 @@ public class DownLoadZip extends BaseService {
             e.printStackTrace();
         }
         return path;
-    }*/
+    }
 }

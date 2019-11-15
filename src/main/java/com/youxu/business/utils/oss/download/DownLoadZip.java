@@ -239,7 +239,7 @@ public class DownLoadZip extends BaseService {
                 URL url = new URL(valuePath);
                 HttpsURLConnection connTransToPDF = (HttpsURLConnection) url.openConnection();
                 // 设置通用的请求属性
-                connTransToPDF.setRequestProperty("Authorization","APPCODE cb5ca61776b34828866e31a9ed94e3d5");
+                connTransToPDF.setRequestProperty("Authorization","APPCODE cb5ca61776b34828866e31a9ed94e3d51");
                 connTransToPDF.setReadTimeout(5000);
                 connTransToPDF.setConnectTimeout(5000);
                 connTransToPDF.setRequestMethod("GET");

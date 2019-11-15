@@ -27,7 +27,7 @@ public class Document {
     @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
     @ApiModelProperty(name = "createTime", value = "创建时间")
     private Date createTime;
-    
+
     @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
     @ApiModelProperty(name = "modifyTime", value = "修改时间")
     private Date modifyTime;

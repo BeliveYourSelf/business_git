@@ -264,7 +264,7 @@
         </dependency>
         <dependency>
             <groupId>com.jingyue.DocConversion</groupId>
-            <artifactId>jingyue-yuntu-20191106</artifactId>
+            <artifactId>jingyue-yuntu</artifactId>
             <version>20191106</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/lib/jingyue-yuntu-20191106.jar</systemPath>

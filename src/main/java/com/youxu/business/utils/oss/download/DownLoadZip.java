@@ -100,7 +100,7 @@ public class DownLoadZip extends BaseService {
      * 订单所有文件转换为pdf
      * @param order
      * @return
-     *//*
+     */
     public static String zipFilesDownOverWtrite(Order order) {
         HashMap<String, String> map = new HashMap<>();
         String mapValueObjectName = null;
@@ -139,10 +139,10 @@ public class DownLoadZip extends BaseService {
             // 创建临时文件
             File zipFile = File.createTempFile(fileName, ".zip");
             FileOutputStream f = new FileOutputStream(zipFile);
-            *//**
+            /**
              * 作用是为任何OutputStream产生校验和
              * 第一个参数是制定产生校验和的输出流，第二个参数是指定Checksum的类型 （Adler32（较快）和CRC32两种）
-             *//*
+             */
             CheckedOutputStream csum = new CheckedOutputStream(f, new Adler32());
             // 用于将数据压缩成Zip文件格式
             ZipOutputStream zos = new ZipOutputStream(csum);
@@ -175,5 +175,5 @@ public class DownLoadZip extends BaseService {
             e.printStackTrace();
         }
         return path;
-    }*/
+    }
 }

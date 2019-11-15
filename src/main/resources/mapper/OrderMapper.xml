@@ -564,7 +564,7 @@
                 #{orderDeliveryMoney,jdbcType=VARCHAR},
             </if>
             <if test="orderCouponMoney != null">
-                #{orderCouponMoney,jdbcType=DOUBLE},
+                #{orderCouponMoney},
             </if>
             <if test="orderActualMoney != null">
                 #{orderActualMoney},

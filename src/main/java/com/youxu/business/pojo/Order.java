@@ -57,11 +57,11 @@ public class Order extends PageInfo {
     @ApiModelProperty(name = "orderPayDate", value = "订单支付时间")
     private Date orderPayDate;
 
-    @JsonFormat(timezone = "GMT+8",pattern ="yyyy/HH/dd hh:MM:ss")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy/MM/dd HH:mm:ss")
     @ApiModelProperty(name = "orderCreateTime", value = "创建时间")
     private Date orderCreateTime;
 
-    @JsonFormat(timezone = "GMT+8",pattern ="yyyy/HH/dd hh:MM:ss")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy/MM/dd HH:mm:ss")
     @ApiModelProperty(name = "orderModifyTime", value = "修改时间")
     private Date orderModifyTime;
 

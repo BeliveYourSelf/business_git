@@ -214,12 +214,12 @@
                 <version>5.0.6</version>
             </dependency>
         <!--九云图:导入本地lib-->
-        <dependency>
+        <!--<dependency>
             <groupId>com.aliyun.oss</groupId>
             <artifactId>alioss</artifactId>
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/lib/alioss.jar</systemPath>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-codec</artifactId>

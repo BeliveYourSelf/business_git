@@ -8,7 +8,9 @@ import com.youxu.business.utils.ResponseUtil.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Api(description = "订单表")
@@ -29,7 +31,7 @@ public class OrderController {
         } catch (Exception e) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "新增失败");
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",orderId);
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", orderId);
     }
 
     /**
@@ -102,13 +104,15 @@ public class OrderController {
         Integer orderId = null;
         try {
             // 重新计算价格
+            List<Integer> integerList = new ArrayList();
+            integerList.add(0);
             insertOrderAgain.setOrderProcess(1);
             insertOrderAgain.setOrderDeliveryPrescriptioTime("5");// 重新下单时效5分钟
             insertOrderAgain.setVouchersIdList(null);// 优惠券置为空
-            insertOrderAgain.setOrderCouponMoneyId(null);// 优惠券id（代金券）
-            insertOrderAgain.setOrderConsumeMoney(null);// 优惠券为null
-            insertOrderAgain.setOrderCouponDeliveryId(null);// 配送券id
-            insertOrderAgain.setOrderCouponDeliveryMoney(null);// 配送券价格
+            insertOrderAgain.setOrderCouponMoneyId(0);// 优惠券id（代金券）
+            insertOrderAgain.setOrderConsumeMoney(0.0);// 优惠券为null
+            insertOrderAgain.setOrderCouponDeliveryId(0);// 配送券id
+            insertOrderAgain.setOrderCouponDeliveryMoney(0);// 配送券价格
             Double orderConsumeMoney = insertOrderAgain.getOrderConsumeMoney();
             Integer orderCouponDeliveryMoney = insertOrderAgain.getOrderCouponDeliveryMoney();
             Double orderActualMoney = insertOrderAgain.getOrderActualMoney();
@@ -123,10 +127,8 @@ public class OrderController {
         if (orderId <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",orderId);
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", orderId);
     }
-
-
 
 
     @ApiOperation(value = "查看订单打印列表", notes = "{\"pageNo\":\"1\" ,\"pageSize\":\"1\" ,\"orderProcess\":\"1\"\n" +
@@ -142,7 +144,7 @@ public class OrderController {
         if (selectOrderList.size() <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "暂无列表");
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",selectOrderList);
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", selectOrderList);
     }
 
     @ApiOperation(value = "查看订单详情", notes = "id：订单id")
@@ -152,7 +154,7 @@ public class OrderController {
         if (org.springframework.util.StringUtils.isEmpty(selectOrderById)) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",selectOrderById);
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", selectOrderById);
     }
 
     @ApiOperation(value = "批量下载文件到本地重写新", notes = "")
@@ -160,9 +162,8 @@ public class OrderController {
     public ResponseMessage<String> downLoadFileListOverWriteNew(@RequestParam String orderId) {
         try {
             String path = orderService.downLoadFileListOverWriteNew(orderId);
-            return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功",path);
-        }
-        catch(Exception e){
+            return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", path);
+        } catch (Exception e) {
             return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), "失败");
         }
     }

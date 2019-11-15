@@ -395,8 +395,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public String downLoadFileListOverWriteNew(String orderId) {
         Order order = orderMapper.selectOrderById(orderId);
-//        String path = DownLoadZip.zipFilesDown(order);
-        String path = DownLoadZip.zipFilesDownOverWtrite(order);
+        String path = DownLoadZip.zipFilesDown(order);
+//        String path = DownLoadZip.zipFilesDownOverWtrite(order);
+//        String path = DownLoadZip.zipFilesDownOverWtriteNew(order);
         return path;
     }
 

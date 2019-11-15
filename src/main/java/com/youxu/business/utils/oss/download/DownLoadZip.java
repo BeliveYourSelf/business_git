@@ -13,6 +13,8 @@ import org.apache.commons.lang.StringUtils;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.zip.Adler32;
 import java.util.zip.CheckedOutputStream;
@@ -31,8 +33,8 @@ public class DownLoadZip extends BaseService {
             for (OrderDetails orderDetails : orderDetailsList) {
                 String fileDetailName = orderDetails.getOrderDetailsName();
                 String orderSpecName = orderDetails.getOrderSpecName();
-                if(StringUtils.isNotEmpty(orderSpecName)){
-                    fileDetailName += "-"+orderSpecName;
+                if (StringUtils.isNotEmpty(orderSpecName)) {
+                    fileDetailName += "-" + orderSpecName;
                 }
                 OrderDetailsBookBinding orderDetailsBookBinding = orderDetails.getOrderDetailsBookBinding();
                 if (!org.springframework.util.StringUtils.isEmpty(orderDetailsBookBinding)) {
@@ -55,7 +57,7 @@ public class DownLoadZip extends BaseService {
             }
             // 初始化
             OSSClient ossClient = new OSSClient(ali_endpoint, ali_accesskey_id, ali_accesskey_secret);
-            String fileName = order.getId() + "-" + order.getOrderAddresseeName() +".zip";
+            String fileName = order.getId() + "-" + order.getOrderAddresseeName() + ".zip";
             // 创建临时文件
             File zipFile = File.createTempFile(fileName, ".zip");
             FileOutputStream f = new FileOutputStream(zipFile);
@@ -97,7 +99,8 @@ public class DownLoadZip extends BaseService {
     }
 
     /**
-     * 订单所有文件转换为pdf
+     * 订单所有文件转换为pdf：sdk
+     *
      * @param order
      * @return
      */
@@ -111,8 +114,8 @@ public class DownLoadZip extends BaseService {
             for (OrderDetails orderDetails : orderDetailsList) {
                 String fileDetailName = orderDetails.getOrderDetailsName();
                 String orderSpecName = orderDetails.getOrderSpecName();
-                if(StringUtils.isNotEmpty(orderSpecName)){
-                    fileDetailName += "-"+orderSpecName;
+                if (StringUtils.isNotEmpty(orderSpecName)) {
+                    fileDetailName += "-" + orderSpecName;
                 }
                 OrderDetailsBookBinding orderDetailsBookBinding = orderDetails.getOrderDetailsBookBinding();
                 if (!org.springframework.util.StringUtils.isEmpty(orderDetailsBookBinding)) {
@@ -122,8 +125,8 @@ public class DownLoadZip extends BaseService {
                 // if:证件照订单    else:照片冲印和文档打印
                 if (!StringUtils.isEmpty(orderDetailsOnePictureUrl)) {
                     int lastPoint = fileDetailName.lastIndexOf(".");
-                    fileDetailName = fileDetailName.substring(0,lastPoint);//该子字符串从指定的 beginIndex 处开始， endIndex:到指定的 endIndex-1处结束。
-                    fileDetailName = fileDetailName+".pdf";
+                    fileDetailName = fileDetailName.substring(0, lastPoint);//该子字符串从指定的 beginIndex 处开始， endIndex:到指定的 endIndex-1处结束。
+                    fileDetailName = fileDetailName + ".pdf";
                     map.put(fileDetailName, orderDetailsOnePictureUrl);
                 } else {
                     List<String> pictureUrlList = orderDetails.getPictureUrlList();
@@ -135,7 +138,7 @@ public class DownLoadZip extends BaseService {
                 }
             }
             // 初始化
-            String fileName = order.getId() + "-" + order.getOrderAddresseeName() +".zip";
+            String fileName = order.getId() + "-" + order.getOrderAddresseeName() + ".zip";
             // 创建临时文件
             File zipFile = File.createTempFile(fileName, ".zip");
             FileOutputStream f = new FileOutputStream(zipFile);
@@ -151,8 +154,8 @@ public class DownLoadZip extends BaseService {
                 String value = entry.getValue();
                 String pdfValue = YuntuDemo.documentTransToPDF(value);
                 // 获取pdf输出流
-                URL conn_url =  new URL(pdfValue);
-                HttpsURLConnection connection = (HttpsURLConnection)conn_url.openConnection();
+                URL conn_url = new URL(pdfValue);
+                HttpsURLConnection connection = (HttpsURLConnection) conn_url.openConnection();
                 InputStream inputStream = connection.getInputStream();
                 // 对于每一个要被存放到压缩包的文件，都必须调用ZipOutputStream对象的putNextEntry()方法，确保压缩包里面文件不同名
                 zos.putNextEntry(new ZipEntry(key));
@@ -163,6 +166,96 @@ public class DownLoadZip extends BaseService {
                 }
                 inputStream.close();
                 connection.disconnect();
+                zos.closeEntry(); // 当前文件写完，定位为写入下一条项目
+            }
+            zos.close();
+            // 上传压缩包到oss
+            String absolutePath = zipFile.getAbsolutePath();
+            File file = new File(absolutePath);
+            FileInputStream fileInputStream = new FileInputStream(file);
+            path = OSSUploadUtil.uploadBlogFile(file, fileInputStream, fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return path;
+    }
+
+    /**
+     * 订单所有文件转换为pdf: api：待转换
+     *
+     * @param order
+     * @return
+     */
+    public static String zipFilesDownOverWtriteNew(Order order) {
+        HashMap<String, String> map = new HashMap<>();
+        String mapValueObjectName = null;
+        String path = null;
+        try {
+            // 取文档路径
+            List<OrderDetails> orderDetailsList = order.getOrderDetailsList();
+            for (OrderDetails orderDetails : orderDetailsList) {
+                String fileDetailName = orderDetails.getOrderDetailsName();
+                String orderSpecName = orderDetails.getOrderSpecName();
+                if (StringUtils.isNotEmpty(orderSpecName)) {
+                    fileDetailName += "-" + orderSpecName;
+                }
+                OrderDetailsBookBinding orderDetailsBookBinding = orderDetails.getOrderDetailsBookBinding();
+                if (!org.springframework.util.StringUtils.isEmpty(orderDetailsBookBinding)) {
+                    fileDetailName += "-" + orderDetailsBookBinding.getCoverColor();
+                }
+                String orderDetailsOnePictureUrl = orderDetails.getOrderDetailsOnePictureUrl();
+                // if:证件照订单    else:照片冲印和文档打印
+                if (!StringUtils.isEmpty(orderDetailsOnePictureUrl)) {
+                    int lastPoint = fileDetailName.lastIndexOf(".");
+                    fileDetailName = fileDetailName.substring(0, lastPoint);//该子字符串从指定的 beginIndex 处开始， endIndex:到指定的 endIndex-1处结束。
+                    fileDetailName = fileDetailName + ".pdf";
+                    map.put(fileDetailName, orderDetailsOnePictureUrl);
+                } else {
+                    List<String> pictureUrlList = orderDetails.getPictureUrlList();
+                    if (!org.springframework.util.StringUtils.isEmpty(pictureUrlList) && pictureUrlList.size() > 0) {
+                        for (String pictureUrl : pictureUrlList) {
+                            map.put(fileDetailName + "-" + new Date().getTime() + "-", pictureUrl);
+                        }
+                    }
+                }
+            }
+            // 初始化
+            String fileName = order.getId() + "-" + order.getOrderAddresseeName() + ".zip";
+            // 创建临时文件
+            File zipFile = File.createTempFile(fileName, ".zip");
+            FileOutputStream f = new FileOutputStream(zipFile);
+            /**
+             * 作用是为任何OutputStream产生校验和
+             * 第一个参数是制定产生校验和的输出流，第二个参数是指定Checksum的类型 （Adler32（较快）和CRC32两种）
+             */
+            CheckedOutputStream csum = new CheckedOutputStream(f, new Adler32());
+            // 用于将数据压缩成Zip文件格式
+            ZipOutputStream zos = new ZipOutputStream(csum);
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                String valuePath = "https://api.9yuntu.cn/execute/Convert?docURL=" + URLEncoder.encode(value) + "&outputType=pdf";// 拼接九云图路径
+                InputStream connTransToPDFStream = null;
+                URL url = new URL(valuePath);
+                HttpsURLConnection connTransToPDF = (HttpsURLConnection) url.openConnection();
+                // 设置通用的请求属性
+                connTransToPDF.setRequestProperty("Authorization","APPCODE cb5ca61776b34828866e31a9ed94e3d5");
+                connTransToPDF.setReadTimeout(5000);
+                connTransToPDF.setConnectTimeout(5000);
+                connTransToPDF.setRequestMethod("GET");
+                connTransToPDF.connect();
+                if (200 == connTransToPDF.getResponseCode()) {
+                    connTransToPDFStream = connTransToPDF.getInputStream();
+                    // 对于每一个要被存放到压缩包的文件，都必须调用ZipOutputStream对象的putNextEntry()方法，确保压缩包里面文件不同名
+                    zos.putNextEntry(new ZipEntry(key));
+                    int bytesRead = 0;
+                    // 向压缩文件中输出数据
+                    while ((bytesRead = connTransToPDFStream.read()) != -1) {
+                        zos.write(bytesRead);
+                    }
+                    connTransToPDFStream.close();
+                    connTransToPDF.disconnect();
+                }
                 zos.closeEntry(); // 当前文件写完，定位为写入下一条项目
             }
             zos.close();

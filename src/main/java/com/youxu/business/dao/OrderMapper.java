@@ -3,6 +3,8 @@ package com.youxu.business.dao;
 import com.youxu.business.pojo.Order;
 import com.youxu.business.pojo.OrderExample;
 import java.util.List;
+
+import com.youxu.business.pojo.OrderProcess;
 import org.apache.ibatis.annotations.Param;
 
 public interface OrderMapper {
@@ -64,4 +66,12 @@ public interface OrderMapper {
     List<Order> selectDeliveryFileByStoreIdListGetFile(@Param("order") Order order);
     // 确认收件
     Integer reminderOrderOverWrite(@Param("id") Integer id, @Param("orderProcess") Integer orderProcess);
+    // 查看订单类别个数：待取件
+    Integer selectCountOrderProcessWait(String userId);
+    // 查看订单类别个数:进行中
+    Integer selectCountOrderProcessing(String userId);
+    // 查看订单类别个数:已完成
+    Integer selectCountOrderProcessCompetety(String userId);
+    // 查看订单类别个数:已取消
+    Integer selectCountOrderProcessCancle(String userId);
 }

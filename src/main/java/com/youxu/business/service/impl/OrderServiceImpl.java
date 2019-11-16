@@ -401,6 +401,20 @@ public class OrderServiceImpl implements OrderService {
         return path;
     }
 
+    @Override
+    public OrderProcess selectCountOrderProcess(String userId) {
+        Integer selectCountOrderProcessWait = orderMapper.selectCountOrderProcessWait(userId);
+        Integer selectCountOrderProcessing = orderMapper.selectCountOrderProcessing(userId);
+        Integer selectCountOrderProcessCompetety = orderMapper.selectCountOrderProcessCompetety(userId);
+        Integer selectCountOrderProcessCancle = orderMapper.selectCountOrderProcessCancle(userId);
+        OrderProcess orderProcess = new OrderProcess();
+        orderProcess.setProcessWait(selectCountOrderProcessWait);
+        orderProcess.setProcessing(selectCountOrderProcessing);
+        orderProcess.setProcessCompetety(selectCountOrderProcessCompetety);
+        orderProcess.setProcessCancel(selectCountOrderProcessCancle);
+        return orderProcess;
+    }
+
     /**
      * 设置过期时间
      *

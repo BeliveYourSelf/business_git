@@ -1,6 +1,7 @@
 package com.youxu.business.controller;
 
 import com.youxu.business.pojo.Order;
+import com.youxu.business.pojo.OrderProcess;
 import com.youxu.business.service.OrderService;
 import com.youxu.business.utils.Enum.ResultCodeEnum;
 import com.youxu.business.utils.ResponseUtil.ResponseMessage;
@@ -167,6 +168,13 @@ public class OrderController {
             return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), "失败");
         }
     }
+    @ApiOperation(value = "查看订单类别个数", notes = "userId：用户id")
+    @GetMapping("/selectCountOrderProcess")
+    public ResponseMessage<OrderProcess> selectCountOrderProcess(@RequestParam String userId){
+       OrderProcess orderProcess = orderService.selectCountOrderProcess(userId);
+       return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",orderProcess);
+    }
+
 
 
 }

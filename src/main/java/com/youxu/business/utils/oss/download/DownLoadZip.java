@@ -8,6 +8,7 @@ import com.youxu.business.pojo.OrderDetailsBookBinding;
 import com.youxu.business.service.BaseService;
 import com.youxu.business.utils.OtherUtil.OSSUploadUtil;
 import com.youxu.business.utils.yuntu.YuntuDemo;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -186,7 +187,7 @@ public class DownLoadZip extends BaseService {
      * @param order
      * @return
      */
-    public static String zipFilesDownOverWtriteNew(Order order) {
+    /*public static String zipFilesDownOverWtriteNew(Order order) {
         HashMap<String, String> map = new HashMap<>();
         String mapValueObjectName = null;
         String path = null;
@@ -224,10 +225,10 @@ public class DownLoadZip extends BaseService {
             // 创建临时文件
             File zipFile = File.createTempFile(fileName, ".zip");
             FileOutputStream f = new FileOutputStream(zipFile);
-            /**
+            *//**
              * 作用是为任何OutputStream产生校验和
              * 第一个参数是制定产生校验和的输出流，第二个参数是指定Checksum的类型 （Adler32（较快）和CRC32两种）
-             */
+             *//*
             CheckedOutputStream csum = new CheckedOutputStream(f, new Adler32());
             // 用于将数据压缩成Zip文件格式
             ZipOutputStream zos = new ZipOutputStream(csum);
@@ -236,6 +237,7 @@ public class DownLoadZip extends BaseService {
                 String value = entry.getValue();
                 String valuePath = "https://api.9yuntu.cn/execute/Convert?docURL=" + URLEncoder.encode(value) + "&outputType=pdf";// 拼接九云图路径
                 InputStream connTransToPDFStream = null;
+                JSONObject jsonObject = null;
                 URL url = new URL(valuePath);
                 HttpsURLConnection connTransToPDF = (HttpsURLConnection) url.openConnection();
                 // 设置通用的请求属性
@@ -246,15 +248,26 @@ public class DownLoadZip extends BaseService {
                 connTransToPDF.connect();
                 if (200 == connTransToPDF.getResponseCode()) {
                     connTransToPDFStream = connTransToPDF.getInputStream();
-                    // 对于每一个要被存放到压缩包的文件，都必须调用ZipOutputStream对象的putNextEntry()方法，确保压缩包里面文件不同名
-                    zos.putNextEntry(new ZipEntry(key));
-                    int bytesRead = 0;
-                    // 向压缩文件中输出数据
-                    while ((bytesRead = connTransToPDFStream.read()) != -1) {
-                        zos.write(bytesRead);
+                    InputStreamReader inputStreamReader = new InputStreamReader(connTransToPDFStream, "utf-8");
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                    String str = null;
+                    StringBuffer buffer = new StringBuffer();
+                    while ((str = bufferedReader.readLine()) != null) {
+                        buffer.append(str);
                     }
+                    bufferedReader.close();
+                    inputStreamReader.close();
                     connTransToPDFStream.close();
                     connTransToPDF.disconnect();
+                    jsonObject = JSONObject.fromObject(buffer.toString());
+                }
+//                jsonObject
+                // 对于每一个要被存放到压缩包的文件，都必须调用ZipOutputStream对象的putNextEntry()方法，确保压缩包里面文件不同名
+                zos.putNextEntry(new ZipEntry(key));
+                int bytesRead = 0;
+                // 向压缩文件中输出数据
+                while ((bytesRead = connTransToPDFStream.read()) != -1) {
+                    zos.write(bytesRead);
                 }
                 zos.closeEntry(); // 当前文件写完，定位为写入下一条项目
             }
@@ -268,5 +281,5 @@ public class DownLoadZip extends BaseService {
             e.printStackTrace();
         }
         return path;
-    }
+    }*/
 }

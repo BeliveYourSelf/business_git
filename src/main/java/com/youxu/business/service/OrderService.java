@@ -1,6 +1,7 @@
 package com.youxu.business.service;
 
 import com.youxu.business.pojo.Order;
+import com.youxu.business.pojo.OrderProcess;
 import com.youxu.business.pojo.Share;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,4 +48,6 @@ public interface OrderService {
     Integer updateOrderOverWrite(Integer orderId) throws Exception;
 
     String downLoadFileListOverWriteNew(String orderId);
+
+    OrderProcess selectCountOrderProcess(String userId);
 }

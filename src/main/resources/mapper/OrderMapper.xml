@@ -888,12 +888,48 @@
         and tb_order.order_process != 1
         and tb_order.order_status = false
     </select>
-<!--确认收件  delivery_status:配送状态（0.未发货1.待取件/2.配送中/3.问题件/4.已完成/5.实时订单/6.顺丰配送）-->
+    <!--确认收件  delivery_status:配送状态（0.未发货1.待取件/2.配送中/3.问题件/4.已完成/5.实时订单/6.顺丰配送）-->
     <update id="reminderOrderOverWrite">
         update tb_order
     set  order_process = #{orderProcess}
     ,  delivery_status = 4
     where id = #{id}
     </update>
+    <!--查看订单类别个数:待取件-->
+    <select id="selectCountOrderProcessWait" resultType="java.lang.Integer">
+        select count(*)
+        from tb_order
+        where
+        tb_order.user_id = #{userId}
+        and tb_order.order_process = 1
+        and tb_order.order_status = false
+    </select>
+    <!--查看订单类别个数:进行中-->
+    <select id="selectCountOrderProcessing" resultType="java.lang.Integer">
+        select count(*)
+        from tb_order
+        where
+        tb_order.user_id = #{userId}
+        and tb_order.order_process = 2
+        and tb_order.order_status = false
+    </select>
+    <!--查看订单类别个数:已完成-->
+    <select id="selectCountOrderProcessCompetety" resultType="java.lang.Integer">
+        select count(*)
+        from tb_order
+        where
+        tb_order.user_id = #{userId}
+        and tb_order.order_process = 3
+        and tb_order.order_status = false
+    </select>
+    <!--查看订单类别个数:已取消-->
+    <select id="selectCountOrderProcessCancle" resultType="java.lang.Integer">
+        select count(*)
+        from tb_order
+        where
+        tb_order.user_id = #{userId}
+        and tb_order.order_process = 4
+        and tb_order.order_status = false
+    </select>
 
 </mapper>

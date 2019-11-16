@@ -227,7 +227,7 @@ public class DownLoadZip extends BaseService {
             // 创建临时文件
             File zipFile = File.createTempFile(fileName, ".zip");
             FileOutputStream f = new FileOutputStream(zipFile);
-           /* *
+            /* *
              * 作用是为任何OutputStream产生校验和
              * 第一个参数是制定产生校验和的输出流，第二个参数是指定Checksum的类型 （Adler32（较快）和CRC32两种）*/
 
@@ -237,25 +237,30 @@ public class DownLoadZip extends BaseService {
             for (Map.Entry<String, String> entry : map.entrySet()) {
                 String key = entry.getKey();
                 String value = entry.getValue();
-                String documentUrl = "https://api.9yuntu.cn/execute/Convert?docURL=" + URLEncoder.encode(value) + "&outputType=pdf";// 拼接九云图路径
-                // 文件url转换成pdf对象
-                ResultYuntu resultYuntu = getResultYuntuByUrl(documentUrl);
-                if(0 == resultYuntu.getRetCode()){
-                    String yuntuUrl = resultYuntu.getOutputURLs()[0];
-                    URL urlPdf = new URL(yuntuUrl);
-                    HttpsURLConnection connection = (HttpsURLConnection) urlPdf.openConnection();
-                    connection.setRequestMethod("GET");
-                    InputStream inputStreamPDF = connection.getInputStream();
-                    // 对于每一个要被存放到压缩包的文件，都必须调用ZipOutputStream对象的putNextEntry()方法，确保压缩包里面文件不同名
+                int point = value.lastIndexOf(".");
+                String suffix = value.substring(point);// 后缀pdf的文件不需要转换
+                if (!".pdf".equals(suffix)) {
+                    String documentUrl = "https://api.9yuntu.cn/execute/Convert?docURL=" + URLEncoder.encode(value) + "&outputType=pdf";// 拼接九云图路径
+                    // 文件url转换成pdf对象
+                    ResultYuntu resultYuntu = getResultYuntuByUrl(documentUrl);
+                    if (0 == resultYuntu.getRetCode()) {
+                        value = resultYuntu.getOutputURLs()[0];
+                    }
+                }
+                URL urlPdf = new URL(value);
+                HttpsURLConnection connection = (HttpsURLConnection) urlPdf.openConnection();
+                connection.setRequestMethod("GET");
+                InputStream inputStreamPDF = connection.getInputStream();
+                // 对于每一个要被存放到压缩包的文件，都必须调用ZipOutputStream对象的putNextEntry()方法，确保压缩包里面文件不同名
                 zos.putNextEntry(new ZipEntry(key));
                 int bytesRead = 0;
                 // 向压缩文件中输出数据
                 while ((bytesRead = inputStreamPDF.read()) != -1) {
                     zos.write(bytesRead);
                 }
-                    inputStreamPDF.close();
-                    connection.disconnect();
-                }
+                inputStreamPDF.close();
+                connection.disconnect();
+
                 zos.closeEntry(); // 当前文件写完，定位为写入下一条项目
             }
             zos.close();
@@ -272,6 +277,7 @@ public class DownLoadZip extends BaseService {
 
     /**
      * 文件url转换成pdf对象
+     *
      * @param valuePath
      * @return
      * @throws IOException
@@ -282,7 +288,7 @@ public class DownLoadZip extends BaseService {
         URL url = new URL(valuePath);
         HttpsURLConnection connTransToPDF = (HttpsURLConnection) url.openConnection();
         // 设置通用的请求属性
-        connTransToPDF.setRequestProperty("Authorization","APPCODE 01b3ca1a1fff41d188c90d2cdc70f8b6");
+        connTransToPDF.setRequestProperty("Authorization", "APPCODE 01b3ca1a1fff41d188c90d2cdc70f8b6");
         connTransToPDF.setReadTimeout(5000);
         connTransToPDF.setConnectTimeout(5000);
         connTransToPDF.setRequestMethod("GET");

@@ -50,6 +50,9 @@ public class OrderDetails {
     @ApiModelProperty(name = "orderDetailsPage",value = "订单详情页数")
     private Integer orderDetailsPage;
 
+    @ApiModelProperty(name = "orderDetailsOnePictureUrlPdf",value = "订单详情Pdf路径")
+    private String orderDetailsOnePictureUrlPdf;
+
     // 新增
     @ApiModelProperty(name = "orderDetailsBookBinding",value = "装订订单明细表")
     private OrderDetailsBookBinding orderDetailsBookBinding;

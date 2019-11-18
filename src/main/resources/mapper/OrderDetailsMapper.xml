@@ -20,6 +20,7 @@
                 property="orderDetailsModifyTime"/>
         <result column="tb_order_detailsorder_details_status" jdbcType="BIT" property="orderDetailsStatus"/>
         <result column="tb_order_detailsorder_details_page"  property="orderDetailsPage"/>
+        <result column="tb_order_detailsorder_details_one_picture_url_pdf"  property="orderDetailsOnePictureUrlPdf"/>
         <association property="orderDetailsBookBinding" javaType="com.youxu.business.pojo.OrderDetailsBookBinding">
             <result column="tb_order_details_book_bindingid" property="id"/>
             <result column="tb_order_details_book_bindingorder_details_id" property="orderDetailsId"/>
@@ -107,6 +108,7 @@
     , tb_order_details.order_details_status as tb_order_detailsorder_details_status
     , tb_order_details.order_details_type as tb_order_detailsorder_details_type
     , tb_order_details.order_details_page as tb_order_detailsorder_details_page
+    , tb_order_details.order_details_one_picture_url_pdf as tb_order_detailsorder_details_one_picture_url_pdf
   </sql>
     <sql id="Base_Column_List_tb_order_details_book_binding">
     tb_order_details_book_binding.id as tb_order_details_book_bindingid
@@ -291,6 +293,7 @@
             order_details_count_colour,
             order_details_type,
             order_details_page,
+            order_details_one_picture_url_pdf,
             order_details_create_time,
             order_details_modify_time,
             order_details_status,
@@ -308,6 +311,7 @@
             #{orderDetails.orderDetailsCountColour},
             #{orderDetails.orderDetailsType},
             #{orderDetails.orderDetailsPage},
+            #{orderDetails.orderDetailsOnePictureUrlPdf},
             now(),
             now(),
             false

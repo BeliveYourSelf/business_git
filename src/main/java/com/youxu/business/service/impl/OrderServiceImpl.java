@@ -87,13 +87,19 @@ public class OrderServiceImpl implements OrderService {
                         orderDetailsBookBindingMapper.insertOrderDetailsBookBinding(orderDetailsBookBinding);
                         int orderDetailsBookBindingId = orderMapper.lastInsertId();
                         List<OrderDetailsPictureMapping> orderDetailsPictureMappingList = orderDetailsList.get(i - 1).getOrderDetailsPictureMappingList();
-                        List<Picture> pictureList = null;
+                        List<Picture> pictureList = new ArrayList<>();
                         // 插入订单多张文档图片路径
                         if (!StringUtils.isEmpty(orderDetailsPictureMappingList)) {
+                            // 重新下单
                             for (OrderDetailsPictureMapping orderDetailsPictureMapping : orderDetailsPictureMappingList) {
-                                pictureList = orderDetailsPictureMapping.getPictureList();
-                                pictureMapper.insertPictureMapperOverWrite(pictureList);
+                                List<Picture> pictureListOne = orderDetailsPictureMapping.getPictureList();
+                                pictureList.addAll(pictureListOne);
                             }
+                        }else{
+                            // 新增订单
+                            pictureList = order.getPictureList();
+                        }
+                        pictureMapper.insertPictureMapperOverWrite(pictureList);
                             int size = pictureList.size();
                             if (size > 0) {
                                 int pictureFirstId = orderMapper.lastInsertId();
@@ -103,7 +109,6 @@ public class OrderServiceImpl implements OrderService {
                                 }
                                 orderDetailsPictureMappingMapper.insertOrderDetailsPictrueMapping(orderDetailsId + i - 1, pictureIdList);
                             }
-                        }
                     }
                 }
             }

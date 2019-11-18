@@ -21,20 +21,11 @@ public class OrderController {
     @Resource
     private OrderService orderService;
 
-    @ApiOperation(value = "新增订单", notes = "{ \"orderActualMoney\": \"100\" , \"orderAddresseeAddress\": \"天津市立晟科技\" , \"orderAddresseeName\": \"李文轩\" , \"orderAddresseePhone\": \"13652157270\" , \"orderConsumeMoney\": 10 , \"orderCouponMoney\": 10 , \"orderDeliveryMoney\": \"10\" , \"orderDeliveryPrescriptioTime\": \"60\" ,\"orderDetailsList\": [ { \"orderDetailsOnePictureUrlPdf\":\"xxxxxxxxxxx\", \"orderDetailsCount\": 10 ,\"orderDetailsName\":\"文档打印pdf\" ,\"orderDetailsOnePictureUrl\":\"xxxx\" ,\"orderDetailsTotalPrice\":\"200\" ,\"orderSpecName\":\"一寸6合一横板\" ,\"orderDetailsCountColour\":\"10\" ,\"orderDetailsType\":\"1\",\"orderDetailsPage\":\"3\"\n" +
-            ",\"orderDetailsPictureMappingList\": [\n" +
-            "        {\n" +
-            "          \"pictureList\": [\n" +
-            "            {\n" +
-            "              \"pictureUrl\": \"string\",\n" +
-            "              \"pictureUrlPdf\": \"string\"\n" +
-            "            }\n" +
-            "          ]\n" +
-            "        }\n" +
-            "      ],\n" +
-            " \"orderDetailsBookBinding\": { \"coverColor\": \"黑色\", \"coverFileUrl\": \"xxx\", \"faceDirection\": \"横向\"\n" +
+    @ApiOperation(value = "新增订单", notes = "{ \"orderActualMoney\": \"100\" , \"orderAddresseeAddress\": \"天津市立晟科技\" , \"orderAddresseeName\": \"李文轩\" , \"orderAddresseePhone\": \"13652157270\" , \"orderConsumeMoney\": 10 , \"orderCouponMoney\": 10 , \"orderDeliveryMoney\": \"10\" , \"orderDeliveryPrescriptioTime\": \"60\" ,\"orderDetailsList\": [ { \"orderDetailsOnePictureUrlPdf\":\"xxxxxxxxxxx\", \"orderDetailsCount\": 10 ,\"orderDetailsName\":\"文档打印pdf\" ,\"orderDetailsOnePictureUrl\":\"xxxx\" ,\"orderDetailsTotalPrice\":\"200\" ,\"orderSpecName\":\"一寸6合一横板\" ,\"orderDetailsCountColour\":\"10\" ,\"orderDetailsType\":\"1\",\"orderDetailsPage\":\"3\" ,\n" +
+            "\"orderDetailsBookBinding\": { \"coverColor\": \"黑色\", \"coverFileUrl\": \"xxx\", \"faceDirection\": \"横向\"\n" +
             "\n" +
-            "} } ] , \"orderExtraMoney\": 10 , \"orderFromStoreGet\": \"3\" , \"orderFromStoreGetWhere\": \"天津工业大学1号宿舍楼\" , \"orderPrintMoney\": \"10\" , \"orderProcess\": 1 , \"orderType\": 1 , \"storeId\": 1 , \"userId\": 1 , \"orderRemark\":\"帮我装订好哦\" ,\"shareId\":\"1\", \"vouchersIdList\":[ \"1\", \"2\" ] ,\"orderCouponMoneyId\":\"1\",\"orderCouponDeliveryId\":\"2\",\"orderCouponDeliveryMoney\":\"2\",\"orderTypeOther\":\"1\",\"orderAllPage\":\"6\"} 新字段：orderDetailsOnePictureUrlPdf：订单详情Pdf路径,pictureUrl发生变化")
+            "} } ] , \"orderExtraMoney\": 10 , \"orderFromStoreGet\": \"3\" , \"orderFromStoreGetWhere\": \"天津工业大学1号宿舍楼\" , \"orderPrintMoney\": \"10\" , \"orderProcess\": 1 , \"orderType\": 1 , \"storeId\": 1 , \"userId\": 1 , \"orderRemark\":\"帮我装订好哦\" ,\"shareId\":\"1\", \"vouchersIdList\":[ \"1\", \"2\" ] ,\"orderCouponMoneyId\":\"1\",\"orderCouponDeliveryId\":\"2\",\"orderCouponDeliveryMoney\":\"2\",\"orderTypeOther\":\"1\",\"orderAllPage\":\"6\"\n" +
+            ",\"pictureList\": [ { \"pictureUrl\": \"string\", \"pictureUrlPdf\": \"string\" },{ \"pictureUrl\": \"string\", \"pictureUrlPdf\": \"string\" } ]}  新字段：orderDetailsOnePictureUrlPdf：订单详情Pdf路径,pictureUrl发生变化")
     @PostMapping("/insertOrder")
     public ResponseMessage<Integer> insertOrder(@RequestBody Order order) {
         Integer orderId = null;

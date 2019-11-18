@@ -8,6 +8,7 @@ import com.youxu.business.pojo.OrderDetailsBookBinding;
 import com.youxu.business.service.BaseService;
 import com.youxu.business.utils.OtherUtil.OSSUploadUtil;
 import com.youxu.business.utils.yuntu.YuntuDemo;
+import com.youxu.business.utils.yuntu.httpurlreject.DocumentTrans;
 import com.youxu.business.utils.yuntu.yuntupojo.ResultYuntu;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -16,7 +17,6 @@ import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.*;
 import java.util.zip.Adler32;
@@ -242,7 +242,7 @@ public class DownLoadZip extends BaseService {
                 if (!".pdf".equals(suffix)) {
                     String documentUrl = "https://api.9yuntu.cn/execute/Convert?docURL=" + URLEncoder.encode(value) + "&outputType=pdf";// 拼接九云图路径
                     // 文件url转换成pdf对象
-                    ResultYuntu resultYuntu = getResultYuntuByUrl(documentUrl);
+                    ResultYuntu resultYuntu = DocumentTrans.getResultYuntuByUrl(documentUrl);
                     if (0 == resultYuntu.getRetCode()) {
                         value = resultYuntu.getOutputURLs()[0];
                     }
@@ -273,43 +273,5 @@ public class DownLoadZip extends BaseService {
             e.printStackTrace();
         }
         return path;
-    }
-
-    /**
-     * 文件url转换成pdf对象
-     *
-     * @param valuePath
-     * @return
-     * @throws IOException
-     */
-    private static ResultYuntu getResultYuntuByUrl(String valuePath) throws IOException {
-        InputStream connTransToPDFStream = null;
-        JSONObject jsonObject = null;
-        URL url = new URL(valuePath);
-        HttpsURLConnection connTransToPDF = (HttpsURLConnection) url.openConnection();
-        // 设置通用的请求属性
-        connTransToPDF.setRequestProperty("Authorization", "APPCODE 01b3ca1a1fff41d188c90d2cdc70f8b6");
-        connTransToPDF.setReadTimeout(5000);
-        connTransToPDF.setConnectTimeout(5000);
-        connTransToPDF.setRequestMethod("GET");
-        connTransToPDF.connect();
-        if (200 == connTransToPDF.getResponseCode()) {
-            connTransToPDFStream = connTransToPDF.getInputStream();
-            InputStreamReader inputStreamReader = new InputStreamReader(connTransToPDFStream, "utf-8");
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String str = null;
-            StringBuffer buffer = new StringBuffer();
-            while ((str = bufferedReader.readLine()) != null) {
-                buffer.append(str);
-            }
-            bufferedReader.close();
-            inputStreamReader.close();
-            connTransToPDFStream.close();
-            connTransToPDF.disconnect();
-            jsonObject = JSONObject.fromObject(buffer.toString());
-        }
-        String jsonString = com.alibaba.fastjson.JSONObject.toJSONString(jsonObject);
-        ResultYuntu resultYuntu = com.alibaba.fastjson.JSONObject.parseObject(jsonString, ResultYuntu.class);
-        return resultYuntu;
     }
 }

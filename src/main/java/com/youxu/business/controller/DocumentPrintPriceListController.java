@@ -24,6 +24,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 @RequestMapping("/api")
 @RestController
@@ -121,5 +122,15 @@ public class DocumentPrintPriceListController {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "上传失败");
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", uploadSuccess);
+    }
+    @ApiOperation(value = "上传图片(带文件名称)PDF", notes = "multipartFileName:文件名必须带格式    例如：文档.docx")
+    @PostMapping("/uploadBlogOverWritePDF")
+    public ResponseMessage<Map<String, String>> uploadBlogOverWritePDF(@RequestParam("file") MultipartFile file, String multipartFileName) {
+        Map<String, String> stringStringMap = OSSUploadUtil.uploadBlogOverWritePDF(file, multipartFileName);
+        //获取文件页数
+        if (StringUtils.isEmpty(stringStringMap)) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "上传失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", stringStringMap);
     }
 }

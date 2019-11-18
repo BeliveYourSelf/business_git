@@ -85,26 +85,23 @@ public class OrderServiceImpl implements OrderService {
                         orderDetailsBookBinding.setOrderDetailsId(orderDetailsId + i - 1);//绑定订单明细和装订一对一关系
                         orderDetailsBookBindingMapper.insertOrderDetailsBookBinding(orderDetailsBookBinding);
                         int orderDetailsBookBindingId = orderMapper.lastInsertId();
-                        List<String> pictureUrlList = orderDetailsList.get(i - 1).getPictureUrlList();
-                        if(StringUtils.isEmpty(pictureUrlList)){
-                            pictureUrlList = new ArrayList<>();
-                            List<OrderDetailsPictureMapping> orderDetailsPictureMappingList = orderDetailsList.get(i - 1).getOrderDetailsPictureMappingList();
-                            for (OrderDetailsPictureMapping orderDetailsPictureMapping: orderDetailsPictureMappingList){
-                            List<Picture> pictureList = orderDetailsPictureMapping.getPictureList();
-                            for(Picture picture:pictureList){
-                                pictureUrlList.add(picture.getPictureUrl());
+                        List<OrderDetailsPictureMapping> orderDetailsPictureMappingList = orderDetailsList.get(i - 1).getOrderDetailsPictureMappingList();
+                        List<Picture> pictureList = null;
+                        // 再次下单
+                        if (!StringUtils.isEmpty(orderDetailsPictureMappingList)) {
+                            for (OrderDetailsPictureMapping orderDetailsPictureMapping : orderDetailsPictureMappingList) {
+                                pictureList = orderDetailsPictureMapping.getPictureList();
+                                pictureMapper.insertPictureMapperOverWrite(pictureList);
                             }
+                            int size = pictureList.size();
+                            if (size > 0) {
+                                int pictureFirstId = orderMapper.lastInsertId();
+                                List<Integer> pictureIdList = new ArrayList<>();
+                                for (int j = 1; size >= j; j++) {
+                                    pictureIdList.add(pictureFirstId + j - 1);
+                                }
+                                orderDetailsPictureMappingMapper.insertOrderDetailsPictrueMapping(orderDetailsId + i - 1, pictureIdList);
                             }
-                        }
-                        if(pictureUrlList.size()>0){
-                        pictureMapper.insertPictureMapper(pictureUrlList);
-                        int pictureFirstId = orderMapper.lastInsertId();
-                        int size = pictureUrlList.size();
-                        List<Integer> pictureIdList = new ArrayList<>();
-                        for (int j = 1; size >= j; j++) {
-                            pictureIdList.add(pictureFirstId + j - 1);
-                        }
-                        orderDetailsPictureMappingMapper.insertOrderDetailsPictrueMapping(orderDetailsId + i - 1, pictureIdList);
                         }
                     }
                 }
@@ -238,10 +235,9 @@ public class OrderServiceImpl implements OrderService {
             Integer theCategory = deliveryClerkInfo.getTheCategory();
             if (StringUtils.isEmpty(deliveryClerkInfo) || StringUtils.isEmpty(theCategory)) {
                 return null;  //配送员没有分配配送角色（全职/兼职）
-            }else if(theCategory ==1){
+            } else if (theCategory == 1) {
                 theCategory = 3;
-            }
-            else if (theCategory == 2) {
+            } else if (theCategory == 2) {
                 theCategory = 4;  //  两个字段之间的关系     theCategory：1.全职/2.兼职 orderAssignExpress:指派快件（0.待指派/1.全部配送员/2特殊指派/3全职配送员/4.兼职配送员/5.顺丰配送）
             }
             order.setTheCategory(theCategory);

@@ -21,4 +21,6 @@ public interface PictureMapper {
     int updateByExample(@Param("record") Picture record, @Param("example") PictureExample example);
 
     int insertPictureMapper(@Param("pictureUrlList")List<String> pictureUrlList);
+
+    int insertPictureMapperOverWrite(@Param("pictureList")List<Picture> pictureList);
 }

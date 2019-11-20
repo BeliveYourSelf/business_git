@@ -59,7 +59,6 @@ public class BannerController {
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectBannerById);
     }
-
     @ApiOperation(value = "测试feign：查看用户信息通过userId", notes = "userId")
     @GetMapping("/selectUserInfoByUId")
     public ResponseMessage<User> selectUserInfoByUId(@RequestParam("userId") String userId) {

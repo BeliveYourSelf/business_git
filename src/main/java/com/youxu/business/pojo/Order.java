@@ -104,6 +104,9 @@ public class Order extends PageInfo {
     @ApiModelProperty(name = "orderDetailsList", value = "订单对象集合")
     private List<OrderDetails> orderDetailsList;
 
+    @ApiModelProperty(name = "pictureList", value = "图片/文档对象")
+    private List<Picture> pictureList;
+
     @ApiModelProperty(name = "storeIdList", value = "商铺id集合")
     private List<String> storeIdList;
 

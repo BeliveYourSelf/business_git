@@ -145,5 +145,13 @@
           (#{pictureUrl,jdbcType=VARCHAR})
         </foreach>
   </insert>
-
+<!--重写新增图片-->
+  <insert id="insertPictureMapperOverWrite">
+    insert into tb_picture
+    (picture_url,picture_url_pdf)
+    values
+    <foreach collection="pictureList" item="picture" separator=","  index="index">
+      (#{picture.pictureUrl},#{picture.pictureUrlPdf})
+    </foreach>
+  </insert>
 </mapper>

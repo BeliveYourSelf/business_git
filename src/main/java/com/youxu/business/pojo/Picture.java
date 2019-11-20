@@ -11,6 +11,9 @@ public class Picture {
     @ApiModelProperty(name = "pictureUrl",value = "（图片/文档）路径")
     private String pictureUrl;
 
+    @ApiModelProperty(name = "pictureUrlPdf",value = "（图片/文档）PDf路径")
+    private String pictureUrlPdf;
+
     /*@ApiModelProperty(name = "picturePage",value = "（图片/文档）大小")
     private Integer picturePage;*/
 

@@ -931,5 +931,16 @@
         and tb_order.order_process = 4
         and tb_order.order_status = false
     </select>
+    <!--查看订单集合通过订单id-->
+    <select id="selectOrderListByOrderIdList" resultMap="BaseResultMapOverWrite">
+        select <include refid="Base_Column_List"/>
+        from tb_order
+        where tb_order.id in
+        (
+        <foreach collection="orderIdList" separator="," index="index" item="orderId">
+            #{orderId}
+        </foreach>
+        )
+    </select>
 
 </mapper>

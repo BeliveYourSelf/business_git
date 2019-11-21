@@ -395,12 +395,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public String downLoadFileListOverWriteNew(String orderId) {
-        Order order = orderMapper.selectOrderById(orderId);
+    public List<String> downLoadFileListOverWriteNew(String orderId) {
+        List<String> pathList = new ArrayList<>();
+        String[] orderIdArr = orderId.split(",");
+        List<String> orderIdList = Arrays.asList(orderIdArr);
+        List<Order> orderList = orderMapper.selectOrderListByOrderIdList(orderIdList);
 //        String path = DownLoadZip.zipFilesDown(order);
 //        String path = DownLoadZip.zipFilesDownOverWtrite(order);
+        for(Order order: orderList){
         String path = DownLoadZip.zipFilesDownOverWtriteNew(order);
-        return path;
+            pathList.add(path);
+        }
+        return pathList;
     }
 
     @Override

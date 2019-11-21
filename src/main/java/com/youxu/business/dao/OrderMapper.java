@@ -74,4 +74,6 @@ public interface OrderMapper {
     Integer selectCountOrderProcessCompetety(String userId);
     // 查看订单类别个数:已取消
     Integer selectCountOrderProcessCancle(String userId);
+    // 查看订单集合通过订单id
+    List<Order> selectOrderListByOrderIdList(@Param("orderIdList") List<String> orderIdList);
 }

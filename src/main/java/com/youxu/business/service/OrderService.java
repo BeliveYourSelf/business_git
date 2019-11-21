@@ -47,7 +47,7 @@ public interface OrderService {
 
     Integer updateOrderOverWrite(Integer orderId) throws Exception;
 
-    String downLoadFileListOverWriteNew(String orderId);
+    List<String> downLoadFileListOverWriteNew(String orderId);
 
     OrderProcess selectCountOrderProcess(String userId);
 }

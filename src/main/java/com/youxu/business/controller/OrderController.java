@@ -162,10 +162,10 @@ public class OrderController {
 
     @ApiOperation(value = "批量下载文件到本地重写新", notes = "")
     @GetMapping("/downLoadFileListOverWriteNew")
-    public ResponseMessage<String> downLoadFileListOverWriteNew(@RequestParam String orderId) {
+    public ResponseMessage<List<String>> downLoadFileListOverWriteNew(@RequestParam String orderId) {
         try {
-            String path = orderService.downLoadFileListOverWriteNew(orderId);
-            return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", path);
+            List<String> pathList = orderService.downLoadFileListOverWriteNew(orderId);
+            return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", pathList);
         } catch (Exception e) {
             return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), "失败");
         }

@@ -52,6 +52,10 @@ public class DocumentServiceImpl implements DocumentService {
                 // 添加文件大小
                 fileSize = getFileSize(documentUrlArr[i]);
                 document.setDocumentUrl(documentUrlArr[i]);
+                String documentUrl = documentUrlArr[i];
+                int i1 = documentUrl.lastIndexOf("/");
+                String documentName = documentUrl.substring(i1+1);
+                document.setDocumentName(documentName);
                 document.setFileSize(fileSize);
                 documentList.add(document);
             }

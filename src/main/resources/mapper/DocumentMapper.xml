@@ -229,12 +229,12 @@
     <!--转存后支付-->
     <insert id="insertDocument">
     insert into tb_document ( user_id, folder_id,
-      document_url, size_page, file_size, create_time, modify_time,
+      document_url, size_page, file_size, document_name, create_time, modify_time,
       status)
     values
     <foreach collection="documentList" item="document" separator="," index="index">
         (#{document.userId,jdbcType=INTEGER}, #{document.folderId,jdbcType=INTEGER},
-      #{document.documentUrl,jdbcType=VARCHAR}, #{document.sizePage}, #{document.fileSize}, now(), now(),
+      #{document.documentUrl,jdbcType=VARCHAR}, #{document.sizePage}, #{document.fileSize}, #{document.documentName}, now(), now(),
       false)
     </foreach>
   </insert>

@@ -9,10 +9,7 @@ import com.youxu.business.utils.ResponseUtil.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -34,8 +31,8 @@ public class DocumentController {
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectRecentDocumentByUserId);
     }
 
-    @ApiOperation(value = "更改文件名称通过文件id", notes = "userId")
-    @GetMapping("/updateDocumentNameByDocumentId")
+    @ApiOperation(value = "更改文件名称通过文件id", notes = "documentId:文件id， documentName：文件名称")
+    @PutMapping("/updateDocumentNameByDocumentId")
     public ResponseMessage updateDocumentNameByDocumentId(@RequestParam String documentId, @RequestParam String documentName) {
         Integer updateDocumentNameByDocumentId = documentService.updateDocumentNameByDocumentId(documentId,documentName);
         if (StringUtils.isEmpty(updateDocumentNameByDocumentId) || updateDocumentNameByDocumentId == 0) {

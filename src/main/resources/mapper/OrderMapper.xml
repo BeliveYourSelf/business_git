@@ -38,6 +38,7 @@
         <result column="order_coupon_delivery_id" property="orderCouponDeliveryId"/>
         <result column="order_coupon_delivery_money" property="orderCouponDeliveryMoney"/>
         <result column="order_all_page" property="orderAllPage"/>
+        <result column="order_harvest_time" property="orderHarvestTime"/>
         <collection property="orderDetailsList" ofType="com.youxu.business.pojo.OrderDetails">
             <result column="tb_order_detailsid" jdbcType="INTEGER" property="id"/>
             <result column="order_id" jdbcType="INTEGER" property="orderId"/>
@@ -772,6 +773,7 @@
     <update id="updateDeliveryInfoToCompelete">
         update tb_order
         set tb_order.delivery_status = #{order.deliveryStatus}
+        , tb_order.order_harvest_time = now()
         where tb_order.id = #{order.id}
     </update>
     <!--更新快件为问题快件   delivery_status:配送状态（0.未发货1.待取件/2.配送中/3.问题件/4.已完成/5.实时订单/6.顺丰配送） -->

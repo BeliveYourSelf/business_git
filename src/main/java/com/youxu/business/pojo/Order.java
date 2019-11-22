@@ -151,7 +151,7 @@ public class Order extends PageInfo {
     @ApiModelProperty(name = "orderAllPage", value = "文档总页数")
     private Integer orderAllPage;
 
-    @ApiModelProperty(name = "orderHarvestTime", value = "收货时间")
+    @ApiModelProperty(name = "orderHarvestTime", value = "实际配送时间")
     private Date orderHarvestTime;
 
 

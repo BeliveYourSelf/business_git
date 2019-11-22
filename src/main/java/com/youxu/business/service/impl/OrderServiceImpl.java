@@ -67,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
             }
             order.setVouchersIds(vouchersIdString);
         }
-        Integer insertOrder = orderMapper.insertOrder(order);
+        Integer insertOrder = orderMapper.insertOrder(getOrder(order));// 设置过期时间
         int orderId = orderMapper.lastInsertId();
         // 取件二维码url
         addDeliveryPickUpFileQRCodeUrl(orderId);
@@ -248,7 +248,7 @@ public class OrderServiceImpl implements OrderService {
             }
             order.setTheCategory(theCategory);
         }
-        List<Order> orderList = new ArrayList<>();
+//        List<Order> orderList = new ArrayList<>();
         List<Order> orders = new ArrayList<>();
         if (order.getDeliveryStatus() == 1) {
             // 取件
@@ -257,12 +257,7 @@ public class OrderServiceImpl implements OrderService {
             // 配送中/问题件/已完成
             orders = orderMapper.selectDeliveryFileByStoreIdList(order);
         }
-        // 统计到期时间
-        for (Order orderNew : orders) {
-            Order order1 = getOrder(orderNew);
-            orderList.add(order1);
-        }
-        return orderList;
+        return orders;
     }
 
     @Override
@@ -363,9 +358,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order selectOrderById(String id) {
         Order order = orderMapper.selectOrderByIdOverWrite(id);
-        Order orderNew = addMoreUrl(order);
-        // 设置过期时间
-        Order orderNow = getOrder(orderNew);
+        Order orderNow = addMoreUrl(order);
         // vouchersIds 转化vouchersIdList( java 8+)
         String vouchersIds = orderNow.getVouchersIds();
         if (!StringUtils.isEmpty(vouchersIds)) {
@@ -434,7 +427,7 @@ public class OrderServiceImpl implements OrderService {
         if (!StringUtils.isEmpty(orderDeliveryPrescriptioTime)) {
             // 配送时间 mm
             Long orderDeliveryPrescriptioTimeLong = Long.valueOf(orderDeliveryPrescriptioTime);
-            Date orderCreateTime = orderNew.getOrderCreateTime();
+            Date orderCreateTime = new Date();
             // 支付时间 mm
             if (!StringUtils.isEmpty(orderCreateTime)) {
                 Long orderPayDateLong = orderCreateTime.getTime();

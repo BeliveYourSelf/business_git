@@ -33,4 +33,14 @@ public class DocumentController {
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectRecentDocumentByUserId);
     }
+
+    @ApiOperation(value = "更改文件名称通过文件id", notes = "userId")
+    @GetMapping("/updateDocumentNameByDocumentId")
+    public ResponseMessage updateDocumentNameByDocumentId(@RequestParam String documentId, @RequestParam String documentName) {
+        Integer updateDocumentNameByDocumentId = documentService.updateDocumentNameByDocumentId(documentId,documentName);
+        if (StringUtils.isEmpty(updateDocumentNameByDocumentId) || updateDocumentNameByDocumentId == 0) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",updateDocumentNameByDocumentId);
+    }
 }

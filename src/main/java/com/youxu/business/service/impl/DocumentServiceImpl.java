@@ -64,6 +64,12 @@ public class DocumentServiceImpl implements DocumentService {
         return documentMapper.selectRecentFileByUserId(userId);
     }
 
+    @Override
+    public Integer updateDocumentNameByDocumentId(String documentId, String documentName) {
+        Integer updateDocumentNameByDocumentId = documentMapper.updateDocumentNameByDocumentId(documentId, documentName);
+        return updateDocumentNameByDocumentId;
+    }
+
 
     // 获取文件大小
     private String getFileSize(String url) {

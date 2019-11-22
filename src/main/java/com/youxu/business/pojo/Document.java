@@ -24,6 +24,10 @@ public class Document {
 
     @ApiModelProperty(name = "fileSize", value = "文件页数")
     private String fileSize;
+
+    @ApiModelProperty(name = "documentName", value = "文件名称")
+    private String documentName;
+
     @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
     @ApiModelProperty(name = "createTime", value = "创建时间")
     private Date createTime;

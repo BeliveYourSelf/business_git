@@ -5,6 +5,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <id column="store_id"  property="storeId" />
     <result column="document_size_name" jdbcType="VARCHAR" property="documentSizeName" />
+    <result column="is_binding"  property="isBinding" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
     <result column="status" jdbcType="BIT" property="status" />
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, store_id, document_size_name, create_time, modify_time, status
+    id, store_id, document_size_name, is_binding, create_time, modify_time, status
   </sql>
   <select id="selectByExample" parameterType="com.youxu.business.pojo.DictionaryDocumentSizeExample" resultMap="BaseResultMap">
     select

@@ -1,6 +1,6 @@
 package com.youxu.business.controller;
 
-import com.youxu.business.pojo.DictionaryDocumentImposition;
+import com.youxu.business.pojo.DictionaryDocumentSize;
 import com.youxu.business.service.DictionaryDocumentSizeService;
 import com.youxu.business.utils.Enum.ResultCodeEnum;
 import com.youxu.business.utils.ResponseUtil.ResponseMessage;
@@ -22,10 +22,10 @@ public class DictionaryDocumentSizeController {
     @Resource
     private DictionaryDocumentSizeService dictionaryDocumentSizeService;
 
-    @ApiOperation(value = "查看文档尺寸列表", notes = "storeId")
+    @ApiOperation(value = "查看文档尺寸列表", notes = "返回值：（isBinding）是否装订： 0是 1否")
     @GetMapping("/selectDocumentSize")
-    public ResponseMessage<List<DictionaryDocumentSizeService>> selectDocumentSize(@RequestParam String storeId) {
-        List<DictionaryDocumentSizeService> selectDocumentSize =dictionaryDocumentSizeService.selectDocumentSize(storeId);
+    public ResponseMessage<List<DictionaryDocumentSize>> selectDocumentSize(@RequestParam String storeId) {
+        List<DictionaryDocumentSize> selectDocumentSize =dictionaryDocumentSizeService.selectDocumentSize(storeId);
         if (selectDocumentSize.size() <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }

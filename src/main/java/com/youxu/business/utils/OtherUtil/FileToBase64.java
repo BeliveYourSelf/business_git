@@ -4,11 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-import org.bouncycastle.util.encoders.Base64;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.web.multipart.MultipartFile;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 public class FileToBase64 {
     /**
      * <p>将文件转成base64 字符串</p>
@@ -22,7 +19,8 @@ public class FileToBase64 {
         byte[] buffer = new byte[(int)file.length()];
         inputFile.read(buffer);
         inputFile.close();
-        return new BASE64Encoder().encode(buffer);
+        return Base64.encodeBase64String(buffer);
+//        return new BASE64Encoder().encode(buffer);
     }
 
     /**
@@ -36,7 +34,8 @@ public class FileToBase64 {
         byte[] buffer = new byte[(int)file.length()];
         inputFile.read(buffer);
         inputFile.close();
-        return new BASE64Encoder().encode(buffer);
+        return Base64.encodeBase64String(buffer);
+//        return new BASE64Encoder().encode(buffer);
     }
     /**
      * <p>将base64字符解码保存文件</p>
@@ -45,7 +44,8 @@ public class FileToBase64 {
      * @throws Exception
      */
     public static void decoderBase64File(String base64Code,String targetPath) throws Exception {
-        byte[] buffer = new BASE64Decoder().decodeBuffer(base64Code);
+//        byte[] buffer = new BASE64Decoder().decodeBuffer(base64Code);
+        byte[] buffer =Base64.decodeBase64(base64Code);
         FileOutputStream out = new FileOutputStream(targetPath);
         out.write(buffer);
         out.close();
@@ -80,8 +80,8 @@ public class FileToBase64 {
      * @throws Exception
      */
     public static String multipartFileTrancateFile(MultipartFile file) throws Exception{
-        BASE64Encoder base64Encoder =new BASE64Encoder();
-        String base64EncoderImg = file.getOriginalFilename()+","+ base64Encoder.encode(file.getBytes());
+//        String base64EncoderImg = file.getOriginalFilename()+","+ base64Encoder.encode(file.getBytes());
+        String base64EncoderImg = file.getOriginalFilename()+","+ Base64.encodeBase64(file.getBytes());
         return base64EncoderImg;
     }
 
@@ -94,7 +94,7 @@ public class FileToBase64 {
         if(base64==null||"".equals(base64)) {
             return null;
         }
-        byte[] buff= Base64.decode(base64);
+        byte[] buff= Base64.decodeBase64(base64);
         File file=null;
         FileOutputStream fout=null;
         try {

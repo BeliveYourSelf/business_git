@@ -312,5 +312,10 @@ private final static Logger logger = LoggerFactory.getLogger(OSSUploadUtil.class
             return FALSE;
         }
     }
+
+    public static String documentUrlTranTOPDF(String fileUrl) throws IOException {
+        String pdfYuming = DocumentTrans.documentTransApiToPDF(fileUrl);
+        return pdfYuming;
+    }
 }
 

@@ -133,4 +133,15 @@ public class DocumentPrintPriceListController {
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", stringStringMap);
     }
+
+    @ApiOperation(value = "documentUrlTranTOPDF", notes = "文件路径转为pdf")
+    @GetMapping("/documentUrlTranTOPDF")
+    public ResponseMessage<String> documentUrlTranTOPDF(@RequestParam("fileUrl") String fileUrl) throws IOException {
+        String documentUrlTranTOPDF = OSSUploadUtil.documentUrlTranTOPDF(fileUrl);
+        if (documentUrlTranTOPDF.isEmpty()) {
+            return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), "路径不能为空");
+        }
+
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", documentUrlTranTOPDF);
+    }
 }

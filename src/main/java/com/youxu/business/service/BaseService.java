@@ -110,4 +110,9 @@ public class BaseService {
     //同时获取有水印单张
 //    @Value("http://apicall.id-photo-verify.com/api/take_pic_wm/")
     public String GETIDPHOTOWATERMARKANDTYPESETTINGURL = "http://apicall.id-photo-verify.com/api/take_pic_wm/";
+
+    /**
+     * 获取规格详情
+     */
+    public String GETIDPHOTOSPECBYID = "http://apicall.id-photo-verify.com/api/get_specs/";
 }

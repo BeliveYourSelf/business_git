@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.youxu.business.pojo.idphotonewadd.BackgroundColor;
 import com.youxu.business.pojo.idphotonewadd.GetSpecs;
 import com.youxu.business.utils.HttpTools.HttpToolOther;
-import com.youxu.business.utils.OtherUtil.ImageSizeTool;
 import com.youxu.business.utils.pojotools.*;
 import net.sf.json.JSONObject;
 import com.youxu.business.pojo.IdPhotoBusiness;
@@ -13,7 +12,6 @@ import com.youxu.business.service.BaseService;
 import com.youxu.business.service.IdPhotoBusinessService;
 import com.youxu.business.utils.HttpTools.HttpResult;
 import com.youxu.business.utils.HttpTools.HttpTool;
-import com.youxu.business.utils.OtherUtil.FileToBase64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
@@ -22,8 +20,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import javax.annotation.Resource;
-import java.lang.reflect.Type;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,13 +52,21 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
         return getSpecs;
     }
 
-
     /**
-     * 整合证件照三个接口
+     * 更换背景
+     * @param idPhotoBusiness
+     * @return
      */
-    private IdPhotoBusiness threeIntegrationOfIdPhotoBusiness(IdPhotoBusiness idPhotoBusiness) throws Exception {
+    @Override
+    public IdPhotoBusiness udpateBackGroundColor(IdPhotoBusiness idPhotoBusiness) throws Exception {
+        IdPhotoBusiness idPhotoBusinessNew = updateIdPhotoBusiness(idPhotoBusiness);
+        return idPhotoBusinessNew;
+    }
+    /**
+     * 整合证件照三个接口-更换证件照背景
+     */
+    private IdPhotoBusiness updateIdPhotoBusiness(IdPhotoBusiness idPhotoBusiness) throws Exception {
         IdPhotoBusiness idPhotoBusinessStatus = new IdPhotoBusiness();
-
         IdPhotoBusinessServiceImpl idPhotoBusinessService = new IdPhotoBusinessServiceImpl();
         // 接口1：证件照环境监测
         ResultIdPhotoBusinessLicenses resultIdPhotoBusinessLicenses = idPhotoBusinessService.idPhotoBusinessLicenses(idPhotoBusiness.getBase64());
@@ -73,7 +77,33 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
             return idPhotoBusinessStatus;
         }
         // 接口2：制作并检测证件照
-        ResultIdPhotoMarkAndTest resultIdPhotoMarkAndTest = idPhotoBusinessService.idPhotoMarkAndTest(idPhotoBusiness.getBase64(), idPhotoBusiness.getSpecId());
+        ResultIdPhotoMarkAndTest resultIdPhotoMarkAndTest = idPhotoBusinessService.idPhotoMarkAndTest(idPhotoBusiness.getBase64(), idPhotoBusiness.getSpecId(), idPhotoBusiness.getBackgroundColorList());
+        String codeResultIdPhotoMarkAndTest = resultIdPhotoMarkAndTest.getCode();
+        if (!"200".equals(codeResultIdPhotoMarkAndTest)) {
+            idPhotoBusinessStatus.setCode(Integer.valueOf(codeResultIdPhotoMarkAndTest));
+            idPhotoBusinessStatus.setMessage("制作并检测证件照失败");
+            return idPhotoBusinessStatus;
+        }
+        idPhotoBusinessStatus.setResultIdPhotoMarkAndTest(resultIdPhotoMarkAndTest);
+        return idPhotoBusinessStatus;
+    }
+
+    /**
+     * 整合证件照三个接口-original
+     */
+    private IdPhotoBusiness threeIntegrationOfIdPhotoBusiness(IdPhotoBusiness idPhotoBusiness) throws Exception {
+        IdPhotoBusiness idPhotoBusinessStatus = new IdPhotoBusiness();
+        IdPhotoBusinessServiceImpl idPhotoBusinessService = new IdPhotoBusinessServiceImpl();
+        // 接口1：证件照环境监测
+        ResultIdPhotoBusinessLicenses resultIdPhotoBusinessLicenses = idPhotoBusinessService.idPhotoBusinessLicenses(idPhotoBusiness.getBase64());
+        String codeResultIdPhotoBusinessLicenses = resultIdPhotoBusinessLicenses.getCode();
+        if (!"200".equals(codeResultIdPhotoBusinessLicenses)) {
+            idPhotoBusinessStatus.setCode(Integer.valueOf(codeResultIdPhotoBusinessLicenses));
+            idPhotoBusinessStatus.setMessage(resultIdPhotoBusinessLicenses.getMsg());
+            return idPhotoBusinessStatus;
+        }
+        // 接口2：制作并检测证件照
+        ResultIdPhotoMarkAndTest resultIdPhotoMarkAndTest = idPhotoBusinessService.idPhotoMarkAndTest(idPhotoBusiness.getBase64(), idPhotoBusiness.getSpecId(), null);
         String codeResultIdPhotoMarkAndTest = resultIdPhotoMarkAndTest.getCode();
         if (!"200".equals(codeResultIdPhotoMarkAndTest)) {
             idPhotoBusinessStatus.setCode(Integer.valueOf(codeResultIdPhotoMarkAndTest));
@@ -120,10 +150,11 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
     /**
      * 接口2：制作并检测证件照
      */
-    private ResultIdPhotoMarkAndTest idPhotoMarkAndTest(String base64Picture, String specId) throws Exception {
+    private ResultIdPhotoMarkAndTest idPhotoMarkAndTest(String base64Picture, String specId, List<BackgroundColor> backgroundColorList) throws Exception {
         IdPhotoMarkAndTest idPhotoMarkAndTest = new IdPhotoMarkAndTest();
         idPhotoMarkAndTest.setFile(base64Picture);
         idPhotoMarkAndTest.setSpec_id(specId);
+        idPhotoMarkAndTest.setBackground_color(backgroundColorList);
         //Object转JSON字符串:
         String idPhotoMarkAndTestJsonString = com.alibaba.fastjson.JSONObject.toJSONString(idPhotoMarkAndTest);
         //JSON字符串转JSONObject:

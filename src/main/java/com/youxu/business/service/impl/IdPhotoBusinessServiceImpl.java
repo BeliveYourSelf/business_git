@@ -20,6 +20,14 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import javax.annotation.Resource;
+import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +70,32 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
         IdPhotoBusiness idPhotoBusinessNew = updateIdPhotoBusiness(idPhotoBusiness);
         return idPhotoBusinessNew;
     }
+
+    @Override
+    public void getIdPhotoWaterMarkByFileName(String fileName, HttpServletResponse response) throws IOException {
+        String requestPath = GETIDPHOTOWATERMARKANDTYPESETTINGURL + fileName;
+        // 获取输入流
+        URL url = new URL(null, requestPath, new sun.net.www.protocol.https.Handler());
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        // 向输出流写入
+        InputStream inputStream = connection.getInputStream();
+        response.setHeader("content-type","text/html;charset=utf-8");
+//        response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+//        IOUtils.copy(inputStream, outputStream);
+        OutputStream outputStream = new BufferedOutputStream(response.getOutputStream());
+        // 所读取的内容使用n来接收
+        int n = 0;
+        byte[] bytes = new byte[1024];
+        while((n = inputStream.read(bytes)) != -1){
+            // 将字节数组的数据全部输出到输出流
+            outputStream.write(bytes,0,n);
+        }
+        outputStream.flush();
+        outputStream.close();
+        inputStream.close();
+    }
+
     /**
      * 整合证件照三个接口-更换证件照背景
      */

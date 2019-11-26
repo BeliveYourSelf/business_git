@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -99,6 +100,18 @@ public class IdPhotoBusinessController {
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), idPhotoBusiness);
     }
+    @ApiOperation(value = "查看水印图片通过fileName", notes = "")
+    @GetMapping("/getIdPhotoWaterMarkByFileName")
+    public ResponseMessage getIdPhotoWaterMarkByFileName(@RequestParam String fileName, HttpServletResponse response) {
+        try {
+            idPhotoBusinessService.getIdPhotoWaterMarkByFileName(fileName, response);
+        } catch (Exception e) {
+            return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode());
+    }
+
+
 
 
 }

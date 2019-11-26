@@ -135,7 +135,7 @@ public class IdPhotoBusinessController extends BaseService{
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功", cutChangeClothesResult);
     }
-    @ApiModelProperty(value = "同时获取无水印单张和排版图片",notes = "fileName")
+    @ApiModelProperty(value = "同时获取无水印单张和排版图片",notes = "fileName：  622758d6102511ea9aa900163e0070b6clothesblue")
     @GetMapping("/cutChangeClothes")
     public ResponseMessage<ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl> getIdPhotoNoWaterMarkAndTypeSettingUrl(@RequestParam String fileName){
         ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl resultGetIdPhotoNoWaterMarkAndTypeSettingUrl = null;

@@ -147,11 +147,12 @@ public class IdPhotoBusinessController extends BaseService{
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功", resultGetIdPhotoNoWaterMarkAndTypeSettingUrl);
     }
     /**
-     * 接口3:同时获取无水印单张和排版图片
+     * 接口3:同时获取无水印单张和排版图片   :换装app_key(69f50c487f42e8e62823b464a4af019bcae8a8ab)
      */
     private ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl getIdPhotoNoWaterMarkAndTypeSettingUrlCopy(String fileName) throws Exception {
         GetIdPhotoNoWaterMarkAndTypeSettingUrl getIdPhotoNoWaterMarkAndTypeSettingUrl = new GetIdPhotoNoWaterMarkAndTypeSettingUrl();
         getIdPhotoNoWaterMarkAndTypeSettingUrl.setFile_name(fileName);
+        getIdPhotoNoWaterMarkAndTypeSettingUrl.setApp_key("69f50c487f42e8e62823b464a4af019bcae8a8ab");
         JSONObject jsonObjectIdPhotoMarkAndTest = JSONObject.fromObject(getIdPhotoNoWaterMarkAndTypeSettingUrl);
         JSONObject jsonObject = HttpTool.httpPost(GETIDPHOTONOWATERMARKANDTYPESETTINGURL, jsonObjectIdPhotoMarkAndTest, false);
         String jsonString = com.alibaba.fastjson.JSONObject.toJSONString(jsonObject);

@@ -4,14 +4,19 @@ import com.youxu.business.pojo.IdPhotoBusiness;
 import com.youxu.business.pojo.idphotonewadd.CutChangeClothes;
 import com.youxu.business.pojo.idphotonewadd.CutChangeClothesResult;
 import com.youxu.business.pojo.idphotonewadd.GetSpecs;
+import com.youxu.business.service.BaseService;
 import com.youxu.business.service.IdPhotoBusinessService;
 import com.youxu.business.utils.Enum.ResultCodeEnum;
+import com.youxu.business.utils.HttpTools.HttpTool;
 import com.youxu.business.utils.OtherUtil.ImageSizeTool;
 import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
+import com.youxu.business.utils.pojotools.GetIdPhotoNoWaterMarkAndTypeSettingUrl;
+import com.youxu.business.utils.pojotools.ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
+import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -23,7 +28,7 @@ import java.util.List;
 @RequestMapping("/api")
 @RestController
 @Api(description = "证件照业务")
-public class IdPhotoBusinessController {
+public class IdPhotoBusinessController extends BaseService{
     @Resource
     private IdPhotoBusinessService idPhotoBusinessService;
 
@@ -130,8 +135,29 @@ public class IdPhotoBusinessController {
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功", cutChangeClothesResult);
     }
-
-
+    @ApiModelProperty(value = "同时获取无水印单张和排版图片",notes = "fileName")
+    @GetMapping("/cutChangeClothes")
+    public ResponseMessage<ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl> getIdPhotoNoWaterMarkAndTypeSettingUrl(@RequestParam String fileName){
+        ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl resultGetIdPhotoNoWaterMarkAndTypeSettingUrl = null;
+        try {
+            resultGetIdPhotoNoWaterMarkAndTypeSettingUrl = getIdPhotoNoWaterMarkAndTypeSettingUrlCopy(fileName);
+        } catch (Exception e) {
+            return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功", resultGetIdPhotoNoWaterMarkAndTypeSettingUrl);
+    }
+    /**
+     * 接口3:同时获取无水印单张和排版图片
+     */
+    private ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl getIdPhotoNoWaterMarkAndTypeSettingUrlCopy(String fileName) throws Exception {
+        GetIdPhotoNoWaterMarkAndTypeSettingUrl getIdPhotoNoWaterMarkAndTypeSettingUrl = new GetIdPhotoNoWaterMarkAndTypeSettingUrl();
+        getIdPhotoNoWaterMarkAndTypeSettingUrl.setFile_name(fileName);
+        JSONObject jsonObjectIdPhotoMarkAndTest = JSONObject.fromObject(getIdPhotoNoWaterMarkAndTypeSettingUrl);
+        JSONObject jsonObject = HttpTool.httpPost(GETIDPHOTONOWATERMARKANDTYPESETTINGURL, jsonObjectIdPhotoMarkAndTest, false);
+        String jsonString = com.alibaba.fastjson.JSONObject.toJSONString(jsonObject);
+        ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl resultGetIdPhotoNoWaterMarkAndTypeSettingUrl = com.alibaba.fastjson.JSONObject.parseObject(jsonString, ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl.class);
+        return resultGetIdPhotoNoWaterMarkAndTypeSettingUrl;
+    }
 
 
 }

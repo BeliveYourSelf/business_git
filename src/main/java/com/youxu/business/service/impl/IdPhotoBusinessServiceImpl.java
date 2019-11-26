@@ -3,6 +3,8 @@ package com.youxu.business.service.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.google.gson.GsonBuilder;
 import com.youxu.business.pojo.idphotonewadd.BackgroundColor;
+import com.youxu.business.pojo.idphotonewadd.CutChangeClothes;
+import com.youxu.business.pojo.idphotonewadd.CutChangeClothesResult;
 import com.youxu.business.pojo.idphotonewadd.GetSpecs;
 import com.youxu.business.utils.HttpTools.HttpToolOther;
 import com.youxu.business.utils.pojotools.*;
@@ -94,6 +96,15 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
         outputStream.flush();
         outputStream.close();
         inputStream.close();
+    }
+
+    @Override
+    public CutChangeClothesResult cutChangeClothes(CutChangeClothes cutChangeClothes) {
+        JSONObject jsonObject = JSONObject.fromObject(cutChangeClothes);
+        JSONObject jsonObjectNew = HttpTool.httpPost(CUTCHANGECLOTHES, jsonObject, false);
+        String jsonString = com.alibaba.fastjson.JSONObject.toJSONString(jsonObjectNew);
+        CutChangeClothesResult cutChangeClothesResult = com.alibaba.fastjson.JSONObject.parseObject(jsonString, CutChangeClothesResult.class);
+        return cutChangeClothesResult;
     }
 
     /**

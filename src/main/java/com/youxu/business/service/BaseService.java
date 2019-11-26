@@ -115,4 +115,8 @@ public class BaseService {
      * 获取规格详情
      */
     public String GETIDPHOTOSPECBYID = "http://apicall.id-photo-verify.com/api/get_specs/";
+    /**
+     * 换装
+     */
+    public String  CUTCHANGECLOTHES= "http://apicall.id-photo-verify.com/api/cut_change_clothes";
 }

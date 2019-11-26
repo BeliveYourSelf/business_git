@@ -1,6 +1,8 @@
 package com.youxu.business.controller;
 
 import com.youxu.business.pojo.IdPhotoBusiness;
+import com.youxu.business.pojo.idphotonewadd.CutChangeClothes;
+import com.youxu.business.pojo.idphotonewadd.CutChangeClothesResult;
 import com.youxu.business.pojo.idphotonewadd.GetSpecs;
 import com.youxu.business.service.IdPhotoBusinessService;
 import com.youxu.business.utils.Enum.ResultCodeEnum;
@@ -8,6 +10,7 @@ import com.youxu.business.utils.OtherUtil.ImageSizeTool;
 import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
@@ -109,6 +112,23 @@ public class IdPhotoBusinessController {
             return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode());
+    }
+
+    @ApiModelProperty(value = "换装",notes = "{\n" +
+            "  \"clothes\": \"applet_boy1\",\n" +
+            "  \"fair_level\": \"3\"\n" +
+            "  ,\"spec_id\": \"391\"\n" +
+            "  ,\"file\": \"/9j/4AAQSk***\"\n" +
+            "}")
+    @PostMapping("/cutChangeClothes")
+    public ResponseMessage<CutChangeClothesResult> cutChangeClothes(@RequestBody CutChangeClothes cutChangeClothes){
+        CutChangeClothesResult cutChangeClothesResult = null;
+        try {
+            cutChangeClothesResult = idPhotoBusinessService.cutChangeClothes(cutChangeClothes);
+        } catch (Exception e) {
+            return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功", cutChangeClothesResult);
     }
 
 

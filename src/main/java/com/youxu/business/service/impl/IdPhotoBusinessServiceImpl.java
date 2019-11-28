@@ -20,6 +20,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import sun.misc.BASE64Encoder;
 
 import javax.annotation.Resource;
 import javax.net.ssl.HttpsURLConnection;
@@ -74,18 +75,19 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
     }
 
     @Override
-    public void getIdPhotoWaterMarkByFileName(String fileName, HttpServletResponse response) throws IOException {
+    public String getIdPhotoWaterMarkByFileName(String fileName, HttpServletResponse response) throws IOException {
         String requestPath = GETIDPHOTOWATERMARKANDTYPESETTINGURL + fileName;
         // 获取输入流
         URL url = new URL(null, requestPath, new sun.net.www.protocol.https.Handler());
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
+        int contentLength = connection.getContentLength();
         // 向输出流写入
         InputStream inputStream = connection.getInputStream();
         response.setHeader("content-type","text/html;charset=utf-8");
 //        response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
 //        IOUtils.copy(inputStream, outputStream);
-        OutputStream outputStream = new BufferedOutputStream(response.getOutputStream());
+       /* OutputStream outputStream = new BufferedOutputStream(response.getOutputStream());
         // 所读取的内容使用n来接收
         int n = 0;
         byte[] bytes = new byte[1024];
@@ -94,8 +96,16 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
             outputStream.write(bytes,0,n);
         }
         outputStream.flush();
-        outputStream.close();
+        outputStream.close();*/
+      /* int count = 0;
+       while(count == 0){
+           count = inputStream.available();
+       }*/
+        byte[] bytes = new byte[contentLength];
+        inputStream.read(bytes);
         inputStream.close();
+        String base64 = new BASE64Encoder().encode(bytes);
+        return base64;
     }
 
     @Override

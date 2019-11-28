@@ -16,7 +16,7 @@ public interface IdPhotoBusinessService {
 
     IdPhotoBusiness udpateBackGroundColor(IdPhotoBusiness idPhotoBusiness) throws Exception;
 
-    void getIdPhotoWaterMarkByFileName(String fileName, HttpServletResponse response) throws IOException;
+    String getIdPhotoWaterMarkByFileName(String fileName, HttpServletResponse response) throws IOException;
 
     CutChangeClothesResult cutChangeClothes(CutChangeClothes cutChangeClothes);
 }

@@ -110,13 +110,14 @@ public class IdPhotoBusinessController extends BaseService{
     }
     @ApiOperation(value = "查看水印图片通过fileName", notes = "")
     @GetMapping("/getIdPhotoWaterMarkByFileName")
-    public ResponseMessage getIdPhotoWaterMarkByFileName(@RequestParam String fileName, HttpServletResponse response) {
+    public ResponseMessage<String> getIdPhotoWaterMarkByFileName(@RequestParam String fileName, HttpServletResponse response) {
+        String getIdPhotoWaterMarkByFileName = null;
         try {
-            idPhotoBusinessService.getIdPhotoWaterMarkByFileName(fileName, response);
+            getIdPhotoWaterMarkByFileName = idPhotoBusinessService.getIdPhotoWaterMarkByFileName(fileName, response);
         } catch (Exception e) {
             return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode());
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",getIdPhotoWaterMarkByFileName);
     }
 
     @ApiOperation(value = "换装",notes = "{\n" +

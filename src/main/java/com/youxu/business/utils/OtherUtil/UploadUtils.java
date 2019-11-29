@@ -25,7 +25,7 @@ public class UploadUtils {
 
     public static File getImgDirFileCeshi(String imgPathPerfix){
         // 构建上传文件的存放 "文件夹" 路径
-        String fileDirPath = new String("huinong/src/main/resources/" + imgPathPerfix);
+        String fileDirPath = new String("src/main/resources/" + imgPathPerfix);
 
         File fileDir = new File(fileDirPath);
         if(!fileDir.exists()){

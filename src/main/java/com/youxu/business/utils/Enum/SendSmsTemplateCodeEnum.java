@@ -9,7 +9,11 @@ public enum SendSmsTemplateCodeEnum {
     LOGINEXCEPTION("LOGINEXCEPTION","SMS_164416083"),
     REGISTER("REGISTER","SMS_164416082"),
     MODIFYPASSWORD("MODIFYPASSWORD","SMS_164416081"),
-    INFORMATIONCHANGE("INFORMATIONCHANGE","SMS_164416080");
+    INFORMATIONCHANGE("INFORMATIONCHANGE","SMS_164416080"),
+    // 有需文印注册成为配送员
+    REGISTERDELIVERYCLERK("REGISTERDELIVERYCLERK","SMS_174650640"),
+    // 快递收件人收货码
+    HARVESTCODE("HARVESTCODE","SMS_176405232");
     private String TemplateCodekey;
     private String TemplateCodeValue;
 
@@ -34,4 +38,6 @@ public enum SendSmsTemplateCodeEnum {
     public void setTemplateCodeValue(String templateCodeValue) {
         TemplateCodeValue = templateCodeValue;
     }
+
+
 }

@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youxu.business.dao.BillingRuleMapper">
+  <resultMap id="BaseResultMap" type="com.youxu.business.pojo.BillingRule">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="store_id" jdbcType="INTEGER" property="storeId" />
+    <result column="billing_rule_create_time" jdbcType="TIMESTAMP" property="billingRuleCreateTime" />
+    <result column="billing_rule_modify_time" jdbcType="TIMESTAMP" property="billingRuleModifyTime" />
+    <result column="billing_rule_status" jdbcType="BIT" property="billingRuleStatus" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.youxu.business.pojo.BillingRuleWithBLOBs">
+    <result column="billing_rule_print" jdbcType="LONGVARCHAR" property="billingRulePrint" />
+    <result column="billing_rule_photo" jdbcType="LONGVARCHAR" property="billingRulePhoto" />
+    <result column="billing_rule_delivery" jdbcType="LONGVARCHAR" property="billingRuleDelivery" />
+    <result column="billing_rule_pay_method" jdbcType="LONGVARCHAR" property="billingRulePayMethod" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, store_id, billing_rule_create_time, billing_rule_modify_time, billing_rule_status
+  </sql>
+  <sql id="Blob_Column_List">
+    billing_rule_print, billing_rule_photo, billing_rule_delivery, billing_rule_pay_method
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.youxu.business.pojo.BillingRuleExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_billing_rule
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.youxu.business.pojo.BillingRuleExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_billing_rule
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.youxu.business.pojo.BillingRuleExample">
+    delete from tb_billing_rule
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.youxu.business.pojo.BillingRuleWithBLOBs">
+    insert into tb_billing_rule (id, billing_rule_create_time, billing_rule_modify_time, 
+      billing_rule_status, billing_rule_print, billing_rule_photo, 
+      billing_rule_delivery, billing_rule_pay_method
+      )
+    values (#{id,jdbcType=INTEGER}, #{billingRuleCreateTime,jdbcType=TIMESTAMP}, #{billingRuleModifyTime,jdbcType=TIMESTAMP}, 
+      #{billingRuleStatus,jdbcType=BIT}, #{billingRulePrint,jdbcType=LONGVARCHAR}, #{billingRulePhoto,jdbcType=LONGVARCHAR}, 
+      #{billingRuleDelivery,jdbcType=LONGVARCHAR}, #{billingRulePayMethod,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.youxu.business.pojo.BillingRuleWithBLOBs">
+    insert into tb_billing_rule
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="billingRuleCreateTime != null">
+        billing_rule_create_time,
+      </if>
+      <if test="billingRuleModifyTime != null">
+        billing_rule_modify_time,
+      </if>
+      <if test="billingRuleStatus != null">
+        billing_rule_status,
+      </if>
+      <if test="billingRulePrint != null">
+        billing_rule_print,
+      </if>
+      <if test="billingRulePhoto != null">
+        billing_rule_photo,
+      </if>
+      <if test="billingRuleDelivery != null">
+        billing_rule_delivery,
+      </if>
+      <if test="billingRulePayMethod != null">
+        billing_rule_pay_method,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="billingRuleCreateTime != null">
+        #{billingRuleCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="billingRuleModifyTime != null">
+        #{billingRuleModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="billingRuleStatus != null">
+        #{billingRuleStatus,jdbcType=BIT},
+      </if>
+      <if test="billingRulePrint != null">
+        #{billingRulePrint,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="billingRulePhoto != null">
+        #{billingRulePhoto,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="billingRuleDelivery != null">
+        #{billingRuleDelivery,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="billingRulePayMethod != null">
+        #{billingRulePayMethod,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.youxu.business.pojo.BillingRuleExample" resultType="java.lang.Long">
+    select count(*) from tb_billing_rule
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_billing_rule
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.billingRuleCreateTime != null">
+        billing_rule_create_time = #{record.billingRuleCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.billingRuleModifyTime != null">
+        billing_rule_modify_time = #{record.billingRuleModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.billingRuleStatus != null">
+        billing_rule_status = #{record.billingRuleStatus,jdbcType=BIT},
+      </if>
+      <if test="record.billingRulePrint != null">
+        billing_rule_print = #{record.billingRulePrint,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.billingRulePhoto != null">
+        billing_rule_photo = #{record.billingRulePhoto,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.billingRuleDelivery != null">
+        billing_rule_delivery = #{record.billingRuleDelivery,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.billingRulePayMethod != null">
+        billing_rule_pay_method = #{record.billingRulePayMethod,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update tb_billing_rule
+    set id = #{record.id,jdbcType=INTEGER},
+      billing_rule_create_time = #{record.billingRuleCreateTime,jdbcType=TIMESTAMP},
+      billing_rule_modify_time = #{record.billingRuleModifyTime,jdbcType=TIMESTAMP},
+      billing_rule_status = #{record.billingRuleStatus,jdbcType=BIT},
+      billing_rule_print = #{record.billingRulePrint,jdbcType=LONGVARCHAR},
+      billing_rule_photo = #{record.billingRulePhoto,jdbcType=LONGVARCHAR},
+      billing_rule_delivery = #{record.billingRuleDelivery,jdbcType=LONGVARCHAR},
+      billing_rule_pay_method = #{record.billingRulePayMethod,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_billing_rule
+    set id = #{record.id,jdbcType=INTEGER},
+      billing_rule_create_time = #{record.billingRuleCreateTime,jdbcType=TIMESTAMP},
+      billing_rule_modify_time = #{record.billingRuleModifyTime,jdbcType=TIMESTAMP},
+      billing_rule_status = #{record.billingRuleStatus,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <!--查看规则计费-->
+  <select id="selectBillingRule" resultMap="ResultMapWithBLOBs">
+    select <include refid="Base_Column_List"/>,<include refid="Blob_Column_List"/>
+    from tb_billing_rule
+    where store_id = #{storeId} and billing_rule_status = false
+  </select>
+</mapper>

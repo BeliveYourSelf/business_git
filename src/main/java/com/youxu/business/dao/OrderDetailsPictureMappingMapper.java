@@ -19,4 +19,11 @@ public interface OrderDetailsPictureMappingMapper {
     int updateByExampleSelective(@Param("record") OrderDetailsPictureMapping record, @Param("example") OrderDetailsPictureMappingExample example);
 
     int updateByExample(@Param("record") OrderDetailsPictureMapping record, @Param("example") OrderDetailsPictureMappingExample example);
+    // 新增订单和文档映射
+    int insertOrderDetailsPictrueMapping(@Param("orderDetailsBookBindingId")int orderDetailsBookBindingId,@Param("pictureIdList") List<Integer> pictureIdList);
+
+    // 通过orderDetailIdList查看集合
+    List<OrderDetailsPictureMapping> selectOrderDetailsPictureMappingByOrderDetailIdList(@Param("orderDetailIdList") List<Integer> orderDetailIdList);
+    // 通过orderDetailsId查看集合
+    List<OrderDetailsPictureMapping> selectOrderDetailsPictureMappingByOrderDetailId(@Param("orderDetailId") Integer orderDetailId);
 }

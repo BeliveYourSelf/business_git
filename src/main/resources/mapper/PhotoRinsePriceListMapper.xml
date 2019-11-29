@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youxu.business.dao.PhotoRinsePriceListMapper">
+  <resultMap id="BaseResultMap" type="com.youxu.business.pojo.PhotoRinsePriceList">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="store_id" jdbcType="INTEGER" property="storeId" />
+    <result column="tb_photo_rinse_name" jdbcType="VARCHAR" property="tbPhotoRinseName" />
+    <result column="tb_photo_rinse_price" jdbcType="DOUBLE" property="tbPhotoRinsePrice" />
+    <result column="tb_photo_rinse_create_time" jdbcType="TIMESTAMP" property="tbPhotoRinseCreateTime" />
+    <result column="tb_photo_rinse_modify_time" jdbcType="TIMESTAMP" property="tbPhotoRinseModifyTime" />
+    <result column="tb_photo_rinse_status" jdbcType="BIT" property="tbPhotoRinseStatus" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, store_id, tb_photo_rinse_name, tb_photo_rinse_price, tb_photo_rinse_create_time, 
+    tb_photo_rinse_modify_time, tb_photo_rinse_status
+  </sql>
+  <select id="selectByExample" parameterType="com.youxu.business.pojo.PhotoRinsePriceListExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_photo_rinse_price_list
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.youxu.business.pojo.PhotoRinsePriceListExample">
+    delete from tb_photo_rinse_price_list
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.youxu.business.pojo.PhotoRinsePriceList">
+    insert into tb_photo_rinse_price_list (id, store_id, tb_photo_rinse_name, 
+      tb_photo_rinse_price, tb_photo_rinse_create_time, 
+      tb_photo_rinse_modify_time, tb_photo_rinse_status
+      )
+    values (#{id,jdbcType=INTEGER}, #{storeId,jdbcType=INTEGER}, #{tbPhotoRinseName,jdbcType=VARCHAR}, 
+      #{tbPhotoRinsePrice,jdbcType=DOUBLE}, #{tbPhotoRinseCreateTime,jdbcType=TIMESTAMP}, 
+      #{tbPhotoRinseModifyTime,jdbcType=TIMESTAMP}, #{tbPhotoRinseStatus,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.youxu.business.pojo.PhotoRinsePriceList">
+    insert into tb_photo_rinse_price_list
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="storeId != null">
+        store_id,
+      </if>
+      <if test="tbPhotoRinseName != null">
+        tb_photo_rinse_name,
+      </if>
+      <if test="tbPhotoRinsePrice != null">
+        tb_photo_rinse_price,
+      </if>
+      <if test="tbPhotoRinseCreateTime != null">
+        tb_photo_rinse_create_time,
+      </if>
+      <if test="tbPhotoRinseModifyTime != null">
+        tb_photo_rinse_modify_time,
+      </if>
+      <if test="tbPhotoRinseStatus != null">
+        tb_photo_rinse_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null">
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="tbPhotoRinseName != null">
+        #{tbPhotoRinseName,jdbcType=VARCHAR},
+      </if>
+      <if test="tbPhotoRinsePrice != null">
+        #{tbPhotoRinsePrice,jdbcType=DOUBLE},
+      </if>
+      <if test="tbPhotoRinseCreateTime != null">
+        #{tbPhotoRinseCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tbPhotoRinseModifyTime != null">
+        #{tbPhotoRinseModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tbPhotoRinseStatus != null">
+        #{tbPhotoRinseStatus,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.youxu.business.pojo.PhotoRinsePriceListExample" resultType="java.lang.Long">
+    select count(*) from tb_photo_rinse_price_list
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+    <update id="updateByExampleSelective" parameterType="map">
+    update tb_photo_rinse_price_list
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.tbPhotoRinseName != null">
+        tb_photo_rinse_name = #{record.tbPhotoRinseName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tbPhotoRinsePrice != null">
+        tb_photo_rinse_price = #{record.tbPhotoRinsePrice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.tbPhotoRinseCreateTime != null">
+        tb_photo_rinse_create_time = #{record.tbPhotoRinseCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.tbPhotoRinseModifyTime != null">
+        tb_photo_rinse_modify_time = #{record.tbPhotoRinseModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.tbPhotoRinseStatus != null">
+        tb_photo_rinse_status = #{record.tbPhotoRinseStatus,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_photo_rinse_price_list
+    set id = #{record.id,jdbcType=INTEGER},
+      store_id = #{record.storeId,jdbcType=INTEGER},
+      tb_photo_rinse_name = #{record.tbPhotoRinseName,jdbcType=VARCHAR},
+      tb_photo_rinse_price = #{record.tbPhotoRinsePrice,jdbcType=DOUBLE},
+      tb_photo_rinse_create_time = #{record.tbPhotoRinseCreateTime,jdbcType=TIMESTAMP},
+      tb_photo_rinse_modify_time = #{record.tbPhotoRinseModifyTime,jdbcType=TIMESTAMP},
+      tb_photo_rinse_status = #{record.tbPhotoRinseStatus,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <!--查看照片冲印价格表-->
+  <select id="selectPhotoRinsePriceList" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tb_photo_rinse_price_list
+    where tb_photo_rinse_price_list.store_id = #{storeId} and tb_photo_rinse_price_list.tb_photo_rinse_status = false
+  </select>
+
+</mapper>

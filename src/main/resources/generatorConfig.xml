@@ -9,9 +9,9 @@
         </commentGenerator>
         <!--需要配置数据库连接-->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://rm-2ze4den4fx955faj5ro.mysql.rds.aliyuncs.com:3306/you_db?characterEncoding=utf-8&amp;useSSL=false"
-                        userId="youxu"
-                        password="YouXu123456">
+                        connectionURL="jdbc:mysql://rm-2ze91d5162x3592863o.mysql.rds.aliyuncs.com:3306/youxu_db?characterEncoding=utf-8&amp;useSSL=false"
+                        userId="youxuwenyin_dev"
+                        password="7uoWnxX0oiip3">
         </jdbcConnection>
         <javaTypeResolver >
             <property name="forceBigDecimals" value="false" />
@@ -36,10 +36,37 @@
         <!--table是指定每个表的生成策略-->
 
         <!--生成对应表及类名-->
-        <table tableName="tb_id_photo_dictionary" domainObjectName="IdPhotoDictionary"/>
-        <table tableName="tb_order" domainObjectName="Order"/>
-        <table tableName="tb_order_details" domainObjectName="OrderDetails"/>
-        <table tableName="tb_order_details_picture_mapping" domainObjectName="OrderDetailsPictureMapping"/>
-        <table tableName="tb_picture" domainObjectName="Picture"/>
+        <!--<table tableName="tb_id_photo_dictionary" domainObjectName="IdPhotoDictionary"/>-->
+        <!--<table tableName="tb_order" domainObjectName="Order"/>-->
+        <!--<table tableName="tb_order_details" domainObjectName="OrderDetails"/>-->
+        <!--<table tableName="tb_order_details_picture_mapping" domainObjectName="OrderDetailsPictureMapping"/>-->
+        <!--<table tableName="tb_picture" domainObjectName="Picture"/>-->
+        <!--<table tableName="tb_harvest_address" domainObjectName="Harvest"/>-->
+        <!--<table tableName="tb_billing_rule" domainObjectName="BillingRule"/>-->
+        <!--<table tableName="tb_order_evaluate" domainObjectName="OrderEvaluate"/>-->
+        <!--<table tableName="tb_order_evaluate_option_cart_mapper" domainObjectName="OrderEvaluateOptionCartMapper"/>-->
+        <!--<table tableName="tb_order_evaluate_option_cart" domainObjectName="OrderEvaluateOptionCart"/>-->
+        <!--<table tableName="tb_folder" domainObjectName="Folder"/>-->
+        <!--<table tableName="tb_document" domainObjectName="Document"/>-->
+        <!--<table tableName="tb_share" domainObjectName="Share"/>-->
+        <!--<table tableName="tb_collection" domainObjectName="Collection"/>-->
+        <!--<table tableName="tb_access_token" domainObjectName="AccessToken"/>-->
+        <!--<table tableName="tb_store" domainObjectName="Store"/>-->
+        <!--<table tableName="tb_banner" domainObjectName="Banner"/>-->
+        <!--<table tableName="tb_dictionary_document_size" domainObjectName="DictionaryDocumentSize"/>-->
+        <!--<table tableName="tb_dictionary_document_imposition" domainObjectName="DictionaryDocumentImposition"/>-->
+        <!--<table tableName="tb_order_details_book_binding" domainObjectName="OrderDetailsBookBinding"/>-->
+        <!--<table tableName="tb_problem_file_mark_dictionary" domainObjectName="ProblemFileMarkDictionary"/>-->
+        <!--<table tableName="tb_delivery_clerk_info" domainObjectName="DeliveryClerkInfo"/>-->
+        <!--<table tableName="tb_sotre_delivery_mapping" domainObjectName="SotreDeliveryMapping"/>-->
+        <!--<table tableName="tb_service_time" domainObjectName="ServiceTime"/>-->
+        <!--<table tableName="tb_document_cover_color" domainObjectName="DocumentCoverColor"/>-->
+        <!--<table tableName="tb_order_evaluate_picture_mapping" domainObjectName="OrderEvaluatePictureMapping"/>-->
+        <!--<table tableName="tb_user" domainObjectName="User"/>-->
+        <!--<table tableName="tb_recent_file" domainObjectName="RecentFile"/>-->
+        <!--<table tableName="tb_user_wallet" domainObjectName="UserWallet"/>-->
+        <!--<table tableName="tb_banner_material" domainObjectName="BannerMaterial"/>-->
+        <table tableName="tb_delivery_schedule" domainObjectName="DeliverySchedule"/>
+
     </context>
 </generatorConfiguration>

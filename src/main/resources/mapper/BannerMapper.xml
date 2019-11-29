@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youxu.business.dao.BannerMapper">
+  <resultMap id="BaseResultMap" type="com.youxu.business.pojo.Banner">
+    <result column="tb_bannerid" jdbcType="INTEGER" property="id" />
+    <result column="tb_bannerbanner_name" jdbcType="VARCHAR" property="bannerName" />
+    <result column="tb_bannerbanner_picture_url" jdbcType="VARCHAR" property="bannerPictureUrl" />
+    <result column="tb_bannerbanner_jump_type" jdbcType="TINYINT" property="bannerJumpType" />
+    <result column="tb_bannerbanner_weight" jdbcType="INTEGER" property="bannerWeight" />
+    <result column="tb_bannercreate_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="tb_bannermodify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="tb_bannerstatus" jdbcType="BIT" property="status" />
+    <result column="tb_bannerbanner_content_id" property="banner_content_id" />
+    <result column="tb_bannerbanner_comtent_id_for_pc" property="bannerComtentIdForPc" />
+    <association property="bannerMaterial" javaType="com.youxu.business.pojo.BannerMaterial">
+      <id column="tb_banner_materialid"  property="id" />
+      <result column="tb_banner_materialcontent_name"  property="contentName" />
+      <result column="tb_banner_materialcreation_time"  property="creationTime" />
+      <result column="tb_banner_materialupdate_time"  property="updateTime" />
+      <result column="tb_banner_materialcontent_status"  property="contentStatus" />
+      <result column="tb_banner_materialcontent_type"  property="contentType" />
+      <result column="tb_banner_materialcontent" property="content" />
+    </association>
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.youxu.business.pojo.Banner">
+    <result column="banner_content" jdbcType="LONGVARCHAR" property="bannerContent" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    tb_banner.id as tb_bannerid
+    , tb_banner.banner_name as tb_bannerbanner_name
+    , tb_banner.banner_picture_url as tb_bannerbanner_picture_url
+    , tb_banner.banner_jump_type as tb_bannerbanner_jump_type
+    , tb_banner.banner_weight as tb_bannerbanner_weight
+    , tb_banner.create_time as tb_bannercreate_time
+    , tb_banner.modify_time as tb_bannermodify_time
+    ,tb_banner.status as tb_bannerstatus
+    ,tb_banner.banner_content_id as tb_bannerbanner_content_id
+    ,tb_banner.banner_comtent_id_for_pc as tb_bannerbanner_comtent_id_for_pc
+  </sql>
+  <sql id="Blob_Column_List">
+    banner_content
+  </sql>
+  <sql id="Base_Column_List_BannerMaterial">
+    tb_banner_material.id as tb_banner_materialid,
+    tb_banner_material.content_name as tb_banner_materialcontent_name,
+    tb_banner_material.creation_time as tb_banner_materialcreation_time,
+    tb_banner_material.update_time as tb_banner_materialupdate_time,
+    tb_banner_material.content_status as tb_banner_materialcontent_status,
+    tb_banner_material.content_type as tb_banner_materialcontent_type,
+    tb_banner_material.content as tb_banner_materialcontent
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.youxu.business.pojo.BannerExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_banner
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.youxu.business.pojo.BannerExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_banner
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.youxu.business.pojo.BannerExample">
+    delete from tb_banner
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.youxu.business.pojo.Banner">
+    insert into tb_banner (id, banner_name, banner_picture_url, 
+      banner_jump_type, banner_weight, create_time, 
+      modify_time, status, banner_content
+      )
+    values (#{id,jdbcType=INTEGER}, #{bannerName,jdbcType=VARCHAR}, #{bannerPictureUrl,jdbcType=VARCHAR}, 
+      #{bannerJumpType,jdbcType=TINYINT}, #{bannerWeight,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{modifyTime,jdbcType=TIMESTAMP}, #{status,jdbcType=BIT}, #{bannerContent,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.youxu.business.pojo.Banner">
+    insert into tb_banner
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="bannerName != null">
+        banner_name,
+      </if>
+      <if test="bannerPictureUrl != null">
+        banner_picture_url,
+      </if>
+      <if test="bannerJumpType != null">
+        banner_jump_type,
+      </if>
+      <if test="bannerWeight != null">
+        banner_weight,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="bannerContent != null">
+        banner_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bannerName != null">
+        #{bannerName,jdbcType=VARCHAR},
+      </if>
+      <if test="bannerPictureUrl != null">
+        #{bannerPictureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="bannerJumpType != null">
+        #{bannerJumpType,jdbcType=TINYINT},
+      </if>
+      <if test="bannerWeight != null">
+        #{bannerWeight,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=BIT},
+      </if>
+      <if test="bannerContent != null">
+        #{bannerContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.youxu.business.pojo.BannerExample" resultType="java.lang.Long">
+    select count(*) from tb_banner
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+    <update id="updateByExampleSelective" parameterType="map">
+    update tb_banner
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.bannerName != null">
+        banner_name = #{record.bannerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bannerPictureUrl != null">
+        banner_picture_url = #{record.bannerPictureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bannerJumpType != null">
+        banner_jump_type = #{record.bannerJumpType,jdbcType=TINYINT},
+      </if>
+      <if test="record.bannerWeight != null">
+        banner_weight = #{record.bannerWeight,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyTime != null">
+        modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=BIT},
+      </if>
+      <if test="record.bannerContent != null">
+        banner_content = #{record.bannerContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update tb_banner
+    set id = #{record.id,jdbcType=INTEGER},
+      banner_name = #{record.bannerName,jdbcType=VARCHAR},
+      banner_picture_url = #{record.bannerPictureUrl,jdbcType=VARCHAR},
+      banner_jump_type = #{record.bannerJumpType,jdbcType=TINYINT},
+      banner_weight = #{record.bannerWeight,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=BIT},
+      banner_content = #{record.bannerContent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_banner
+    set id = #{record.id,jdbcType=INTEGER},
+      banner_name = #{record.bannerName,jdbcType=VARCHAR},
+      banner_picture_url = #{record.bannerPictureUrl,jdbcType=VARCHAR},
+      banner_jump_type = #{record.bannerJumpType,jdbcType=TINYINT},
+      banner_weight = #{record.bannerWeight,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <!--查看banner集合-->
+  <select id="selectBannerList" resultMap="ResultMapWithBLOBs">
+    select <include refid="Base_Column_List"/>,<include refid="Blob_Column_List"/>,<include refid="Base_Column_List_BannerMaterial"/>
+    from tb_banner
+    left join tb_banner_material on tb_banner.banner_content_id = tb_banner_material.id
+    where tb_banner.status = false and tb_banner_material.content_status = false
+    and tb_banner_material.content_type = #{contentType}
+    order by tb_banner.banner_weight desc
+    LIMIT 5;
+  </select>
+  <!--查看详细banner通过id-->
+  <select id="selectBannerById" resultMap="ResultMapWithBLOBs">
+    select <include refid="Base_Column_List"/>,<include refid="Blob_Column_List"/>,<include refid="Base_Column_List_BannerMaterial"/>
+    from tb_banner
+    left join tb_banner_material on tb_banner.banner_content_id = tb_banner_material.id
+    where tb_banner.id = #{id}
+  </select>
+
+</mapper>

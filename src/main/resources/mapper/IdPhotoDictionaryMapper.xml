@@ -5,6 +5,7 @@
     <result column="id" jdbcType="INTEGER" property="id" />
     <result column="id_photo_dictionary_name" jdbcType="VARCHAR" property="idPhotoDictionaryName" />
     <result column="id_photo_dictionary_spec_id" jdbcType="INTEGER" property="idPhotoDictionarySpecId" />
+    <result column="id_photo_dictionary_price" jdbcType="INTEGER" property="idPhotoDictionaryPrice" />
     <result column="id_photo_dictionary_create_time" jdbcType="TIMESTAMP" property="idPhotoDictionaryCreateTime" />
     <result column="id_photo_dictionary_modify_time" jdbcType="TIMESTAMP" property="idPhotoDictionaryModifyTime" />
     <result column="id_photo_dictionary_status" jdbcType="BIT" property="idPhotoDictionaryStatus" />
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, id_photo_dictionary_name, id_photo_dictionary_spec_id, id_photo_dictionary_create_time, 
+    id, id_photo_dictionary_name, id_photo_dictionary_spec_id, id_photo_dictionary_price, id_photo_dictionary_create_time,
     id_photo_dictionary_modify_time, id_photo_dictionary_status
   </sql>
   <select id="selectByExample" parameterType="com.youxu.business.pojo.IdPhotoDictionaryExample" resultMap="BaseResultMap">

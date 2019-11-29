@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class IdPhotoMarkAndTest {
 
-    String base64Picture;
+    String file;
     // 制作并检测
-    String app_key = "a433a06ab51d4a70e1d853d8c203b362e3f9264a";
+    String app_key = "2abf79c1e6f1aa18583f6a38d05336eae9baf3e3";
 
-    String specId;
+    String spec_id;
 }

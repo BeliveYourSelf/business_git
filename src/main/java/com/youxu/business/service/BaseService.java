@@ -9,40 +9,36 @@ import org.springframework.beans.factory.annotation.Value;
  */
 public class BaseService {
     private final static Logger logger = LoggerFactory.getLogger(BaseService.class);
-    public String path = "http://lisheng-aricle.oss-cn-beijing.aliyuncs.com";
+    public String path = "http://youxu-print.oss-cn-beijing.aliyuncs.com";
     public static String ali_endpoint = "oss-cn-beijing.aliyuncs.com";
-    public static String ali_accesskey_id = "LTAIqKkqq1qxxp6V";
-    public static String ali_accesskey_secret = "zrtMiZu72pwt1SFA8J1HnshhdXp5O1";
-    public static String ali_logstorage = "lisheng-aricle";
+    // ali的发送短信和oss公用一个key
+    public static String ali_accesskey_id = "LTAIdvojFwkg1aq7";
+    public static String ali_accesskey_secret = "jsse6hma4a0EITy5wdkElpNSjXm2js";
+    // 未使用日志存储
+    public static String ali_logstorage = "youxu-print";
     /**
      * 微信支付 APPID
      */
-    public String WXPAYAPPID = "wx384e2f0feb85e291";
+    public String WXPAYAPPID = "wx74808915eae21ef7";
     /**
      * 微信支付 密约
      */
-    public String WXPAYSECRET = "f90beb3dd4a360724bd9178feb2ec6f7";
+    public String WXPAYSECRET = "493874f18e91e273fbf643cd9bea4de0";
     /**
-     * 微信支付 商户号
+     * TODO 微信支付 商户号
      */
-    public static String WXPAYMCHID = "1551028611";//番茄
-    /**
-     * 微信支付 APPID
-     */
-    public String WXPAYTRADETYPE;
+    public static String WXPAYMCHID = "1536452691";//有需
     /**
      * 微信支付 回掉地址
      */
-    public String WXPAYNOTIFYURL = "https://fqapi.lishengjt.com/api/wepay_codeUrl";
-    public String WXPAYNOTIFYURLMEMBER = "https://fqapi.lishengjt.com/api/wepay_codeUrlMember";
-    public String WXPAYNOTIFYURLSHOPPINGMALL = "https://fqapi.lishengjt.com/api/wepay_codeUrl_shopping_mall";
-    public String WXPAYNOTIFYURLADMISSIONTICKET = "https://fqapi.lishengjt.com/api/payCallback_admission_ticket";
+    public String   DOWNLOADFOLDER = "https://api.uxu1.cn/business/api/downloadFolder";
+    public String   ORDERPAY = "https://api.uxu1.cn/business/api/orderPayUrl";
 
 
     /**
-     * 微信支付 商户Key
+     * TODO 微信支付 商户Key
      */
-    public static String WXPAYKEY = "8374uieryeujkhk5y478hdnbasdjpqoi";
+    public static String WXPAYKEY = "20190920youxuwenyinQAEHGFtYKMdsw";//有需
     /**
      * 微信支付 证书
      */
@@ -67,7 +63,7 @@ public class BaseService {
      * 微信支付
      */
     public String WXPAYGRANTTYPE;
-
+//--------------------------------------------------------------快递100----------------------------------------------------
     /**
      * IOT 公共服务 APPID
      */
@@ -89,7 +85,7 @@ public class BaseService {
      * 证件照接口参数
      */
     //证件照环境监测接口参数
-    String app_key = "e235edf918da000631b2814cfbaaad036e7f77be";
+    String app_key = "2abf79c1e6f1aa18583f6a38d05336eae9baf3e3"; // 有需
     String facepose = "50";
     String eyegaze = "50";
     String eyeskew = "50";
@@ -103,12 +99,15 @@ public class BaseService {
      * 3个证件照地址
      */
     // 证件照环境监测
-    @Value("http://apicall.id-photo-verify.com/api/env_pic")
-    public String IDPHOTOBUSINESSLICENSEURL;
+//    @Value("http://apicall.id-photo-verify.com/api/env_pic")
+    public String IDPHOTOBUSINESSLICENSEURL = "http://apicall.id-photo-verify.com/api/env_pic";
     //制作并检测证件照
-    @Value("http://apicall.id-photo-verify.com/api/cut_check_pic")
-    public String IDPHOTOMAKEANDTESTURL;
+//    @Value("http://apicall.id-photo-verify.com/api/cut_check_pic")
+    public String IDPHOTOMAKEANDTESTURL = "http://apicall.id-photo-verify.com/api/cut_check_pic";
     //同时获取无水印单张和排版图片
-    @Value("http://apicall.id-photo-verify.com/api/take_cut_pic_v2")
-    public String GETIDPHOTONOWATERMARKANDTYPESETTINGURL;
+//    @Value("http://apicall.id-photo-verify.com/api/take_cut_pic_v2")
+    public String GETIDPHOTONOWATERMARKANDTYPESETTINGURL = "http://apicall.id-photo-verify.com/api/take_cut_pic_v2";
+    //同时获取有水印单张
+//    @Value("http://apicall.id-photo-verify.com/api/take_pic_wm/")
+    public String GETIDPHOTOWATERMARKANDTYPESETTINGURL = "http://apicall.id-photo-verify.com/api/take_pic_wm/";
 }

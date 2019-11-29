@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youxu.business.dao.CollectionMapper">
+    <resultMap id="BaseResultMap" type="com.youxu.business.pojo.Collection">
+        <result column="tb_collectionid" jdbcType="INTEGER" property="id"/>
+        <result column="tb_collectioncollection_user_id" jdbcType="INTEGER" property="collectionUserId"/>
+        <result column="tb_collectionshare_id" jdbcType="INTEGER" property="shareId"/>
+        <result column="tb_collectioncollection_image" property="collectionImage"/>
+        <result column="tb_collectioncollection_name" property="collectionName"/>
+        <result column="tb_collectioneffective_time" property="effectiveTime"/>
+        <result column="tb_collectionfile_size" property="fileSize"/>
+        <result column="tb_collectioncreate_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="tb_collectionmodify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
+        <result column="tb_collectionstatus" jdbcType="BIT" property="status"/>
+        <result column="tb_collectioncontent_url" property="contentUrl"/>
+        <result column="tb_collectionsize_page" property="sizePage"/>
+        <collection property="shareList" ofType="com.youxu.business.pojo.Share">
+            <result column="tb_shareid" jdbcType="INTEGER" property="id"/>
+            <result column="tb_shareshare_user_id" jdbcType="INTEGER" property="shareUserId"/>
+            <result column="tb_shareperiod_of_validity"  property="periodOfValidity"/>
+            <result column="tb_shareextaction_code_status" jdbcType="BIT" property="extactionCodeStatus"/>
+            <result column="tb_shareextaction_code" jdbcType="VARCHAR" property="extactionCode"/>
+            <result column="tb_sharedownload_duplicated_print_status" jdbcType="BIT"
+                    property="downloadDuplicatedPrintStatus"/>
+            <result column="tb_shareresource_print_money" jdbcType="DOUBLE" property="resourcePrintMoney"/>
+            <result column="tb_shareresource_save_download_money" jdbcType="DOUBLE"
+                    property="resourceSaveDownloadMoney"/>
+            <result column="tb_shareqr_code" jdbcType="VARCHAR" property="qrCode"/>
+            <result column="tb_shareusre_head_image" jdbcType="VARCHAR" property="usreHeadImage"/>
+            <result column="tb_sharecreate_time" jdbcType="TIMESTAMP" property="createTime"/>
+            <result column="tb_sharemodify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
+            <result column="tb_sharestatus" jdbcType="BIT" property="status"/>
+        </collection>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    tb_collection.id as tb_collectionid
+    , tb_collection.collection_user_id as tb_collectioncollection_user_id
+    , tb_collection.share_id as tb_collectionshare_id
+    , tb_collection.collection_image as tb_collectioncollection_image
+    , tb_collection.collection_name as tb_collectioncollection_name
+    , tb_collection.effective_time as tb_collectioneffective_time
+    , tb_collection.file_size as tb_collectionfile_size
+    , tb_collection.create_time as tb_collectioncreate_time
+    , tb_collection.modify_time as tb_collectionmodify_time
+    , tb_collection.status as tb_collectionstatus
+    , tb_collection.content_url as tb_collectioncontent_url
+    , tb_collection.size_page as tb_collectionsize_page
+  </sql>
+    <sql id="Base_Column_List_tb_share">
+    tb_share.id as tb_shareid
+    , tb_share.share_user_id as tb_shareshare_user_id
+    , tb_share.period_of_validity as tb_shareperiod_of_validity
+    , tb_share.extaction_code_status as tb_shareextaction_code_status
+    , tb_share.extaction_code as tb_shareextaction_code
+    , tb_share.download_duplicated_print_status as tb_sharedownload_duplicated_print_status
+    , tb_share.resource_print_money as tb_shareresource_print_money
+    , tb_share.resource_save_download_money as tb_shareresource_save_download_money
+    , tb_share.qr_code as tb_shareqr_code
+    , tb_share.usre_head_image as tb_shareusre_head_image
+    , tb_share.create_time as tb_sharecreate_time
+    , tb_share.modify_time as tb_sharemodify_time
+    , tb_share.status as tb_sharestatus
+  </sql>
+    <select id="selectByExample" parameterType="com.youxu.business.pojo.CollectionExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from tb_collection
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <delete id="deleteByExample" parameterType="com.youxu.business.pojo.CollectionExample">
+        delete from tb_collection
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.youxu.business.pojo.Collection">
+    insert into tb_collection (id, collection_user_id, share_id, 
+      create_time, modify_time, status
+      )
+    values (#{id,jdbcType=INTEGER}, #{collectionUserId,jdbcType=INTEGER}, #{shareId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{status,jdbcType=BIT}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.youxu.business.pojo.Collection">
+        insert into tb_collection
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="collectionUserId != null">
+                collection_user_id,
+            </if>
+            <if test="shareId != null">
+                share_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifyTime != null">
+                modify_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="collectionUserId != null">
+                #{collectionUserId,jdbcType=INTEGER},
+            </if>
+            <if test="shareId != null">
+                #{shareId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null">
+                #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=BIT},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.youxu.business.pojo.CollectionExample" resultType="java.lang.Long">
+        select count(*) from tb_collection
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update tb_collection
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.collectionUserId != null">
+                collection_user_id = #{record.collectionUserId,jdbcType=INTEGER},
+            </if>
+            <if test="record.shareId != null">
+                share_id = #{record.shareId,jdbcType=INTEGER},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.modifyTime != null">
+                modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status,jdbcType=BIT},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update tb_collection
+        set id = #{record.id,jdbcType=INTEGER},
+        collection_user_id = #{record.collectionUserId,jdbcType=INTEGER},
+        share_id = #{record.shareId,jdbcType=INTEGER},
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+        modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+        status = #{record.status,jdbcType=BIT}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <!--新增收藏-->
+    <insert id="insertCollection" parameterType="com.youxu.business.pojo.Collection">
+        insert into tb_collection
+        (collection_user_id,
+        share_id,
+        collection_image,
+        collection_name,
+        effective_time,
+        file_size,
+        create_time,
+        modify_time,
+        status,
+        content_url,
+        size_page)
+        VALUES
+        <foreach collection="collectionList" index="index" separator="," item="collection">
+            (#{collection.collectionUserId,jdbcType=INTEGER},
+            #{collection.shareId,jdbcType=INTEGER},
+            #{collection.collectionImage},
+            #{collection.collectionName},
+            #{collection.effectiveTime},
+            #{collection.fileSize},
+            now(),
+            now(),
+            false,
+            #{collection.contentUrl},
+            #{collection.sizePage})
+        </foreach>
+    </insert>
+    <!--查看收藏列表-->
+    <select id="selectCollection" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Base_Column_List_tb_share"/>
+        from tb_collection
+        left join tb_share on tb_collection.share_id = tb_share.id
+        where tb_collection.collection_user_id = #{collection.collectionUserId} and tb_collection.status = false
+    </select>
+    <!--删除收藏列表-->
+    <update id="deleteCollection">
+        update tb_collection
+        set tb_collection.status = TRUE
+        where
+        tb_collection.id IN
+        <foreach collection="ids" item="id" separator="," open="(" close=")" index="index">
+            #{id}
+        </foreach>
+    </update>
+    <!--查看收藏列表集合-->
+    <select id="selectCollectionAll" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from tb_collection
+        where tb_collection.status = false
+    </select>
+    <!--更新收藏有效期-->
+    <update id="updateCollectionEffectiveTime">
+        update tb_collection
+        set tb_collection.effective_time = tb_collection.effective_time -1
+        where tb_collection.effective_time > 0
+    </update>
+
+
+</mapper>

@@ -31,6 +31,7 @@ public class BannerController {
     @Resource
     private BannerService bannerService;
 
+    
 /*    @Autowired
     private RestTemplate restTemplate;*/
 

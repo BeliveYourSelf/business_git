@@ -25,12 +25,10 @@ import sun.misc.BASE64Encoder;
 import javax.annotation.Resource;
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,26 +88,16 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
         // 向输出流写入
         InputStream inputStream = connection.getInputStream();
         response.setHeader("content-type","text/html;charset=utf-8");
-//        response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
-//        IOUtils.copy(inputStream, outputStream);
-       /* OutputStream outputStream = new BufferedOutputStream(response.getOutputStream());
-        // 所读取的内容使用n来接收
-        int n = 0;
-        byte[] bytes = new byte[1024];
-        while((n = inputStream.read(bytes)) != -1){
-            // 将字节数组的数据全部输出到输出流
-            outputStream.write(bytes,0,n);
-        }
-        outputStream.flush();
-        outputStream.close();*/
-      /* int count = 0;
-       while(count == 0){
-           count = inputStream.available();
-       }*/
         byte[] bytes = new byte[contentLength];
-        inputStream.read(bytes);
+        ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
+        byte[] buff = new byte[100];
+        int rc = 0;
+        while ((rc = inputStream.read(buff, 0, 100)) > 0) {
+            swapStream.write(buff, 0, rc);
+        }
+        bytes = swapStream.toByteArray();
         inputStream.close();
-        String base64 = new BASE64Encoder().encode(bytes);
+        String base64 = Base64.getEncoder().encodeToString(bytes);
         return base64;
     }
 

@@ -71,7 +71,6 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
         IdPhotoBusiness idPhotoBusinessNew = updateIdPhotoBusiness(idPhotoBusiness);
         return idPhotoBusinessNew;
     }
-
     @Override
     public String getIdPhotoWaterMarkByFileName(String fileName, HttpServletResponse response) throws IOException {
         String requestPath = null;

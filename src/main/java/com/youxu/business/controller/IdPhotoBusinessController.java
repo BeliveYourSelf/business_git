@@ -143,12 +143,29 @@ public class IdPhotoBusinessController extends BaseService{
      * @param fileName
      * @return
      */
-    @ApiOperation(value = "同时获取无水印单张和排版图片",notes = "fileName：  622758d6102511ea9aa900163e0070b6clothesblue")
+    @ApiOperation(value = "同时获取无水印单张和排版图片-换装key",notes = "fileName：  622758d6102511ea9aa900163e0070b6clothesblue")
+    @GetMapping("/getIdPhotoNoWaterMarkAndTypeSettingUrlOther")
+    public ResponseMessage<ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl> getIdPhotoNoWaterMarkAndTypeSettingUrlOther(@RequestParam String fileName){
+        ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl resultGetIdPhotoNoWaterMarkAndTypeSettingUrl = null;
+        try {
+            String app_key = "69f50c487f42e8e62823b464a4af019bcae8a8ab";
+            resultGetIdPhotoNoWaterMarkAndTypeSettingUrl = getIdPhotoNoWaterMarkAndTypeSettingUrlCopy(fileName,app_key);
+        } catch (Exception e) {
+            return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功", resultGetIdPhotoNoWaterMarkAndTypeSettingUrl);
+    }
+    /**
+     * 换装app_key(69f50c487f42e8e62823b464a4af019bcae8a8ab)
+     * @param fileName
+     * @return
+     */
+    @ApiOperation(value = "同时获取无水印单张和排版图片-证件照检测和制作",notes = "fileName：  2abf79c1e6f1aa18583f6a38d05336eae9baf3e3")
     @GetMapping("/getIdPhotoNoWaterMarkAndTypeSettingUrl")
     public ResponseMessage<ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl> getIdPhotoNoWaterMarkAndTypeSettingUrl(@RequestParam String fileName){
         ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl resultGetIdPhotoNoWaterMarkAndTypeSettingUrl = null;
         try {
-            String app_key = "69f50c487f42e8e62823b464a4af019bcae8a8ab";
+            String app_key = "2abf79c1e6f1aa18583f6a38d05336eae9baf3e3";
             resultGetIdPhotoNoWaterMarkAndTypeSettingUrl = getIdPhotoNoWaterMarkAndTypeSettingUrlCopy(fileName,app_key);
         } catch (Exception e) {
             return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());

@@ -212,14 +212,7 @@ public class PayUtilsController extends BaseService {
     /**
      * 仅保存电子版
      */
-    @ApiOperation(value = "仅保存电子版", notes = "{\"userId\":\"52\"\n" +
-            ",\"storeId\":\"1\"\n" +
-            ",\"orderType\":\"1\"\n" +
-            ",\"orderFromStoreGet\":\"1\"\n" +
-            ",\"openId\":\"oM1Ip4xpQylMw8Io21SkJwsSytmg\"\n" +
-            ",\"tradeType\":\"JSAPI\"\n" +
-            ",\"orderActualMoney\":\"1\"\n" +
-            ",\"orderDetails\":{\"orderDetailsOnePictureUrl\":\"18c8136a125011ea9b5e00163e0070b600054blue3\"}}")
+    @ApiOperation(value = "仅保存电子版", notes = "{\"userId\":\"52\" ,\"storeId\":\"1\" ,\"orderType\":\"1\" ,\"orderFromStoreGet\":\"1\" ,\"openId\":\"oM1Ip4xpQylMw8Io21SkJwsSytmg\" ,\"tradeType\":\"JSAPI\" ,\"orderActualMoney\":\"1\" ,\"idPhotoFileName\":\"18c8136a125011ea9b5e00163e0070b600054blue3\"}")
     @RequestMapping(value = "/onlySaveElectronic", method = RequestMethod.POST)
     public ResponseMessage<String> onlySaveElectronic(HttpServletRequest request, @RequestBody Order order) {
         try {

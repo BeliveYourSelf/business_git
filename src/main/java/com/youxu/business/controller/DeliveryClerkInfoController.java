@@ -15,6 +15,8 @@ import com.youxu.business.utils.baiducloud.facerecognition.baiducloudutil.Result
 import com.youxu.business.utils.wechat.requestapitool.CommonRpc;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +29,8 @@ import java.util.Random;
 @Api(description = "配送员信息表")
 @RestController
 public class DeliveryClerkInfoController {
+    private final static Logger logger = LoggerFactory.getLogger(DeliveryClerkInfoController.class);
+
     @Resource
     private DeliveryClerkInfoService deliveryClerkInfoService;
     @Resource
@@ -100,10 +104,8 @@ public class DeliveryClerkInfoController {
     }
 
 
-    @ApiOperation(value = "查看待取件/配送中/问题件/已完成", notes = "{\"storeIdList\":[\"1\",\"2\"]\n" +
-            ",\"deliveryStatus\":\"1\"\n" +
-            ",\"deliveryId\":\"10\"}" +
-            "storeIdList:店铺id集合  deliveryStatus： deliveryId：配送人id（注意：查看代取件时此字段什么都不传）deliveryStatus：1.待取件/2.配送中/3.问题件/4.已完成")
+    @ApiOperation(value = "查看待取件/配送中/问题件/已完成", notes = "{\"storeIdList\":[\"1\",\"2\"] ,\"deliveryStatus\":\"2\" ,\"deliveryId\":\"23\"}" +
+            "storeIdList:店铺id集合  deliveryStatus： deliveryId：配送人id   ，deliveryStatus：0.未发货1.待取件/2.配送中/3.问题件/4.已完成/5.实时订单/6.顺丰配送")
     @PostMapping("/selectDeliveryFileByStoreIdList")
     public ResponseMessage<List<Order>> selectDeliveryFileByStoreIdList(@RequestBody Order order) {
         List<Order> selectDeliveryFileByStoreIdList = orderService.selectDeliveryFileByStoreIdList(order);
@@ -159,7 +161,12 @@ public class DeliveryClerkInfoController {
             "id：订单id  deliveryProblemFileMark：问题件标注 ")
     @PostMapping("/updateDeliveryOrderProblem")
     public ResponseMessage updateDeliveryOrderProblem(@RequestBody Order order) {
-        Integer updateDeliveryOrderProblem = orderService.updateDeliveryOrderProblem(order);
+        Integer updateDeliveryOrderProblem = null;
+        try {
+            updateDeliveryOrderProblem = orderService.updateDeliveryOrderProblem(order);
+        } catch (Exception e) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "评价失败",e.getMessage());
+        }
         if (updateDeliveryOrderProblem == 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
@@ -189,7 +196,8 @@ public class DeliveryClerkInfoController {
              personverify = personVerify.personverify(deliveryClerkInfo);
              score = personverify.getResult().getScore();
         } catch (Exception e) {
-            return Result.error(personverify.getError_code(),personverify.getError_msg());
+            logger.info("百度云人脸识别error:"+personverify.getError_code()+personverify.getError_msg());
+            return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
         }
         Integer scoreInteger = Double.valueOf(score).intValue();
         deliveryClerkInfo.setScore(scoreInteger);

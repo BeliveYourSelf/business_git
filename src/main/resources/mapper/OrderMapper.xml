@@ -37,6 +37,9 @@
         <result column="order_coupon_money_id" property="orderCouponMoneyId"/>
         <result column="order_coupon_delivery_id" property="orderCouponDeliveryId"/>
         <result column="order_coupon_delivery_money" property="orderCouponDeliveryMoney"/>
+        <result column="order_all_page" property="orderAllPage"/>
+        <result column="order_harvest_time" property="orderHarvestTime"/>
+        <result column="expire_time" property="expireTime"/>
         <collection property="orderDetailsList" ofType="com.youxu.business.pojo.OrderDetails">
             <result column="tb_order_detailsid" jdbcType="INTEGER" property="id"/>
             <result column="order_id" jdbcType="INTEGER" property="orderId"/>
@@ -91,6 +94,9 @@
         <result column="order_coupon_delivery_id" property="orderCouponDeliveryId"/>
         <result column="order_coupon_delivery_money" property="orderCouponDeliveryMoney"/>
         <result column="order_type_other" property="orderTypeOther"/>
+        <result column="order_all_page" property="orderAllPage"/>
+        <result column="order_harvest_time" property="orderHarvestTime"/>
+        <result column="expire_time" property="expireTime"/>
         <collection property="orderDetailsList"
                     select="com.youxu.business.dao.OrderDetailsMapper.selectOrderDetailsList" column="tb_orderid"/>
     </resultMap>
@@ -161,7 +167,7 @@
     order_consume_money, order_extra_money, order_type, order_pay_date, order_process, order_remark, order_create_time, order_modify_time,
     order_status, delivery_id, delivery_pick_up_file_qr_code_url, delivery_harvest_code, delivery_status, delivery_problem_file_mark, share_id
     , order_assign_express, order_coupon_money_ids, order_coupon_money_id, order_coupon_delivery_id, order_coupon_delivery_money, order_type_other
-
+    , order_all_page, order_harvest_time, expire_time
   </sql>
     <sql id="Base_Column_List_user">
         tb_user.user_piecture_url
@@ -437,7 +443,7 @@
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
     </update>
-    <!--新增订单-->
+    <!--新增订单： delivery_status 配送状态（0.未发货1.待取件/2.配送中/3.问题件/4.已完成/5.实时订单/6.顺丰配送）-->
     <insert id="insertOrder">
         insert into tb_order
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -522,7 +528,12 @@
             <if test="orderTypeOther != null">
                 order_type_other,
             </if>
-            delivery_status,
+            <if test="orderAllPage != null">
+                order_all_page,
+            </if>
+            <if test="expireTime != null">
+                expire_time,
+            </if>
             order_assign_express,
             order_create_time,
             order_modify_time,
@@ -560,7 +571,7 @@
                 #{orderDeliveryMoney,jdbcType=VARCHAR},
             </if>
             <if test="orderCouponMoney != null">
-                #{orderCouponMoney,jdbcType=DOUBLE},
+                #{orderCouponMoney},
             </if>
             <if test="orderActualMoney != null">
                 #{orderActualMoney},
@@ -610,7 +621,12 @@
             <if test="orderTypeOther != null">
                 #{orderTypeOther},
             </if>
-            0,
+            <if test="orderAllPage != null">
+                #{orderAllPage},
+            </if>
+            <if test="expireTime != null">
+                #{expireTime},
+            </if>
             0,
             now(),
             now(),
@@ -755,7 +771,7 @@
         on tb_order.id = tb_order_details.order_id
         where tb_order.id = #{orderId} and order_status = false
     </select>
-    <!--取件:delivery_status 配送状态（1.待取件/2.配送中/3.问题件/4.已完成）-->
+    <!--取件:delivery_status 配送状态（0.未发货1.待取件/2.配送中/3.问题件/4.已完成/5.实时订单/6.顺丰配送）-->
     <update id="updateOrderToPickUp">
     update tb_order
     set tb_order.delivery_id = #{order.deliveryId}
@@ -766,9 +782,10 @@
     <update id="updateDeliveryInfoToCompelete">
         update tb_order
         set tb_order.delivery_status = #{order.deliveryStatus}
+        , tb_order.order_harvest_time = now()
         where tb_order.id = #{order.id}
     </update>
-    <!--更新快件为问题快件   delivery_status:配送状态（1.待取件/2.配送中/3.问题件/4.已完成）  -->
+    <!--更新快件为问题快件   delivery_status:配送状态（0.未发货1.待取件/2.配送中/3.问题件/4.已完成/5.实时订单/6.顺丰配送） -->
     <update id="updateDeliveryOrderProblem">
         update tb_order
         set tb_order.delivery_problem_file_mark = #{order.deliveryProblemFileMark}
@@ -858,11 +875,11 @@
             <if test="orderProcess != null">
                 order_process = #{orderProcess},
             </if>
-            tb_order.delivery_status = 1
+            tb_order.delivery_status = 5
         </set>
         where id = #{orderId}
     </update>
-<!--取件   order_assign_express:指派快件（0;待指派1.指派到配送池2：指定配送员）-->
+    <!--取件   order_assign_express:指派快件（0.待指派/1.全部配送员/2特殊指派/3全职配送员/4.兼职配送员/5.顺丰配送）-->
     <select id="selectDeliveryFileByStoreIdListGetFile" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>,
@@ -876,11 +893,65 @@
             #{storeId}
         </foreach>
         )
-        and tb_order.order_assign_express = 1
+        and (tb_order.order_assign_express = #{order.theCategory} or tb_order.order_assign_express = 1)
         and tb_order.order_from_store_get = 3
         and tb_order.delivery_status = #{order.deliveryStatus}
         and tb_order.order_process != 1
         and tb_order.order_status = false
+    </select>
+    <!--确认收件  delivery_status:配送状态（0.未发货1.待取件/2.配送中/3.问题件/4.已完成/5.实时订单/6.顺丰配送）-->
+    <update id="reminderOrderOverWrite">
+        update tb_order
+    set  order_process = #{orderProcess}
+    ,  delivery_status = 4
+    where id = #{id}
+    </update>
+    <!--查看订单类别个数:待取件-->
+    <select id="selectCountOrderProcessWait" resultType="java.lang.Integer">
+        select count(*)
+        from tb_order
+        where
+        tb_order.user_id = #{userId}
+        and tb_order.order_process = 1
+        and tb_order.order_status = false
+    </select>
+    <!--查看订单类别个数:进行中-->
+    <select id="selectCountOrderProcessing" resultType="java.lang.Integer">
+        select count(*)
+        from tb_order
+        where
+        tb_order.user_id = #{userId}
+        and tb_order.order_process = 2
+        and tb_order.order_status = false
+    </select>
+    <!--查看订单类别个数:已完成-->
+    <select id="selectCountOrderProcessCompetety" resultType="java.lang.Integer">
+        select count(*)
+        from tb_order
+        where
+        tb_order.user_id = #{userId}
+        and tb_order.order_process = 3
+        and tb_order.order_status = false
+    </select>
+    <!--查看订单类别个数:已取消-->
+    <select id="selectCountOrderProcessCancle" resultType="java.lang.Integer">
+        select count(*)
+        from tb_order
+        where
+        tb_order.user_id = #{userId}
+        and tb_order.order_process = 4
+        and tb_order.order_status = false
+    </select>
+    <!--查看订单集合通过订单id-->
+    <select id="selectOrderListByOrderIdList" resultMap="BaseResultMapOverWrite">
+        select <include refid="Base_Column_List"/>
+        from tb_order
+        where tb_order.id in
+        (
+        <foreach collection="orderIdList" separator="," index="index" item="orderId">
+            #{orderId}
+        </foreach>
+        )
     </select>
 
 </mapper>

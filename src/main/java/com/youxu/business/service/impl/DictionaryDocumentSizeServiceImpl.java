@@ -1,6 +1,7 @@
 package com.youxu.business.service.impl;
 
 import com.youxu.business.dao.DictionaryDocumentSizeMapper;
+import com.youxu.business.pojo.DictionaryDocumentSize;
 import com.youxu.business.service.DictionaryDocumentSizeService;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ public class DictionaryDocumentSizeServiceImpl implements DictionaryDocumentSize
     private DictionaryDocumentSizeMapper dictionaryDocumentSizeMapper;
 
     @Override
-    public List<DictionaryDocumentSizeService> selectDocumentSize(String storeId) {
+    public List<DictionaryDocumentSize> selectDocumentSize(String storeId) {
         return dictionaryDocumentSizeMapper.selectDocumentSize(storeId);
     }
 }

@@ -14,6 +14,7 @@
             <result column="tb_documentuser_id" jdbcType="INTEGER" property="userId"/>
             <result column="tb_documentfolder_id" jdbcType="INTEGER" property="folderId"/>
             <result column="tb_documentdocument_url" jdbcType="VARCHAR" property="documentUrl"/>
+            <result column="tb_documentdocument_name" jdbcType="VARCHAR" property="documentName"/>
             <result column="tb_documentcreate_time" jdbcType="TIMESTAMP" property="createTime"/>
             <result column="tb_documentmodify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
             <result column="tb_documentstatus" jdbcType="BIT" property="status"/>
@@ -96,6 +97,7 @@
     , tb_document.create_time as tb_documentcreate_time
     , tb_document.modify_time as tb_documentmodify_time
     , tb_document.status as tb_documentstatus
+    , tb_document.document_name as tb_documentdocument_name
   </sql>
     <select id="selectByExample" parameterType="com.youxu.business.pojo.FolderExample" resultMap="BaseResultMap">
         select

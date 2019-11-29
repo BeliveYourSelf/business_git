@@ -66,7 +66,9 @@
         <!--<table tableName="tb_recent_file" domainObjectName="RecentFile"/>-->
         <!--<table tableName="tb_user_wallet" domainObjectName="UserWallet"/>-->
         <!--<table tableName="tb_banner_material" domainObjectName="BannerMaterial"/>-->
-        <table tableName="tb_delivery_schedule" domainObjectName="DeliverySchedule"/>
+        <!--<table tableName="tb_delivery_schedule" domainObjectName="DeliverySchedule"/>-->
+        <!--<table tableName="tb_notify" domainObjectName="Notify"/>-->
+        <table tableName="tb_id_photo_serach_history" domainObjectName="IdPhotoSerachHistory"/>
 
     </context>
 </generatorConfiguration>

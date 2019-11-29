@@ -2,6 +2,7 @@ package com.youxu.business.controller;
 
 import com.youxu.business.pojo.IdPhotoDictionary;
 import com.youxu.business.service.IdPhotoDictionaryService;
+import com.youxu.business.service.IdPhotoSerachHistoryService;
 import com.youxu.business.utils.Enum.ResultCodeEnum;
 import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
@@ -19,13 +20,18 @@ public class IdPhotoDictionaryController {
     @Resource
     private IdPhotoDictionaryService idPhotoDictionaryService;
 
+    @Resource
+    private IdPhotoSerachHistoryService idPhotoSerachHistoryService;
+
     @ApiOperation(value = "模糊查看证件照规格", notes = "")
     @GetMapping("/selectIdPhotoDictionaryListByName")
-    public ResponseMessage<List<IdPhotoDictionary>> selectIdPhotoDictionaryListByName(@RequestParam String idPhotoDictionaryName, @RequestParam String storeId) {
+    public ResponseMessage<List<IdPhotoDictionary>> selectIdPhotoDictionaryListByName(@RequestParam String idPhotoDictionaryName, @RequestParam String storeId, @RequestParam(value = "userId",required = false) String userId) {
         List<IdPhotoDictionary> IdPhotoDictionaryList =idPhotoDictionaryService.selectIdPhotoDictionaryListByName(idPhotoDictionaryName, storeId);
         if (IdPhotoDictionaryList.size()<=0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "无此规格证件照");
         }
+        // 添加到历史记录
+        idPhotoSerachHistoryService.insertHistoryByUserId(userId, idPhotoDictionaryName);
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",IdPhotoDictionaryList);
     }
 }

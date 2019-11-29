@@ -52,6 +52,10 @@ public class DocumentServiceImpl implements DocumentService {
                 // 添加文件大小
                 fileSize = getFileSize(documentUrlArr[i]);
                 document.setDocumentUrl(documentUrlArr[i]);
+                String documentUrl = documentUrlArr[i];
+                int i1 = documentUrl.lastIndexOf("/");
+                String documentName = documentUrl.substring(i1+1);
+                document.setDocumentName(documentName);
                 document.setFileSize(fileSize);
                 documentList.add(document);
             }
@@ -62,6 +66,12 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public List<Document> selectRecentFileByUserId(String userId) {
         return documentMapper.selectRecentFileByUserId(userId);
+    }
+
+    @Override
+    public Integer updateDocumentNameByDocumentId(String documentId, String documentName) {
+        Integer updateDocumentNameByDocumentId = documentMapper.updateDocumentNameByDocumentId(documentId, documentName);
+        return updateDocumentNameByDocumentId;
     }
 
 

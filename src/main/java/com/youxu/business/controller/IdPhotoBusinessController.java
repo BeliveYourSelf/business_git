@@ -1,21 +1,34 @@
 package com.youxu.business.controller;
 
 import com.youxu.business.pojo.IdPhotoBusiness;
+import com.youxu.business.pojo.idphotonewadd.CutChangeClothes;
+import com.youxu.business.pojo.idphotonewadd.CutChangeClothesResult;
+import com.youxu.business.pojo.idphotonewadd.GetSpecs;
+import com.youxu.business.service.BaseService;
 import com.youxu.business.service.IdPhotoBusinessService;
 import com.youxu.business.utils.Enum.ResultCodeEnum;
+import com.youxu.business.utils.HttpTools.HttpTool;
 import com.youxu.business.utils.OtherUtil.ImageSizeTool;
 import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
+import com.youxu.business.utils.pojotools.GetIdPhotoNoWaterMarkAndTypeSettingUrl;
+import com.youxu.business.utils.pojotools.ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
+import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @RequestMapping("/api")
 @RestController
 @Api(description = "证件照业务")
-public class IdPhotoBusinessController {
+public class IdPhotoBusinessController extends BaseService{
     @Resource
     private IdPhotoBusinessService idPhotoBusinessService;
 
@@ -40,6 +53,120 @@ public class IdPhotoBusinessController {
         } catch (Exception e) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "检查上传参数");
         }
+    }
+
+    /**
+     * 一下为证件照二期接口：对应证件照研究院
+     * 更新信息：
+     * 2019年11月19日
+     * 1，“制作并检测证件照”接口新增background_color，ratios参数。
+     * 2019年11月13日
+     * 1，新增了一些正装模板
+     */
+
+
+    @ApiOperation(value = "证件照获取规格一个", notes = "specId   规格id")
+    @GetMapping("/getSpecs")
+    public ResponseMessage<GetSpecs> getSpecs(String specId) {
+        GetSpecs getSpecs = null;
+        try {
+            getSpecs = idPhotoBusinessService.getSpecs(specId);
+        } catch (Exception e) {
+            return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), getSpecs);
+    }
+
+    @ApiOperation(value = "证件照获取规格多个", notes = "specIds = \"1,2\"  中间用逗号间隔   ")
+    @GetMapping("/getSpecsMore")
+    public ResponseMessage<List<GetSpecs>> getSpecsMore(String specIds) {
+        List<GetSpecs> getSpecsList = new ArrayList<>();
+        GetSpecs getSpecs = null;
+        String[] split = specIds.split(",");
+        List<String> specIdList = Arrays.asList(split);
+        try {
+            for (String specId : specIdList) {
+                getSpecs = idPhotoBusinessService.getSpecs(specId);
+                getSpecsList.add(getSpecs);
+            }
+        } catch (Exception e) {
+            return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), getSpecsList);
+    }
+
+    @ApiOperation(value = "更换背景", notes = "{\n" +
+            "  \"base64\": \"/9j/4A****\",\n" +
+            "  \"specId\": \"391\"\n" +
+            "}")
+    @PostMapping("/udpateBackGroundColor")
+    public ResponseMessage<IdPhotoBusiness> udpateBackGroundColor(@RequestBody IdPhotoBusiness idPhotoBusiness) {
+        try {
+             idPhotoBusiness = idPhotoBusinessService.udpateBackGroundColor(idPhotoBusiness);
+        } catch (Exception e) {
+            return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), idPhotoBusiness);
+    }
+    
+    @ApiOperation(value = "查看水印图片通过fileName:返回Base64(或文件路径转base64)", notes = "返回Base64:   http://leqi-imgcall.oss-cn-shanghai.aliyuncs.com/result%2F18c8136a125011ea9b5e00163e0070b600054blue3.jpg?Signature=v%2FI1qGy1Z8nNVHxc21faGcOFSxQ%3D&OSSAccessKeyId=LTAIQ8Lif1HHVkXd&Expires=1575002088")
+    @GetMapping("/getIdPhotoWaterMarkByFileName")
+    public ResponseMessage<String> getIdPhotoWaterMarkByFileName(@RequestParam(required = false) String fileName, HttpServletResponse response) {
+        String getIdPhotoWaterMarkByFileName = null;
+        try {
+            getIdPhotoWaterMarkByFileName = idPhotoBusinessService.getIdPhotoWaterMarkByFileName(fileName, response);
+        } catch (Exception e) {
+            return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",getIdPhotoWaterMarkByFileName);
+    }
+
+    @ApiOperation(value = "换装",notes = "{\n" +
+            "  \"clothes\": \"applet_boy1\",\n" +
+            "  \"fair_level\": \"3\"\n" +
+            "  ,\"spec_id\": \"391\"\n" +
+            "  ,\"file\": \"/9j/4AAQSk***\"\n" +
+            "}")
+    @PostMapping("/cutChangeClothes")
+    public ResponseMessage<CutChangeClothesResult> cutChangeClothes(@RequestBody CutChangeClothes cutChangeClothes){
+        CutChangeClothesResult cutChangeClothesResult = null;
+        try {
+            cutChangeClothesResult = idPhotoBusinessService.cutChangeClothes(cutChangeClothes);
+        } catch (Exception e) {
+            return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功", cutChangeClothesResult);
+    }
+
+    /**
+     * 换装app_key(69f50c487f42e8e62823b464a4af019bcae8a8ab)
+     * @param fileName
+     * @return
+     */
+    @ApiOperation(value = "同时获取无水印单张和排版图片",notes = "fileName：  622758d6102511ea9aa900163e0070b6clothesblue")
+    @GetMapping("/getIdPhotoNoWaterMarkAndTypeSettingUrl")
+    public ResponseMessage<ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl> getIdPhotoNoWaterMarkAndTypeSettingUrl(@RequestParam String fileName){
+        ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl resultGetIdPhotoNoWaterMarkAndTypeSettingUrl = null;
+        try {
+            String app_key = "69f50c487f42e8e62823b464a4af019bcae8a8ab";
+            resultGetIdPhotoNoWaterMarkAndTypeSettingUrl = getIdPhotoNoWaterMarkAndTypeSettingUrlCopy(fileName,app_key);
+        } catch (Exception e) {
+            return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功", resultGetIdPhotoNoWaterMarkAndTypeSettingUrl);
+    }
+    /**
+     * 接口3:同时获取无水印单张和排版图片   :
+     */
+    public ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl getIdPhotoNoWaterMarkAndTypeSettingUrlCopy(String fileName,String app_key) throws Exception {
+        GetIdPhotoNoWaterMarkAndTypeSettingUrl getIdPhotoNoWaterMarkAndTypeSettingUrl = new GetIdPhotoNoWaterMarkAndTypeSettingUrl();
+        getIdPhotoNoWaterMarkAndTypeSettingUrl.setFile_name(fileName);
+        getIdPhotoNoWaterMarkAndTypeSettingUrl.setApp_key(app_key);
+        JSONObject jsonObjectIdPhotoMarkAndTest = JSONObject.fromObject(getIdPhotoNoWaterMarkAndTypeSettingUrl);
+        JSONObject jsonObject = HttpTool.httpPost(GETIDPHOTONOWATERMARKANDTYPESETTINGURL, jsonObjectIdPhotoMarkAndTest, false);
+        String jsonString = com.alibaba.fastjson.JSONObject.toJSONString(jsonObject);
+        ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl resultGetIdPhotoNoWaterMarkAndTypeSettingUrl = com.alibaba.fastjson.JSONObject.parseObject(jsonString, ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl.class);
+        return resultGetIdPhotoNoWaterMarkAndTypeSettingUrl;
     }
 
 

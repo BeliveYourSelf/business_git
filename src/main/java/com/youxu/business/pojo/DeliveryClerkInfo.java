@@ -69,6 +69,9 @@ public class DeliveryClerkInfo {
     @ApiModelProperty(name = "deliveryClerkPerOne", value = "配送员配单价格")
     private String deliveryClerkPerOne;
 
+    @ApiModelProperty(name = "theCategory", value = "1:全职，2：兼职")
+    private Integer theCategory;
+
 
 
 

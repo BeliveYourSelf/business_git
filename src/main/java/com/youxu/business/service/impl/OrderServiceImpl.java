@@ -11,8 +11,6 @@ import com.youxu.business.utils.OtherUtil.UploadUtils;
 import com.youxu.business.utils.normalQRcode.QRCodeUtil;
 import com.youxu.business.utils.oss.download.DownLoadZip;
 import com.youxu.business.utils.uuid.UUIDUtils;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Transformer;
 import org.apache.http.entity.ContentType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
@@ -20,14 +18,11 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,10 +49,10 @@ public class OrderServiceImpl implements OrderService {
         order.setDeliveryHarvestCode(shareCode);
         // 配送时间分改为毫秒
         String orderDeliveryPrescriptioTime = order.getOrderDeliveryPrescriptioTime();
-        if(!StringUtils.isEmpty(orderDeliveryPrescriptioTime)){
-        Long orderDeliveryPrescriptioTimeInteger = Long.valueOf(orderDeliveryPrescriptioTime);
-        Long orderTimeLong = orderDeliveryPrescriptioTimeInteger * 60000;// 分变成毫秒
-        order.setOrderDeliveryPrescriptioTime(orderTimeLong.toString());
+        if (!StringUtils.isEmpty(orderDeliveryPrescriptioTime)) {
+            Long orderDeliveryPrescriptioTimeInteger = Long.valueOf(orderDeliveryPrescriptioTime);
+            Long orderTimeLong = orderDeliveryPrescriptioTimeInteger * 60000;// 分变成毫秒
+            order.setOrderDeliveryPrescriptioTime(orderTimeLong.toString());
         }
         // 插入优惠券id
         List<Integer> vouchersIdList = order.getVouchersIdList();
@@ -72,16 +67,19 @@ public class OrderServiceImpl implements OrderService {
             }
             order.setVouchersIds(vouchersIdString);
         }
-        Integer insertOrder = orderMapper.insertOrder(order);
+        Integer insertOrder = orderMapper.insertOrder(getOrder(order));// 设置过期时间
         int orderId = orderMapper.lastInsertId();
         // 取件二维码url
         addDeliveryPickUpFileQRCodeUrl(orderId);
         if (!StringUtils.isEmpty(order)) {
             List<OrderDetails> orderDetailsList = order.getOrderDetailsList();
-            for (OrderDetails orderDetails : orderDetailsList) {
-                orderDetails.setOrderId(orderId);
+            if (!StringUtils.isEmpty(orderDetailsList)) {
+                for (OrderDetails orderDetails : orderDetailsList) {
+                    orderDetails.setOrderId(orderId);
+                }
             }
-            if (orderDetailsList.size() > 0) {
+            // 插入订单明细
+            if (!StringUtils.isEmpty(orderDetailsList) && orderDetailsList.size() > 0) {
                 Integer insertOrderDetails = orderDetailsMapper.insertOrderDetails(orderDetailsList);
                 int orderDetailsId = orderMapper.lastInsertId();
                 for (int i = 1; orderDetailsList.size() >= i; i++) {
@@ -90,16 +88,29 @@ public class OrderServiceImpl implements OrderService {
                         orderDetailsBookBinding.setOrderDetailsId(orderDetailsId + i - 1);//绑定订单明细和装订一对一关系
                         orderDetailsBookBindingMapper.insertOrderDetailsBookBinding(orderDetailsBookBinding);
                         int orderDetailsBookBindingId = orderMapper.lastInsertId();
-                        List<String> pictureUrlList = orderDetailsList.get(i - 1).getPictureUrlList();
-                        pictureMapper.insertPictureMapper(pictureUrlList);
-                        int pictureFirstId = orderMapper.lastInsertId();
-                        int size = pictureUrlList.size();
-                        List<Integer> pictureIdList = new ArrayList<>();
-                        for (int j = 1; size >= j; j++) {
-                            pictureIdList.add(pictureFirstId + j - 1);
+                        List<OrderDetailsPictureMapping> orderDetailsPictureMappingList = orderDetailsList.get(i - 1).getOrderDetailsPictureMappingList();
+                        List<Picture> pictureList = new ArrayList<>();
+                        // 插入订单多张文档图片路径
+                        if (!StringUtils.isEmpty(orderDetailsPictureMappingList)) {
+                            // 重新下单
+                            for (OrderDetailsPictureMapping orderDetailsPictureMapping : orderDetailsPictureMappingList) {
+                                List<Picture> pictureListOne = orderDetailsPictureMapping.getPictureList();
+                                pictureList.addAll(pictureListOne);
+                            }
+                        }else{
+                            // 新增订单
+                            pictureList = order.getPictureList();
                         }
-                        orderDetailsPictureMappingMapper.insertOrderDetailsPictrueMapping(orderDetailsId + i - 1, pictureIdList);
-
+                        pictureMapper.insertPictureMapperOverWrite(pictureList);
+                            int size = pictureList.size();
+                            if (size > 0) {
+                                int pictureFirstId = orderMapper.lastInsertId();
+                                List<Integer> pictureIdList = new ArrayList<>();
+                                for (int j = 1; size >= j; j++) {
+                                    pictureIdList.add(pictureFirstId + j - 1);
+                                }
+                                orderDetailsPictureMappingMapper.insertOrderDetailsPictrueMapping(orderDetailsId + i - 1, pictureIdList);
+                            }
                     }
                 }
             }
@@ -140,9 +151,17 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Integer reminderOrder(Order order) {
+        Integer reminderOrder = null;
         Integer id = order.getId();
         Integer orderProcess = order.getOrderProcess();
-        Integer reminderOrder = orderMapper.reminderOrder(id, orderProcess);
+
+        if (orderProcess == 2) {
+            // 催单
+            reminderOrder = orderMapper.reminderOrder(id, orderProcess);
+        } else {
+            // 确认收件
+            reminderOrder = orderMapper.reminderOrderOverWrite(id, orderProcess);
+        }
         return reminderOrder;
     }
 
@@ -166,13 +185,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order insertOrderAgain(String id) {
-        Order order = orderMapper.selectOrderById(id);
+        Order order = orderMapper.selectOrderByIdOverWrite(id);
         return order;
     }
 
     @Override
-    public List<Order> selectOrderList(Order order) {
+    public List<Order> selectOrderList(Order order) throws Exception {
+//        DeliveryClerkInfo deliveryClerkInfo = deliveryClerkInfoMapper.selectDeliveryClerkInfoByUserId(order.getUserId().toString());
         List<Order> orderListNew = new ArrayList<>();
+//        order.setOrderAssignExpress(deliveryClerkInfo.getTheCategory());
         //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
         PageHelper.startPage(order.getPageNo(), order.getPageSize());
         List<Order> orderList = orderMapper.selectOrderListOverWrite(order);
@@ -215,21 +236,30 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> selectDeliveryFileByStoreIdList(Order order) {
-        List<Order> orderList = new ArrayList<>();
+        // 查看配送员全职还是兼职（theCategory）
+        Integer deliveryId = order.getDeliveryId();
+        if (!StringUtils.isEmpty(deliveryId)) {
+            DeliveryClerkInfo deliveryClerkInfo = deliveryClerkInfoMapper.selectDeliveryClerkInfoById(deliveryId.toString());
+            Integer theCategory = deliveryClerkInfo.getTheCategory();
+            if (StringUtils.isEmpty(deliveryClerkInfo) || StringUtils.isEmpty(theCategory)) {
+                return null;  //配送员没有分配配送角色（全职/兼职）
+            } else if (theCategory == 1) {
+                theCategory = 3;
+            } else if (theCategory == 2) {
+                theCategory = 4;  //  两个字段之间的关系     theCategory：1.全职/2.兼职 orderAssignExpress:指派快件（0.待指派/1.全部配送员/2特殊指派/3全职配送员/4.兼职配送员/5.顺丰配送）
+            }
+            order.setTheCategory(theCategory);
+        }
+//        List<Order> orderList = new ArrayList<>();
         List<Order> orders = new ArrayList<>();
-        if(StringUtils.isEmpty(order.getDeliveryId()) && order.getDeliveryStatus() == 1){
+        if (order.getDeliveryStatus() == 1) {
             // 取件
             orders = orderMapper.selectDeliveryFileByStoreIdListGetFile(order);
-        }else{
+        } else {
             // 配送中/问题件/已完成
-         orders = orderMapper.selectDeliveryFileByStoreIdList(order);
+            orders = orderMapper.selectDeliveryFileByStoreIdList(order);
         }
-        // 统计到期时间
-        for (Order orderNew : orders) {
-            Order order1 = getOrder(orderNew);
-            orderList.add(order1);
-        }
-        return orderList;
+        return orders;
     }
 
     @Override
@@ -262,7 +292,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Integer updateDeliveryOrderProblem(Order order) {
+    public Integer updateDeliveryOrderProblem(Order order) throws Exception {
         String deliveryProblemFileMarkNew = order.getDeliveryProblemFileMark();
         Order orderNew = orderMapper.selectOrderById(order.getId().toString());
         String deliveryProblemFileMark = orderNew.getDeliveryProblemFileMark();
@@ -292,7 +322,7 @@ public class OrderServiceImpl implements OrderService {
      * @param str
      * @return
      */
-    public static Map<String, String> mapStringToMap(String str) {
+    public static Map<String, String> mapStringToMap(String str) throws Exception {
         str = str.substring(1, str.length() - 1);
         String[] strs = str.split(",");
         Map<String, String> map = new HashMap<String, String>();
@@ -330,9 +360,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order selectOrderById(String id) {
         Order order = orderMapper.selectOrderByIdOverWrite(id);
-        Order orderNew = addMoreUrl(order);
-        // 设置过期时间
-        Order orderNow = getOrder(orderNew);
+        Order orderNow = addMoreUrl(order);
         // vouchersIds 转化vouchersIdList( java 8+)
         String vouchersIds = orderNow.getVouchersIds();
         if (!StringUtils.isEmpty(vouchersIds)) {
@@ -362,10 +390,32 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public String downLoadFileListOverWriteNew(String orderId) {
-        Order order = orderMapper.selectOrderById(orderId);
-        String path = DownLoadZip.zipFilesDown(order);
-        return path;
+    public List<String> downLoadFileListOverWriteNew(String orderId) {
+        String[] orderIdArr = orderId.split(",");
+        List<String> orderIdList = Arrays.asList(orderIdArr);
+        List<Order> orderList = orderMapper.selectOrderListByOrderIdList(orderIdList);
+        List<String> pathList = new ArrayList<>();
+//        String path = DownLoadZip.zipFilesDown(order);
+//        String path = DownLoadZip.zipFilesDownOverWtrite(order);
+        for(Order order: orderList){
+        String path = DownLoadZip.zipFilesDownOverWtriteOne(order);
+            pathList.add(path);
+        }
+        return pathList;
+    }
+
+    @Override
+    public OrderProcess selectCountOrderProcess(String userId) {
+        Integer selectCountOrderProcessWait = orderMapper.selectCountOrderProcessWait(userId);
+        Integer selectCountOrderProcessing = orderMapper.selectCountOrderProcessing(userId);
+        Integer selectCountOrderProcessCompetety = orderMapper.selectCountOrderProcessCompetety(userId);
+        Integer selectCountOrderProcessCancle = orderMapper.selectCountOrderProcessCancle(userId);
+        OrderProcess orderProcess = new OrderProcess();
+        orderProcess.setProcessWait(selectCountOrderProcessWait);
+        orderProcess.setProcessing(selectCountOrderProcessing);
+        orderProcess.setProcessCompetety(selectCountOrderProcessCompetety);
+        orderProcess.setProcessCancel(selectCountOrderProcessCancle);
+        return orderProcess;
     }
 
     /**
@@ -376,14 +426,16 @@ public class OrderServiceImpl implements OrderService {
      */
     private Order getOrder(Order orderNew) {
         String orderDeliveryPrescriptioTime = orderNew.getOrderDeliveryPrescriptioTime();
-        // 配送时间 mm
-        Long orderDeliveryPrescriptioTimeLong = Long.valueOf(orderDeliveryPrescriptioTime);
-        Date orderPayDate = orderNew.getOrderPayDate();
-        // 支付时间 mm
-        if (!StringUtils.isEmpty(orderPayDate)) {
-            Long orderPayDateLong = orderPayDate.getTime();
-            Long expireTime = orderDeliveryPrescriptioTimeLong + orderPayDateLong;
-            orderNew.setExpireTime(expireTime.toString());
+        if (!StringUtils.isEmpty(orderDeliveryPrescriptioTime)) {
+            // 配送时间 mm
+            Long orderDeliveryPrescriptioTimeLong = Long.valueOf(orderDeliveryPrescriptioTime);
+            Date orderCreateTime = new Date();
+            // 支付时间 mm
+            if (!StringUtils.isEmpty(orderCreateTime)) {
+                Long orderPayDateLong = orderCreateTime.getTime();
+                Long expireTime = orderDeliveryPrescriptioTimeLong + orderPayDateLong;
+                orderNew.setExpireTime(expireTime.toString());
+            }
         }
         return orderNew;
     }

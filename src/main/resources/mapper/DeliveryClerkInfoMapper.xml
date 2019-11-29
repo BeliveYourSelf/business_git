@@ -18,6 +18,7 @@
         <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
         <result column="status" jdbcType="BIT" property="status"/>
         <result column="delivery_clerk_per_one"  property="deliveryClerkPerOne"/>
+        <result column="the_category"  property="theCategory"/>
         <collection property="storeIdList" ofType="java.lang.Integer" javaType="java.util.List">
             <result column="tb_storeid"/>
         </collection>
@@ -101,6 +102,7 @@
     , tb_delivery_clerk_info.create_time
     , tb_delivery_clerk_info.modify_time
     , tb_delivery_clerk_info.status
+    , tb_delivery_clerk_info.the_category
     , tb_store.delivery_clerk_per_one
     , tb_store.id as tb_storeid
     , tb_store.store_name

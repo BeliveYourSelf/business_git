@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
+
 @Data
 public class DocumentPrintPriceList {
     @ApiModelProperty(name = "id",value = "订单对象")
@@ -16,10 +18,10 @@ public class DocumentPrintPriceList {
     private String documentPrintPriceListCode;
 
     @ApiModelProperty(name = "documentPrintPriceListCodeBlackAndWhite",value = "文档打印价格表排列组合-黑白      单双面：1.单面  2.双面/      黑白:0黑 1白")
-    private String documentPrintPriceListCodeBlackAndWhite;
+    private List<String> documentPrintPriceListCodeBlackAndWhite;
 
     @ApiModelProperty(name = "documentPrintPriceListCodeColour",value = "文档打印价格表排列组合-彩色")
-    private String documentPrintPriceListCodeColour;
+    private List<String> documentPrintPriceListCodeColour;
 
     @ApiModelProperty(name = "documentPrintPriceListPrice",value = "内页价格--弃用")
     private Double documentPrintPriceListPrice;

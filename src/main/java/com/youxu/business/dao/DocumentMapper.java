@@ -33,4 +33,6 @@ public interface DocumentMapper {
     List<Document> selectDocumentByLike(@Param("userId") String userId, @Param("resourceName") String resourceName);
     // 查看最近上传的文件
     List<Document> selectRecentFileByUserId(@Param("userId")String userId);
+    // 更新文件名称通过文件id
+    Integer updateDocumentNameByDocumentId(@Param("documentId") String documentId,@Param("documentName") String documentName);
 }

@@ -24,6 +24,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 @RequestMapping("/api")
 @RestController
@@ -37,9 +38,9 @@ public class DocumentPrintPriceListController {
      * @param documentPrintPriceList
      * @return
      */
-    @ApiOperation(value = "获取文档打印价格", notes = "{\"count\":\"2\" ,\"documentPrintPriceListCodeBlackAndWhite\":\"77,1,0\"\n" +
-            ",\"documentPrintPriceListCodeColour\":\"77,1,1\"\n" +
-            " ,\"pageNumber\":\"1\" ,\"storeId\":\"1\" ,\"countColour\":\"1\"}   " +
+    @ApiOperation(value = "获取文档打印价格", notes = "{\"count\":\"2\" ,\"documentPrintPriceListCodeBlackAndWhite\": [\"77,1,0\"]\n" +
+            ",\"documentPrintPriceListCodeColour\":[\"77,1,1\"]\n" +
+            " ,\"pageNumber\":\"1\" ,\"storeId\":\"1\" ,\"countColour\":\"1\"}    " +
             "   count:黑白份数，countColour:彩色份数（如果只打印一种，另一种份数传0）   " +
             " documentPrintPriceListCode:文档打印价格表排列组合（ps：（1,1,1））（尺寸/单双面/黑白） 单双面：1.单面  2.双面/    黑白:0黑 1白" +
             ", pageNumber:文件总页数      返回值：totalPrice  为总价")
@@ -121,5 +122,26 @@ public class DocumentPrintPriceListController {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "上传失败");
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", uploadSuccess);
+    }
+    @ApiOperation(value = "上传图片(带文件名称)PDF", notes = "multipartFileName:文件名必须带格式    例如：文档.docx")
+    @PostMapping("/uploadBlogOverWritePDF")
+    public ResponseMessage<Map<String, String>> uploadBlogOverWritePDF(@RequestParam("file") MultipartFile file, String multipartFileName) {
+        Map<String, String> stringStringMap = OSSUploadUtil.uploadBlogOverWritePDF(file, multipartFileName);
+        //获取文件页数
+        if (StringUtils.isEmpty(stringStringMap)) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "上传失败");
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", stringStringMap);
+    }
+
+    @ApiOperation(value = "documentUrlTranTOPDF", notes = "文件路径转为pdf")
+    @GetMapping("/documentUrlTranTOPDF")
+    public ResponseMessage<String> documentUrlTranTOPDF(@RequestParam("fileUrl") String fileUrl) throws IOException {
+        String documentUrlTranTOPDF = OSSUploadUtil.documentUrlTranTOPDF(fileUrl);
+        if (documentUrlTranTOPDF.isEmpty()) {
+            return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), "路径不能为空");
+        }
+
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", documentUrlTranTOPDF);
     }
 }

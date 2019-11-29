@@ -160,7 +160,7 @@ public class IdPhotoBusinessController extends BaseService{
      * @param fileName
      * @return
      */
-    @ApiOperation(value = "同时获取无水印单张和排版图片-证件照检测和制作",notes = "fileName：  2abf79c1e6f1aa18583f6a38d05336eae9baf3e3")
+    @ApiOperation(value = "同时获取无水印单张和排版图片-证件照检测和制作",notes = "fileName：  62cc859c128811ea9b7b00163e0070b613435blue3")
     @GetMapping("/getIdPhotoNoWaterMarkAndTypeSettingUrl")
     public ResponseMessage<ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl> getIdPhotoNoWaterMarkAndTypeSettingUrl(@RequestParam String fileName){
         ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl resultGetIdPhotoNoWaterMarkAndTypeSettingUrl = null;

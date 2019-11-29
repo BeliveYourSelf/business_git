@@ -1,8 +1,8 @@
 # business_git
 ## 项目描述：
-*负责证件照/支付/文档打印/配送员/模块，使用SpringCloud框架Java语言开发，采用swagger测试，Jenkins部署
+* 负责证件照/支付/文档打印/配送员/模块，使用SpringCloud框架Java语言开发，采用swagger测试，Jenkins部署
 ## 包含工具：
-*1.请求第三方API：GET\POST
+* 1.请求第三方API：GET\POST
 * 2.微信支付\发送短信
 * 3.阿里云oss文件上传的操作
 * 4.九云图

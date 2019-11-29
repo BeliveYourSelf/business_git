@@ -76,7 +76,12 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
 
     @Override
     public String getIdPhotoWaterMarkByFileName(String fileName, HttpServletResponse response) throws IOException {
-        String requestPath = GETIDPHOTOWATERMARKANDTYPESETTINGURL + fileName;
+        String requestPath = null;
+        if(fileName.contains("http")){
+            requestPath = fileName;
+        }else {
+            requestPath = GETIDPHOTOWATERMARKANDTYPESETTINGURL + fileName;
+        }
         // 获取输入流
         URL url = new URL(null, requestPath, new sun.net.www.protocol.https.Handler());
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();

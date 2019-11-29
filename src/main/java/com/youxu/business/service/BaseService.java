@@ -34,6 +34,8 @@ public class BaseService {
     public String   DOWNLOADFOLDER = "https://api.uxu1.cn/business/api/downloadFolder";
     public String   ORDERPAY = "https://api.uxu1.cn/business/api/orderPayUrl";
 
+    public String   IDPHOTOSAVE = "https://api.uxu1.cn/business/api/idPhotoSave";
+
 
     /**
      * TODO 微信支付 商户Key
@@ -85,7 +87,7 @@ public class BaseService {
      * 证件照接口参数
      */
     //证件照环境监测接口参数
-    String app_key = "2abf79c1e6f1aa18583f6a38d05336eae9baf3e3"; // 有需
+    public String app_key = "2abf79c1e6f1aa18583f6a38d05336eae9baf3e3"; // 有需证件照检测和制作
     String facepose = "50";
     String eyegaze = "50";
     String eyeskew = "50";

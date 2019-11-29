@@ -136,24 +136,31 @@ public class IdPhotoBusinessController extends BaseService{
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功", cutChangeClothesResult);
     }
+
+    /**
+     * 换装app_key(69f50c487f42e8e62823b464a4af019bcae8a8ab)
+     * @param fileName
+     * @return
+     */
     @ApiOperation(value = "同时获取无水印单张和排版图片",notes = "fileName：  622758d6102511ea9aa900163e0070b6clothesblue")
     @GetMapping("/getIdPhotoNoWaterMarkAndTypeSettingUrl")
     public ResponseMessage<ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl> getIdPhotoNoWaterMarkAndTypeSettingUrl(@RequestParam String fileName){
         ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl resultGetIdPhotoNoWaterMarkAndTypeSettingUrl = null;
         try {
-            resultGetIdPhotoNoWaterMarkAndTypeSettingUrl = getIdPhotoNoWaterMarkAndTypeSettingUrlCopy(fileName);
+            String app_key = "69f50c487f42e8e62823b464a4af019bcae8a8ab";
+            resultGetIdPhotoNoWaterMarkAndTypeSettingUrl = getIdPhotoNoWaterMarkAndTypeSettingUrlCopy(fileName,app_key);
         } catch (Exception e) {
             return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功", resultGetIdPhotoNoWaterMarkAndTypeSettingUrl);
     }
     /**
-     * 接口3:同时获取无水印单张和排版图片   :换装app_key(69f50c487f42e8e62823b464a4af019bcae8a8ab)
+     * 接口3:同时获取无水印单张和排版图片   :
      */
-    private ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl getIdPhotoNoWaterMarkAndTypeSettingUrlCopy(String fileName) throws Exception {
+    public ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl getIdPhotoNoWaterMarkAndTypeSettingUrlCopy(String fileName,String app_key) throws Exception {
         GetIdPhotoNoWaterMarkAndTypeSettingUrl getIdPhotoNoWaterMarkAndTypeSettingUrl = new GetIdPhotoNoWaterMarkAndTypeSettingUrl();
         getIdPhotoNoWaterMarkAndTypeSettingUrl.setFile_name(fileName);
-        getIdPhotoNoWaterMarkAndTypeSettingUrl.setApp_key("69f50c487f42e8e62823b464a4af019bcae8a8ab");
+        getIdPhotoNoWaterMarkAndTypeSettingUrl.setApp_key(app_key);
         JSONObject jsonObjectIdPhotoMarkAndTest = JSONObject.fromObject(getIdPhotoNoWaterMarkAndTypeSettingUrl);
         JSONObject jsonObject = HttpTool.httpPost(GETIDPHOTONOWATERMARKANDTYPESETTINGURL, jsonObjectIdPhotoMarkAndTest, false);
         String jsonString = com.alibaba.fastjson.JSONObject.toJSONString(jsonObject);

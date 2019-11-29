@@ -100,6 +100,11 @@ public class Order extends PageInfo {
 
     @ApiModelProperty(name = "orderDetails", value = "订单对象")
     private OrderDetails orderDetails;
+
+    @ApiModelProperty(name = "idPhotoFileName", value = "获取证件照所需要的文件名称")
+    private String idPhotoFileName;
+
+
     // 新增对象集合
     @ApiModelProperty(name = "orderDetailsList", value = "订单对象集合")
     private List<OrderDetails> orderDetailsList;
@@ -153,6 +158,8 @@ public class Order extends PageInfo {
 
     @ApiModelProperty(name = "orderHarvestTime", value = "实际配送时间")
     private Date orderHarvestTime;
+
+
 
 
 }

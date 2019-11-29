@@ -73,11 +73,13 @@ public class OrderServiceImpl implements OrderService {
         addDeliveryPickUpFileQRCodeUrl(orderId);
         if (!StringUtils.isEmpty(order)) {
             List<OrderDetails> orderDetailsList = order.getOrderDetailsList();
-            for (OrderDetails orderDetails : orderDetailsList) {
-                orderDetails.setOrderId(orderId);
+            if (!StringUtils.isEmpty(orderDetailsList)) {
+                for (OrderDetails orderDetails : orderDetailsList) {
+                    orderDetails.setOrderId(orderId);
+                }
             }
             // 插入订单明细
-            if (orderDetailsList.size() > 0) {
+            if (!StringUtils.isEmpty(orderDetailsList) && orderDetailsList.size() > 0) {
                 Integer insertOrderDetails = orderDetailsMapper.insertOrderDetails(orderDetailsList);
                 int orderDetailsId = orderMapper.lastInsertId();
                 for (int i = 1; orderDetailsList.size() >= i; i++) {

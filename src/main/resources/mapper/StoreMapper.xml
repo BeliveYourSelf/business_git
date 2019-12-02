@@ -20,6 +20,8 @@
     <result column="licence_price"  property="licencePrice" />
     <result column="store_binding_price_horizontal"  property="storeBindingPriceHorizontal" />
     <result column="store_binding_price_vertical"  property="storeBindingPriceVertical" />
+    <result column="licence_price_change"  property="licencePriceChange" />
+    <result column="licence_price_save"  property="licencePriceSave" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -82,7 +84,7 @@
   <sql id="Base_Column_List">
     id, store_name, store_address, store_phone, store_time, store_open_for_out, output_size, store_output_colour,
     store_quality, store_latitude, store_longitude, create_time, modify_time, status, delivery_clerk_per_one, licence_price
-    ,store_binding_price_horizontal ,store_binding_price_vertical
+    ,store_binding_price_horizontal ,store_binding_price_vertical, licence_price_change, licence_price_save
 </sql>
   <select id="selectByExample" parameterType="com.youxu.business.pojo.StoreExample" resultMap="BaseResultMap">
     select

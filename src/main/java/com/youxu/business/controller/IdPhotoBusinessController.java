@@ -96,10 +96,7 @@ public class IdPhotoBusinessController extends BaseService{
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), getSpecsList);
     }
 
-    @ApiOperation(value = "更换背景", notes = "{\n" +
-            "  \"base64\": \"/9j/4A****\",\n" +
-            "  \"specId\": \"391\"\n" +
-            "}")
+    @ApiOperation(value = "更换背景", notes = "{ \"base64\": \"/9j/4AAQSkZ\", \"specId\": \"391\",\"is_fair\":\"1\",\"fair_level\":\"5\" }      注：is_fair：0美颜无效，1美颜有效。（fair_level）只在is_fair为1时有效 ")
     @PostMapping("/udpateBackGroundColor")
     public ResponseMessage<IdPhotoBusiness> udpateBackGroundColor(@RequestBody IdPhotoBusiness idPhotoBusiness) {
         try {

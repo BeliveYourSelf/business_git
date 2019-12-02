@@ -14,6 +14,7 @@ import com.youxu.business.service.BaseService;
 import com.youxu.business.service.IdPhotoBusinessService;
 import com.youxu.business.utils.HttpTools.HttpResult;
 import com.youxu.business.utils.HttpTools.HttpTool;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
@@ -63,6 +64,7 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
 
     /**
      * 更换背景
+     *
      * @param idPhotoBusiness
      * @return
      */
@@ -71,12 +73,13 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
         IdPhotoBusiness idPhotoBusinessNew = updateIdPhotoBusiness(idPhotoBusiness);
         return idPhotoBusinessNew;
     }
+
     @Override
     public String getIdPhotoWaterMarkByFileName(String fileName, HttpServletResponse response) throws IOException {
         String requestPath = null;
-        if(fileName.contains("http")){
+        if (fileName.contains("http")) {
             requestPath = fileName;
-        }else {
+        } else {
             requestPath = GETIDPHOTOWATERMARKANDTYPESETTINGURL + fileName;
         }
         // 获取输入流
@@ -86,7 +89,7 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
         int contentLength = connection.getContentLength();
         // 向输出流写入
         InputStream inputStream = connection.getInputStream();
-        response.setHeader("content-type","text/html;charset=utf-8");
+        response.setHeader("content-type", "text/html;charset=utf-8");
         byte[] bytes = new byte[contentLength];
         ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
         byte[] buff = new byte[100];
@@ -124,7 +127,7 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
             return idPhotoBusinessStatus;
         }
         // 接口2：制作并检测证件照
-        ResultIdPhotoMarkAndTest resultIdPhotoMarkAndTest = idPhotoBusinessService.idPhotoMarkAndTest(idPhotoBusiness.getBase64(), idPhotoBusiness.getSpecId(), idPhotoBusiness.getBackgroundColorList());
+        ResultIdPhotoMarkAndTest resultIdPhotoMarkAndTest = idPhotoBusinessService.idPhotoMarkAndTest(idPhotoBusiness.getBase64(), idPhotoBusiness.getSpecId(), idPhotoBusiness.getBackgroundColorList(), idPhotoBusiness.getIs_fair(), idPhotoBusiness.getFair_level());
         String codeResultIdPhotoMarkAndTest = resultIdPhotoMarkAndTest.getCode();
         if (!"200".equals(codeResultIdPhotoMarkAndTest)) {
             idPhotoBusinessStatus.setCode(Integer.valueOf(codeResultIdPhotoMarkAndTest));
@@ -150,7 +153,7 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
             return idPhotoBusinessStatus;
         }
         // 接口2：制作并检测证件照
-        ResultIdPhotoMarkAndTest resultIdPhotoMarkAndTest = idPhotoBusinessService.idPhotoMarkAndTest(idPhotoBusiness.getBase64(), idPhotoBusiness.getSpecId(), null);
+        ResultIdPhotoMarkAndTest resultIdPhotoMarkAndTest = idPhotoBusinessService.idPhotoMarkAndTest(idPhotoBusiness.getBase64(), idPhotoBusiness.getSpecId(), null, null, null);
         String codeResultIdPhotoMarkAndTest = resultIdPhotoMarkAndTest.getCode();
         if (!"200".equals(codeResultIdPhotoMarkAndTest)) {
             idPhotoBusinessStatus.setCode(Integer.valueOf(codeResultIdPhotoMarkAndTest));
@@ -197,11 +200,17 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
     /**
      * 接口2：制作并检测证件照
      */
-    private ResultIdPhotoMarkAndTest idPhotoMarkAndTest(String base64Picture, String specId, List<BackgroundColor> backgroundColorList) throws Exception {
+    private ResultIdPhotoMarkAndTest idPhotoMarkAndTest(String base64Picture, String specId, List<BackgroundColor> backgroundColorList, Integer is_fair, Integer fair_level) throws Exception {
         IdPhotoMarkAndTest idPhotoMarkAndTest = new IdPhotoMarkAndTest();
         idPhotoMarkAndTest.setFile(base64Picture);
         idPhotoMarkAndTest.setSpec_id(specId);
         idPhotoMarkAndTest.setBackground_color(backgroundColorList);
+        if (!org.springframework.util.StringUtils.isEmpty(is_fair)) {
+            idPhotoMarkAndTest.setIs_fair(is_fair);
+        }
+        if (!org.springframework.util.StringUtils.isEmpty(fair_level)) {
+            idPhotoMarkAndTest.setFair_level(fair_level);
+        }
         //Object转JSON字符串:
         String idPhotoMarkAndTestJsonString = com.alibaba.fastjson.JSONObject.toJSONString(idPhotoMarkAndTest);
         //JSON字符串转JSONObject:

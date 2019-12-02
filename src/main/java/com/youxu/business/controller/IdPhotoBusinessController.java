@@ -3,6 +3,7 @@ package com.youxu.business.controller;
 import com.youxu.business.pojo.IdPhotoBusiness;
 import com.youxu.business.pojo.idphotonewadd.CutChangeClothes;
 import com.youxu.business.pojo.idphotonewadd.CutChangeClothesResult;
+import com.youxu.business.pojo.idphotonewadd.FileNameFather;
 import com.youxu.business.pojo.idphotonewadd.GetSpecs;
 import com.youxu.business.service.BaseService;
 import com.youxu.business.service.IdPhotoBusinessService;
@@ -111,10 +112,10 @@ public class IdPhotoBusinessController extends BaseService{
 
     @ApiOperation(value = "查看水印图片通过fileName:返回Base64(或文件路径转base64)", notes = "返回Base64:   http://leqi-imgcall.oss-cn-shanghai.aliyuncs.com/result%2F18c8136a125011ea9b5e00163e0070b600054blue3.jpg?Signature=v%2FI1qGy1Z8nNVHxc21faGcOFSxQ%3D&OSSAccessKeyId=LTAIQ8Lif1HHVkXd&Expires=1575002088")
     @PostMapping("/getIdPhotoWaterMarkByFileName")
-    public ResponseMessage<String> getIdPhotoWaterMarkByFileName(@RequestBody String fileName, HttpServletResponse response) {
+    public ResponseMessage<String> getIdPhotoWaterMarkByFileName(@RequestBody FileNameFather fileNameFather, HttpServletResponse response) {
         String getIdPhotoWaterMarkByFileName = null;
         try {
-            getIdPhotoWaterMarkByFileName = idPhotoBusinessService.getIdPhotoWaterMarkByFileName(fileName, response);
+            getIdPhotoWaterMarkByFileName = idPhotoBusinessService.getIdPhotoWaterMarkByFileName(fileNameFather.getFileName(), response);
         } catch (Exception e) {
             return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
         }

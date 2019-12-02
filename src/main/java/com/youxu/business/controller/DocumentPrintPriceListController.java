@@ -1,5 +1,6 @@
 package com.youxu.business.controller;
 
+import com.itextpdf.text.pdf.PdfReader;
 import com.youxu.business.pojo.DocumentPrintPriceList;
 import com.youxu.business.service.DocumentPrintPriceListService;
 import com.youxu.business.utils.Enum.ResultCodeEnum;
@@ -90,6 +91,7 @@ public class DocumentPrintPriceListController {
         if (fileUrl.isEmpty()) {
             return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), "路径不能为空");
         }
+        try{
         int nameLocal = fileUrl.lastIndexOf("/") + 1;
         String fileName = fileUrl.substring(nameLocal);
         String localPath = request.getServletContext().getRealPath("/") + fileName;
@@ -99,6 +101,20 @@ public class DocumentPrintPriceListController {
         int xlsxNum = Readword.getFilePageNum(localPath);
         DeleteFileUtil.delete(localPath);
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", xlsxNum);
+        }catch (Exception e){
+            String documentUrlTranTOPDF = OSSUploadUtil.documentUrlTranTOPDF(fileUrl);
+            int nameLocal = fileUrl.lastIndexOf("/") + 1;
+            String fileName = fileUrl.substring(nameLocal);
+            String[] split = fileName.split("\\.");
+            //获取pdf页数
+            String localPath = request.getServletContext().getRealPath("/") + split[0] + ".pdf";
+            DownLoadFileFromOss downLoadFileFromOss = new DownLoadFileFromOss();
+            downLoadFileFromOss.downloadFile(documentUrlTranTOPDF, localPath);
+            PdfReader reader = new PdfReader(localPath);
+            int pageNum = reader.getNumberOfPages();
+            DeleteFileUtil.delete(localPath);
+            return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", pageNum);
+        }
     }
 
 

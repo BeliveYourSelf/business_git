@@ -214,7 +214,7 @@ public class PayUtilsController extends BaseService {
      */
     @ApiOperation(value = "仅保存电子版", notes = "{\"userId\":\"52\" ,\"storeId\":\"1\" ,\"orderType\":\"1\" ,\"orderFromStoreGet\":\"1\" ,\"openId\":\"oM1Ip4xpQylMw8Io21SkJwsSytmg\" ,\"tradeType\":\"JSAPI\" ,\"orderActualMoney\":\"1\" ,\"idPhotoFileName\":\"18c8136a125011ea9b5e00163e0070b600054blue3\"}")
     @RequestMapping(value = "/onlySaveElectronic", method = RequestMethod.POST)
-    public ResponseMessage<String> onlySaveElectronic(HttpServletRequest request, @RequestBody Order order) {
+    public ResponseMessage<Map> onlySaveElectronic(HttpServletRequest request, @RequestBody Order order) {
         try {
             // 新增订单
             Integer orderId = orderService.insertOrder(order);
@@ -225,7 +225,7 @@ public class PayUtilsController extends BaseService {
             ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl idPhotoNoWaterMarkAndTypeSettingUrlCopy = idPhotoBusinessController.getIdPhotoNoWaterMarkAndTypeSettingUrlCopy(order.getIdPhotoFileName(),app_key);
             String file_name = idPhotoNoWaterMarkAndTypeSettingUrlCopy.getData().getFile_name();
             map.put("idPhotoUrl", file_name);
-            return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", map.toString());
+            return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", map);
         } catch (Exception e) {
             e.printStackTrace();
             return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());

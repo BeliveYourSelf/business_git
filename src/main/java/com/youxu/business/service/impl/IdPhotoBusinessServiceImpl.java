@@ -131,8 +131,7 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
         // 上传到OSS /log/20190517/1218209821212.jpg
         OSSUploadUtil.uploadFile(ali_endpoint, ali_accesskey_id, ali_accesskey_secret, ali_logstorage, file, fileNamePath);
         // 删除上传的文件
-        File file1 = new File(fileNamePath);
-        String s = file1.getAbsolutePath();
+        String s = file.getAbsolutePath();
         DeleteFileUtil.delete(s);
         //先拼接域名:
         StringBuilder yuming = new StringBuilder("https://youxu-print.oss-cn-beijing.aliyuncs.com/");

@@ -21,6 +21,7 @@ import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -107,7 +108,9 @@ public class IdPhotoBusinessController extends BaseService{
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), idPhotoBusiness);
     }
 
-    @ApiOperation(value = "查看水印图片通过fileName:返回Base64(或文件路径转base64)-补充：其他文件路径转base64", notes = "返回Base64:   http://leqi-imgcall.oss-cn-shanghai.aliyuncs.com/result%2F18c8136a125011ea9b5e00163e0070b600054blue3.jpg?Signature=v%2FI1qGy1Z8nNVHxc21faGcOFSxQ%3D&OSSAccessKeyId=LTAIQ8Lif1HHVkXd&Expires=1575002088")
+    @ApiOperation(value = "查看水印图片通过fileName:返回Base64(或文件路径转base64)-补充：其他文件路径转base64", notes = "{\n" +
+            "  \"fileName\": \"https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20191024/1571918985416/高中部.pdf\"\n" +
+            "}")
     @PostMapping("/getIdPhotoWaterMarkByFileName")
     public ResponseMessage<String> getIdPhotoWaterMarkByFileName(@RequestBody FileNameFather fileNameFather, HttpServletResponse response) {
         String getIdPhotoWaterMarkByFileName = null;
@@ -117,6 +120,21 @@ public class IdPhotoBusinessController extends BaseService{
             return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",getIdPhotoWaterMarkByFileName);
+    }
+
+    @ApiOperation(value = "文件路径转换为oss路径", notes = "{\n" +
+            "  \"fileName\": \"高中部.pdf\",\n" +
+            "  \"filePath\": \"https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20191024/1571918985416/高中部.pdf\"\n" +
+            "}")
+    @PostMapping("/getOssPathByFilePath")
+    public ResponseMessage<String> getOssPathByFilePath(@RequestBody FileNameFather fileNameFather, HttpServletRequest request, HttpServletResponse response) {
+        String getOssPathByFilePath = null;
+        try {
+            getOssPathByFilePath = idPhotoBusinessService.getOssPathByFilePath(fileNameFather, request,response);
+        } catch (Exception e) {
+            return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",getOssPathByFilePath);
     }
 
     @ApiOperation(value = "换装",notes = "{\n" +

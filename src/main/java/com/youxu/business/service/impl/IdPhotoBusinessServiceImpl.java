@@ -2,11 +2,10 @@ package com.youxu.business.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.google.gson.GsonBuilder;
-import com.youxu.business.pojo.idphotonewadd.BackgroundColor;
-import com.youxu.business.pojo.idphotonewadd.CutChangeClothes;
-import com.youxu.business.pojo.idphotonewadd.CutChangeClothesResult;
-import com.youxu.business.pojo.idphotonewadd.GetSpecs;
+import com.youxu.business.pojo.idphotonewadd.*;
 import com.youxu.business.utils.HttpTools.HttpToolOther;
+import com.youxu.business.utils.OtherUtil.DeleteFileUtil;
+import com.youxu.business.utils.OtherUtil.OSSUploadUtil;
 import com.youxu.business.utils.pojotools.*;
 import net.sf.json.JSONObject;
 import com.youxu.business.pojo.IdPhotoBusiness;
@@ -25,14 +24,14 @@ import sun.misc.BASE64Encoder;
 
 import javax.annotation.Resource;
 import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 @Service
@@ -112,6 +111,57 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
         return cutChangeClothesResult;
     }
 
+    @Override
+    public String getOssPathByFilePath(FileNameFather fileNameFather, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String fileNamePath = getFileNamePath(request,fileNameFather.getFileName());
+        // 创建文件输出流
+        File file = new File(fileNameFather.getFileName());
+        FileOutputStream fos = new FileOutputStream(file);
+        URL url = new URL(null, fileNameFather.getFilePath(), new sun.net.www.protocol.https.Handler());
+        HttpURLConnection httpURLConnection = (HttpsURLConnection) url.openConnection();
+        httpURLConnection.connect();
+        InputStream inputStream = httpURLConnection.getInputStream();
+        byte[] bytes = new byte[1024];
+        int length = 0 ;
+        while ((length = inputStream.read(bytes)) > 0){
+            // 用输出流往buffer里写入数据，中间参数代表从哪个位置开始读，len代表读取的长度
+            fos.write(bytes,0,length);
+        }
+        fos.close();
+        // 上传到OSS /log/20190517/1218209821212.jpg
+        OSSUploadUtil.uploadFile(ali_endpoint, ali_accesskey_id, ali_accesskey_secret, ali_logstorage, file, fileNamePath);
+        // 删除上传的文件
+        File file1 = new File(fileNamePath);
+        String s = file1.getAbsolutePath();
+        DeleteFileUtil.delete(s);
+        //先拼接域名:
+        StringBuilder yuming = new StringBuilder("https://youxu-print.oss-cn-beijing.aliyuncs.com/");
+        //再拼接/log
+        yuming.append(fileNamePath);
+        return (yuming.toString());
+    }
+
+    private String getFileNamePath(HttpServletRequest request, String filename){
+        //拼接/log
+        StringBuilder path = new StringBuilder(request.getContextPath());
+        //获取时间戳
+        Date fileDate = new Date();
+        StringBuilder datetime = new StringBuilder(String.valueOf(fileDate.getTime()));
+        //获取时间文件夹,并且与时间戳进行拼接
+        SimpleDateFormat dateFormatShow = new SimpleDateFormat("yyyyMMdd");
+        String date = (dateFormatShow.format(new Date()));
+        StringBuilder newName = new StringBuilder(date);
+        path.append(newName.toString());
+        path.append("/");
+        path.append(datetime);
+        path.append("/");
+        path.append(filename);
+        //获取文件后缀名--file.getOriginalFilename(); 获取的名字带后缀
+               /* String extName = filename.substring(filename.lastIndexOf("."));
+                path.append(extName);*/
+        String filenamePath = path.toString();
+        return filenamePath;
+    }
     /**
      * 整合证件照三个接口-更换证件照背景
      */

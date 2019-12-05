@@ -1,5 +1,6 @@
 package com.youxu.business.service.impl;
 
+import com.itextpdf.text.pdf.PdfReader;
 import com.youxu.business.dao.DocumentMapper;
 import com.youxu.business.pojo.Document;
 import com.youxu.business.service.DocumentService;
@@ -57,8 +58,7 @@ public class DocumentServiceImpl implements DocumentService {
                 }
                 catch (IOException e){
                     // ppt 和pptx  失败 ，转pdf重新获取页数
-                   String  pdfPath=  OSSUploadUtil.documentUrlTranTOPDF(localPath);
-                   xlsxNum = Readword.getFilePageNum(pdfPath);
+                    xlsxNum= getPdfPage(localPath,downLoadFileFromOss,request);
                 }
                 logger.info("添加文件页数：" + xlsxNum);
                 DeleteFileUtil.delete(localPath);
@@ -110,5 +110,23 @@ public class DocumentServiceImpl implements DocumentService {
         String  fileSize= String.valueOf(read / (1024 * 1024));
         logger.info("获取文件大小：" + fileSize);
         return fileSize; // 转换为兆
+    }
+    /**
+     * 由于转换为pptx\ppt可能出问题，捕获异常转换为pdf文件，读取页数
+     */
+
+    public Integer getPdfPage(String localPath,DownLoadFileFromOss downLoadFileFromOss, HttpServletRequest request) throws IOException {
+        // ppt 和pptx  失败 ，转pdf重新获取页数
+        String documentUrlTranTOPDF = OSSUploadUtil.documentUrlTranTOPDF(localPath);
+        Integer nameLocal = localPath.lastIndexOf("/") + 1;
+        String fileName = localPath.substring(nameLocal);
+        String[] split = fileName.split("\\.");
+        //获取pdf页数
+        String localPathNew = request.getServletContext().getRealPath("/") + split[0] + ".pdf";
+        downLoadFileFromOss.downloadFile(documentUrlTranTOPDF, localPathNew);
+        PdfReader reader = new PdfReader(localPathNew);
+        Integer xlsxNum = reader.getNumberOfPages();
+        DeleteFileUtil.delete(localPathNew);
+        return xlsxNum;
     }
 }

@@ -270,7 +270,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Integer updateOrderToPickUp(Order order) {
-        return orderMapper.updateOrderToPickUp(order);
+        Order orderNew = orderMapper.selectOrderByIdOverWrite(order.getId().toString());
+        if("1".equals(orderNew.getOrderFromStoreGetWhere())){
+            orderMapper.updateOrderCompelete(order.getId());
+            return 1;// 收件完成
+        }else {
+             orderMapper.updateOrderToPickUp(order);
+            return 2;// 取件成功
+        }
     }
 
     @Override

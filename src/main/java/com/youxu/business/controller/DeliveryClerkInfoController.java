@@ -126,7 +126,7 @@ public class DeliveryClerkInfoController {
     }
 
     @ApiOperation(value = "取件", notes = "{\"id\":\"1\"\n" +
-            ",\"deliveryId\":\"10\"}   id:订单id   deliveryId:配送员id")
+            ",\"deliveryId\":\"10\"}   id:订单id   deliveryId:配送员id   补充：订单为到店自取,直接更改成已完成")
     @PostMapping("/updateOrderToPickUp")
     public ResponseMessage updateOrderToPickUp(@RequestBody Order order) {
         Integer updateOrderToPickUp = orderService.updateOrderToPickUp(order);

@@ -283,5 +283,56 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
         return resultGetIdPhotoNoWaterMarkAndTypeSettingUrl;
     }
 
+    @Override
+    public void downLoadSteamByDocumentUrl(HttpServletRequest request, HttpServletResponse response, String documentUrl) throws IOException {
+        // 获取格式
+        int format = documentUrl.lastIndexOf(".");
+        String formatString = documentUrl.substring(format);
+        // 获取输入流
+        URL url = new URL(documentUrl);
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        // 向输出流写入
+        InputStream inputStream = connection.getInputStream();
+        setContentTypeBySuffix(formatString,response);
+        OutputStream outputStream = new BufferedOutputStream(response.getOutputStream());
+        // 所读取的内容使用n来接收
+        int n = 0;
+        byte[] bytes = new byte[1024];
+        while((n = inputStream.read(bytes)) != -1){
+            // 将字节数组的数据全部输出到输出流
+            outputStream.write(bytes,0,n);
+        }
+        outputStream.flush();
+        outputStream.close();
+        inputStream.close();
+    }
 
+    private void setContentTypeBySuffix(String suffix, HttpServletResponse response) {
+        switch (suffix) {
+            case ".pdf":
+                response.setContentType("application/pdf");break;
+            case ".doc":
+                response.setContentType("application/msword");break;
+            case ".docx":
+                response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");break;
+            case ".jpg":
+                response.setContentType("image/jpeg");break;
+            case ".jpeg":
+                response.setContentType("application/pdf");break;
+            case ".png":
+                response.setContentType("image/png");break;
+            case ".wps":
+                response.setContentType("application/vnd.ms-works");break;
+            case ".ppt":
+                response.setContentType("application/vnd.ms-powerpoint");break;
+            case ".pptx":
+                response.setContentType("application/vnd.openxmlformats-officedocument.presentationml.presentation");break;
+            case ".xls":
+                response.setContentType("application/vnd.ms-excel");break;
+            case ".xlsx":
+                response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");break;
+                default: break;
+        }
+    }
 }

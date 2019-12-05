@@ -23,4 +23,6 @@ public interface IdPhotoBusinessService {
     CutChangeClothesResult cutChangeClothes(CutChangeClothes cutChangeClothes);
 
     String getOssPathByFilePath(FileNameFather fileNameFather, HttpServletRequest request, HttpServletResponse response) throws IOException;
+
+    void downLoadSteamByDocumentUrl(HttpServletRequest request, HttpServletResponse response, String documentUrl) throws IOException;
 }

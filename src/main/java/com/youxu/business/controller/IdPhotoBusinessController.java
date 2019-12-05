@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -202,5 +203,17 @@ public class IdPhotoBusinessController extends BaseService{
         return resultGetIdPhotoNoWaterMarkAndTypeSettingUrl;
     }
 
+
+    @ApiOperation(value = "文件路径转化为流", notes = "documentUrl")
+    @GetMapping("/documentPathTransToStream")
+    public ResponseMessage documentPathTransToStream(HttpServletRequest request,HttpServletResponse response, @RequestParam String documentUrl) {
+        try {
+            idPhotoBusinessService.downLoadSteamByDocumentUrl(request, response, documentUrl);
+        } catch (IOException e) {
+            return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
+
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功");
+    }
 
 }

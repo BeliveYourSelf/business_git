@@ -45,7 +45,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Integer insertOrder(Order order) throws Exception {
         // 收货码
-        String shareCode = UUIDUtils.generateShortUuid();
+//        String shareCode = UUIDUtils.generateShortUuid();
+        String shareCode = UUIDUtils.randomUUIDInt(4,10);
         order.setDeliveryHarvestCode(shareCode);
         // 配送时间分改为毫秒
         String orderDeliveryPrescriptioTime = order.getOrderDeliveryPrescriptioTime();

@@ -69,6 +69,16 @@ public class UUIDUtils {
 		}
 		return str;
 	}
+
+	public static String randomUUIDInt(Integer number, Integer size) {
+		String str = new String();
+		Random random = new Random();
+		for (int i = 0; i < number; i++) {
+			int i1 = random.nextInt(size);
+			str = str+i1;
+		}
+		return str;
+	}
     // --------------------------------------------------------生成uuid-------------------------------------------------
 	public static String[] chars = new String[] { "a", "b", "c", "d", "e", "f",
 			"g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s",

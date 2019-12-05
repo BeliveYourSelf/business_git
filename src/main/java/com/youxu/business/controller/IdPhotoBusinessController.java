@@ -3,6 +3,7 @@ package com.youxu.business.controller;
 import com.youxu.business.pojo.IdPhotoBusiness;
 import com.youxu.business.pojo.idphotonewadd.CutChangeClothes;
 import com.youxu.business.pojo.idphotonewadd.CutChangeClothesResult;
+import com.youxu.business.pojo.idphotonewadd.FileNameFather;
 import com.youxu.business.pojo.idphotonewadd.GetSpecs;
 import com.youxu.business.service.BaseService;
 import com.youxu.business.service.IdPhotoBusinessService;
@@ -20,7 +21,9 @@ import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -95,10 +98,7 @@ public class IdPhotoBusinessController extends BaseService{
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), getSpecsList);
     }
 
-    @ApiOperation(value = "更换背景", notes = "{\n" +
-            "  \"base64\": \"/9j/4A****\",\n" +
-            "  \"specId\": \"391\"\n" +
-            "}")
+    @ApiOperation(value = "更换背景", notes = "{ \"base64\": \"/9j/4AAQSkZ\", \"specId\": \"391\",\"is_fair\":\"1\",\"fair_level\":\"5\" }      注：is_fair：0美颜无效，1美颜有效。（fair_level）只在is_fair为1时有效 ")
     @PostMapping("/udpateBackGroundColor")
     public ResponseMessage<IdPhotoBusiness> udpateBackGroundColor(@RequestBody IdPhotoBusiness idPhotoBusiness) {
         try {
@@ -108,17 +108,34 @@ public class IdPhotoBusinessController extends BaseService{
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), idPhotoBusiness);
     }
-    
-    @ApiOperation(value = "查看水印图片通过fileName:返回Base64(或文件路径转base64)", notes = "返回Base64:   http://leqi-imgcall.oss-cn-shanghai.aliyuncs.com/result%2F18c8136a125011ea9b5e00163e0070b600054blue3.jpg?Signature=v%2FI1qGy1Z8nNVHxc21faGcOFSxQ%3D&OSSAccessKeyId=LTAIQ8Lif1HHVkXd&Expires=1575002088")
-    @GetMapping("/getIdPhotoWaterMarkByFileName")
-    public ResponseMessage<String> getIdPhotoWaterMarkByFileName(@RequestParam(required = false) String fileName, HttpServletResponse response) {
+
+    @ApiOperation(value = "查看水印图片通过fileName:返回Base64(或文件路径转base64)-补充：其他文件路径转base64", notes = "{\n" +
+            "  \"fileName\": \"https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20191024/1571918985416/高中部.pdf\"\n" +
+            "}")
+    @PostMapping("/getIdPhotoWaterMarkByFileName")
+    public ResponseMessage<String> getIdPhotoWaterMarkByFileName(@RequestBody FileNameFather fileNameFather, HttpServletResponse response) {
         String getIdPhotoWaterMarkByFileName = null;
         try {
-            getIdPhotoWaterMarkByFileName = idPhotoBusinessService.getIdPhotoWaterMarkByFileName(fileName, response);
+            getIdPhotoWaterMarkByFileName = idPhotoBusinessService.getIdPhotoWaterMarkByFileName(fileNameFather.getFileName(), response);
         } catch (Exception e) {
             return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",getIdPhotoWaterMarkByFileName);
+    }
+
+    @ApiOperation(value = "文件路径转换为oss路径", notes = "{\n" +
+            "  \"fileName\": \"高中部.pdf\",\n" +
+            "  \"filePath\": \"https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20191024/1571918985416/高中部.pdf\"\n" +
+            "}")
+    @PostMapping("/getOssPathByFilePath")
+    public ResponseMessage<String> getOssPathByFilePath(@RequestBody FileNameFather fileNameFather, HttpServletRequest request, HttpServletResponse response) {
+        String getOssPathByFilePath = null;
+        try {
+            getOssPathByFilePath = idPhotoBusinessService.getOssPathByFilePath(fileNameFather, request,response);
+        } catch (Exception e) {
+            return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",getOssPathByFilePath);
     }
 
     @ApiOperation(value = "换装",notes = "{\n" +
@@ -143,12 +160,29 @@ public class IdPhotoBusinessController extends BaseService{
      * @param fileName
      * @return
      */
-    @ApiOperation(value = "同时获取无水印单张和排版图片",notes = "fileName：  622758d6102511ea9aa900163e0070b6clothesblue")
+    @ApiOperation(value = "同时获取无水印单张和排版图片-换装key",notes = "fileName：  622758d6102511ea9aa900163e0070b6clothesblue")
+    @GetMapping("/getIdPhotoNoWaterMarkAndTypeSettingUrlOther")
+    public ResponseMessage<ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl> getIdPhotoNoWaterMarkAndTypeSettingUrlOther(@RequestParam String fileName){
+        ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl resultGetIdPhotoNoWaterMarkAndTypeSettingUrl = null;
+        try {
+            String app_key = "69f50c487f42e8e62823b464a4af019bcae8a8ab";
+            resultGetIdPhotoNoWaterMarkAndTypeSettingUrl = getIdPhotoNoWaterMarkAndTypeSettingUrlCopy(fileName,app_key);
+        } catch (Exception e) {
+            return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功", resultGetIdPhotoNoWaterMarkAndTypeSettingUrl);
+    }
+    /**
+     * 换装app_key(69f50c487f42e8e62823b464a4af019bcae8a8ab)
+     * @param fileName
+     * @return
+     */
+    @ApiOperation(value = "同时获取无水印单张和排版图片-证件照检测和制作",notes = "fileName：  62cc859c128811ea9b7b00163e0070b613435blue3")
     @GetMapping("/getIdPhotoNoWaterMarkAndTypeSettingUrl")
     public ResponseMessage<ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl> getIdPhotoNoWaterMarkAndTypeSettingUrl(@RequestParam String fileName){
         ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl resultGetIdPhotoNoWaterMarkAndTypeSettingUrl = null;
         try {
-            String app_key = "69f50c487f42e8e62823b464a4af019bcae8a8ab";
+            String app_key = "2abf79c1e6f1aa18583f6a38d05336eae9baf3e3";
             resultGetIdPhotoNoWaterMarkAndTypeSettingUrl = getIdPhotoNoWaterMarkAndTypeSettingUrlCopy(fileName,app_key);
         } catch (Exception e) {
             return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
@@ -169,5 +203,17 @@ public class IdPhotoBusinessController extends BaseService{
         return resultGetIdPhotoNoWaterMarkAndTypeSettingUrl;
     }
 
+
+    @ApiOperation(value = "文件路径转化为流", notes = "documentUrl")
+    @GetMapping("/documentPathTransToStream")
+    public ResponseMessage documentPathTransToStream(HttpServletRequest request,HttpServletResponse response, @RequestParam String documentUrl) {
+        try {
+            idPhotoBusinessService.downLoadSteamByDocumentUrl(request, response, documentUrl);
+        } catch (IOException e) {
+            return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
+
+        }
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功");
+    }
 
 }

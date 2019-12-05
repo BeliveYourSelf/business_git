@@ -2,11 +2,10 @@ package com.youxu.business.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.google.gson.GsonBuilder;
-import com.youxu.business.pojo.idphotonewadd.BackgroundColor;
-import com.youxu.business.pojo.idphotonewadd.CutChangeClothes;
-import com.youxu.business.pojo.idphotonewadd.CutChangeClothesResult;
-import com.youxu.business.pojo.idphotonewadd.GetSpecs;
+import com.youxu.business.pojo.idphotonewadd.*;
 import com.youxu.business.utils.HttpTools.HttpToolOther;
+import com.youxu.business.utils.OtherUtil.DeleteFileUtil;
+import com.youxu.business.utils.OtherUtil.OSSUploadUtil;
 import com.youxu.business.utils.pojotools.*;
 import net.sf.json.JSONObject;
 import com.youxu.business.pojo.IdPhotoBusiness;
@@ -20,20 +19,16 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import sun.misc.BASE64Encoder;
 
 import javax.annotation.Resource;
 import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.MalformedURLException;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 @Service
@@ -65,6 +60,7 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
 
     /**
      * 更换背景
+     *
      * @param idPhotoBusiness
      * @return
      */
@@ -77,9 +73,9 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
     @Override
     public String getIdPhotoWaterMarkByFileName(String fileName, HttpServletResponse response) throws IOException {
         String requestPath = null;
-        if(fileName.contains("http")){
+        if (fileName.contains("http")) {
             requestPath = fileName;
-        }else {
+        } else {
             requestPath = GETIDPHOTOWATERMARKANDTYPESETTINGURL + fileName;
         }
         // 获取输入流
@@ -89,27 +85,17 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
         int contentLength = connection.getContentLength();
         // 向输出流写入
         InputStream inputStream = connection.getInputStream();
-        response.setHeader("content-type","text/html;charset=utf-8");
-//        response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
-//        IOUtils.copy(inputStream, outputStream);
-       /* OutputStream outputStream = new BufferedOutputStream(response.getOutputStream());
-        // 所读取的内容使用n来接收
-        int n = 0;
-        byte[] bytes = new byte[1024];
-        while((n = inputStream.read(bytes)) != -1){
-            // 将字节数组的数据全部输出到输出流
-            outputStream.write(bytes,0,n);
-        }
-        outputStream.flush();
-        outputStream.close();*/
-      /* int count = 0;
-       while(count == 0){
-           count = inputStream.available();
-       }*/
+        response.setHeader("content-type", "text/html;charset=utf-8");
         byte[] bytes = new byte[contentLength];
-        inputStream.read(bytes);
+        ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
+        byte[] buff = new byte[100];
+        int rc = 0;
+        while ((rc = inputStream.read(buff, 0, 100)) > 0) {
+            swapStream.write(buff, 0, rc);
+        }
+        bytes = swapStream.toByteArray();
         inputStream.close();
-        String base64 = new BASE64Encoder().encode(bytes);
+        String base64 = Base64.getEncoder().encodeToString(bytes);
         return base64;
     }
 
@@ -122,6 +108,56 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
         return cutChangeClothesResult;
     }
 
+    @Override
+    public String getOssPathByFilePath(FileNameFather fileNameFather, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String fileNamePath = getFileNamePath(request,fileNameFather.getFileName());
+        // 创建文件输出流
+        File file = new File(fileNameFather.getFileName());
+        FileOutputStream fos = new FileOutputStream(file);
+        URL url = new URL(null, fileNameFather.getFilePath(), new sun.net.www.protocol.https.Handler());
+        HttpURLConnection httpURLConnection = (HttpsURLConnection) url.openConnection();
+        httpURLConnection.connect();
+        InputStream inputStream = httpURLConnection.getInputStream();
+        byte[] bytes = new byte[1024];
+        int length = 0 ;
+        while ((length = inputStream.read(bytes)) > 0){
+            // 用输出流往buffer里写入数据，中间参数代表从哪个位置开始读，len代表读取的长度
+            fos.write(bytes,0,length);
+        }
+        fos.close();
+        // 上传到OSS /log/20190517/1218209821212.jpg
+        OSSUploadUtil.uploadFile(ali_endpoint, ali_accesskey_id, ali_accesskey_secret, ali_logstorage, file, fileNamePath);
+        // 删除上传的文件
+        String s = file.getAbsolutePath();
+        DeleteFileUtil.delete(s);
+        //先拼接域名:
+        StringBuilder yuming = new StringBuilder("https://youxu-print.oss-cn-beijing.aliyuncs.com/");
+        //再拼接/log
+        yuming.append(fileNamePath);
+        return (yuming.toString());
+    }
+
+    private String getFileNamePath(HttpServletRequest request, String filename){
+        //拼接/log
+        StringBuilder path = new StringBuilder(request.getContextPath());
+        //获取时间戳
+        Date fileDate = new Date();
+        StringBuilder datetime = new StringBuilder(String.valueOf(fileDate.getTime()));
+        //获取时间文件夹,并且与时间戳进行拼接
+        SimpleDateFormat dateFormatShow = new SimpleDateFormat("yyyyMMdd");
+        String date = (dateFormatShow.format(new Date()));
+        StringBuilder newName = new StringBuilder(date);
+        path.append(newName.toString());
+        path.append("/");
+        path.append(datetime);
+        path.append("/");
+        path.append(filename);
+        //获取文件后缀名--file.getOriginalFilename(); 获取的名字带后缀
+               /* String extName = filename.substring(filename.lastIndexOf("."));
+                path.append(extName);*/
+        String filenamePath = path.toString();
+        return filenamePath;
+    }
     /**
      * 整合证件照三个接口-更换证件照背景
      */
@@ -137,7 +173,7 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
             return idPhotoBusinessStatus;
         }
         // 接口2：制作并检测证件照
-        ResultIdPhotoMarkAndTest resultIdPhotoMarkAndTest = idPhotoBusinessService.idPhotoMarkAndTest(idPhotoBusiness.getBase64(), idPhotoBusiness.getSpecId(), idPhotoBusiness.getBackgroundColorList());
+        ResultIdPhotoMarkAndTest resultIdPhotoMarkAndTest = idPhotoBusinessService.idPhotoMarkAndTest(idPhotoBusiness.getBase64(), idPhotoBusiness.getSpecId(), idPhotoBusiness.getBackgroundColorList(), idPhotoBusiness.getIs_fair(), idPhotoBusiness.getFair_level());
         String codeResultIdPhotoMarkAndTest = resultIdPhotoMarkAndTest.getCode();
         if (!"200".equals(codeResultIdPhotoMarkAndTest)) {
             idPhotoBusinessStatus.setCode(Integer.valueOf(codeResultIdPhotoMarkAndTest));
@@ -163,7 +199,7 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
             return idPhotoBusinessStatus;
         }
         // 接口2：制作并检测证件照
-        ResultIdPhotoMarkAndTest resultIdPhotoMarkAndTest = idPhotoBusinessService.idPhotoMarkAndTest(idPhotoBusiness.getBase64(), idPhotoBusiness.getSpecId(), null);
+        ResultIdPhotoMarkAndTest resultIdPhotoMarkAndTest = idPhotoBusinessService.idPhotoMarkAndTest(idPhotoBusiness.getBase64(), idPhotoBusiness.getSpecId(), null, null, null);
         String codeResultIdPhotoMarkAndTest = resultIdPhotoMarkAndTest.getCode();
         if (!"200".equals(codeResultIdPhotoMarkAndTest)) {
             idPhotoBusinessStatus.setCode(Integer.valueOf(codeResultIdPhotoMarkAndTest));
@@ -210,11 +246,17 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
     /**
      * 接口2：制作并检测证件照
      */
-    private ResultIdPhotoMarkAndTest idPhotoMarkAndTest(String base64Picture, String specId, List<BackgroundColor> backgroundColorList) throws Exception {
+    private ResultIdPhotoMarkAndTest idPhotoMarkAndTest(String base64Picture, String specId, List<BackgroundColor> backgroundColorList, Integer is_fair, Integer fair_level) throws Exception {
         IdPhotoMarkAndTest idPhotoMarkAndTest = new IdPhotoMarkAndTest();
         idPhotoMarkAndTest.setFile(base64Picture);
         idPhotoMarkAndTest.setSpec_id(specId);
         idPhotoMarkAndTest.setBackground_color(backgroundColorList);
+        if (!org.springframework.util.StringUtils.isEmpty(is_fair)) {
+            idPhotoMarkAndTest.setIs_fair(is_fair);
+        }
+        if (!org.springframework.util.StringUtils.isEmpty(fair_level)) {
+            idPhotoMarkAndTest.setFair_level(fair_level);
+        }
         //Object转JSON字符串:
         String idPhotoMarkAndTestJsonString = com.alibaba.fastjson.JSONObject.toJSONString(idPhotoMarkAndTest);
         //JSON字符串转JSONObject:
@@ -238,5 +280,56 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
         return resultGetIdPhotoNoWaterMarkAndTypeSettingUrl;
     }
 
+    @Override
+    public void downLoadSteamByDocumentUrl(HttpServletRequest request, HttpServletResponse response, String documentUrl) throws IOException {
+        // 获取格式
+        int format = documentUrl.lastIndexOf(".");
+        String formatString = documentUrl.substring(format);
+        // 获取输入流
+        URL url = new URL(documentUrl);
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        // 向输出流写入
+        InputStream inputStream = connection.getInputStream();
+        setContentTypeBySuffix(formatString,response);
+        OutputStream outputStream = new BufferedOutputStream(response.getOutputStream());
+        // 所读取的内容使用n来接收
+        int n = 0;
+        byte[] bytes = new byte[1024];
+        while((n = inputStream.read(bytes)) != -1){
+            // 将字节数组的数据全部输出到输出流
+            outputStream.write(bytes,0,n);
+        }
+        outputStream.flush();
+        outputStream.close();
+        inputStream.close();
+    }
 
+    private void setContentTypeBySuffix(String suffix, HttpServletResponse response) {
+        switch (suffix) {
+            case ".pdf":
+                response.setContentType("application/pdf");break;
+            case ".doc":
+                response.setContentType("application/msword");break;
+            case ".docx":
+                response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");break;
+            case ".jpg":
+                response.setContentType("image/jpeg");break;
+            case ".jpeg":
+                response.setContentType("application/pdf");break;
+            case ".png":
+                response.setContentType("image/png");break;
+            case ".wps":
+                response.setContentType("application/vnd.ms-works");break;
+            case ".ppt":
+                response.setContentType("application/vnd.ms-powerpoint");break;
+            case ".pptx":
+                response.setContentType("application/vnd.openxmlformats-officedocument.presentationml.presentation");break;
+            case ".xls":
+                response.setContentType("application/vnd.ms-excel");break;
+            case ".xlsx":
+                response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");break;
+                default: break;
+        }
+    }
 }

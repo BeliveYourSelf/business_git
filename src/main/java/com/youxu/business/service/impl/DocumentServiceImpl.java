@@ -49,8 +49,11 @@ public class DocumentServiceImpl implements DocumentService {
                 DownLoadFileFromOss downLoadFileFromOss = new DownLoadFileFromOss();
                 downLoadFileFromOss.downloadFile(documentUrlArr[i], localPath);
                 // 添加文件页数
+                logger.info("添加文件页数开始" );
                 Integer xlsxNum = Readword.getFilePageNum(localPath);
+                logger.info("添加文件页数：" + xlsxNum);
                 DeleteFileUtil.delete(localPath);
+                logger.info("删除文件完成");
                 document.setSizePage(xlsxNum.toString());
                 // 添加文件大小
                 fileSize = getFileSize(documentUrlArr[i]);
@@ -63,6 +66,7 @@ public class DocumentServiceImpl implements DocumentService {
                 documentList.add(document);
             }
         }
+        logger.info("待插入对象：" + documentList.toString());
         return documentMapper.insertDocument(documentList);
     }
 
@@ -95,7 +99,7 @@ public class DocumentServiceImpl implements DocumentService {
             logger.error("获取文件大小失败：" + e.getMessage());
         }
         String  fileSize= String.valueOf(read / (1024 * 1024));
-        logger.error("获取文件大小：" + fileSize);
+        logger.info("获取文件大小：" + fileSize);
         return fileSize; // 转换为兆
     }
 }

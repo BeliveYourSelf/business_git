@@ -58,7 +58,7 @@ public class DocumentServiceImpl implements DocumentService {
                 }
                 catch (IOException e){
                     // ppt 和pptx  失败 ，转pdf重新获取页数
-                    xlsxNum= getPdfPage(localPath,downLoadFileFromOss,request);
+                    xlsxNum= getPdfPage(documentUrlNew,downLoadFileFromOss,request);
                 }
                 logger.info("添加文件页数：" + xlsxNum);
                 DeleteFileUtil.delete(localPath);

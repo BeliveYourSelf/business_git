@@ -6,6 +6,8 @@ import com.youxu.business.service.DocumentService;
 import com.youxu.business.utils.OtherUtil.DeleteFileUtil;
 import com.youxu.business.utils.OtherUtil.DownLoadFileFromOss;
 import com.youxu.business.utils.readdocumentpagesizeutils.Readword;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,6 +26,7 @@ import java.util.List;
 
 @Service
 public class DocumentServiceImpl implements DocumentService {
+    private final static Logger logger = LoggerFactory.getLogger(DocumentServiceImpl.class);
     @Resource
     private DocumentMapper documentMapper;
 
@@ -86,9 +89,13 @@ public class DocumentServiceImpl implements DocumentService {
             read = Double.valueOf(urlConnection.getContentLength());
         } catch (MalformedURLException e) {
             e.printStackTrace();
+            logger.error("获取文件大小失败：" + e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
+            logger.error("获取文件大小失败：" + e.getMessage());
         }
-        return String.valueOf(read / (1024 * 1024)); // 转换为兆
+        String  fileSize= String.valueOf(read / (1024 * 1024));
+        logger.error("获取文件大小：" + fileSize);
+        return fileSize; // 转换为兆
     }
 }

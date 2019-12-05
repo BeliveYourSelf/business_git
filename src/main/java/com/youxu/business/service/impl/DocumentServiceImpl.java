@@ -5,6 +5,7 @@ import com.youxu.business.pojo.Document;
 import com.youxu.business.service.DocumentService;
 import com.youxu.business.utils.OtherUtil.DeleteFileUtil;
 import com.youxu.business.utils.OtherUtil.DownLoadFileFromOss;
+import com.youxu.business.utils.OtherUtil.OSSUploadUtil;
 import com.youxu.business.utils.readdocumentpagesizeutils.Readword;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +51,15 @@ public class DocumentServiceImpl implements DocumentService {
                 downLoadFileFromOss.downloadFile(documentUrlArr[i], localPath);
                 // 添加文件页数
                 logger.info("添加文件页数开始" );
-                Integer xlsxNum = Readword.getFilePageNum(localPath);
+                Integer xlsxNum = 0;
+                try{
+                 xlsxNum = Readword.getFilePageNum(localPath);
+                }
+                catch (IOException e){
+                    // ppt 和pptx  失败 ，转pdf重新获取页数
+                   String  pdfPath=  OSSUploadUtil.documentUrlTranTOPDF(localPath);
+                   xlsxNum = Readword.getFilePageNum(pdfPath);
+                }
                 logger.info("添加文件页数：" + xlsxNum);
                 DeleteFileUtil.delete(localPath);
                 logger.info("删除文件完成");

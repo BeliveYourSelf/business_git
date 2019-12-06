@@ -14,6 +14,7 @@ public class Share {
     @ApiModelProperty(name = "shareUserId", value = "分享人用户id")
     private Integer shareUserId;
 
+
     @ApiModelProperty(name = "periodOfValidity", value = "有效期")
     private String periodOfValidity;
 

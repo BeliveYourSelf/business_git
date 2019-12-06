@@ -1,5 +1,6 @@
 package com.youxu.business.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -29,9 +30,11 @@ public class Collection {
     @ApiModelProperty(name = "fileSize", value = "文件大小")
     private Double fileSize;
 
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy/MM/dd HH:mm:ss")
     @ApiModelProperty(name = "createTime", value = "创建时间")
     private Date createTime;
 
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy/MM/dd HH:mm:ss")
     @ApiModelProperty(name = "modifyTime", value = "修改时间")
     private Date modifyTime;
 

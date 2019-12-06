@@ -126,14 +126,16 @@ public class DeliveryClerkInfoController {
     }
 
     @ApiOperation(value = "取件", notes = "{\"id\":\"1\"\n" +
-            ",\"deliveryId\":\"10\"}   id:订单id   deliveryId:配送员id   补充：订单为到店自取,直接更改成已完成")
+            ",\"deliveryId\":\"10\"}   id:订单id   deliveryId:配送员id   补充：订单为到店自取,直接更改成已完成(返回date ：1（收件完成）2（取件成功）)")
     @PostMapping("/updateOrderToPickUp")
-    public ResponseMessage updateOrderToPickUp(@RequestBody Order order) {
+    public ResponseMessage<String> updateOrderToPickUp(@RequestBody Order order) {
         Integer updateOrderToPickUp = orderService.updateOrderToPickUp(order);
         if (updateOrderToPickUp <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+        }else if(updateOrderToPickUp == 1){
+            return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "收件完成", "1");
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
+            return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "取件成功", "2");
     }
 
     @ApiOperation(value = "配送员确认完成订单", notes = "{\"id\":\"1\"\n" +

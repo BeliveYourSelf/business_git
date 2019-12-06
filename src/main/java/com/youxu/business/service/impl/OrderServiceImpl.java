@@ -100,7 +100,8 @@ public class OrderServiceImpl implements OrderService {
                             }
                         }else{
                             // 新增订单
-                            pictureList = order.getPictureList();
+//                            pictureList = order.getPictureList();
+                              pictureList = order.getOrderDetailsList().get(i - 1).getPictureList();
                         }
                         pictureMapper.insertPictureMapperOverWrite(pictureList);
                             int size = pictureList.size();
@@ -271,7 +272,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Integer updateOrderToPickUp(Order order) {
         Order orderNew = orderMapper.selectOrderByIdOverWrite(order.getId().toString());
-        if("1".equals(orderNew.getOrderFromStoreGetWhere())){
+        if("1".equals(orderNew.getOrderFromStoreGet())){
             orderMapper.updateOrderCompelete(order.getId());
             return 1;// 收件完成
         }else {

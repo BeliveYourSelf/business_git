@@ -223,7 +223,7 @@ public class IdPhotoBusinessController extends BaseService {
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功");
     }
 
-    @ApiModelProperty(value = "base64转换为oss路径", notes = "documentUrl")
+    @ApiOperation(value = "base64转换为oss路径", notes = "documentUrl")
     @PostMapping("/changeBase64ToImageAnduploadOss")
     public ResponseMessage<String> changeBase64ToImageAnduploadOss(@RequestBody CutChangeClothes cutChangeClothes) {
         try {

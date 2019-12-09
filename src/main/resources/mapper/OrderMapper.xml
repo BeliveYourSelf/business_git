@@ -859,6 +859,7 @@
         <include refid="Base_Column_List"/>
         from tb_order
         where tb_order.user_id = #{order.userId} and order_process = #{order.orderProcess} and order_status = false
+        order by tb_order.order_create_time desc
     </select>
     <!--查看订单重构-->
     <select id="selectOrderByIdOverWrite" resultMap="BaseResultMapOverWrite">

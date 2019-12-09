@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.google.gson.GsonBuilder;
 import com.youxu.business.pojo.idphotonewadd.*;
 import com.youxu.business.utils.HttpTools.HttpToolOther;
+import com.youxu.business.utils.OtherUtil.Base64TransToBinarySystemToFile;
 import com.youxu.business.utils.OtherUtil.DeleteFileUtil;
 import com.youxu.business.utils.OtherUtil.OSSUploadUtil;
 import com.youxu.business.utils.pojotools.*;
@@ -16,9 +17,11 @@ import com.youxu.business.utils.HttpTools.HttpTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.net.ssl.HttpsURLConnection;
@@ -110,7 +113,7 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
 
     @Override
     public String getOssPathByFilePath(FileNameFather fileNameFather, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String fileNamePath = getFileNamePath(request,fileNameFather.getFileName());
+        String fileNamePath = getFileNamePath(request, fileNameFather.getFileName());
         // 创建文件输出流
         File file = new File(fileNameFather.getFileName());
         FileOutputStream fos = new FileOutputStream(file);
@@ -119,10 +122,10 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
         httpURLConnection.connect();
         InputStream inputStream = httpURLConnection.getInputStream();
         byte[] bytes = new byte[1024];
-        int length = 0 ;
-        while ((length = inputStream.read(bytes)) > 0){
+        int length = 0;
+        while ((length = inputStream.read(bytes)) > 0) {
             // 用输出流往buffer里写入数据，中间参数代表从哪个位置开始读，len代表读取的长度
-            fos.write(bytes,0,length);
+            fos.write(bytes, 0, length);
         }
         fos.close();
         // 上传到OSS /log/20190517/1218209821212.jpg
@@ -137,7 +140,7 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
         return (yuming.toString());
     }
 
-    private String getFileNamePath(HttpServletRequest request, String filename){
+    private String getFileNamePath(HttpServletRequest request, String filename) {
         //拼接/log
         StringBuilder path = new StringBuilder(request.getContextPath());
         //获取时间戳
@@ -158,6 +161,7 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
         String filenamePath = path.toString();
         return filenamePath;
     }
+
     /**
      * 整合证件照三个接口-更换证件照背景
      */
@@ -291,45 +295,83 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
         connection.setRequestMethod("GET");
         // 向输出流写入
         InputStream inputStream = connection.getInputStream();
-        setContentTypeBySuffix(formatString,response);
+        setContentTypeBySuffix(formatString, response);
         OutputStream outputStream = new BufferedOutputStream(response.getOutputStream());
         // 所读取的内容使用n来接收
         int n = 0;
         byte[] bytes = new byte[1024];
-        while((n = inputStream.read(bytes)) != -1){
+        while ((n = inputStream.read(bytes)) != -1) {
             // 将字节数组的数据全部输出到输出流
-            outputStream.write(bytes,0,n);
+            outputStream.write(bytes, 0, n);
         }
         outputStream.flush();
         outputStream.close();
         inputStream.close();
     }
 
+    @Override
+    public String changeBase64ToImageAnduploadOss(String base64String) throws IOException {
+        File file = null;
+        FileInputStream fileInputStream = null;
+        try {
+            // 下载图片路径
+            String pathString = "F://base64图片.jpg";
+            // base64转图片
+            boolean b = Base64TransToBinarySystemToFile.changeBase64ToImage(base64String, pathString);
+            if (b) {
+                file = new File(pathString);
+                fileInputStream = new FileInputStream(file);
+                MultipartFile multipartFile = new MockMultipartFile("temp.jpg", "temp.jpg", "", fileInputStream);
+                String uploadSuccess = OSSUploadUtil.uploadBlog(multipartFile);
+                return uploadSuccess;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            fileInputStream.close();
+            String s = file.getAbsolutePath();
+            DeleteFileUtil.delete(s);
+        }
+        return null;
+    }
+
     private void setContentTypeBySuffix(String suffix, HttpServletResponse response) {
         switch (suffix) {
             case ".pdf":
-                response.setContentType("application/pdf");break;
+                response.setContentType("application/pdf");
+                break;
             case ".doc":
-                response.setContentType("application/msword");break;
+                response.setContentType("application/msword");
+                break;
             case ".docx":
-                response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");break;
+                response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+                break;
             case ".jpg":
-                response.setContentType("image/jpeg");break;
+                response.setContentType("image/jpeg");
+                break;
             case ".jpeg":
-                response.setContentType("application/pdf");break;
+                response.setContentType("application/pdf");
+                break;
             case ".png":
-                response.setContentType("image/png");break;
+                response.setContentType("image/png");
+                break;
             case ".wps":
-                response.setContentType("application/vnd.ms-works");break;
+                response.setContentType("application/vnd.ms-works");
+                break;
             case ".ppt":
-                response.setContentType("application/vnd.ms-powerpoint");break;
+                response.setContentType("application/vnd.ms-powerpoint");
+                break;
             case ".pptx":
-                response.setContentType("application/vnd.openxmlformats-officedocument.presentationml.presentation");break;
+                response.setContentType("application/vnd.openxmlformats-officedocument.presentationml.presentation");
+                break;
             case ".xls":
-                response.setContentType("application/vnd.ms-excel");break;
+                response.setContentType("application/vnd.ms-excel");
+                break;
             case ".xlsx":
-                response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");break;
-                default: break;
+                response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                break;
+            default:
+                break;
         }
     }
 }

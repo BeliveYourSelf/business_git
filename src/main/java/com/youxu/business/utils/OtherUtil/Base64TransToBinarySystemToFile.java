@@ -24,9 +24,11 @@ public class Base64TransToBinarySystemToFile {
         try {
             //解码过程，即将base64字符串转换成二进制流
             byte[] imageByte=decoder.decodeBuffer(base64String);
-
-            //生成图片路径和文件名
+            logger.info("解码过程，即将base64字符串转换成二进制流" + imageByte);
+            // 生成图片路径和文件名
+            logger.info("生成图片路径和文件名" + pathString);
             OutputStream out =new FileOutputStream(pathString);
+            logger.info("OutputStream:" + out.toString());
             out.write(imageByte);
             /*
              * 使用流时,都会有一个缓冲区,按一种它认为比较高效的方法来发数据:

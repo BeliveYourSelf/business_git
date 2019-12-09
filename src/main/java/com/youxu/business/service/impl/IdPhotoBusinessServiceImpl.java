@@ -14,6 +14,7 @@ import com.youxu.business.service.BaseService;
 import com.youxu.business.service.IdPhotoBusinessService;
 import com.youxu.business.utils.HttpTools.HttpResult;
 import com.youxu.business.utils.HttpTools.HttpTool;
+import org.reflections.vfs.Vfs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
@@ -315,7 +316,8 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
         FileInputStream fileInputStream = null;
         try {
             // 下载图片路径
-            String pathString = "F://base64图片.jpg";
+
+            String pathString = "base64图片.jpg";
             // base64转图片
             logger.info("base64转成本地文件开始：");
             boolean b = Base64TransToBinarySystemToFile.changeBase64ToImage(base64String, pathString);
@@ -323,7 +325,7 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
             if (b) {
                 logger.info("读取本地文件为流");
                 file = new File(pathString);
-                fileInputStream = new FileInputStream(file);
+                fileInputStream = new FileInputStream(file.getAbsoluteFile());
                 MultipartFile multipartFile = new MockMultipartFile("temp.jpg", "temp.jpg", "", fileInputStream);
                 logger.info("上传file到oss");
                 String uploadSuccess = OSSUploadUtil.uploadBlog(multipartFile);

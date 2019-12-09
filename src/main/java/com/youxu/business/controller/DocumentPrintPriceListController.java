@@ -35,6 +35,9 @@ public class DocumentPrintPriceListController {
     @Resource
     private DocumentPrintPriceListService documentPrintPriceListService;
 
+    @Resource
+    private Readword readword;
+
     /**
      * @param documentPrintPriceList
      * @return
@@ -87,7 +90,7 @@ public class DocumentPrintPriceListController {
      */
     @ApiOperation(value = "通过地址路径获取文档页数（pdf/word/excel/ppt）", notes = "https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20190929/1569741897178/woshipdf.pdf")
     @GetMapping("/selectDocumentPageNumberByUrl")
-    public ResponseMessage<Integer> selectDocumentPageNumberByUrl(@RequestParam("fileUrl") String fileUrl, HttpServletRequest request) throws IOException {
+    public ResponseMessage<Integer> selectDocumentPageNumberByUrl(@RequestParam("fileUrl") String fileUrl, HttpServletRequest request) throws Exception {
         if (fileUrl.isEmpty()) {
             return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), "路径不能为空");
         }
@@ -98,7 +101,7 @@ public class DocumentPrintPriceListController {
         DownLoadFileFromOss downLoadFileFromOss = new DownLoadFileFromOss();
         downLoadFileFromOss.downloadFile(fileUrl, localPath);
         //获取pdf页数
-        int xlsxNum = Readword.getFilePageNum(localPath);
+        int xlsxNum = readword.getFilePageNum(localPath);
         DeleteFileUtil.delete(localPath);
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", xlsxNum);
         }catch (Exception e){

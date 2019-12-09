@@ -32,6 +32,9 @@ public class DocumentServiceImpl implements DocumentService {
     @Resource
     private DocumentMapper documentMapper;
 
+    @Resource
+    private Readword readword;
+
     @Override
     public Integer insertDocument(Document document, HttpServletRequest request) throws IOException {
         // 读取文件大小
@@ -54,9 +57,9 @@ public class DocumentServiceImpl implements DocumentService {
                 logger.info("添加文件页数开始" );
                 Integer xlsxNum = 0;
                 try{
-                 xlsxNum = Readword.getFilePageNum(localPath);
+                 xlsxNum = readword.getFilePageNum(localPath);
                 }
-                catch (IOException e){
+                catch (Exception e){
                     // ppt 和pptx  失败 ，转pdf重新获取页数
                     xlsxNum= getPdfPage(documentUrlNew,downLoadFileFromOss,request);
                 }

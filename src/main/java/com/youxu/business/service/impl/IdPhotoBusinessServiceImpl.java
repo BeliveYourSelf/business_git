@@ -317,12 +317,17 @@ public class IdPhotoBusinessServiceImpl extends BaseService implements IdPhotoBu
             // 下载图片路径
             String pathString = "F://base64图片.jpg";
             // base64转图片
+            logger.info("base64转成本地文件开始：");
             boolean b = Base64TransToBinarySystemToFile.changeBase64ToImage(base64String, pathString);
+            logger.info("base64转成本地文件结束：" + b);
             if (b) {
+                logger.info("读取本地文件为流");
                 file = new File(pathString);
                 fileInputStream = new FileInputStream(file);
                 MultipartFile multipartFile = new MockMultipartFile("temp.jpg", "temp.jpg", "", fileInputStream);
+                logger.info("上传file到oss");
                 String uploadSuccess = OSSUploadUtil.uploadBlog(multipartFile);
+                logger.info("上传oss成功");
                 return uploadSuccess;
             }
         } catch (IOException e) {

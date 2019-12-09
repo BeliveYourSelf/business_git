@@ -1,5 +1,8 @@
 package com.youxu.business.utils.OtherUtil;
 
+import com.youxu.business.service.impl.IdPhotoBusinessServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sun.misc.BASE64Decoder;
 
 import java.io.FileOutputStream;
@@ -7,6 +10,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class Base64TransToBinarySystemToFile {
+    private final static Logger logger = LoggerFactory.getLogger(Base64TransToBinarySystemToFile.class);
+
     /**
      * 将base64格式的字符串转换成二进制流，并转换成图片
      */
@@ -35,6 +40,7 @@ public class Base64TransToBinarySystemToFile {
             return true;
         } catch (IOException e) {
             // TODO Auto-generated catch block
+            logger.info("将base64格式的字符串转换成二进制流，并转换成图片" + e.getMessage());
             return false;
         }
     }

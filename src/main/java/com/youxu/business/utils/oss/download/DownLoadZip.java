@@ -333,6 +333,17 @@ public class DownLoadZip extends BaseService {
             for (Map.Entry<String, String> entry : map.entrySet()) {
                 String key = entry.getKey();
                 String value = entry.getValue();
+                // 转换为pdf
+                int point = value.lastIndexOf(".");
+                String suffix = value.substring(point);// 后缀pdf的文件不需要转换
+                if (!".pdf".equals(suffix)) {
+                    String documentUrl = "https://api.9yuntu.cn/execute/Convert?docURL=" + URLEncoder.encode(value) + "&outputType=pdf";// 拼接九云图路径
+                    // 文件url转换成pdf对象
+                    ResultYuntu resultYuntu = DocumentTrans.getResultYuntuByUrl(documentUrl);
+                    if (0 == resultYuntu.getRetCode()) {
+                        value = resultYuntu.getOutputURLs()[0];
+                    }
+                }
                 URL urlPdf = new URL(value);
                 HttpsURLConnection connection = (HttpsURLConnection) urlPdf.openConnection();
                 connection.setRequestMethod("GET");

@@ -1,16 +1,23 @@
 package com.youxu.business.controller;
 
 import com.youxu.business.pojo.Order;
+import com.youxu.business.pojo.OrderDetails;
 import com.youxu.business.pojo.OrderProcess;
+import com.youxu.business.pojo.idphotonewadd.FileNameFather;
+import com.youxu.business.service.IdPhotoBusinessService;
 import com.youxu.business.service.OrderService;
 import com.youxu.business.utils.Enum.ResultCodeEnum;
 import com.youxu.business.utils.ResponseUtil.ResponseMessage;
 import com.youxu.business.utils.ResponseUtil.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,11 +28,17 @@ public class OrderController {
     @Resource
     private OrderService orderService;
 
+    @Resource
+    private IdPhotoBusinessService idPhotoBusinessService;
+
     @ApiOperation(value = "新增订单", notes = "{\"orderCouponMoney\":0,\"orderCouponDeliveryMoney\":0,\"orderDeliveryMoney\":2,\"userId\":20,\"orderType\":3,\"orderProcess\":1,\"orderFromStoreGet\":3,\"orderPrintMoney\":0,\"orderConsumeMoney\":0,\"vouchersIdList\":[],\"orderTypeOther\":1,\"orderAllPage\":90,\"orderAddresseeAddress\":\"天津市天津市华木里8-1-501\",\"orderAddresseeName\":\"古井\",\"orderAddresseePhone\":\"16600205437\",\"storeId\":1,\"orderDeliveryPrescriptioTime\":\"92\",\"orderActualMoney\":2,\"orderDetailsList\":[{\"orderDetailsCount\":1,\"orderDetailsName\":\"woshipdf.pdf\",\"orderDetailsOnePictureUrl\":\"https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20191120/1574218255499/woshipdf.pdf\",\"orderDetailsTotalPrice\":0,\"orderSpecName\":\"A3/默认（无拼版）/单面/竖版\",\"orderDetailsCountColour\":0,\"orderDetailsType\":4,\"orderDetailsPage\":\"1\"},{\"orderDetailsCount\":1,\"orderDetailsName\":\"推荐二维码.png\",\"orderDetailsOnePictureUrl\":\"https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20191024/1571898056220/推荐二维码.png\",\"orderDetailsTotalPrice\":0,\"orderSpecName\":\"A3/默认（无拼版）/单面/竖版\",\"orderDetailsCountColour\":0,\"orderDetailsType\":4,\"orderDetailsPage\":1},{\"orderDetailsCount\":1,\"orderDetailsName\":\"项目计划表.xlsx\",\"orderDetailsOnePictureUrl\":\"https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20191205/1575532820764/项目计划表.xlsx\",\"orderDetailsTotalPrice\":0,\"orderSpecName\":\"A3/默认（无拼版）/单面/竖版\",\"orderDetailsCountColour\":0,\"orderDetailsType\":4,\"orderDetailsPage\":\"1\"},{\"orderDetailsCount\":1,\"orderDetailsName\":\"选题PPT.pptx\",\"orderDetailsOnePictureUrl\":\"https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20191205/1575533477542/选题PPT.pptx\",\"orderDetailsTotalPrice\":0,\"orderSpecName\":\"A3/默认（无拼版）/单面/竖版\",\"orderDetailsCountColour\":0,\"orderDetailsType\":4,\"orderDetailsPage\":29},{\"orderDetailsCount\":1,\"orderDetailsName\":\"装订1\",\"orderSpecName\":\"A3-默认（无拼版）-单面-竖版 58P\",\"orderDetailsCountColour\":0,\"orderDetailsType\":3,\"orderDetailsPage\":58,\"orderDetailsBookBinding\":{\"coverColor\":\"皮纹纸/淡蓝色\",\"coverFileUrl\":null,\"faceDirection\":\"竖版\"},\"pictureList\":[{\"pictureUrl\":\"https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20191205/1575533710029/选题PPT.pptx\",\"pictureUrlPdf\":\"https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20191205/1575533710029/选题PPT.pptx\"},{\"pictureUrl\":\"https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20191205/1575533710029/选题PPT.pptx\",\"pictureUrlPdf\":\"https://youxu-print.oss-cn-beijing.aliyuncs.com/log/20191205/1575533710029/选题PPT.pptx\"}]}]}  新字段：orderDetailsOnePictureUrlPdf：订单详情Pdf路径,pictureUrl发生变化")
     @PostMapping("/insertOrder")
-    public ResponseMessage<Integer> insertOrder(@RequestBody Order order) {
+    public ResponseMessage<Integer> insertOrder(@RequestBody Order order, HttpServletRequest request, HttpServletResponse response) {
         Integer orderId = null;
         try {
+            // 更换证件照路径为oss
+            List<OrderDetails> orderDetailsOssPathByIdPhoto = getOssPathByIdPhoto(order.getOrderDetailsList(), request, response);
+            order.setOrderDetailsList(orderDetailsOssPathByIdPhoto);
             orderId = orderService.insertOrder(order);
         } catch (Exception e) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "新增失败");
@@ -166,13 +179,34 @@ public class OrderController {
             return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), "失败");
         }
     }
+
     @ApiOperation(value = "查看订单类别个数", notes = "userId：用户id")
     @GetMapping("/selectCountOrderProcess")
-    public ResponseMessage<OrderProcess> selectCountOrderProcess(@RequestParam String userId){
-       OrderProcess orderProcess = orderService.selectCountOrderProcess(userId);
-       return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",orderProcess);
+    public ResponseMessage<OrderProcess> selectCountOrderProcess(@RequestParam String userId) {
+        OrderProcess orderProcess = orderService.selectCountOrderProcess(userId);
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", orderProcess);
     }
 
-
+    /**
+     * 判断时候为证件照，如果为证件照，则把证件照第三方的路径换成oss（第三方服务器上两小时图片时效）
+     */
+    private List<OrderDetails> getOssPathByIdPhoto(List<OrderDetails> orderDetailsList, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (!StringUtils.isEmpty(orderDetailsList) && orderDetailsList.size() > 0) {
+            for (OrderDetails orderDetailListOne : orderDetailsList) {
+                String orderDetailsOnePictureUrl = orderDetailListOne.getOrderDetailsOnePictureUrl();
+                if(!StringUtils.isEmpty(orderDetailsOnePictureUrl)){
+                boolean contains = orderDetailsOnePictureUrl.contains("leqi-imgcall.oss-cn-shanghai.aliyuncs.com"); // 证件照官网路径
+                if (contains) {
+                    FileNameFather fileNameFather = new FileNameFather();
+                    fileNameFather.setFilePath(orderDetailsOnePictureUrl);
+                    fileNameFather.setFileName(orderDetailListOne.getOrderDetailsName() + ".jpg");
+                    String getOssPathByFilePath = idPhotoBusinessService.getOssPathByFilePath(fileNameFather, request, response);
+                    orderDetailListOne.setOrderDetailsOnePictureUrl(getOssPathByFilePath);
+                }
+                }
+            }
+        }
+        return orderDetailsList;
+    }
 
 }

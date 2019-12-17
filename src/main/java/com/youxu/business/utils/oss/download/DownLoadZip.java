@@ -300,9 +300,13 @@ public class DownLoadZip extends BaseService {
                 String orderDetailsOnePictureUrl = orderDetails.getOrderDetailsOnePictureUrl();
                 // if:证件照订单    else:照片冲印和文档打印(装订)
                 if (!StringUtils.isEmpty(orderDetailsOnePictureUrl)) {
+                    try {
                     int lastPoint = fileDetailName.lastIndexOf(".");
                     fileDetailName = fileDetailName.substring(0, lastPoint);//该子字符串从指定的 beginIndex 处开始， endIndex:到指定的 endIndex-1处结束。
                     fileDetailName = fileDetailName + ".pdf";
+                    }catch (Exception e){
+                        fileDetailName = fileDetailName + ".pdf";
+                    }
                     map.put(fileDetailName, orderDetailsOnePictureUrl);
                 } else if (!org.springframework.util.StringUtils.isEmpty(orderDetailsBookBinding)){
                     List<OrderDetailsPictureMapping> orderDetailsPictureMappingList = orderDetails.getOrderDetailsPictureMappingList();

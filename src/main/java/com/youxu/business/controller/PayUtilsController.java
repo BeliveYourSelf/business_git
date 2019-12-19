@@ -232,6 +232,9 @@ public class PayUtilsController extends BaseService {
             // 根据fileName获取证件照无水印
             ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl idPhotoNoWaterMarkAndTypeSettingUrlCopy = idPhotoBusinessController.getIdPhotoNoWaterMarkAndTypeSettingUrlCopy(order.getIdPhotoFileName(),app_key);
             logger.info("idPhotoNoWaterMarkAndTypeSettingUrlCopy：" + idPhotoNoWaterMarkAndTypeSettingUrlCopy);
+            if(StringUtils.isEmpty(idPhotoNoWaterMarkAndTypeSettingUrlCopy.getData())){
+                return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), "未传入idPhotoFileName");
+            }
             String file_name = idPhotoNoWaterMarkAndTypeSettingUrlCopy.getData().getFile_name();
             map.put("idPhotoUrl", file_name);
             logger.info("idPhotoUrl：" + file_name);

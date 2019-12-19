@@ -96,12 +96,20 @@ public class OrderServiceImpl implements OrderService {
                             // 重新下单
                             for (OrderDetailsPictureMapping orderDetailsPictureMapping : orderDetailsPictureMappingList) {
                                 List<Picture> pictureListOne = orderDetailsPictureMapping.getPictureList();
+                                for(Picture picture: pictureListOne){ // 装订文件转pdf，用于批量下载压缩文件
+                                    String documentUrlTranTOPDF = OSSUploadUtil.documentUrlTranTOPDF(picture.getPictureUrlPdf());
+                                    picture.setPictureUrlPdf(documentUrlTranTOPDF);
+                                }
                                 pictureList.addAll(pictureListOne);
                             }
                         }else{
                             // 新增订单
 //                            pictureList = order.getPictureList();
                               pictureList = order.getOrderDetailsList().get(i - 1).getPictureList();
+                            for(Picture picture: pictureList){
+                                String documentUrlTranTOPDF = OSSUploadUtil.documentUrlTranTOPDF(picture.getPictureUrlPdf());
+                                picture.setPictureUrlPdf(documentUrlTranTOPDF);
+                            }
                         }
                         pictureMapper.insertPictureMapperOverWrite(pictureList);
                             int size = pictureList.size();

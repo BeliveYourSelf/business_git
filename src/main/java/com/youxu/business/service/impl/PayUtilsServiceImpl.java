@@ -73,6 +73,7 @@ private final static org.slf4j.Logger logger = LoggerFactory.getLogger(PayUtilsS
                     bufferedReader.close();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    logger.info("bufferedReader.close();"+e.getMessage());
                 }
             }
             if (inputStream != null) {
@@ -80,6 +81,7 @@ private final static org.slf4j.Logger logger = LoggerFactory.getLogger(PayUtilsS
                     inputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    logger.info("inputStream.close();"+e.getMessage());
                 }
             }
             if (outputStream != null) {
@@ -87,10 +89,12 @@ private final static org.slf4j.Logger logger = LoggerFactory.getLogger(PayUtilsS
                     outputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    logger.info("outputStream.close();"+e.getMessage());
                 }
             }
         } catch (Exception e) {
             map = null;
+            logger.info("map = null;"+e.getMessage());
         }
         finally {
             if(httpURLConnection!=null) httpURLConnection.disconnect();

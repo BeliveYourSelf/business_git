@@ -224,6 +224,8 @@ public class PayUtilsController extends BaseService {
         try {
             // 新增订单
             Integer orderId = orderService.insertOrder(order);
+            logger.info("Order" + order.toString());
+            logger.info("orderId:" + orderId);
             ip = ClientIPUtils.getIp(request);
             Map map = payUtilsService.wepay_orderSign(request, order.getOpenId(), "保存证件照", orderId.toString(), order.getOrderActualMoney(), ip, IDPHOTOSAVE, order.getTradeType());
             logger.info("微信签名+5个参数---------------------------------------------------------------------------" + map);

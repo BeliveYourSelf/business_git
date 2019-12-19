@@ -88,6 +88,7 @@ public class PayUtilsController extends BaseService {
             ",\"tradeType\":\"JSAPI\" }   tradeType支付类别：  JSAPI（小程序传）或NATIVE（b/s传）   ")
     @RequestMapping(value = "/wepay_sign", method = RequestMethod.POST)
     public ResponseMessage<Map> wepay_sign(HttpServletRequest request, @RequestBody Order order) {
+        logger.info("Order---------------------------------------------------------------------------" + order.toString());
         // 会员支付
         if (order.getWhetherMembers()) {
             return memberPay(order);
@@ -228,8 +229,10 @@ public class PayUtilsController extends BaseService {
             logger.info("微信签名+5个参数---------------------------------------------------------------------------" + map);
             // 根据fileName获取证件照无水印
             ResultGetIdPhotoNoWaterMarkAndTypeSettingUrl idPhotoNoWaterMarkAndTypeSettingUrlCopy = idPhotoBusinessController.getIdPhotoNoWaterMarkAndTypeSettingUrlCopy(order.getIdPhotoFileName(),app_key);
+            logger.info("idPhotoNoWaterMarkAndTypeSettingUrlCopy：" + idPhotoNoWaterMarkAndTypeSettingUrlCopy);
             String file_name = idPhotoNoWaterMarkAndTypeSettingUrlCopy.getData().getFile_name();
             map.put("idPhotoUrl", file_name);
+            logger.info("idPhotoUrl：" + file_name);
             return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", map);
         } catch (Exception e) {
             e.printStackTrace();

@@ -101,12 +101,17 @@ public class PayUtilsController extends BaseService {
             Map map = payUtilsService.wepay_orderSign(request, order.getOpenId(), order.getOrderAddresseeName(), order.getId().toString(), order.getOrderActualMoney(), ip, ORDERPAY, order.getTradeType());
             logger.info("微信签名+5个参数---------------------------------------------------------------------------" + map);
             List<Integer> vouchersIdList = order.getVouchersIdList();
+            logger.info("vouchersIdList" + vouchersIdList);
             Double orderConsumeMoney = order.getOrderConsumeMoney();
+            logger.info("orderConsumeMoney" + orderConsumeMoney);
             map.put("vouchersIdList", vouchersIdList);
+            logger.info("vouchersIdList" + vouchersIdList);
             map.put("orderConsumeMoney", orderConsumeMoney);
+            logger.info("orderConsumeMoney" + orderConsumeMoney);
             return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(), "成功", map);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.warn("支付异常：" + e.getMessage());
             return Result.error(ResultCodeEnum.ERROE_CODE.getValueCode(), e.getMessage());
         }
         /*} else {

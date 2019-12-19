@@ -9,8 +9,10 @@ import com.youxu.business.utils.yuntu.YuntuDemo;
 import com.youxu.business.utils.yuntu.httpurlreject.DocumentTrans;
 import com.youxu.business.utils.yuntu.yuntupojo.ResultYuntu;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
+import javax.imageio.ImageIO;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.MalformedURLException;
@@ -301,23 +303,23 @@ public class DownLoadZip extends BaseService {
                 // if:证件照订单    else:照片冲印和文档打印(装订)
                 if (!StringUtils.isEmpty(orderDetailsOnePictureUrl)) {
                     try {
-                    int lastPoint = fileDetailName.lastIndexOf(".");
-                    fileDetailName = fileDetailName.substring(0, lastPoint);//该子字符串从指定的 beginIndex 处开始， endIndex:到指定的 endIndex-1处结束。
-                    fileDetailName = fileDetailName + ".pdf";
-                    }catch (Exception e){
+                        int lastPoint = fileDetailName.lastIndexOf(".");
+                        fileDetailName = fileDetailName.substring(0, lastPoint);//该子字符串从指定的 beginIndex 处开始， endIndex:到指定的 endIndex-1处结束。
+                        fileDetailName = fileDetailName + ".pdf";
+                    } catch (Exception e) {
                         fileDetailName = fileDetailName + ".pdf";
                     }
                     map.put(fileDetailName, orderDetailsOnePictureUrl);
-                } else if (!org.springframework.util.StringUtils.isEmpty(orderDetailsBookBinding)){
+                } else if (!org.springframework.util.StringUtils.isEmpty(orderDetailsBookBinding)) {
                     List<OrderDetailsPictureMapping> orderDetailsPictureMappingList = orderDetails.getOrderDetailsPictureMappingList();
-                    for(OrderDetailsPictureMapping orderDetailsPictureMapping: orderDetailsPictureMappingList){
+                    for (OrderDetailsPictureMapping orderDetailsPictureMapping : orderDetailsPictureMappingList) {
                         List<Picture> pictureList = orderDetailsPictureMapping.getPictureList();
-                        for(Picture picture: pictureList){
+                        for (Picture picture : pictureList) {
                             String pictureUrlPdf = picture.getPictureUrlPdf();
                             String pictureUrl = picture.getPictureUrl();
                             int i = pictureUrl.lastIndexOf("/");
                             String pictureName = pictureUrl.substring(i);
-                            map.put(pictureName,pictureUrlPdf);// pictureName的名字用pictureUrl的，因为pictureUrlPdf路径发生了变化
+                            map.put(pictureName, pictureUrlPdf);// pictureName的名字用pictureUrl的，因为pictureUrlPdf路径发生了变化
                         }
                     }
                 }
@@ -337,15 +339,17 @@ public class DownLoadZip extends BaseService {
             for (Map.Entry<String, String> entry : map.entrySet()) {
                 String key = entry.getKey();
                 String value = entry.getValue();
-                // 转换为pdf
+                // 转换为pdf（除去 ）
                 int point = value.lastIndexOf(".");
-                String suffix = value.substring(point);// 后缀pdf的文件不需要转换
-                if (!".pdf".equals(suffix)) {
-                    String documentUrl = "https://api.9yuntu.cn/execute/Convert?docURL=" + URLEncoder.encode(value) + "&outputType=pdf";// 拼接九云图路径
-                    // 文件url转换成pdf对象
-                    ResultYuntu resultYuntu = DocumentTrans.getResultYuntuByUrl(documentUrl);
-                    if (0 == resultYuntu.getRetCode()) {
-                        value = resultYuntu.getOutputURLs()[0];
+                String suffix = value.substring(point + 1);// 后缀pdf的文件不需要转换
+                if (!"pdf".equals(suffix)) {
+                    if (!isImageBySuffix(suffix)) {// 图片不需要转换
+                        String documentUrl = "https://api.9yuntu.cn/execute/Convert?docURL=" + URLEncoder.encode(value) + "&outputType=pdf";// 拼接九云图路径
+                        // 文件url转换成pdf对象
+                        ResultYuntu resultYuntu = DocumentTrans.getResultYuntuByUrl(documentUrl);
+                        if (0 == resultYuntu.getRetCode()) {
+                            value = resultYuntu.getOutputURLs()[0];
+                        }
                     }
                 }
                 URL urlPdf = new URL(value);
@@ -374,5 +378,26 @@ public class DownLoadZip extends BaseService {
             e.printStackTrace();
         }
         return path;
+    }
+
+    /**
+     * 判断文件后缀是否为图片文件格式,bmp|gif|jpg|jpeg|png 返回true
+     *
+     * @param imageFileSuffix 图片文件后缀名
+     * @return
+     */
+    public static boolean isImageBySuffix(String imageFileSuffix) {
+        if (StringUtils.isNotEmpty(imageFileSuffix)) {
+            //[JPG, jpg, bmp, BMP, gif, GIF, WBMP, png, PNG, wbmp, jpeg, JPEG]
+            String[] formatNames = ImageIO.getReaderFormatNames();
+            if (ArrayUtils.isNotEmpty(formatNames)) {
+                for (String formatName : formatNames) {
+                    if (imageFileSuffix.toLowerCase().equals(formatName)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

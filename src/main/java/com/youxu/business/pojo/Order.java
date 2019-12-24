@@ -159,7 +159,8 @@ public class Order extends PageInfo {
     @ApiModelProperty(name = "orderHarvestTime", value = "实际配送时间")
     private Date orderHarvestTime;
 
-
+    @ApiModelProperty(name = "orderCategory", value = "区分小程序或pc下单")
+    private Integer orderCategory;
 
 
 }

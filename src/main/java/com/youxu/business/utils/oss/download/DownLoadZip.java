@@ -293,21 +293,23 @@ public class DownLoadZip extends BaseService {
                 String fileDetailName = orderDetails.getOrderDetailsName();
                 String orderSpecName = orderDetails.getOrderSpecName();
                 if (StringUtils.isNotEmpty(orderSpecName)) {
-                    fileDetailName += "-" + orderSpecName;
+                    fileDetailName =  orderSpecName + "-" + fileDetailName;
                 }
                 OrderDetailsBookBinding orderDetailsBookBinding = orderDetails.getOrderDetailsBookBinding();
                 if (!org.springframework.util.StringUtils.isEmpty(orderDetailsBookBinding)) {
-                    fileDetailName += "-" + orderDetailsBookBinding.getCoverColor();
+                    fileDetailName =  orderDetailsBookBinding.getCoverColor() + "-" + fileDetailName;
                 }
                 String orderDetailsOnePictureUrl = orderDetails.getOrderDetailsOnePictureUrl();
-                // if:证件照订单    else:照片冲印和文档打印(装订)
+                // if:证件照和普通打印订单    else:照片冲印和文档打印(装订)
                 if (!StringUtils.isEmpty(orderDetailsOnePictureUrl)) {
                     try {
                         int lastPoint = fileDetailName.lastIndexOf(".");
                         fileDetailName = fileDetailName.substring(0, lastPoint);//该子字符串从指定的 beginIndex 处开始， endIndex:到指定的 endIndex-1处结束。
                         fileDetailName = fileDetailName + ".pdf";
+                        fileDetailName = fileDetailName.replace("/","-");
                     } catch (Exception e) {
                         fileDetailName = fileDetailName + ".pdf";
+                        fileDetailName = fileDetailName.replace("/","-");
                     }
                     map.put(fileDetailName, orderDetailsOnePictureUrl);
                 } else if (!org.springframework.util.StringUtils.isEmpty(orderDetailsBookBinding)) {
@@ -318,8 +320,13 @@ public class DownLoadZip extends BaseService {
                             String pictureUrlPdf = picture.getPictureUrlPdf();
                             String pictureUrl = picture.getPictureUrl();
                             int i = pictureUrl.lastIndexOf("/");
-                            String pictureName = pictureUrl.substring(i);
-                            map.put(pictureName, pictureUrlPdf);// pictureName的名字用pictureUrl的，因为pictureUrlPdf路径发生了变化
+                            String pictureName = fileDetailName + pictureUrl.substring(i);
+                            int lastPoint = pictureName.lastIndexOf(".");
+                            fileDetailName = pictureName.substring(0, lastPoint);//该子字符串从指定的 beginIndex 处开始， endIndex:到指定的 endIndex-1处结束。
+                            fileDetailName = fileDetailName + ".pdf";
+                            // 把路径中包含的'/'转换为'#'
+                            fileDetailName = fileDetailName.replace("/","-");
+                            map.put(fileDetailName, pictureUrlPdf);// pictureName的名字用pictureUrl的，因为pictureUrlPdf路径发生了变化
                         }
                     }
                 }

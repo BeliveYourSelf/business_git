@@ -23,12 +23,12 @@ public class DictionaryDocumentSizeController {
     @Resource
     private DictionaryDocumentSizeService dictionaryDocumentSizeService;
 
-    @ApiOperation(value = "查看文档尺寸列表", notes = "返回值：（isBinding）是否装订： 0是 1否")
+    @ApiOperation(value = "查看文档尺寸列表", notes = "入参值：（isBinding）是否装订，0否，1是。")
     @GetMapping("/selectDocumentSize")
-    public ResponseMessage<List<SuperAdminDocumentSize>> selectDocumentSize(@RequestParam String storeId) {
-        List<SuperAdminDocumentSize> documentSizeList = dictionaryDocumentSizeService.selectDocumentSize(storeId);
+    public ResponseMessage<List<SuperAdminDocumentSize>> selectDocumentSize(@RequestParam String storeId, @RequestParam String isBinding) {
+        List<SuperAdminDocumentSize> documentSizeList = dictionaryDocumentSizeService.selectDocumentSize(storeId, isBinding);
         if (documentSizeList.size() <= 0) {
-            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "暂无该尺寸");
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",documentSizeList);
     }

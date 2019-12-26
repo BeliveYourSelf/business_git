@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface DictionaryDocumentSizeService {
 
-    List<SuperAdminDocumentSize> selectDocumentSize(String storeId);
+    List<SuperAdminDocumentSize> selectDocumentSize(String storeId, String isBinding);
 }

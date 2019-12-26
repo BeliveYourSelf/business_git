@@ -19,8 +19,8 @@ public class DictionaryDocumentSizeServiceImpl implements DictionaryDocumentSize
     private SuperAdminDocumentSizeMapper superAdminDocumentSizeMapper;
 
     @Override
-    public List<SuperAdminDocumentSize> selectDocumentSize(String storeId) {
-        List<SuperAdminDocumentSize> selectDocumentSize = superAdminDocumentSizeMapper.selectDocumentSize(storeId);
+    public List<SuperAdminDocumentSize> selectDocumentSize(String storeId,String isBinding) {
+        List<SuperAdminDocumentSize> selectDocumentSize = superAdminDocumentSizeMapper.selectDocumentSize(storeId, isBinding);
 //        return dictionaryDocumentSizeMapper.selectDocumentSize(storeId);
         return selectDocumentSize;
     }

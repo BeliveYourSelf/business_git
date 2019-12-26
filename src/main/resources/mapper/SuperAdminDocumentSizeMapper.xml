@@ -201,7 +201,7 @@
     select <include refid="Base_Column_List"/>
     from tb_super_admin_document_size
     left join tb_dictionary_document_size on tb_super_admin_document_size.document_size_id =  tb_dictionary_document_size.document_size_id
-    where tb_dictionary_document_size.store_id = #{storeId} and tb_super_admin_document_size.document_size_status = false and tb_dictionary_document_size.status = false
+    where tb_dictionary_document_size.store_id = #{storeId} and   tb_dictionary_document_size.is_binding = #{selectDocumentSize} and tb_super_admin_document_size.document_size_status = false and tb_dictionary_document_size.status = false
   </select>
 
 </mapper>

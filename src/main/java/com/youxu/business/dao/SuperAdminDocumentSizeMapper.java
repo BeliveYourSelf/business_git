@@ -28,5 +28,5 @@ public interface SuperAdminDocumentSizeMapper {
 
     int updateByPrimaryKey(SuperAdminDocumentSize record);
     // 查看文档尺寸大小
-    List<SuperAdminDocumentSize> selectDocumentSize(@Param("storeId") String storeId);
+    List<SuperAdminDocumentSize> selectDocumentSize(@Param("storeId") String storeId, @Param("selectDocumentSize") String selectDocumentSize);
 }

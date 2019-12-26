@@ -283,6 +283,29 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/lib/JSON-java-20170516.jar</systemPath>
         </dependency>
+        <!--sf:顺丰jar包-->
+        <dependency>
+            <groupId>org.apache.commons.codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.9</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/sf/commons-codec-1.9.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.sf.csim.express</groupId>
+            <artifactId>SF-CSIM-EXPRESS-SDK</artifactId>
+            <version>1.6</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/sf/SF-CSIM-EXPRESS-SDK-V1.6.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.sf.csim.express</groupId>
+            <artifactId>SF-CSIM-EXPRESS-SDK</artifactId>
+            <version>1.6</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/sf/SF-CSIM-EXPRESS-SDK-V1.6.jar</systemPath>
+        </dependency>
+
     </dependencies>
     <dependencyManagement>
         <dependencies>

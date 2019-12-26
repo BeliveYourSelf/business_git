@@ -8,6 +8,7 @@ import com.youxu.business.service.OrderService;
 import com.youxu.business.utils.OtherUtil.DeleteFileUtil;
 import com.youxu.business.utils.OtherUtil.OSSUploadUtil;
 import com.youxu.business.utils.OtherUtil.UploadUtils;
+import com.youxu.business.utils.fengqiao.CallExpressService;
 import com.youxu.business.utils.normalQRcode.QRCodeUtil;
 import com.youxu.business.utils.oss.download.DownLoadZip;
 import com.youxu.business.utils.uuid.UUIDUtils;
@@ -21,6 +22,7 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -70,6 +72,7 @@ public class OrderServiceImpl implements OrderService {
         }
         Integer insertOrder = orderMapper.insertOrder(getOrder(order));// 设置过期时间
         int orderId = orderMapper.lastInsertId();
+        order.setId(orderId);
         // 取件二维码url
         addDeliveryPickUpFileQRCodeUrl(orderId);
         if (!StringUtils.isEmpty(order)) {
@@ -126,6 +129,14 @@ public class OrderServiceImpl implements OrderService {
             }
 
         }
+        // 如果为丰桥配送，则从丰桥也下单
+        /*if("4".equals(order.getOrderFromStoreGet())){
+        Class<?> callExpressService = Class.forName("com.youxu.business.utils.fengqiao.CallExpressService");
+        Constructor<CallExpressService> callExpressServiceObj= (Constructor<CallExpressService>) callExpressService.getConstructor();
+        CallExpressService callExpressServiceNew= callExpressServiceObj.newInstance();
+        Store store = storeMapper.selectByStoreId(order.getStoreId());
+        Boolean insertSFOrder =  callExpressServiceNew.insertSFOrder(order,store);
+        }*/
         return orderId;
     }
 

@@ -16,6 +16,7 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
     <result column="status" jdbcType="BIT" property="status" />
+    <result column="contact_name"  property="contactName" />
     <result column="delivery_clerk_per_one"  property="deliveryclerkPricePerOne" />
     <result column="licence_price"  property="licencePrice" />
     <result column="store_binding_price_horizontal"  property="storeBindingPriceHorizontal" />
@@ -83,7 +84,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, store_name, store_address, store_phone, store_time, store_open_for_out, output_size, store_output_colour,
-    store_quality, store_latitude, store_longitude, create_time, modify_time, status, delivery_clerk_per_one, licence_price
+    store_quality, store_latitude, store_longitude, create_time, modify_time, status, contact_name, delivery_clerk_per_one, licence_price
     ,store_binding_price_horizontal ,store_binding_price_vertical, licence_price_change, licence_price_save
 </sql>
   <select id="selectByExample" parameterType="com.youxu.business.pojo.StoreExample" resultMap="BaseResultMap">

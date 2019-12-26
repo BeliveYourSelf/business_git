@@ -48,6 +48,9 @@ public class Store {
     @ApiModelProperty(name = "status",value = "配送员每单的价格")
     private Boolean status;
 
+    @ApiModelProperty(name = "contactName",value = "联系人")
+    private String contactName;
+
     @ApiModelProperty(name = "deliveryclerkPricePerOne",value = "配送员每单的价格")
     private Double deliveryclerkPricePerOne;
 

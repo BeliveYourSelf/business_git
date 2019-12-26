@@ -68,7 +68,8 @@
         <!--<table tableName="tb_banner_material" domainObjectName="BannerMaterial"/>-->
         <!--<table tableName="tb_delivery_schedule" domainObjectName="DeliverySchedule"/>-->
         <!--<table tableName="tb_notify" domainObjectName="Notify"/>-->
-        <table tableName="tb_id_photo_serach_history" domainObjectName="IdPhotoSerachHistory"/>
+        <!--<table tableName="tb_id_photo_serach_history" domainObjectName="IdPhotoSerachHistory"/>-->
+        <table tableName="tb_super_admin_document_size" domainObjectName="SuperAdminDocumentSize"/>
 
     </context>
 </generatorConfiguration>

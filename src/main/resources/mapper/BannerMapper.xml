@@ -5,7 +5,8 @@
     <result column="tb_bannerid" jdbcType="INTEGER" property="id" />
     <result column="tb_bannerbanner_name" jdbcType="VARCHAR" property="bannerName" />
     <result column="tb_bannerbanner_picture_url" jdbcType="VARCHAR" property="bannerPictureUrl" />
-    <result column="tb_bannerbanner_jump_type" jdbcType="TINYINT" property="bannerJumpType" />
+    <result column="tb_bannerbanner_jump_type" jdbcType="INTEGER" property="bannerJumpType" />
+    <result column="tb_bannerbanner_jump_function" jdbcType="VARCHAR" property="bannerJumpFunction" />
     <result column="tb_bannerbanner_weight" jdbcType="INTEGER" property="bannerWeight" />
     <result column="tb_bannercreate_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="tb_bannermodify_time" jdbcType="TIMESTAMP" property="modifyTime" />
@@ -88,6 +89,7 @@
     , tb_banner.banner_name as tb_bannerbanner_name
     , tb_banner.banner_picture_url as tb_bannerbanner_picture_url
     , tb_banner.banner_jump_type as tb_bannerbanner_jump_type
+    , tb_banner.banner_jump_function as tb_bannerbanner_jump_function
     , tb_banner.banner_weight as tb_bannerbanner_weight
     , tb_banner.create_time as tb_bannercreate_time
     , tb_banner.modify_time as tb_bannermodify_time

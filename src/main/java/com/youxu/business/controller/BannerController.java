@@ -48,6 +48,7 @@ public class BannerController {
         if (selectBannerList.size() <= 0) {
             return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
         }
+        
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectBannerList);
     }
     

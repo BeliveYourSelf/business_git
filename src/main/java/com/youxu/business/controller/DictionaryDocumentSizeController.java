@@ -1,6 +1,7 @@
 package com.youxu.business.controller;
 
-import com.youxu.business.pojo.DictionaryDocumentImposition;
+import com.youxu.business.pojo.DictionaryDocumentSize;
+import com.youxu.business.pojo.SuperAdminDocumentSize;
 import com.youxu.business.service.DictionaryDocumentSizeService;
 import com.youxu.business.utils.Enum.ResultCodeEnum;
 import com.youxu.business.utils.ResponseUtil.ResponseMessage;
@@ -22,13 +23,13 @@ public class DictionaryDocumentSizeController {
     @Resource
     private DictionaryDocumentSizeService dictionaryDocumentSizeService;
 
-    @ApiOperation(value = "查看文档尺寸列表", notes = "storeId")
+    @ApiOperation(value = "查看文档尺寸列表", notes = "入参值：（isBinding）是否装订，0否，1是。")
     @GetMapping("/selectDocumentSize")
-    public ResponseMessage<List<DictionaryDocumentSizeService>> selectDocumentSize(@RequestParam String storeId) {
-        List<DictionaryDocumentSizeService> selectDocumentSize =dictionaryDocumentSizeService.selectDocumentSize(storeId);
-        if (selectDocumentSize.size() <= 0) {
-            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "失败");
+    public ResponseMessage<List<SuperAdminDocumentSize>> selectDocumentSize(@RequestParam String storeId, @RequestParam String isBinding) {
+        List<SuperAdminDocumentSize> documentSizeList = dictionaryDocumentSizeService.selectDocumentSize(storeId, isBinding);
+        if (documentSizeList.size() <= 0) {
+            return Result.error(ResultCodeEnum.NODATA_CODE.getValueCode(), "暂无该尺寸");
         }
-        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectDocumentSize);
+        return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",documentSizeList);
     }
 }

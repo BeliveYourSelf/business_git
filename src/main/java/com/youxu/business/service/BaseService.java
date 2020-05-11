@@ -34,6 +34,8 @@ public class BaseService {
     public String   DOWNLOADFOLDER = "https://api.uxu1.cn/business/api/downloadFolder";
     public String   ORDERPAY = "https://api.uxu1.cn/business/api/orderPayUrl";
 
+    public String   IDPHOTOSAVE = "https://api.uxu1.cn/business/api/idPhotoSave";
+
 
     /**
      * TODO 微信支付 商户Key
@@ -85,7 +87,7 @@ public class BaseService {
      * 证件照接口参数
      */
     //证件照环境监测接口参数
-    String app_key = "2abf79c1e6f1aa18583f6a38d05336eae9baf3e3"; // 有需
+    public String app_key = "2abf79c1e6f1aa18583f6a38d05336eae9baf3e3"; // 有需证件照检测和制作
     String facepose = "50";
     String eyegaze = "50";
     String eyeskew = "50";
@@ -110,4 +112,13 @@ public class BaseService {
     //同时获取有水印单张
 //    @Value("http://apicall.id-photo-verify.com/api/take_pic_wm/")
     public String GETIDPHOTOWATERMARKANDTYPESETTINGURL = "http://apicall.id-photo-verify.com/api/take_pic_wm/";
+
+    /**
+     * 获取规格详情
+     */
+    public String GETIDPHOTOSPECBYID = "http://apicall.id-photo-verify.com/api/get_specs/";
+    /**
+     * 换装
+     */
+    public String  CUTCHANGECLOTHES= "http://apicall.id-photo-verify.com/api/cut_change_clothes";
 }

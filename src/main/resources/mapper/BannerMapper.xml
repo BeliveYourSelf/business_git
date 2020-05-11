@@ -5,7 +5,8 @@
     <result column="tb_bannerid" jdbcType="INTEGER" property="id" />
     <result column="tb_bannerbanner_name" jdbcType="VARCHAR" property="bannerName" />
     <result column="tb_bannerbanner_picture_url" jdbcType="VARCHAR" property="bannerPictureUrl" />
-    <result column="tb_bannerbanner_jump_type" jdbcType="TINYINT" property="bannerJumpType" />
+    <result column="tb_bannerbanner_jump_type" jdbcType="INTEGER" property="bannerJumpType" />
+    <result column="tb_bannerbanner_jump_function" jdbcType="VARCHAR" property="bannerJumpFunction" />
     <result column="tb_bannerbanner_weight" jdbcType="INTEGER" property="bannerWeight" />
     <result column="tb_bannercreate_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="tb_bannermodify_time" jdbcType="TIMESTAMP" property="modifyTime" />
@@ -88,6 +89,7 @@
     , tb_banner.banner_name as tb_bannerbanner_name
     , tb_banner.banner_picture_url as tb_bannerbanner_picture_url
     , tb_banner.banner_jump_type as tb_bannerbanner_jump_type
+    , tb_banner.banner_jump_function as tb_bannerbanner_jump_function
     , tb_banner.banner_weight as tb_bannerbanner_weight
     , tb_banner.create_time as tb_bannercreate_time
     , tb_banner.modify_time as tb_bannermodify_time
@@ -285,14 +287,35 @@
     </if>
   </update>
   <!--查看banner集合-->
-  <select id="selectBannerList" resultMap="ResultMapWithBLOBs">
-    select <include refid="Base_Column_List"/>,<include refid="Blob_Column_List"/>,<include refid="Base_Column_List_BannerMaterial"/>
-    from tb_banner
-    left join tb_banner_material on tb_banner.banner_content_id = tb_banner_material.id
-    where tb_banner.status = false and tb_banner_material.content_status = false
-    and tb_banner_material.content_type = #{contentType}
-    order by tb_banner.banner_weight desc
-    LIMIT 5;
+  <!--<select id="selectBannerList" resultMap="ResultMapWithBLOBs">-->
+    <!--select <include refid="Base_Column_List"/>,<include refid="Blob_Column_List"/>,<include refid="Base_Column_List_BannerMaterial"/>-->
+    <!--from tb_banner-->
+    <!--left join tb_banner_material on tb_banner.banner_content_id = tb_banner_material.id-->
+    <!--where -->
+    <!--tb_banner.status = 0 -->
+    <!--and tb_banner_material.content_status = false-->
+    <!--and tb_banner_material.content_type = #{contentType}-->
+    <!--order by tb_banner.banner_weight desc-->
+    <!--LIMIT 5;-->
+  <!--</select>-->
+
+  <select id="selectBannerList" resultType="com.youxu.business.pojo.Banner">
+        SELECT
+             id,
+             banner_name AS bannerName,
+             banner_picture_url AS bannerPictureUrl,
+             banner_jump_function AS bannerJumpFunction,
+             banner_jump_type AS bannerJumpType,
+             banner_content_id AS banner_content_id,
+             banner_comtent_id_for_pc AS bannerComtentIdForPc,
+             banner_weight AS bannerWeight,
+             create_time AS createTime,
+             status AS status
+        FROM
+             tb_banner
+        WHERE banner_type=#{contentType}
+          and tb_banner.status = 0
+         LIMIT 5
   </select>
   <!--查看详细banner通过id-->
   <select id="selectBannerById" resultMap="ResultMapWithBLOBs">

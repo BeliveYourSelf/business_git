@@ -19,6 +19,8 @@
         <result column="tb_order_detailsorder_details_modify_time" jdbcType="TIMESTAMP"
                 property="orderDetailsModifyTime"/>
         <result column="tb_order_detailsorder_details_status" jdbcType="BIT" property="orderDetailsStatus"/>
+        <result column="tb_order_detailsorder_details_page"  property="orderDetailsPage"/>
+        <result column="tb_order_detailsorder_details_one_picture_url_pdf"  property="orderDetailsOnePictureUrlPdf"/>
         <association property="orderDetailsBookBinding" javaType="com.youxu.business.pojo.OrderDetailsBookBinding">
             <result column="tb_order_details_book_bindingid" property="id"/>
             <result column="tb_order_details_book_bindingorder_details_id" property="orderDetailsId"/>
@@ -29,7 +31,7 @@
             <result column="tb_order_details_book_bindingmodify_time" property="modifyTime"/>
             <result column="tb_order_details_book_bindingstatus" property="status"/>
         </association>
-        <collection property="pictureList" select="com.youxu.business.dao.OrderDetailsPictureMappingMapper.selectOrderDetailsPictureMappingByOrderDetailId" column="tb_order_detailsid"/>
+        <collection property="orderDetailsPictureMappingList" select="com.youxu.business.dao.OrderDetailsPictureMappingMapper.selectOrderDetailsPictureMappingByOrderDetailId" column="tb_order_detailsid"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -104,7 +106,9 @@
     , tb_order_details.order_details_create_time as tb_order_detailsorder_details_create_time
     , tb_order_details.order_details_modify_time as tb_order_detailsorder_details_modify_time
     , tb_order_details.order_details_status as tb_order_detailsorder_details_status
-    , tb_order_details.orderDetailsType as tb_order_detailsorder_details_type
+    , tb_order_details.order_details_type as tb_order_detailsorder_details_type
+    , tb_order_details.order_details_page as tb_order_detailsorder_details_page
+    , tb_order_details.order_details_one_picture_url_pdf as tb_order_detailsorder_details_one_picture_url_pdf
   </sql>
     <sql id="Base_Column_List_tb_order_details_book_binding">
     tb_order_details_book_binding.id as tb_order_details_book_bindingid
@@ -288,6 +292,8 @@
             order_spec_name,
             order_details_count_colour,
             order_details_type,
+            order_details_page,
+            order_details_one_picture_url_pdf,
             order_details_create_time,
             order_details_modify_time,
             order_details_status,
@@ -304,6 +310,8 @@
             #{orderDetails.orderSpecName},
             #{orderDetails.orderDetailsCountColour},
             #{orderDetails.orderDetailsType},
+            #{orderDetails.orderDetailsPage},
+            #{orderDetails.orderDetailsOnePictureUrlPdf},
             now(),
             now(),
             false
@@ -317,8 +325,9 @@
   </update>
     <!--通过orderId查看订单详情集合-->
     <select id="selectOrderDetailsList" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/>
+        select <include refid="Base_Column_List"/>,<include refid="Base_Column_List_tb_order_details_book_binding"/>
         from tb_order_details
+        left join tb_order_details_book_binding on tb_order_details.id = tb_order_details_book_binding.order_details_id
         WHERE  tb_order_details.order_id = #{orderId}
     </select>
 

@@ -16,8 +16,11 @@ public class Banner {
     @ApiModelProperty(name = "bannerPictureUrl", value = "banner图片路径")
     private String bannerPictureUrl;
 
-    @ApiModelProperty(name = "bannerJumpType", value = "banner跳转类型   弃用")
-    private Byte bannerJumpType;
+    @ApiModelProperty(name = "bannerJumpType", value = "1：跳到富文本素材，2，跳至功能")
+    private int bannerJumpType;
+
+    @ApiModelProperty(name = "bannerJumpFunction", value = "跳转地址")
+    private String bannerJumpFunction;
 
     @ApiModelProperty(name = "bannerWeight", value = "权重")
     private Integer bannerWeight;

@@ -30,5 +30,5 @@ public interface DictionaryDocumentSizeMapper {
 
     int updateByPrimaryKey(DictionaryDocumentSize record);
     // 查看文档尺寸列表
-    List<DictionaryDocumentSizeService> selectDocumentSize(@Param("storeId") String storeId);
+    List<DictionaryDocumentSize> selectDocumentSize(@Param("storeId") String storeId);
 }

@@ -47,6 +47,12 @@ public class OrderDetails {
     @ApiModelProperty(name = "orderDetailsType",value = "订单类别：1.证件照2.照片冲洗3.文档打印4.普通打印")
     private Integer orderDetailsType;
 
+    @ApiModelProperty(name = "orderDetailsPage",value = "订单详情页数")
+    private Integer orderDetailsPage;
+
+    @ApiModelProperty(name = "orderDetailsOnePictureUrlPdf",value = "订单详情Pdf路径")
+    private String orderDetailsOnePictureUrlPdf;
+
     // 新增
     @ApiModelProperty(name = "orderDetailsBookBinding",value = "装订订单明细表")
     private OrderDetailsBookBinding orderDetailsBookBinding;
@@ -56,6 +62,11 @@ public class OrderDetails {
 
     @ApiModelProperty(name = "pictureList",value = "图片对象")
     private List<Picture> pictureList;
+
+    @ApiModelProperty(name = "orderDetailsPictureMapping",value = "图片明细映射表")
+    private List<OrderDetailsPictureMapping> orderDetailsPictureMappingList;
+
+
 
 
 }

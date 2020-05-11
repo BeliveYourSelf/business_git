@@ -1,6 +1,7 @@
 package com.youxu.business.service;
 
 import com.youxu.business.pojo.Order;
+import com.youxu.business.pojo.OrderProcess;
 import com.youxu.business.pojo.Share;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +19,7 @@ public interface OrderService {
 
     Order insertOrderAgain(String id);
 
-    List<Order> selectOrderList(Order order);
+    List<Order> selectOrderList(Order order) throws Exception;
 
     Integer updateOrderPayDateAndProcess(Integer orderId, Integer orderProcess);
 
@@ -30,7 +31,7 @@ public interface OrderService {
 
     Integer updateDeliveryInfoToCompelete(Order order);
 
-    Integer updateDeliveryOrderProblem(Order order);
+    Integer updateDeliveryOrderProblem(Order order) throws Exception;
 
     Integer insertOrderForMemberPrice(Share share);
 
@@ -46,5 +47,7 @@ public interface OrderService {
 
     Integer updateOrderOverWrite(Integer orderId) throws Exception;
 
-    String downLoadFileListOverWriteNew(String orderId);
+    List<String> downLoadFileListOverWriteNew(String orderId);
+
+    OrderProcess selectCountOrderProcess(String userId);
 }

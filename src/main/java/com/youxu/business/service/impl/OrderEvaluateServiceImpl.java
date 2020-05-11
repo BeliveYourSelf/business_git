@@ -1,8 +1,10 @@
 package com.youxu.business.service.impl;
 
 import com.youxu.business.dao.*;
+import com.youxu.business.pojo.Order;
 import com.youxu.business.pojo.OrderEvaluate;
 import com.youxu.business.pojo.OrderEvaluateOptionCartMapper;
+import com.youxu.business.pojo.User;
 import com.youxu.business.service.OrderEvaluateService;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,8 @@ import java.util.List;
 
 @Service
 public class OrderEvaluateServiceImpl implements OrderEvaluateService {
+    @Resource
+    private UserMapper userMapper;
     @Resource
     private OrderEvaluateMapper orderEvaluateMapper;
     @Resource
@@ -24,6 +28,13 @@ public class OrderEvaluateServiceImpl implements OrderEvaluateService {
     private OrderEvaluatePictureMappingMapper orderEvaluatePictureMappingMapper;
     @Override
     public Integer insertOrderEvaluate(OrderEvaluate orderEvaluate) {
+        //查看订单对应人的
+        Order order = orderMapper.selectOrderById(orderEvaluate.getOrderId().toString());
+        User user = userMapper.selectByPrimaryKey(order.getUserId());
+        orderEvaluate.setOrderEvaluateName(user.getUserName());
+        orderEvaluate.setOrderEvaluatePhone(user.getUserPhone());
+        orderEvaluate.setOrderEvaluateAccount(user.getUserName());
+        orderEvaluate.setStoreId(order.getStoreId());
         Integer insertOrderEvaluate = orderEvaluateMapper.insertOrderEvaluate(orderEvaluate);
         int orderEvaluateId = orderMapper.lastInsertId();
         // 关联订单评价选项卡

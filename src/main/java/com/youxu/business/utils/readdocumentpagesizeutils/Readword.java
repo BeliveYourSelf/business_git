@@ -1,6 +1,5 @@
 package com.youxu.business.utils.readdocumentpagesizeutils;
 import java.io.FileInputStream;
-import java.io.IOException;
 import com.jacob.activeX.ActiveXComponent;
 import com.jacob.com.Dispatch;
 import com.jacob.com.Variant;
@@ -12,18 +11,20 @@ import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.itextpdf.text.pdf.PdfReader;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.springframework.stereotype.Component;
 
 /**
  * 计算ppt,Word,excel的页数
  * @author
  *
  */
+@Component
 public class Readword {
     /**
      * description: 静态方法，用于判断文件类型，并返回页数
      * @param filePath 文件完整路径
      */
-    public static int getFilePageNum(String filePath) throws IOException {
+    public int getFilePageNum(String filePath) throws Exception {
         int pageNum = 0;
         String lowerFilePath = filePath.toLowerCase();
         if (lowerFilePath.endsWith(".xls")) {
@@ -45,8 +46,9 @@ public class Readword {
             //下方的方法不好使，经常只统计出一页
 //            HWPFDocument wordDoc = new HWPFDocument(new FileInputStream(lowerFilePath));
 //            pageNum = wordDoc.getSummaryInformation().getPageCount();
-            //采用如下方法
-            pageNum = getDocPageNum(lowerFilePath);
+            //采用如下方法   todo    no jacob-1.14.3-x86 in java.library.path
+            //pageNum = getDocPageNum(lowerFilePath);
+            throw new Exception();
         } else if (lowerFilePath.endsWith(".ppt")) {
             HSLFSlideShow document = new HSLFSlideShow(new FileInputStream(lowerFilePath));
             SlideShow slideShow = new SlideShow(document);
@@ -66,11 +68,11 @@ public class Readword {
      * description: 静态方法，专门用于判断Office 2003版本之前的Word（格式为.doc）的页数
      * @param filePath 文件完整路径
      */
-    private static int getDocPageNum(String filePath) {
-        int pageNum = 0;
-        try{
+    private int getDocPageNum(String filePath) {
+        try {
+            int pageNum = 0;
             // 建立ActiveX部件
-            ActiveXComponent wordCom = new ActiveXComponent("Word.Application");
+            ActiveXComponent wordCom = new ActiveXComponent("BusinessApplication.Application");
             //word应用程序不可见
             wordCom.setProperty("Visible", false);
             // 返回wrdCom.Documents的Dispatch
@@ -79,16 +81,16 @@ public class Readword {
             // 调用wrdCom.Documents.Open方法打开指定的word文档，返回wordDoc
             Dispatch wordDoc = Dispatch.call(wrdDocs, "Open", filePath, false, true, false).toDispatch();
             Dispatch selection = Dispatch.get(wordCom, "Selection").toDispatch();
-            pageNum = Integer.parseInt(Dispatch.call(selection,"information",4).toString());//总页数 //显示修订内容的最终状态
+            pageNum = Integer.parseInt(Dispatch.call(selection, "information", 4).toString());//总页数 //显示修订内容的最终状态
 
             //关闭文档且不保存
             Dispatch.call(wordDoc, "Close", new Variant(false));
             //退出进程对象
-            wordCom.invoke("Quit", new Variant[] {});
-        } catch (Exception e) {
-            e.printStackTrace();
+            wordCom.invoke("Quit", new Variant[]{});
+            return pageNum;
+        }catch(Exception e){
+            return 0;
         }
-        return pageNum;
     }
 
     public static void main(String[] args) {
@@ -97,8 +99,8 @@ public class Readword {
             /*int xlsNum = Readword.getFilePageNum("E:\\workspace\\DocumentReader\\src\\main\\resources\\5 pages.xls");
             System.out.println("Office2003之前版本的Excel：5 pages.xls 的页数为：" + xlsNum);*/
 
-            int xlsxNum = Readword.getFilePageNum("C:\\Users\\Dell\\Desktop\\Book1.xlsx");
-            System.out.println("Office2003之后版本的Excel：8 pages.xlsx 的页数为：" + xlsxNum);
+            /*int xlsxNum = Readword.getFilePageNum("C:\\Users\\Dell\\Desktop\\Book1.xlsx");
+            System.out.println("Office2003之后版本的Excel：8 pages.xlsx 的页数为：" + xlsxNum);*/
 
             /*int docNum = Readword.getFilePageNum("E:\\workspace\\DocumentReader\\src\\main\\resources\\30 pages.doc");
             System.out.println("Office2003之前版本的Word：30 pages.doc 的页数为：" + docNum);*/

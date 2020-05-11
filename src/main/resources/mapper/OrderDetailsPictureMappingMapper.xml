@@ -7,6 +7,7 @@
     <collection property="pictureList" ofType="com.youxu.business.pojo.Picture">
       <result column="tb_picturepicture_id"  property="pictureId" />
       <result column="tb_picturepicture_url"  property="pictureUrl" />
+      <result column="tb_picturepicture_url_pdf"  property="pictureUrlPdf" />
     </collection>
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -74,6 +75,7 @@
   <sql id="Base_Column_List_Picture">
     tb_picture.picture_id as tb_picturepicture_id
     , tb_picture.picture_url as tb_picturepicture_url
+    , tb_picture.picture_url_pdf as tb_picturepicture_url_pdf
   </sql>
   <select id="selectByExample" parameterType="com.youxu.business.pojo.OrderDetailsPictureMappingExample" resultMap="BaseResultMap">
     select

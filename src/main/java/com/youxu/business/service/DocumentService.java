@@ -10,4 +10,6 @@ public interface DocumentService {
     Integer insertDocument(Document document,HttpServletRequest request) throws IOException;
 
     List<Document> selectRecentFileByUserId(String userId);
+
+    Integer updateDocumentNameByDocumentId(String documentId, String documentName);
 }

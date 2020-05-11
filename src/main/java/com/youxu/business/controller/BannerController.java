@@ -31,6 +31,7 @@ public class BannerController {
     @Resource
     private BannerService bannerService;
 
+
 /*    @Autowired
     private RestTemplate restTemplate;*/
 
@@ -49,7 +50,7 @@ public class BannerController {
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectBannerList);
     }
-
+    
     @ApiOperation(value = "查看其中一个banner", notes = "banner的id")
     @GetMapping("/selectOneBannerById")
     public ResponseMessage<Banner> selectOneBannerById(@RequestParam String id) {
@@ -59,7 +60,6 @@ public class BannerController {
         }
         return Result.success(ResultCodeEnum.SUCCESS_CODE.getValueCode(),"成功",selectBannerById);
     }
-
     @ApiOperation(value = "测试feign：查看用户信息通过userId", notes = "userId")
     @GetMapping("/selectUserInfoByUId")
     public ResponseMessage<User> selectUserInfoByUId(@RequestParam("userId") String userId) {

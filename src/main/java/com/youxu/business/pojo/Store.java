@@ -48,6 +48,9 @@ public class Store {
     @ApiModelProperty(name = "status",value = "配送员每单的价格")
     private Boolean status;
 
+    @ApiModelProperty(name = "contactName",value = "联系人")
+    private String contactName;
+
     @ApiModelProperty(name = "deliveryclerkPricePerOne",value = "配送员每单的价格")
     private Double deliveryclerkPricePerOne;
 
@@ -59,6 +62,12 @@ public class Store {
 
     @ApiModelProperty(name = "storeBindingPriceVertical",value = "装订价格-竖版")
     private Double storeBindingPriceVertical;
+
+    @ApiModelProperty(name = "licencePriceChange",value = "无水印换装价格")
+    private Double licencePriceChange;
+
+    @ApiModelProperty(name = "licencePriceSave",value = "无水印保存价格")
+    private Double licencePriceSave;
 
 
 

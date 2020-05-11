@@ -3,7 +3,10 @@ package com.youxu.business.utils.OtherUtil;
 
 import com.aliyun.oss.OSSClient;
 import com.youxu.business.service.BaseService;
+import com.youxu.business.utils.oss.download.DownLoadZip;
 import com.youxu.business.utils.pojotools.UpLoadFile;
+import com.youxu.business.utils.yuntu.YuntuDemo;
+import com.youxu.business.utils.yuntu.httpurlreject.DocumentTrans;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018/1/4.
@@ -183,12 +189,69 @@ private final static Logger logger = LoggerFactory.getLogger(OSSUploadUtil.class
                 StringBuilder yuming = new StringBuilder("https://youxu-print.oss-cn-beijing.aliyuncs.com/");
                 //再拼接/log
                 yuming.append(yuming1);
-                return (yuming.toString());
+                String yumingUrl = yuming.toString();
+                return (yumingUrl);
             }
             return FALSE;
         } catch (Exception ex) {
             ex.printStackTrace();
             return FALSE;
+        }
+    }
+
+    /**
+     * 图片上传：返回源文件路径和文件pdf格式的路径
+     */
+    public static Map<String,String> uploadBlogOverWritePDF(MultipartFile multipartFile, String multipartFileName) {
+        HashMap<String, String> retulstMap = new HashMap<>();
+        try {
+            if (multipartFile != null) {
+                //拼接/log
+                StringBuilder path = new StringBuilder("log/");
+                //获取时间戳
+                Date fileDate = new Date();
+                StringBuilder datetime = new StringBuilder(String.valueOf(fileDate.getTime()));
+                //获取时间文件夹,并且与时间戳进行拼接
+                SimpleDateFormat dateFormatShow = new SimpleDateFormat("yyyyMMdd");
+                String date = (dateFormatShow.format(new Date()));
+                StringBuilder newName = new StringBuilder(date);
+                path.append(newName.toString());
+                path.append("/");
+                path.append(datetime);
+                path.append("/");
+                path.append(multipartFileName);
+                //获取文件后缀名--file.getOriginalFilename(); 获取的名字带后缀
+               /* String extName = filename.substring(filename.lastIndexOf("."));
+                path.append(extName);*/
+                String yuming1 = path.toString();
+                logger.warn("=================================================================================================");
+                logger.warn("yuming1"+yuming1);
+                logger.warn("=================================================================================================");
+                File newFile = new File(multipartFileName);
+                FileOutputStream os = new FileOutputStream(newFile);
+                os.write(multipartFile.getBytes());
+                os.close();
+                // 上传到OSS /log/20190517/1218209821212.jpg
+                OSSUploadUtil.uploadFile(ali_endpoint, ali_accesskey_id, ali_accesskey_secret, ali_logstorage, newFile, yuming1);
+                // 删除上传的文件
+                File file1 = new File(multipartFileName);
+                String s = file1.getAbsolutePath();
+                DeleteFileUtil.delete(s);
+                //先拼接域名:
+                StringBuilder yuming = new StringBuilder("https://youxu-print.oss-cn-beijing.aliyuncs.com/");
+                //再拼接/log
+                yuming.append(yuming1);
+                String yumingUrl = yuming.toString();
+                String pdfYuming = DocumentTrans.documentTransApiToPDF(yumingUrl);
+                retulstMap.put("orignalUrl",yumingUrl);
+                retulstMap.put("pdfUrl",pdfYuming);
+                return (retulstMap);
+            }
+            return retulstMap;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            logger.info(ex.getMessage());
+            return retulstMap;
         }
     }
 
@@ -248,6 +311,11 @@ private final static Logger logger = LoggerFactory.getLogger(OSSUploadUtil.class
             ex.printStackTrace();
             return FALSE;
         }
+    }
+
+    public static String documentUrlTranTOPDF(String fileUrl) throws IOException {
+        String pdfYuming = DocumentTrans.documentTransApiToPDF(fileUrl);
+        return pdfYuming;
     }
 }
 

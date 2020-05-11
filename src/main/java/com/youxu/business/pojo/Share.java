@@ -1,5 +1,6 @@
 package com.youxu.business.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -12,6 +13,7 @@ public class Share {
 
     @ApiModelProperty(name = "shareUserId", value = "分享人用户id")
     private Integer shareUserId;
+
 
     @ApiModelProperty(name = "periodOfValidity", value = "有效期")
     private String periodOfValidity;
@@ -49,9 +51,11 @@ public class Share {
     @ApiModelProperty(name = "folderIds", value = "未使用")
     private String folderIds;
 
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy/MM/dd HH:mm:ss")
     @ApiModelProperty(name = "createTime", value = "创建时间")
     private Date createTime;
 
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy/MM/dd HH:mm:ss")
     @ApiModelProperty(name = "modifyTime", value = "修改时间")
     private Date modifyTime;
 
